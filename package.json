@@ -9,6 +9,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
     "lint": "eslint --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "cozy-git-hooks install -q"
@@ -17,8 +18,11 @@
     "packages/vanilla"
   ],
   "devDependencies": {
-    "@pretty-cozy/eslint-config": "^0.0.6",
-    "@pretty-cozy/git-hooks": "^0.0.6",
+    "@pretty-cozy/eslint-config": "^0.1.0",
+    "@pretty-cozy/git-hooks": "^0.1.0",
+    "@types/jest": "^29.5.1",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
   },
   "eslintConfig": {

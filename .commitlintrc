@@ -10,7 +10,8 @@
       "refactor",
       "revert",
       "perf",
-      "chore"
+      "chore",
+      "test"
       ]
     ]
   }

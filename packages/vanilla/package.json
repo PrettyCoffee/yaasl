@@ -2,15 +2,17 @@
   "name": "@yaal/vanilla",
   "version": "0.0.1",
   "description": "Vanilla javascript package of yaal",
-  "main": "./dist/index.js",
-  "scripts": {
-    "build": "tsc"
-  },
   "keywords": [
     "vanilla-js",
     "atom",
     "store"
   ],
   "author": "PrettyCoffee",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --config ../../jest.config.json",
+    "test:watch": "npm run test -- --watchAll"
+  }
 }
