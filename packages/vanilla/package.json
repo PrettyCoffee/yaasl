@@ -1,0 +1,16 @@
+{
+  "name": "@yaal/vanilla",
+  "version": "0.0.1",
+  "description": "Vanilla javascript package of yaal",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "vanilla-js",
+    "atom",
+    "store"
+  ],
+  "author": "PrettyCoffee",
+  "license": "MIT"
+}

@@ -2,14 +2,20 @@
   "name": "yaal",
   "version": "0.0.1",
   "description": "yet another atom library",
-  "keywords": [ "atom" ],
+  "keywords": [
+    "atom"
+  ],
   "author": "PrettyCoffee",
   "license": "MIT",
   "scripts": {
+    "build": "npm run build --workspaces",
     "lint": "eslint --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "cozy-git-hooks install -q"
   },
+  "workspaces": [
+    "packages/vanilla"
+  ],
   "devDependencies": {
     "@pretty-cozy/eslint-config": "^0.0.6",
     "@pretty-cozy/git-hooks": "^0.0.6",
