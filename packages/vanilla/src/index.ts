@@ -1,1 +1,2 @@
-export const test = () => console.log("test")
+export { createAtom } from "./createAtom"
+export type { Atom } from "./createAtom"
