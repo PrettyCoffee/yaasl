@@ -1,0 +1,31 @@
+{
+  "name": "yaal",
+  "version": "0.0.1",
+  "description": "yet another atom library",
+  "keywords": [ "atom" ],
+  "author": "PrettyCoffee",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore",
+    "lint:fix": "npm run lint -- --fix",
+    "prepare": "cozy-git-hooks install -q"
+  },
+  "devDependencies": {
+    "@pretty-cozy/eslint-config": "^0.0.6",
+    "@pretty-cozy/git-hooks": "^0.0.6",
+    "typescript": "^5.0.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@pretty-cozy/eslint-config/base-ts"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npm run lint:fix"
+    ],
+    "*.{json,md,html}": [
+      "prettier --write"
+    ]
+  }
+}
