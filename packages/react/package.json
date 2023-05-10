@@ -1,7 +1,7 @@
 {
-  "name": "@yaal/react",
+  "name": "@yaasl/react",
   "version": "0.0.1",
-  "description": "React package of yaal",
+  "description": "React package of yaasl",
   "keywords": [
     "react",
     "atom",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/react": "^18.2.6",
     "react": "^18.2.0",
-    "@yaal/vanilla": "file:../vanilla"
+    "@yaasl/vanilla": "file:../vanilla"
   },
   "eslintConfig": {
     "extends": [

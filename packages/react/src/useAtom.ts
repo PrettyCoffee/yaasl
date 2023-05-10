@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 // eslint-disable-next-line import/no-extraneous-dependencies -- is a peerDependency
-import { Atom } from "@yaal/vanilla"
+import { Atom } from "@yaasl/vanilla"
 
 export const useAtomValue = <T>(atom: Atom<T>) => {
   const [state, setState] = useState(atom.get())

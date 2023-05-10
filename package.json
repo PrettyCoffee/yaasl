@@ -1,7 +1,7 @@
 {
-  "name": "yaal",
+  "name": "yaasl",
   "version": "0.0.1",
-  "description": "yet another atom library",
+  "description": "yet another atom store library",
   "keywords": [
     "atom"
   ],
