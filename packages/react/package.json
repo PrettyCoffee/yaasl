@@ -1,0 +1,32 @@
+{
+  "name": "@yaal/react",
+  "version": "0.0.1",
+  "description": "React package of yaal",
+  "keywords": [
+    "react",
+    "atom",
+    "store"
+  ],
+  "author": "PrettyCoffee",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --config ../../jest.config.json",
+    "test:watch": "npm run test -- --watchAll"
+  },
+  "peerDependencies": {
+    "react": ">=17"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.6",
+    "react": "^18.2.0",
+    "@yaal/vanilla": "file:../vanilla"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@pretty-cozy/eslint-config/base-ts",
+      "@pretty-cozy/eslint-config/react"
+    ]
+  }
+}

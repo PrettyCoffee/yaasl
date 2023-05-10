@@ -10,11 +10,12 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "test": "npm run test --workspaces",
-    "lint": "eslint --ignore-path .gitignore",
+    "lint": "eslint . --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "cozy-git-hooks install -q"
   },
   "workspaces": [
+    "packages/react",
     "packages/vanilla"
   ],
   "devDependencies": {
