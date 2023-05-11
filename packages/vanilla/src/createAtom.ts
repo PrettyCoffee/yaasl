@@ -16,7 +16,7 @@ export type AnyAtom<
   unsubscribe: (action: Action) => void
 }
 
-export type Atom<AtomValue> = AnyAtom<AtomValue>
+export type Atom<AtomValue = unknown> = AnyAtom<AtomValue>
 
 export const createAtom = <AtomValue>(
   initialValue: AtomValue
