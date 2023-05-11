@@ -1,2 +1,2 @@
 export { createAtom } from "./createAtom"
-export type { Atom } from "./createAtom"
+export type { Atom, AnyAtom } from "./createAtom"
