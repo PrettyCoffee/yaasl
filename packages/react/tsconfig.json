@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.node.json",
   "include": ["./src"],
+  "exclude": ["./**/*.test.ts"],
   "compilerOptions": {
     "lib": ["dom", "esnext"],
     "jsx": "react",
