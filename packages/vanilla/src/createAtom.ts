@@ -16,21 +16,23 @@ export type AnyAtom<
   unsubscribe: (action: Action) => void
 }
 
-export type Atom<T> = AnyAtom<T>
+export type Atom<AtomValue> = AnyAtom<AtomValue>
 
-export const createAtom = <T>(initialValue: T): Atom<T> => {
-  let state: T = initialValue
+export const createAtom = <AtomValue>(
+  initialValue: AtomValue
+): Atom<AtomValue> => {
+  let state: AtomValue = initialValue
 
-  let subscriptions: Dispatch<T>[] = []
-  const subscribe = (action: Dispatch<T>) => subscriptions.push(action)
-  const unsubscribe = (action: Dispatch<T>) => {
+  let subscriptions: Dispatch<AtomValue>[] = []
+  const subscribe = (action: Dispatch<AtomValue>) => subscriptions.push(action)
+  const unsubscribe = (action: Dispatch<AtomValue>) => {
     subscriptions = subscriptions.filter(current => current !== action)
   }
-  const callSubscriptions = (value: T) =>
+  const callSubscriptions = (value: AtomValue) =>
     subscriptions.forEach(action => action(value))
 
   const getValue = () => state
-  const setValue = (value: T) => {
+  const setValue = (value: AtomValue) => {
     if (value === state) return
 
     state = value
