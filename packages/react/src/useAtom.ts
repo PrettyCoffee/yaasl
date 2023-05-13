@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react"
 
-import { Atom } from "@yaasl/vanilla"
+import { AnyAtom, InferAtom, AtomTypesLookup } from "@yaasl/vanilla"
 
-export const useAtomValue = <T>(atom: Atom<T>) => {
+export const useAtomValue = <
+  Atom extends AnyAtom<
+    AtomTypes["value"],
+    AtomTypes["getResult"],
+    AtomTypes["setArg"],
+    AtomTypes["extension"]
+  >,
+  AtomTypes extends AtomTypesLookup = InferAtom<Atom>
+>(
+  atom: Atom
+) => {
   const [state, setState] = useState(atom.get())
 
   useEffect(() => {
@@ -13,11 +23,31 @@ export const useAtomValue = <T>(atom: Atom<T>) => {
   return state
 }
 
-export const useSetAtom = <T>(atom: Atom<T>) => {
+export const useSetAtom = <
+  Atom extends AnyAtom<
+    AtomTypes["value"],
+    AtomTypes["getResult"],
+    AtomTypes["setArg"],
+    AtomTypes["extension"]
+  >,
+  AtomTypes extends AtomTypesLookup = InferAtom<Atom>
+>(
+  atom: Atom
+) => {
   return atom.set
 }
 
-export const useAtom = <T>(atom: Atom<T>) => {
+export const useAtom = <
+  Atom extends AnyAtom<
+    AtomTypes["value"],
+    AtomTypes["getResult"],
+    AtomTypes["setArg"],
+    AtomTypes["extension"]
+  >,
+  AtomTypes extends AtomTypesLookup = InferAtom<Atom>
+>(
+  atom: Atom
+) => {
   const state = useAtomValue(atom)
   const setState = useSetAtom(atom)
 
