@@ -20,6 +20,7 @@
     "@yaasl/vanilla": ">= 0"
   },
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.6",
     "@yaasl/vanilla": "file:../vanilla",
     "react": "^18.2.0"
