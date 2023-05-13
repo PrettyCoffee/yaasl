@@ -1,20 +1,5 @@
-import { UnknownObject } from "./utils/utilTypes"
-
-type Dispatch<Action> = (value: Action) => void
-
-export type AnyAtom<
-  InternalValue,
-  GetterResult = InternalValue,
-  SetterArg = InternalValue,
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  Extension extends UnknownObject = {},
-  Action = Dispatch<InternalValue>
-> = Extension & {
-  get: () => GetterResult
-  set: (value: SetterArg) => void
-  subscribe: (action: Action) => void
-  unsubscribe: (action: Action) => void
-}
+import { AnyAtom } from "./utils/atomTypes"
+import { Dispatch } from "./utils/utilTypes"
 
 export type Atom<AtomValue = unknown> = AnyAtom<AtomValue>
 

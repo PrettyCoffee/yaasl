@@ -1,4 +1,4 @@
-import { AnyAtom, Atom } from "./createAtom"
+import { AnyAtom, AtomTypesLookup, InferAtom } from "./utils/atomTypes"
 import {
   Fn,
   InferFnArg,
@@ -12,28 +12,6 @@ interface GenericMiddleware<Getter, Setter, Extension extends UnknownObject> {
   onSet?: Setter
   extension?: Extension
 }
-
-interface AtomTypesLookup<
-  InternalValue = unknown,
-  GetterResult = unknown,
-  SetterArg = unknown,
-  Extension = UnknownObject
-> {
-  value: InternalValue
-  getResult: GetterResult
-  setArg: SetterArg
-  /** Typescript has a hard time infering the extension keys, so we need to exclude the basic keys */
-  extension: Omit<Extension, keyof Atom>
-}
-
-type InferAtom<T> = T extends AnyAtom<
-  infer InternalValue,
-  infer GetterResult,
-  infer SetterArg,
-  infer Extension
->
-  ? AtomTypesLookup<InternalValue, GetterResult, SetterArg, Extension>
-  : never
 
 type MiddlewareAtom<
   ParentTypes extends AtomTypesLookup,

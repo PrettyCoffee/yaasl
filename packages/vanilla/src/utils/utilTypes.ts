@@ -20,3 +20,5 @@ export type InferFnResult<FunctionType, BaseType> = FunctionType extends Fn<
 >
   ? Value
   : BaseType
+
+export type Dispatch<Action> = Fn<[Action], void>
