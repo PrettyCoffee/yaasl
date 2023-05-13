@@ -23,10 +23,10 @@ export const createAtom = <AtomValue>(
 ): Atom<AtomValue> => {
   let state: AtomValue = initialValue
 
-  let subscriptions: Dispatch<AtomValue>[] = []
-  const subscribe = (action: Dispatch<AtomValue>) => subscriptions.push(action)
+  const subscriptions = new Set<Dispatch<AtomValue>>()
+  const subscribe = (action: Dispatch<AtomValue>) => subscriptions.add(action)
   const unsubscribe = (action: Dispatch<AtomValue>) => {
-    subscriptions = subscriptions.filter(current => current !== action)
+    subscriptions.delete(action)
   }
   const callSubscriptions = (value: AtomValue) =>
     subscriptions.forEach(action => action(value))
