@@ -16,16 +16,17 @@
     "test:watch": "npm run test -- --watchAll"
   },
   "peerDependencies": {
-    "react": ">=17"
+    "react": ">=17",
+    "@yaasl/vanilla": ">= 0"
   },
   "devDependencies": {
     "@types/react": "^18.2.6",
-    "react": "^18.2.0",
-    "@yaasl/vanilla": "file:../vanilla"
+    "@yaasl/vanilla": "file:../vanilla",
+    "react": "^18.2.0"
   },
   "eslintConfig": {
     "extends": [
-      "@pretty-cozy/eslint-config/base-ts",
+      "../../.eslintrc",
       "@pretty-cozy/eslint-config/react"
     ]
   }

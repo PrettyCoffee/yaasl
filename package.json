@@ -28,11 +28,6 @@
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
   },
-  "eslintConfig": {
-    "extends": [
-      "@pretty-cozy/eslint-config/base-ts"
-    ]
-  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "npm run lint:fix"
