@@ -1,5 +1,5 @@
 import { applyMiddleware } from "./applyMiddleware"
-import { createAtom } from "./createAtom"
+import { createAtom } from "../createAtom"
 
 const toString = (value: number) => `number: ${value}`
 

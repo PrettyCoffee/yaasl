@@ -25,6 +25,7 @@ export const createAtom = <AtomValue>(
   }
 
   return {
+    initialValue,
     get: getValue,
     set: setValue,
     subscribe,

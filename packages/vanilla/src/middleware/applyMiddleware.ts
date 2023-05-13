@@ -1,11 +1,11 @@
-import { AnyAtom, AtomTypesLookup, InferAtom } from "./utils/atomTypes"
+import { AnyAtom, AtomTypesLookup, InferAtom } from "../utils/atomTypes"
 import {
   Fn,
   InferFnArg,
   InferFnResult,
   Prettify,
   UnknownObject,
-} from "./utils/utilTypes"
+} from "../utils/utilTypes"
 
 interface GenericMiddleware<Getter, Setter, Extension extends UnknownObject> {
   onGet?: Getter
