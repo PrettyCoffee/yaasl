@@ -1,6 +1,6 @@
 import { applyMiddleware } from "./applyMiddleware"
 import { AnyAtom, AtomTypesLookup, InferAtom } from "../utils/atomTypes"
-import { errorMessage, logError } from "../utils/logError"
+import { consoleMessage, log } from "../utils/log"
 
 const STORAGE = window.localStorage
 
@@ -9,9 +9,11 @@ const setStorageValue = <T>(key: string, value: T) => {
     const stringValue = JSON.stringify(value)
     STORAGE.setItem(key, stringValue)
   } catch {
-    logError(
+    log.error(
       `Value of atom with local storage key "${key}" could not be set.`,
-      { value }
+      {
+        value,
+      }
     )
   }
 }
@@ -23,7 +25,7 @@ const getStorageValue = <T>(key: string) => {
     return typeof value !== "string" ? null : (JSON.parse(value) as T)
   } catch {
     throw new Error(
-      errorMessage(`Value of local storage key "${key}" could not be parsed.`)
+      consoleMessage(`Value of local storage key "${key}" could not be parsed.`)
     )
   }
 }
