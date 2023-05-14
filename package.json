@@ -2,21 +2,18 @@
   "name": "yaasl",
   "version": "0.0.1",
   "description": "yet another atom store library",
-  "keywords": [
-    "atom"
-  ],
   "author": "PrettyCoffee",
   "license": "MIT",
   "scripts": {
-    "build": "npm run build --workspaces",
-    "test": "npm run test --workspaces",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
     "lint": "eslint . --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "cozy-git-hooks install -q"
   },
   "workspaces": [
-    "packages/react",
-    "packages/vanilla"
+    "packages/*",
+    "demo/*"
   ],
   "devDependencies": {
     "@pretty-cozy/eslint-config": "^0.1.0",
