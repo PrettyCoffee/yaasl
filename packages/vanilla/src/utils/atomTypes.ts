@@ -8,6 +8,7 @@ export type AnyAtom<
   Extension extends UnknownObject = {},
   Action = Dispatch<InternalValue>
 > = Extension & {
+  toString: () => string
   initialValue: InternalValue
   get: () => GetterResult
   set: (value: SetterArg) => void

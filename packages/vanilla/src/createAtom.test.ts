@@ -9,6 +9,19 @@ describe("Test createAtom", () => {
     expect(atom.get()).toBe(value)
   })
 
+  it("Applies names automatically", () => {
+    const atom1 = createAtom(value)
+    const atom2 = createAtom(value)
+    expect(String(atom1)).toMatch(/atom-\d+/)
+    expect(String(atom2)).toMatch(/atom-\d+/)
+  })
+
+  it("Applies passed names", () => {
+    const name = "test name"
+    const atom = createAtom(value, name)
+    expect(String(atom)).toBe(name)
+  })
+
   it("Sets an atoms value", () => {
     const atom = createAtom(value)
     atom.set(nextValue)
