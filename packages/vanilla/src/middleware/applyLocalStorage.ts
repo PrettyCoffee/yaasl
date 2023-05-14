@@ -1,5 +1,5 @@
 import { applyMiddleware } from "./applyMiddleware"
-import { AnyAtom, InferAtomValue } from "../utils/atomTypes"
+import { AnyAtom, AtomTypesLookup, InferAtom } from "../utils/atomTypes"
 import { errorMessage, logError } from "../utils/logError"
 
 const STORAGE = window.localStorage
@@ -29,8 +29,13 @@ const getStorageValue = <T>(key: string) => {
 }
 
 export const applyLocalStorage = <
-  ParentAtom extends AnyAtom<InternalValue>,
-  InternalValue = InferAtomValue<ParentAtom>
+  ParentAtom extends AnyAtom<
+    AtomTypes["value"],
+    AtomTypes["getResult"],
+    AtomTypes["setArg"],
+    AtomTypes["extension"]
+  >,
+  AtomTypes extends AtomTypesLookup = InferAtom<ParentAtom>
 >(
   atom: ParentAtom,
   key: string
