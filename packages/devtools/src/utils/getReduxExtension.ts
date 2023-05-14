@@ -1,3 +1,5 @@
+import "@redux-devtools/extension"
+
 import { log } from "./log"
 
 // Original but incomplete type of the redux extension package

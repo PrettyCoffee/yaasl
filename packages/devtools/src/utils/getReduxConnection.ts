@@ -1,5 +1,5 @@
 import { ReduxExtension, getReduxExtension } from "./getReduxExtension"
-import { Message } from "../types"
+import { Message } from "./message"
 
 // Original but incomplete type of the redux extension package
 type ConnectResponse = ReturnType<NonNullable<ReduxExtension>["connect"]>
