@@ -1,7 +1,8 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.mjs.json",
   "include": ["./src"],
   "compilerOptions": {
+    "outDir": "./dist/mjs",
     "jsx": "react"
   }
 }
