@@ -28,7 +28,7 @@
     "compile:mjs": "tsc --p ./tsconfig.mjs.json",
     "compile:cjs": "tsc --p ./tsconfig.cjs.json",
     "compile:types": "tsc --p ./tsconfig.mjs.json --declaration --emitDeclarationOnly --outDir ./dist/@types",
-    "test": "jest --config ../../jest.config.json",
+    "test": "jest --testMatch **/vanilla/**/*.test.* --config ../../jest.config.json",
     "test:watch": "npm run test -- --watchAll"
   }
 }
