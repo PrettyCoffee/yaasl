@@ -16,16 +16,17 @@ interface ImportAction {
   state: undefined
   payload?: {
     type: "IMPORT_STATE"
-    preloadedState: undefined
     nextLiftedState: {
       computedStates: { state: Record<string, unknown> }[]
+
+      /* Currently not required
 
       currentStateIndex: number
       nextActionId: number
       stagedActionIds: number[]
       skippedActionIds: number[]
-
       actionsById: Record<number, ImportedAction>
+      */
     }
   }
 }

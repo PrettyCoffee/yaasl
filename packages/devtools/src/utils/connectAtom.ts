@@ -3,10 +3,10 @@ import { Atom } from "@yaasl/vanilla"
 import { Connection } from "./getReduxConnection"
 
 /* Cache of the current value of all atoms. (Record<atomName, atomValue>) */
-const store: Record<string, unknown | undefined> = {}
+let store: Record<string, unknown | undefined> = {}
 
 /* Cache of all connected atoms. (Record<atomName, atom>) */
-const observedAtoms: Record<string, Atom | undefined> = {}
+let observedAtoms: Record<string, Atom | undefined> = {}
 
 const synchronize = (state: Record<string, unknown>) =>
   Object.keys(observedAtoms).filter(key => {
@@ -25,9 +25,10 @@ const getInitialStore = () =>
   }, {})
 
 let isSubscribed = false
+let unsubscribe: (() => void) | undefined = undefined
 const subscribeAtoms = (connection: Connection) => {
   isSubscribed = true
-  connection.subscribe(action => {
+  unsubscribe = connection.subscribe(action => {
     const { payload } = action
     const nextState = !action.state
       ? null
@@ -85,4 +86,12 @@ export const connectAtom = (
   return (value: unknown) => {
     updateAtomValue(connection, atom.toString(), value)
   }
+}
+
+/* For internal testing only */
+export const disconnectAllConnections = () => {
+  store = {}
+  observedAtoms = {}
+  isSubscribed = false
+  unsubscribe?.()
 }
