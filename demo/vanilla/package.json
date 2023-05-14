@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@yaasl/devtools": "file:../../packages/devtools",
     "@yaasl/vanilla": "file:../../packages/vanilla"
   },
   "devDependencies": {

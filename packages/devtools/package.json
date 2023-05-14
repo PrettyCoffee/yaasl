@@ -1,0 +1,43 @@
+{
+  "name": "@yaasl/devtools",
+  "version": "0.0.1",
+  "description": "Devtools package for yaasl",
+  "keywords": [
+    "devtools",
+    "atom",
+    "store"
+  ],
+  "author": "PrettyCoffee",
+  "license": "MIT",
+  "exports": {
+    "import": {
+      "default": "./dist/mjs/index.js",
+      "types": "./dist/@types/index.d.ts"
+    },
+    "require": {
+      "default": "./dist/cjs/index.js",
+      "types": "./dist/@types/index.d.ts"
+    }
+  },
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/@types/index.d.ts",
+  "scripts": {
+    "build": "run-s clean compile",
+    "clean": "rimraf ./dist",
+    "compile": "run-p compile:mjs compile:cjs compile:types",
+    "compile:mjs": "tsc --p ./tsconfig.mjs.json",
+    "compile:cjs": "tsc --p ./tsconfig.cjs.json",
+    "compile:types": "tsc --p ./tsconfig.mjs.json --declaration --emitDeclarationOnly --outDir ./dist/@types",
+    "test": "jest --config ../../jest.config.json",
+    "test:watch": "npm run test -- --watchAll"
+  },
+  "peerDependencies": {
+    "@yaasl/vanilla": ">= 0"
+  },
+  "dependencies": {
+    "@redux-devtools/extension": "^3.2.5"
+  },
+  "devDependencies": {
+    "@yaasl/vanilla": "file:../vanilla"
+  }
+}
