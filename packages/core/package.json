@@ -1,9 +1,9 @@
 {
-  "name": "@yaasl/vanilla",
+  "name": "@yaasl/core",
   "version": "0.0.1",
-  "description": "Vanilla javascript package of yaasl",
+  "description": "core javascript package of yaasl",
   "keywords": [
-    "vanilla-js",
+    "core-js",
     "atom",
     "store"
   ],
@@ -28,7 +28,7 @@
     "compile:mjs": "tsc --p ./tsconfig.mjs.json",
     "compile:cjs": "tsc --p ./tsconfig.cjs.json",
     "compile:types": "tsc --p ./tsconfig.mjs.json --declaration --emitDeclarationOnly --outDir ./dist/@types",
-    "test": "jest --testMatch **/vanilla/**/*.test.* --config ../../jest.config.json",
+    "test": "jest --testMatch **/core/**/*.test.* --config ../../jest.config.json",
     "test:watch": "npm run test -- --watchAll"
   }
 }

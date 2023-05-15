@@ -12,6 +12,6 @@ I just created yaasl for fun and to try things out.
 
 | Name                                    | Description                                                                              |
 | --------------------------------------- | ---------------------------------------------------------------------------------------- |
-| [@yaasl/devtools](./packages/devtools/) | Devtools to debug `@yaasl/vanilla` atom states.                                          |
-| [@yaasl/react](./packages/react/)       | React bindings for `@yaasl/vanilla`.                                                     |
-| [@yaasl/vanilla](./packages/vanilla/)   | Core package with javascript functions to create atomic states and middleware for atoms. |
+| [@yaasl/core](./packages/core/)         | Core package with javascript functions to create atomic states and middleware for atoms. |
+| [@yaasl/devtools](./packages/devtools/) | Devtools to debug `@yaasl/core` atom states.                                             |
+| [@yaasl/react](./packages/react/)       | React bindings for `@yaasl/core`.                                                        |

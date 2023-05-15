@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import { Atom, createAtom } from "@yaasl/vanilla"
+import { Atom, createAtom } from "@yaasl/core"
 
 import { connectAtom, disconnectAllConnections } from "./connectAtom"
 import { Connection } from "./getReduxConnection"

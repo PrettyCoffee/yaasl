@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@yaasl/devtools": "file:../../packages/devtools",
-    "@yaasl/vanilla": "file:../../packages/vanilla"
+    "@yaasl/core": "file:../../packages/core"
   },
   "devDependencies": {
     "vite": "^4.3.2"

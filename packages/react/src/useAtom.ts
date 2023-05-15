@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { AnyAtom, InferAtom, AtomTypesLookup } from "@yaasl/vanilla"
+import { AnyAtom, InferAtom, AtomTypesLookup } from "@yaasl/core"
 
 export const useAtomValue = <
   Atom extends AnyAtom<

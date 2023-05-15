@@ -1,5 +1,5 @@
+import { createAtom } from "@yaasl/core"
 import { applyReduxDevtools, CONFIG } from "@yaasl/devtools"
-import { createAtom } from "@yaasl/vanilla"
 
 CONFIG.name = "my-name"
 

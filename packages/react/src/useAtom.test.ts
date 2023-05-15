@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react"
-import { applyMiddleware, createAtom } from "@yaasl/vanilla"
+import { applyMiddleware, createAtom } from "@yaasl/core"
 
 import { useAtomValue, useSetAtom, useAtom } from "./useAtom"
 

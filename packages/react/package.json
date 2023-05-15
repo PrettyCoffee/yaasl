@@ -33,12 +33,12 @@
   },
   "peerDependencies": {
     "react": ">=17",
-    "@yaasl/vanilla": ">= 0"
+    "@yaasl/core": ">= 0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.6",
-    "@yaasl/vanilla": "file:../vanilla",
+    "@yaasl/core": "file:../core",
     "react": "^18.2.0"
   },
   "eslintConfig": {

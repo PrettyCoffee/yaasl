@@ -32,12 +32,12 @@
     "test:watch": "npm run test -- --watchAll"
   },
   "peerDependencies": {
-    "@yaasl/vanilla": ">= 0"
+    "@yaasl/core": ">= 0"
   },
   "dependencies": {
     "@redux-devtools/extension": "^3.2.5"
   },
   "devDependencies": {
-    "@yaasl/vanilla": "file:../vanilla"
+    "@yaasl/core": "file:../core"
   }
 }

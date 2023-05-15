@@ -1,4 +1,4 @@
-import { Atom } from "@yaasl/vanilla"
+import { Atom } from "@yaasl/core"
 
 import { Connection } from "./getReduxConnection"
 

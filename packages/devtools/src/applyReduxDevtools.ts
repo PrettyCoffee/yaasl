@@ -3,7 +3,7 @@ import {
   InferAtom,
   AtomTypesLookup,
   applyMiddleware,
-} from "@yaasl/vanilla"
+} from "@yaasl/core"
 
 import { CONFIG } from "./config"
 import { connectAtom } from "./utils/connectAtom"
