@@ -7,9 +7,9 @@ import {
 
 import { CONFIG } from "./config"
 import { connectAtom } from "./utils/connectAtom"
-import { getReduxConnection } from "./utils/getReduxConnection"
+import { Connection, getReduxConnection } from "./utils/getReduxConnection"
 
-const connection = getReduxConnection(CONFIG.name)
+let connection: Connection | null = null
 
 export interface ApplyDevtoolsOptions {
   disable?: boolean
@@ -28,6 +28,7 @@ export const applyReduxDevtools = <
   atom: Atom,
   { disable, preventInit }: ApplyDevtoolsOptions = {}
 ) => {
+  if (connection == null) connection = getReduxConnection(CONFIG.name)
   if (disable || connection == null) return atom
 
   const updateAtomValue = connectAtom(connection, atom, preventInit)
