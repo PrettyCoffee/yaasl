@@ -1,5 +1,4 @@
-import { applyMiddleware } from "./applyMiddleware"
-import { AnyAtom, AtomTypesLookup, InferAtom } from "../utils/atomTypes"
+import { createMiddleware } from "./createMiddleware"
 import { consoleMessage, log } from "../utils/log"
 
 const STORAGE = window.localStorage
@@ -30,25 +29,28 @@ const getStorageValue = <T>(key: string) => {
   }
 }
 
-export const applyLocalStorage = <
-  ParentAtom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
-  AtomTypes extends AtomTypesLookup = InferAtom<ParentAtom>
->(
-  atom: ParentAtom,
+interface Options {
   key: string
-) => {
-  if (getStorageValue(key) === null) setStorageValue(key, atom.get())
-
-  return applyMiddleware(atom, {
-    onSet: value => {
-      STORAGE.setItem(key, JSON.stringify(value))
-    },
-    extension: {
-      remove: () => STORAGE.removeItem(key),
-      reset: () => {
-        setStorageValue(key, atom.initialValue)
-        atom.set(atom.initialValue)
-      },
-    },
-  })
 }
+
+interface Extension {
+  remove: () => void
+  reset: () => void
+}
+
+export const applyLocalStorage = createMiddleware<Options, Extension>({
+  onInit: ({ atom, options }) => {
+    if (getStorageValue(options.key) === null)
+      setStorageValue(options.key, atom.get())
+  },
+  onSet: (value, { options }) => {
+    STORAGE.setItem(options.key, JSON.stringify(value))
+  },
+  createExtension: ({ atom, options }) => ({
+    remove: () => STORAGE.removeItem(options.key),
+    reset: () => {
+      setStorageValue(options.key, atom.initialValue)
+      atom.set(atom.initialValue)
+    },
+  }),
+})

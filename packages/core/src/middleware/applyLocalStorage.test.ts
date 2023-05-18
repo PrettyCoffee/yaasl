@@ -6,7 +6,7 @@ const initialValue = { a: "A", b: "B" }
 
 const getStoreAtom = () => {
   const atom = createAtom<object>(initialValue)
-  return applyLocalStorage(atom, testKey)
+  return applyLocalStorage(atom, { key: testKey })
 }
 
 const getStoreValue = (): unknown => {
