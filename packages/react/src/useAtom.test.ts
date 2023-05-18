@@ -43,12 +43,10 @@ describe("Test useAtom", () => {
         onGet,
         atom: applyMiddleware(atom, {
           onGet: value => {
-            onGet()
-            return value
+            onGet(value)
           },
-          onSet: (value: number) => {
+          onSet: value => {
             onSet(value)
-            return String(value)
           },
         }),
       }
@@ -62,12 +60,13 @@ describe("Test useAtom", () => {
       expect(onGet).toHaveBeenCalledTimes(1)
 
       act(() => {
-        result.current[1](42)
+        result.current[1]("42")
       })
       expect(onGet).toHaveBeenCalledTimes(2)
+      expect(onGet).toHaveBeenCalledWith("42")
       expect(result.current[0]).toBe("42")
       expect(onSet).toHaveBeenCalledTimes(1)
-      expect(onSet).toHaveBeenCalledWith(42)
+      expect(onSet).toHaveBeenCalledWith("42")
     })
   })
 })
