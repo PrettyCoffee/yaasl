@@ -1,77 +1,45 @@
 import { AnyAtom, AtomTypesLookup, InferAtom } from "../utils/atomTypes"
-import {
-  Fn,
-  InferFnArg,
-  InferFnResult,
-  Prettify,
-  UnknownObject,
-} from "../utils/utilTypes"
+import { Prettify, UnknownObject } from "../utils/utilTypes"
 
-interface GenericMiddleware<Getter, Setter, Extension extends UnknownObject> {
-  onGet?: Getter
-  onSet?: Setter
+interface GenericMiddleware<InternalValue, Extension extends UnknownObject> {
+  onGet?: (value: InternalValue) => void
+  onSet?: (value: InternalValue) => void
   extension?: Extension
 }
 
 type MiddlewareAtom<
-  ParentTypes extends AtomTypesLookup,
-  GetterResult,
-  SetterArg,
+  ThisAtom extends AnyAtom<unknown, UnknownObject>,
   Extension
-> = Prettify<
-  AnyAtom<
-    ParentTypes["value"],
-    GetterResult extends never ? ParentTypes["getResult"] : GetterResult,
-    SetterArg extends never ? ParentTypes["setArg"] : SetterArg,
-    ParentTypes["extension"] & Extension
-  >
->
+> = Prettify<ThisAtom & Omit<Extension, keyof ThisAtom>>
 
 export const applyMiddleware = <
-  ParentAtom extends AnyAtom<
-    ParentTypes["value"],
-    ParentTypes["getResult"],
-    ParentTypes["setArg"],
-    ParentTypes["extension"]
-  >,
-  Getter extends Fn<[ParentTypes["getResult"]], GetterResult>,
-  Setter extends Fn<[SetterArg], ParentTypes["setArg"]>,
+  ThisAtom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
   // eslint-disable-next-line @typescript-eslint/ban-types
   Extension extends UnknownObject = {},
-  ParentTypes extends AtomTypesLookup = InferAtom<ParentAtom>,
-  GetterResult = InferFnResult<Getter, ParentTypes["getResult"]>,
-  SetterArg = InferFnArg<Setter, ParentTypes["setArg"]>
+  AtomTypes extends AtomTypesLookup = InferAtom<ThisAtom>,
+  Result = MiddlewareAtom<ThisAtom, Extension>
 >(
-  atom: ParentAtom,
-  middleware: Prettify<GenericMiddleware<Getter, Setter, Extension>>
-): MiddlewareAtom<ParentTypes, GetterResult, SetterArg, Extension> => {
-  const { get: atomGet, set: atomSet, ...delegated } = atom
+  atom: ThisAtom,
+  middleware: Prettify<GenericMiddleware<AtomTypes["value"], Extension>>
+): Result => {
   const { onGet, onSet, extension = {} } = middleware
 
-  const get = (): GetterResult => {
-    const value = atomGet()
-
-    if (!onGet)
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      return value as unknown as GetterResult
-
-    return onGet(value)
+  const get = (): AtomTypes["value"] => {
+    const value = atom.get()
+    onGet?.(value)
+    return value
   }
 
-  const set = (value: SetterArg) => {
-    if (!onSet) {
-      atomSet(value)
-      return
-    }
-
-    atomSet(onSet(value))
+  const set = (value: AtomTypes["value"]) => {
+    onSet?.(value)
+    atom.set(value)
   }
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return {
-    ...delegated,
     ...extension,
+    ...atom,
     get,
     set,
-  } as MiddlewareAtom<ParentTypes, GetterResult, SetterArg, Extension>
+  } as Result
 }

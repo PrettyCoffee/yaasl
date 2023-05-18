@@ -3,12 +3,7 @@ import { useEffect, useState } from "react"
 import { AnyAtom, InferAtom, AtomTypesLookup } from "@yaasl/core"
 
 export const useAtomValue = <
-  Atom extends AnyAtom<
-    AtomTypes["value"],
-    AtomTypes["getResult"],
-    AtomTypes["setArg"],
-    AtomTypes["extension"]
-  >,
+  Atom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
   AtomTypes extends AtomTypesLookup = InferAtom<Atom>
 >(
   atom: Atom
@@ -24,12 +19,7 @@ export const useAtomValue = <
 }
 
 export const useSetAtom = <
-  Atom extends AnyAtom<
-    AtomTypes["value"],
-    AtomTypes["getResult"],
-    AtomTypes["setArg"],
-    AtomTypes["extension"]
-  >,
+  Atom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
   AtomTypes extends AtomTypesLookup = InferAtom<Atom>
 >(
   atom: Atom
@@ -38,12 +28,7 @@ export const useSetAtom = <
 }
 
 export const useAtom = <
-  Atom extends AnyAtom<
-    AtomTypes["value"],
-    AtomTypes["getResult"],
-    AtomTypes["setArg"],
-    AtomTypes["extension"]
-  >,
+  Atom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
   AtomTypes extends AtomTypesLookup = InferAtom<Atom>
 >(
   atom: Atom

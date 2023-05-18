@@ -2,10 +2,10 @@ import { applyLocalStorage } from "./applyLocalStorage"
 import { createAtom } from "../createAtom"
 
 const testKey = "test"
-const inintialValue = { a: "A", b: "B" }
+const initialValue = { a: "A", b: "B" }
 
 const getStoreAtom = () => {
-  const atom = createAtom<object>(inintialValue)
+  const atom = createAtom<object>(initialValue)
   return applyLocalStorage(atom, testKey)
 }
 
@@ -17,8 +17,8 @@ const getStoreValue = (): unknown => {
 describe("Test applyLocalStorage", () => {
   it("Uses the initial value", () => {
     const atom = getStoreAtom()
-    expect(atom.get()).toStrictEqual(inintialValue)
-    expect(getStoreValue()).toStrictEqual(inintialValue)
+    expect(atom.get()).toStrictEqual(initialValue)
+    expect(getStoreValue()).toStrictEqual(initialValue)
   })
 
   it("Changes the value", () => {
@@ -56,7 +56,7 @@ describe("Test applyLocalStorage", () => {
     atom.set(value)
     atom.reset()
 
-    expect(atom.get()).toStrictEqual(inintialValue)
-    expect(getStoreValue()).toStrictEqual(inintialValue)
+    expect(atom.get()).toStrictEqual(initialValue)
+    expect(getStoreValue()).toStrictEqual(initialValue)
   })
 })

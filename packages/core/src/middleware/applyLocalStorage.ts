@@ -31,12 +31,7 @@ const getStorageValue = <T>(key: string) => {
 }
 
 export const applyLocalStorage = <
-  ParentAtom extends AnyAtom<
-    AtomTypes["value"],
-    AtomTypes["getResult"],
-    AtomTypes["setArg"],
-    AtomTypes["extension"]
-  >,
+  ParentAtom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
   AtomTypes extends AtomTypesLookup = InferAtom<ParentAtom>
 >(
   atom: ParentAtom,
@@ -47,7 +42,6 @@ export const applyLocalStorage = <
   return applyMiddleware(atom, {
     onSet: value => {
       STORAGE.setItem(key, JSON.stringify(value))
-      return value
     },
     extension: {
       remove: () => STORAGE.removeItem(key),

@@ -17,12 +17,7 @@ export interface ApplyDevtoolsOptions {
 }
 
 export const applyReduxDevtools = <
-  Atom extends AnyAtom<
-    AtomTypes["value"],
-    AtomTypes["getResult"],
-    AtomTypes["setArg"],
-    AtomTypes["extension"]
-  >,
+  Atom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
   AtomTypes extends AtomTypesLookup = InferAtom<Atom>
 >(
   atom: Atom,

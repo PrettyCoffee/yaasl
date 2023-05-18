@@ -1,28 +1,41 @@
 import { applyMiddleware } from "./applyMiddleware"
 import { createAtom } from "../createAtom"
 
-const toString = (value: number) => `number: ${value}`
-
 describe("Test applyMiddleware", () => {
   it("Applies a getter middleware", () => {
-    const atom = createAtom<null | string>(null)
-    const toStringAtom = applyMiddleware(atom, {
-      onGet: (value: string | null) => Number(value ?? 0),
+    const get = jest.fn()
+    const initialValue = null
+    const nextValue = "42"
+    const atom = createAtom<string | null>(initialValue)
+
+    const middleware = applyMiddleware(atom, {
+      onGet: get,
     })
 
-    expect(toStringAtom.get()).toBe(0)
-    toStringAtom.set("42")
-    expect(toStringAtom.get()).toBe(42)
+    expect(middleware.get()).toBe(initialValue)
+
+    middleware.set(nextValue)
+    expect(middleware.get()).toBe(nextValue)
+
+    expect(get).toHaveBeenCalledTimes(2)
+    expect(get).toHaveBeenNthCalledWith(1, initialValue)
+    expect(get).toHaveBeenNthCalledWith(2, nextValue)
   })
 
   it("Applies a setter middleware", () => {
-    const atom = createAtom<null | string>(null)
-    const toStringAtom = applyMiddleware(atom, {
-      onSet: toString,
+    const set = jest.fn()
+    const initialValue = null
+    const nextValue = "42"
+    const atom = createAtom<string | null>(initialValue)
+
+    const middleware = applyMiddleware(atom, {
+      onSet: set,
     })
 
-    toStringAtom.set(42)
-    expect(toStringAtom.get()).toBe(toString(42))
+    middleware.set(nextValue)
+    expect(set).toHaveBeenCalledTimes(1)
+    expect(set).toHaveBeenCalledWith(nextValue)
+    expect(middleware.get()).toBe(nextValue)
   })
 
   it("Applies an extension middleware", () => {
@@ -33,76 +46,61 @@ describe("Test applyMiddleware", () => {
     expect(testAtom.test()).toBe(42)
   })
 
-  it("Applies a all options at once", () => {
-    const atom = createAtom<null | string>(null)
-    const testAtom = applyMiddleware(atom, {
-      onGet: (value: string | null) => ({ value }),
-      onSet: toString,
-      extension: { test: () => 42, test2: () => toString(42) },
+  it("Applies all options at once", () => {
+    const get = jest.fn()
+    const set = jest.fn()
+    const initialValue = null
+    const nextValue = "42"
+    const atom = createAtom<string | null>(initialValue)
+
+    const middleware = applyMiddleware(atom, {
+      onGet: get,
+      onSet: set,
+      extension: { test: () => 42 },
     })
 
-    testAtom.set(42)
-    expect(testAtom.get().value).toBe(toString(42))
-    expect(testAtom.test()).toBe(42)
-    expect(testAtom.test2()).toBe(toString(42))
+    middleware.set(nextValue)
+    expect(middleware.get()).toBe(nextValue)
+
+    expect(set).toHaveBeenCalledTimes(1)
+    expect(set).toHaveBeenCalledWith(nextValue)
+
+    expect(get).toHaveBeenCalledTimes(1)
+    expect(get).toHaveBeenCalledWith(nextValue)
+
+    expect(middleware.test()).toBe(42)
   })
 
   it("Allows staking middlewares", () => {
-    const atom = createAtom<null | string>(null)
-    const testAtom = applyMiddleware(
-      applyMiddleware(atom, {
-        onSet: toString,
-        onGet: (value: string | null) => ({ value }),
-        extension: { test: () => 42 },
-      }),
-      {
-        onSet: (value: string) => Number(value.replace(/\D*/gi, "")),
-        onGet: ({ value }) => value,
-        extension: { test2: () => toString(42) },
-      }
-    )
+    const get = jest.fn()
+    const set = jest.fn()
+    const initialValue = null
+    const nextValue = "42"
+    const atom = createAtom<string | null>(initialValue)
 
-    testAtom.set("foo42bar")
-    expect(testAtom.get()).toBe(toString(42))
-    expect(testAtom.test()).toBe(42)
-    expect(testAtom.test2()).toBe(toString(42))
-  })
+    const first = applyMiddleware(atom, {
+      onGet: get,
+      onSet: set,
+      extension: { test: () => 42 },
+    })
+    const middleware = applyMiddleware(first, {
+      onGet: get,
+      onSet: set,
+      extension: { test2: () => 43 },
+    })
 
-  it("Allows staking middlewares and passes setter through", () => {
-    const atom = createAtom<null | string>(null)
-    const testAtom = applyMiddleware(
-      applyMiddleware(atom, {
-        onSet: toString,
-        extension: { test: () => 42 },
-      }),
-      {
-        onGet: (value: string | null) => ({ value }),
-        extension: { test2: () => toString(42) },
-      }
-    )
+    middleware.set(nextValue)
+    expect(middleware.get()).toBe(nextValue)
 
-    testAtom.set(42)
-    expect(testAtom.get().value).toBe(toString(42))
-    expect(testAtom.test()).toBe(42)
-    expect(testAtom.test2()).toBe(toString(42))
-  })
+    expect(set).toHaveBeenCalledTimes(2)
+    expect(set).toHaveBeenNthCalledWith(1, nextValue)
+    expect(set).toHaveBeenNthCalledWith(2, nextValue)
 
-  it("Allows staking middlewares and passes getter through", () => {
-    const atom = createAtom<null | string>(null)
-    const testAtom = applyMiddleware(
-      applyMiddleware(atom, {
-        onGet: (value: string | null) => ({ value }),
-        extension: { test: () => 42 },
-      }),
-      {
-        onSet: toString,
-        extension: { test2: () => toString(42) },
-      }
-    )
+    expect(get).toHaveBeenCalledTimes(2)
+    expect(get).toHaveBeenNthCalledWith(1, nextValue)
+    expect(get).toHaveBeenNthCalledWith(2, nextValue)
 
-    testAtom.set(42)
-    expect(testAtom.get().value).toBe(toString(42))
-    expect(testAtom.test()).toBe(42)
-    expect(testAtom.test2()).toBe(toString(42))
+    expect(middleware.test()).toBe(42)
+    expect(middleware.test2()).toBe(43)
   })
 })
