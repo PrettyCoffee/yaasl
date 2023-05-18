@@ -39,7 +39,11 @@ type MiddlewareAtom<AtomTypes extends AtomTypesLookup, Extension> = Prettify<
 
 export const createMiddleware =
   <Options = undefined, Extension extends object | undefined = undefined>(
-    setup: MiddlewareImplementation<Options, Extension>
+    setup:
+      | MiddlewareImplementation<Options, Extension>
+      | ((
+          config: MiddlewareConfig<Options>
+        ) => MiddlewareImplementation<Options, Extension>)
   ) =>
   <
     ThisAtom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
@@ -56,20 +60,22 @@ export const createMiddleware =
       options,
     }
 
-    setup.onInit?.(config)
+    const middleware = typeof setup === "object" ? setup : setup(config)
+
+    middleware.onInit?.(config)
 
     const get = () => {
       const value = atom.get()
-      setup.onGet?.(value, config)
+      middleware.onGet?.(value, config)
       return value
     }
 
     const set = (value: Parameters<ThisAtom["set"]>) => {
-      setup.onSet?.(value, config)
+      middleware.onSet?.(value, config)
       atom.set(value)
     }
 
-    const extension = setup.createExtension?.(config) ?? {}
+    const extension = middleware.createExtension?.(config) ?? {}
 
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return {

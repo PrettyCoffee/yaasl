@@ -6,6 +6,9 @@ const nextValue = "42"
 const getAtom = () => createAtom<string | null>(initialValue)
 
 type Extension<K extends string = "ext"> = Record<K, (value: number) => number>
+interface Options {
+  option: string
+}
 
 describe("Test createMiddleware", () => {
   it("Creates a getter middleware", () => {
@@ -83,6 +86,48 @@ describe("Test createMiddleware", () => {
       }),
     })
     const atom = withAll(getAtom())
+
+    atom.set(nextValue)
+    expect(atom.get()).toBe(nextValue)
+
+    expect(atom.ext(42)).toBe(42)
+    expect(set).toHaveBeenCalled()
+    expect(get).toHaveBeenCalled()
+    expect(ext).toHaveBeenCalled()
+  })
+
+  it("Allows a function as setup and passes config down", () => {
+    const get = jest.fn()
+    const set = jest.fn()
+    const ext = jest.fn()
+
+    const options: Options = {
+      option: "test",
+    }
+
+    const withAll = createMiddleware<Options, Extension>(({ options }) => {
+      expect(options.option).toBe("test")
+      return {
+        onGet: (value, { options }) => {
+          expect(options.option).toBe("test")
+          get(value)
+        },
+        onSet: (value, { options }) => {
+          expect(options.option).toBe("test")
+          set(value)
+        },
+        createExtension: ({ options }) => {
+          expect(options.option).toBe("test")
+          return {
+            ext: (value: number) => {
+              ext(value)
+              return value
+            },
+          }
+        },
+      }
+    })
+    const atom = withAll(getAtom(), options)
 
     atom.set(nextValue)
     expect(atom.get()).toBe(nextValue)
