@@ -1,9 +1,4 @@
-import {
-  AnyAtom,
-  InferAtom,
-  AtomTypesLookup,
-  applyMiddleware,
-} from "@yaasl/core"
+import { createMiddleware } from "@yaasl/core"
 
 import { CONFIG } from "./config"
 import { connectAtom } from "./utils/connectAtom"
@@ -16,22 +11,17 @@ export interface ApplyDevtoolsOptions {
   preventInit?: boolean
 }
 
-export const applyReduxDevtools = <
-  Atom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
-  AtomTypes extends AtomTypesLookup = InferAtom<Atom>
->(
-  atom: Atom,
-  { disable, preventInit }: ApplyDevtoolsOptions = {}
-) => {
+export const applyReduxDevtools = createMiddleware<
+  ApplyDevtoolsOptions | undefined
+>(({ atom, options = {} }) => {
+  const { disable, preventInit } = options
   if (connection == null) connection = getReduxConnection(CONFIG.name)
-  if (disable || connection == null) return atom
+  if (disable || connection == null) return {}
 
   const updateAtomValue = connectAtom(connection, atom, preventInit)
-
-  return applyMiddleware(atom, {
+  return {
     onSet: value => {
       updateAtomValue(value)
-      return value
     },
-  })
-}
+  }
+})
