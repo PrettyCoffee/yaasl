@@ -1,9 +1,10 @@
-import { createAtom } from "@yaasl/core"
+import { createAtom, applyLocalStorage } from "@yaasl/core"
 import { applyReduxDevtools, CONFIG } from "@yaasl/devtools"
 
-CONFIG.name = "my-name"
+CONFIG.name = "@yaasl/demo-vanilla"
 
-const counter = applyReduxDevtools(createAtom(0, "counter"))
+const atom = applyReduxDevtools(createAtom(0, "counter"))
+const counter = applyLocalStorage(atom, { key: CONFIG.name + "/counter" })
 
 export function setupCounter(element: HTMLButtonElement) {
   const setCounter = (value: number) => {
