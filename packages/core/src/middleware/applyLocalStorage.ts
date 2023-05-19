@@ -41,7 +41,8 @@ interface Extension {
 export const applyLocalStorage = createMiddleware<Options, Extension>({
   onInit: ({ atom, options }) => {
     if (getStorageValue(options.key) === null)
-      setStorageValue(options.key, atom.get())
+      setStorageValue(options.key, atom.initialValue)
+    atom.set(getStorageValue(options.key))
   },
   onSet: (value, { options }) => {
     STORAGE.setItem(options.key, JSON.stringify(value))

@@ -3,6 +3,10 @@ import { createAtom } from "../createAtom"
 
 const testKey = "test"
 const initialValue = { a: "A", b: "B" }
+const nextValue = {
+  c: "C",
+  d: "D",
+}
 
 const getStoreAtom = () => {
   const atom = createAtom<object>(initialValue)
@@ -21,27 +25,26 @@ describe("Test applyLocalStorage", () => {
     expect(getStoreValue()).toStrictEqual(initialValue)
   })
 
+  it("Loads an existing value", () => {
+    localStorage.setItem(testKey, JSON.stringify(nextValue))
+    const atom = getStoreAtom()
+    expect(atom.get()).toStrictEqual(nextValue)
+    expect(getStoreValue()).toStrictEqual(nextValue)
+  })
+
   it("Changes the value", () => {
     const atom = getStoreAtom()
 
-    const value = {
-      c: "C",
-      d: "D",
-    }
-    atom.set(value)
+    atom.set(nextValue)
 
-    expect(atom.get()).toStrictEqual(value)
-    expect(getStoreValue()).toStrictEqual(value)
+    expect(atom.get()).toStrictEqual(nextValue)
+    expect(getStoreValue()).toStrictEqual(nextValue)
   })
 
   it("Removes the atom from localStorage", () => {
     const atom = getStoreAtom()
 
-    const value = {
-      c: "C",
-      d: "D",
-    }
-    atom.set(value)
+    atom.set(nextValue)
     atom.remove()
     expect(getStoreValue()).toBe(null)
   })
@@ -49,11 +52,7 @@ describe("Test applyLocalStorage", () => {
   it("Resets the atom from localStorage", () => {
     const atom = getStoreAtom()
 
-    const value = {
-      c: "C",
-      d: "D",
-    }
-    atom.set(value)
+    atom.set(nextValue)
     atom.reset()
 
     expect(atom.get()).toStrictEqual(initialValue)
