@@ -1,14 +1,17 @@
-import { ReduxExtension, getReduxExtension } from "./getReduxExtension"
-import { Message } from "./message"
+import { Action } from "./Action"
+import { getReduxExtension } from "./getReduxExtension"
+import { Message } from "./Message"
 
-// Original but incomplete type of the redux extension package
-type ConnectResponse = ReturnType<NonNullable<ReduxExtension>["connect"]>
-
-export interface Connection {
+export interface ConnectionResponse {
   /** Initiate the connection and add it to the extension connections.
    *  Should only be executed once in the live time of the connection.
    */
-  init: ConnectResponse["init"]
+  init: (state: unknown) => void
+
+  /** Send a new action to the connection to display the state change in the extension.
+   *  For example when the value of the store changes.
+   */
+  send: (action: Action, state: unknown) => void
 
   /** Add a subscription to the connection.
    *  The provided listener will be executed when the user interacts with the extension
@@ -18,14 +21,9 @@ export interface Connection {
    *  @returns function to unsubscribe the applied listener
    */
   subscribe: (listener: (message: Message) => void) => (() => void) | undefined
-
-  /** Send a new action to the connection to display the state change in the extension.
-   *  For example when the value of the store changes.
-   */
-  send: ConnectResponse["send"]
 }
 
-let connection: Connection | null = null
+let connection: ConnectionResponse | null = null
 
 /** Wrapper to create a new or get the existing connection to the redux extension
  *  Connections are used to display the stores value and value changes within the extension
@@ -38,6 +36,6 @@ export const getReduxConnection = (name: string) => {
   if (!extension) return null
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  connection = extension.connect({ name }) as Connection
+  connection = extension.connect({ name })
   return connection
 }

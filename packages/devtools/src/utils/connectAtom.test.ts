@@ -2,14 +2,16 @@
 import { Atom, createAtom } from "@yaasl/core"
 
 import { connectAtom, disconnectAllConnections } from "./connectAtom"
-import { Connection } from "./getReduxConnection"
-import { ReduxExtension } from "./getReduxExtension"
-import { Message } from "./message"
+import {
+  ConnectionResponse,
+  ReduxDevtoolsExtension,
+  Message,
+} from "../redux-devtools"
 
 const mockExtension = () => {
   const initial = undefined as ((Action: Message) => void) | undefined
   const subscription = { current: initial }
-  const connection: Connection = {
+  const connection: ConnectionResponse = {
     subscribe: jest.fn(sub => {
       subscription.current = jest.fn(sub)
       return () => null
@@ -18,7 +20,7 @@ const mockExtension = () => {
     init: jest.fn(),
   }
 
-  const extension: ReduxExtension = {
+  const extension: ReduxDevtoolsExtension = {
     connect: jest.fn(() => connection),
     disconnect: () => null,
   }

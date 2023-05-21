@@ -1,6 +1,6 @@
 import { Atom } from "@yaasl/core"
 
-import { Connection } from "./getReduxConnection"
+import { ConnectionResponse } from "../redux-devtools"
 
 /* Cache of the current value of all atoms. (Record<atomName, atomValue>) */
 let store: Record<string, unknown | undefined> = {}
@@ -26,7 +26,7 @@ const getInitialStore = () =>
 
 let isSubscribed = false
 let unsubscribe: (() => void) | undefined = undefined
-const subscribeAtoms = (connection: Connection) => {
+const subscribeAtoms = (connection: ConnectionResponse) => {
   isSubscribed = true
   unsubscribe = connection.subscribe(action => {
     const { payload } = action
@@ -63,7 +63,7 @@ const subscribeAtoms = (connection: Connection) => {
 }
 
 const updateAtomValue = (
-  connection: Connection,
+  connection: ConnectionResponse,
   atomName: string,
   value: unknown
 ) => {
@@ -72,7 +72,7 @@ const updateAtomValue = (
 }
 
 export const connectAtom = (
-  connection: Connection,
+  connection: ConnectionResponse,
   atom: Atom,
   preventInit?: boolean
 ) => {
