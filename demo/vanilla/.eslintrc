@@ -1,0 +1,12 @@
+{
+  "extends": ["@pretty-cozy/eslint-config/base-ts"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      },
+      "exports": {}
+    }
+  }
+}

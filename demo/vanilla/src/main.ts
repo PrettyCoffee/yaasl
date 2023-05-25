@@ -12,7 +12,7 @@ root.innerHTML = `
     <a href="https://www.typescriptlang.org/" target="_blank">
       <img src="./typescript.svg" class="logo vanilla" alt="TypeScript logo" />
     </a>
-    <h1>Vite + TypeScript + @yaasl/core</h1>
+    <h1>Vite + TypeScript + yaasl</h1>
     <div class="card">
       <button id="counter" type="button"></button>
     </div>

@@ -1,9 +1,11 @@
 {
   "extends": "./tsconfig.json",
+  "include": ["./src"],
   "exclude": ["./**/*.test.ts"],
   "compilerOptions": {
     "declaration": false,
     "noEmit": false,
+    "outDir": "./dist/mjs",
 
     "module": "ES2020",
     "target": "ES2020"

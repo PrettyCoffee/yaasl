@@ -1,0 +1,13 @@
+# directories
+demo
+src
+
+# files
+.commitlintrc
+.eslintrc
+.gitattributes
+jest.config.json
+
+# patterns
+*.test.*
+*.tgz

@@ -1,7 +1,8 @@
-import { createAtom, applyLocalStorage } from "@yaasl/core"
-import { applyReduxDevtools, CONFIG } from "@yaasl/devtools"
+import { createAtom, CONFIG } from "yaasl/core"
+import { applyReduxDevtools } from "yaasl/devtools"
+import { applyLocalStorage } from "yaasl/middleware"
 
-CONFIG.name = "@yaasl/demo-vanilla"
+CONFIG.name = "yaasl/demo-vanilla"
 
 const atom = applyReduxDevtools(createAtom(0, "counter"))
 const counter = applyLocalStorage(atom, { key: CONFIG.name + "/counter" })
