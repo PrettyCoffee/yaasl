@@ -1,4 +1,5 @@
 import { Atom, AnyAtom, AtomTypesLookup, InferAtom } from "../core"
+import { freeze } from "../utils/freeze"
 import { Prettify, UnknownObject } from "../utils/utilTypes"
 
 interface MiddlewareConfig<Options> {
@@ -51,7 +52,7 @@ export const createMiddleware =
     ...args: Options extends undefined
       ? [ThisAtom, Options | undefined] | [ThisAtom]
       : [ThisAtom, Options]
-  ): MiddlewareAtom<AtomTypes, Extension> => {
+  ): Readonly<MiddlewareAtom<AtomTypes, Extension>> => {
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const [atom, options] = args as [ThisAtom, Options]
     const config: MiddlewareConfig<Options> = {
@@ -77,10 +78,10 @@ export const createMiddleware =
     const extension = middleware.createExtension?.(config) ?? {}
 
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    return {
+    return freeze({
       ...extension,
       ...atom,
       get,
       set,
-    } as ThisAtom & Extension
+    }) as MiddlewareAtom<AtomTypes, Extension>
   }

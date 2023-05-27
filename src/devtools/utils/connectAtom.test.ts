@@ -41,7 +41,8 @@ const atomName = "atomName"
 describe("Test connectAtom", () => {
   let atom: Atom<string>
   beforeEach(() => {
-    atom = createAtom(value, atomName)
+    const initial = createAtom(value, atomName)
+    atom = { ...initial, set: jest.fn(initial.set) }
     disconnectAllConnections()
   })
 
@@ -186,8 +187,6 @@ describe("Test connectAtom", () => {
     it("Imports a history of states", () => {
       const { connection, subscription } = mockExtension()
       connectAtom(connection, atom as Atom)
-
-      atom.set = jest.fn(atom.set)
 
       const states = [
         { state: { [atomName]: "1" } },

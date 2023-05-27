@@ -1,4 +1,5 @@
 import { AnyAtom } from "./atomTypes"
+import { freeze } from "../utils/freeze"
 import { Dispatch } from "../utils/utilTypes"
 
 let key = 0
@@ -8,7 +9,7 @@ export type Atom<AtomValue = unknown> = AnyAtom<AtomValue>
 export const createAtom = <AtomValue>(
   initialValue: AtomValue,
   name = `atom-${++key}`
-): Atom<AtomValue> => {
+): Readonly<Atom<AtomValue>> => {
   let state: AtomValue = initialValue
 
   const subscriptions = new Set<Dispatch<AtomValue>>()
@@ -27,12 +28,12 @@ export const createAtom = <AtomValue>(
     callSubscriptions(value)
   }
 
-  return {
+  return freeze({
     toString: () => name,
     initialValue,
     get: getValue,
     set: setValue,
     subscribe,
     unsubscribe,
-  }
+  })
 }
