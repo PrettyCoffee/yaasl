@@ -1,6 +1,12 @@
 import { atom } from "./atom"
+import { Middleware } from "../new-middleware"
 
 const defaultValue = "default"
+
+const testMiddleware: Middleware = {
+  options: {},
+  hook: jest.fn(),
+}
 
 beforeEach(() => jest.resetAllMocks())
 
@@ -16,5 +22,11 @@ describe("Test atom", () => {
   it("Creates an atom with custom name", () => {
     const name = "test"
     expect(atom({ defaultValue, name }).toString()).toBe(name)
+  })
+
+  it("Creates an atom with middleware", () => {
+    expect(
+      atom({ defaultValue, middleware: [testMiddleware] }).middleware
+    ).toStrictEqual([testMiddleware])
   })
 })

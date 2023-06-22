@@ -63,6 +63,11 @@ export const store = ({
 
   const callActions = (type: ActionType, atom: Atom, value?: unknown) => {
     const payload = type === "SET" ? { type, value } : { type }
+
+    atom.middleware.forEach(({ hook, options }) =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      hook({ ...payload, options, atom, store: store as unknown as Store })
+    )
     subscriptions.get(atom)?.forEach(action => action(payload))
   }
 

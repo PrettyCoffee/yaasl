@@ -1,3 +1,4 @@
+import { Middleware } from "../new-middleware"
 import { freeze } from "../utils/freeze"
 
 export interface AtomConfig<AtomValue> {
@@ -5,6 +6,8 @@ export interface AtomConfig<AtomValue> {
   defaultValue: AtomValue
   /** Name of the atom. Must be unique among all atoms. */
   name?: string
+  /** Middleware that will be applied on the atom */
+  middleware?: Middleware<any>[]
 }
 
 export interface Atom<AtomValue = unknown> {
@@ -12,6 +15,8 @@ export interface Atom<AtomValue = unknown> {
   defaultValue: AtomValue
   /** Returns the unique name of the atom */
   toString: () => string
+  /** Middleware that will be applied on the atom */
+  middleware: Middleware<any>[]
 }
 
 export type UnknownAtom = Atom
@@ -23,8 +28,10 @@ let key = 0
 export const atom = <AtomValue>({
   defaultValue,
   name = `atom-${++key}`,
+  middleware = [],
 }: AtomConfig<AtomValue>): Readonly<Atom<AtomValue>> =>
   freeze({
     defaultValue,
     toString: () => name,
+    middleware,
   })
