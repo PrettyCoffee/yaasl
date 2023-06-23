@@ -87,8 +87,8 @@ export const connectAtom = (
   observedAtoms.add(atom)
   setCachedValue(store, atom, store.get(atom))
 
-  if (!preventInit) connection.init(cache.get(store))
-  if (!subscribedStores.has(store)) {
+  if (!observedStores.has(store)) {
+    if (!preventInit) connection.init(cache.get(store))
     const unsubscribe = subscribeStore(store, connection)
     subscribedStores.set(store, unsubscribe)
     observedStores.add(store)
