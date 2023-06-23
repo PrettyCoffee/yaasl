@@ -1,5 +1,5 @@
 import { localStorage } from "./localStorage"
-import { atom, store } from "../core"
+import { CONFIG, atom, store } from "../core"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {
@@ -14,7 +14,9 @@ const setup = (key?: string) => {
     middleware: [localStorage({ key })],
   })
   const testStore = store({ name: "store" })
-  const storeKey = key ? `store/${key}` : "store/atom"
+  const storeKey = key
+    ? `${CONFIG.name}/store/${key}`
+    : `${CONFIG.name}/store/atom`
 
   testStore.init(testAtom)
 
@@ -49,7 +51,10 @@ describe("Test applyLocalStorage", () => {
   })
 
   it("Loads an existing value", () => {
-    window.localStorage.setItem("store/atom", JSON.stringify(nextValue))
+    window.localStorage.setItem(
+      `${CONFIG.name}/store/atom`,
+      JSON.stringify(nextValue)
+    )
     const { get } = setup()
     expect(get()).toStrictEqual(nextValue)
   })

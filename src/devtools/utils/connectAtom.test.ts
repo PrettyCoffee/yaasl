@@ -96,7 +96,7 @@ describe("Test connectAtom", () => {
 
     const update2 = connectAtom(testStore, connection, atom2)
 
-    expect(connection.init).toHaveBeenCalledTimes(2)
+    expect(connection.init).toHaveBeenCalledTimes(1)
     expect(connection.init).toHaveBeenCalledWith({
       [atomName1]: value,
       [atomName2]: value,
