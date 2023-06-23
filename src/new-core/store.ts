@@ -34,10 +34,10 @@ export interface Store {
   /** Subscribes to value changes of the atom */
   subscribe: <
     Atom extends UnknownAtom,
-    Action extends Dispatch<InferAtomValue<Atom>>
+    ThisAction extends Action<InferAtomValue<Atom>>
   >(
     atom: Atom,
-    action: Action
+    action: ThisAction
   ) => void
   /** Unsubscribes from value changes */
   unsubscribe: <
@@ -62,7 +62,7 @@ export const store = ({
   }
 
   const callActions = (type: ActionType, atom: Atom, value?: unknown) => {
-    const payload = type === "SET" ? { type, value } : { type }
+    const payload = type === "REMOVE" ? { type } : { type, value }
 
     atom.middleware.forEach(({ hook, options }) =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
