@@ -1,7 +1,7 @@
 import { getReduxConnection } from "./redux-devtools"
 import { connectAtom } from "./utils/connectAtom"
-import { CONFIG, Store } from "../new-core"
-import { middleware } from "../new-middleware"
+import { CONFIG, Store } from "../core"
+import { middleware } from "../middleware"
 
 const getKey = (store: Store) => `${CONFIG.name}/${store.toString()}`
 

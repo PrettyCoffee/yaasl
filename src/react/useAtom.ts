@@ -1,38 +1,36 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
-import { AnyAtom, InferAtom, AtomTypesLookup } from "../core"
+import { UnknownAtom, globalStore } from "../core"
 
-export const useAtomValue = <
-  Atom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
-  AtomTypes extends AtomTypesLookup = InferAtom<Atom>
->(
-  atom: Atom
-) => {
-  const [state, setState] = useState(atom.get())
+export const useAtomValue = <Atom extends UnknownAtom>(atom: Atom) => {
+  const [state, setState] = useState(globalStore.get(atom))
+  const unsubscribe = useRef<() => void>(() => null)
 
   useEffect(() => {
-    atom.subscribe(setState)
-    return () => atom.unsubscribe(setState)
+    unsubscribe.current()
+
+    if (!globalStore.has(atom)) globalStore.init(atom)
+
+    globalStore.subscribe(
+      atom,
+      ({ type, value }) => type === "SET" && setState(value)
+    )
+
+    unsubscribe.current = () => globalStore.unsubscribe(atom, setState)
+    return unsubscribe.current
   }, [atom])
 
   return state
 }
 
-export const useSetAtom = <
-  Atom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
-  AtomTypes extends AtomTypesLookup = InferAtom<Atom>
->(
-  atom: Atom
-) => {
-  return atom.set
+export const useSetAtom = <Atom extends UnknownAtom>(atom: Atom) => {
+  return useCallback(
+    (value: Atom["defaultValue"]) => globalStore.set(atom, value),
+    [atom]
+  )
 }
 
-export const useAtom = <
-  Atom extends AnyAtom<AtomTypes["value"], AtomTypes["extension"]>,
-  AtomTypes extends AtomTypesLookup = InferAtom<Atom>
->(
-  atom: Atom
-) => {
+export const useAtom = <Atom extends UnknownAtom>(atom: Atom) => {
   const state = useAtomValue(atom)
   const setState = useSetAtom(atom)
 

@@ -1,5 +1,5 @@
 import { atom } from "./atom"
-import { Middleware } from "../new-middleware"
+import { Middleware } from "../middleware"
 
 const defaultValue = "default"
 

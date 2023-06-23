@@ -23,19 +23,20 @@ export interface ConnectionResponse {
   subscribe: (listener: (message: Message) => void) => (() => void) | undefined
 }
 
-let connection: ConnectionResponse | null = null
+const connections: Record<string, ConnectionResponse> = {}
 
 /** Wrapper to create a new or get the existing connection to the redux extension
  *  Connections are used to display the stores value and value changes within the extension
  *  as well as reacting to extension actions like time traveling.
  **/
 export const getReduxConnection = (name: string) => {
-  if (connection) return connection
+  const existing = connections[name]
+  if (existing) return existing
 
   const extension = getReduxExtension()
   if (!extension) return null
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  connection = extension.connect({ name })
-  return connection
+  connections[name] = extension.connect({ name })
+  return connections[name]
 }

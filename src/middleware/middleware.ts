@@ -1,4 +1,4 @@
-import { Atom, Store, ActionPayload } from "../new-core"
+import { Atom, Store, ActionPayload } from "../core"
 import { freeze } from "../utils/freeze"
 
 interface MiddlewarePayload<Options> extends ActionPayload<unknown> {

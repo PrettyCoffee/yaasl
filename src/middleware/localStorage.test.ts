@@ -1,5 +1,5 @@
 import { localStorage } from "./localStorage"
-import { atom, store } from "../new-core"
+import { atom, store } from "../core"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {

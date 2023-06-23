@@ -1,2 +1,2 @@
-export { applyReduxDevtools } from "./applyReduxDevtools"
-export type { ApplyDevtoolsOptions } from "./applyReduxDevtools"
+export { reduxDevtools } from "./reduxDevtools"
+export type { ApplyDevtoolsOptions } from "./reduxDevtools"

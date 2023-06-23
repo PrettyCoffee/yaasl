@@ -1,5 +1,5 @@
 import { middleware } from "./middleware"
-import { Atom, CONFIG, Store } from "../new-core"
+import { Atom, CONFIG, Store } from "../core"
 import { consoleMessage, log } from "../utils/log"
 
 const STORAGE = window.localStorage

@@ -1,4 +1,4 @@
-import { Middleware } from "../new-middleware"
+import { Middleware } from "../middleware"
 import { freeze } from "../utils/freeze"
 
 export interface AtomConfig<AtomValue> {

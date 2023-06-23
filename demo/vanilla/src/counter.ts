@@ -1,6 +1,6 @@
-import { atom, CONFIG, globalStore } from "yaasl/new-core"
-import { reduxDevtools } from "yaasl/new-devtools"
-import { localStorage } from "yaasl/new-middleware"
+import { atom, CONFIG, globalStore } from "yaasl/core"
+import { reduxDevtools } from "yaasl/devtools"
+import { localStorage } from "yaasl/middleware"
 
 CONFIG.name = "yaasl/demo-vanilla"
 

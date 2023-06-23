@@ -1,6 +1,6 @@
 import { middleware } from "./middleware"
-import { atom } from "../new-core/atom"
-import { store } from "../new-core/store"
+import { atom } from "../core/atom"
+import { store } from "../core/store"
 
 const hook = jest.fn()
 const testMiddleware = middleware(hook)

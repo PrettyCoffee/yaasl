@@ -1,10 +1,7 @@
-export { createAtom } from "./createAtom"
-export type { Atom } from "./createAtom"
-export { createStore } from "./createStore"
-export type {
-  AnyAtom,
-  InferAtom,
-  InferAtomValue,
-  AtomTypesLookup,
-} from "./atomTypes"
+export { atom } from "./atom"
+export type { Atom, AtomConfig, InferAtomValue, UnknownAtom } from "./atom"
+
+export { store, globalStore } from "./store"
+export type { Store, ActionPayload, ActionType, StoreConfig } from "./store"
+
 export { CONFIG } from "./config"
