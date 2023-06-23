@@ -1,6 +1,9 @@
 import { getReduxConnection } from "./redux-devtools"
 import { connectAtom } from "./utils/connectAtom"
+import { CONFIG, Store } from "../new-core"
 import { middleware } from "../new-middleware"
+
+const getKey = (store: Store) => `${CONFIG.name}/${store.toString()}`
 
 export interface ApplyDevtoolsOptions {
   disable?: boolean
@@ -11,7 +14,7 @@ export const reduxDevtools = middleware<ApplyDevtoolsOptions | undefined>(
   ({ type, store, atom, options = {}, value }) => {
     if (type !== "SET") return
     const { disable, preventInit } = options
-    const connection = getReduxConnection(store.toString())
+    const connection = getReduxConnection(getKey(store))
     if (disable || connection == null) return
 
     const updateAtomValue = connectAtom(store, connection, atom, preventInit)

@@ -1,4 +1,5 @@
 import { middleware } from "./middleware"
+import { Atom, CONFIG, Store } from "../new-core"
 import { consoleMessage, log } from "../utils/log"
 
 const STORAGE = window.localStorage
@@ -32,9 +33,12 @@ interface Options {
   key?: string
 }
 
-export const localStorage = middleware<Options>(
-  ({ type, atom, store, options, value }) => {
-    const key = `${store.toString()}/${options.key ?? atom.toString()}`
+const getKey = (store: Store, atom: Atom, { key }: Options) =>
+  `${CONFIG.name}/${store.toString()}/${key ?? atom.toString()}`
+
+export const localStorage = middleware<Options | undefined>(
+  ({ type, atom, store, options = {}, value }) => {
+    const key = getKey(store, atom, options)
     const existing = getStorageValue(key)
 
     switch (type) {
