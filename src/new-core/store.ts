@@ -18,6 +18,8 @@ export interface StoreConfig {
 export interface Store {
   /** Returns the unique name of the store */
   toString: () => string
+  /** Check if the store did set the atom */
+  has: (atom: Atom) => boolean
   /** Initialize the atom in the store */
   init: (atom: Atom) => void
   /** Returns the current value of the atom in the store.
@@ -71,8 +73,10 @@ export const store = ({
     subscriptions.get(atom)?.forEach(action => action(payload))
   }
 
+  const has: Store["has"] = atom => values.has(atom)
+
   const init: Store["init"] = atom => {
-    if (values.has(atom)) return
+    if (has(atom)) return
     values.set(atom, atom.defaultValue)
     callActions("INIT", atom, atom.defaultValue)
   }
@@ -103,6 +107,7 @@ export const store = ({
 
   return freeze(
     Object.assign(store, {
+      has,
       init,
       get,
       set,
