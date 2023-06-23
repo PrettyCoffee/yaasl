@@ -1,23 +1,24 @@
-import { createAtom, CONFIG } from "yaasl/core"
-import { applyReduxDevtools } from "yaasl/devtools"
-import { applyLocalStorage } from "yaasl/middleware"
+import { atom, CONFIG, globalStore } from "yaasl/new-core"
+import { reduxDevtools } from "yaasl/new-devtools"
+import { localStorage } from "yaasl/new-middleware"
 
 CONFIG.name = "yaasl/demo-vanilla"
 
-const atom = applyReduxDevtools(createAtom(0, "counter"))
-const counter = applyLocalStorage(atom, { key: CONFIG.name + "/counter" })
-
+const counter = atom({name: "counter", defaultValue: 0, middleware: [reduxDevtools(), localStorage({})]})
+  
 export function setupCounter(element: HTMLButtonElement) {
+  globalStore.init(counter)
+
   const setCounter = (value: number) => {
-    counter.set(value)
+    globalStore.set(counter, value)
   }
 
   const updateCounterText = (value: number) =>
     (element.innerHTML = `count is ${value}`)
 
-  counter.subscribe(updateCounterText)
+  globalStore.subscribe(counter, ({ type, value }) => type === "SET" && value && updateCounterText(value))
 
-  element.addEventListener("click", () => setCounter(counter.get() + 1))
+  element.addEventListener("click", () => setCounter(globalStore.get(counter) + 1))
 
-  updateCounterText(counter.get())
+  updateCounterText(globalStore.get(counter))
 }
