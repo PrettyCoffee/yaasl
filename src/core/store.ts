@@ -11,14 +11,14 @@ export interface ActionPayload<AtomValue> {
 export type Action<AtomValue> = Dispatch<ActionPayload<AtomValue>>
 
 export interface StoreConfig {
-  /** Name of the store. Must be unique among all atores. */
+  /** Name of the store. Must be unique among all stores. Defaults to "store-{number}". */
   name?: string
 }
 
 export interface Store {
   /** Returns the unique name of the store */
   toString: () => string
-  /** Check if the store did set the atom */
+  /** Check if the store has a value for the atom */
   has: (atom: Atom) => boolean
   /** Initialize the atom in the store */
   init: (atom: Atom) => void
@@ -26,7 +26,7 @@ export interface Store {
    *  Defaults to the defaultValue.
    **/
   get: <Atom extends UnknownAtom>(atom: Atom) => InferAtomValue<Atom>
-  /** Returns the value of the atom in the store */
+  /** Sets the value of the atom in the store */
   set: <Atom extends UnknownAtom>(
     atom: Atom,
     value: InferAtomValue<Atom>
@@ -53,6 +53,12 @@ export interface Store {
 
 let storeKey = 0
 
+/** Create stores to store values of atoms.
+ *
+ * @param config.name Name of the store. Must be unique among all stores. Defaults to "store-{number}".
+ *
+ * @returns A store object
+ **/
 export const store = ({
   name = `store-${++storeKey}`,
 }: StoreConfig = {}): Readonly<Store> => {
@@ -68,7 +74,7 @@ export const store = ({
 
     atom.middleware.forEach(({ hook, options }) =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      hook({ ...payload, options, atom, store: store as unknown as Store })
+      hook({ ...payload, options, atom, store: store as Store })
     )
     subscriptions.get(atom)?.forEach(action => action(payload))
   }
@@ -118,4 +124,5 @@ export const store = ({
   )
 }
 
+/** Store to be used as default store. */
 export const globalStore = store({ name: "global" })

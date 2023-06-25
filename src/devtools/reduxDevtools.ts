@@ -3,7 +3,7 @@ import { connectAtom } from "./utils/connectAtom"
 import { CONFIG, Store } from "../core"
 import { middleware } from "../middleware"
 
-const getKey = (store: Store) => `${CONFIG.name}/${store.toString()}`
+const getKey = (store: Store) => `${CONFIG.name}${store.toString()}`
 
 export interface ApplyDevtoolsOptions {
   disable?: boolean

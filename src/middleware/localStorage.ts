@@ -33,12 +33,12 @@ interface Options {
   key?: string
 }
 
-const getKey = (store: Store, atom: Atom, { key }: Options) =>
-  `${CONFIG.name}/${store.toString()}/${key ?? atom.toString()}`
+const getKey = (store: Store, atom: Atom) =>
+  `${CONFIG.name}${store.toString()}/${atom.toString()}`
 
 export const localStorage = middleware<Options | undefined>(
   ({ type, atom, store, options = {}, value }) => {
-    const key = getKey(store, atom, options)
+    const key = options.key ?? getKey(store, atom)
     const existing = getStorageValue(key)
 
     switch (type) {

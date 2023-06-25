@@ -2,7 +2,7 @@ import { atom, CONFIG, globalStore } from "yaasl/core"
 import { reduxDevtools } from "yaasl/devtools"
 import { localStorage } from "yaasl/middleware"
 
-CONFIG.name = "yaasl/demo-vanilla"
+CONFIG.name = "demo-vanilla/"
 
 const counter = atom({name: "counter", defaultValue: 0, middleware: [reduxDevtools(), localStorage({})]})
   
