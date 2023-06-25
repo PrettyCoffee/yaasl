@@ -69,6 +69,7 @@ const myStore = store({ name: "my-store" });
 myStore.init(myAtom);
 const currentValue = myStore.get(myAtom);
 myStore.set(myAtom, newValue);
+myStore.set(myAtom, (previousValue) => previousValue + "new");
 myStore.remove(myAtom);
 
 const action = ({ type, value }) => {

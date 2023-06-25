@@ -18,6 +18,13 @@ describe("Test store", () => {
     expect(testStore.get(testAtom)).toBe(nextValue)
   })
 
+  it("sets a value with a callback", () => {
+    const testStore = store()
+    const numberAtom = atom({ defaultValue: 0 })
+    testStore.set(numberAtom, prev => prev + 1)
+    expect(testStore.get(numberAtom)).toBe(1)
+  })
+
   it("removes an atom from the store", () => {
     const testStore = store()
     testStore.set(testAtom, nextValue)

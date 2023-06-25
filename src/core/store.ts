@@ -15,6 +15,14 @@ export interface StoreConfig {
   name?: string
 }
 
+type SetterFn<Atom extends UnknownAtom> = (
+  previous: InferAtomValue<Atom>
+) => InferAtomValue<Atom>
+
+export type SetterOrValue<Atom extends UnknownAtom> =
+  | InferAtomValue<Atom>
+  | SetterFn<Atom>
+
 export interface Store {
   /** Returns the unique name of the store */
   toString: () => string
@@ -29,7 +37,7 @@ export interface Store {
   /** Sets the value of the atom in the store */
   set: <Atom extends UnknownAtom>(
     atom: Atom,
-    value: InferAtomValue<Atom>
+    value: SetterOrValue<Atom>
   ) => void
   /** Removes the atoms value and subscriptions from the store */
   remove: <Atom extends UnknownAtom>(atom: Atom) => void
@@ -90,8 +98,10 @@ export const store = ({
   const get: Store["get"] = atom =>
     !values.has(atom) ? atom.defaultValue : values.get(atom)
 
-  const set: Store["set"] = (atom, value) => {
-    if (get(atom) === value) return
+  const set: Store["set"] = (atom, setter) => {
+    const previousValue = get(atom)
+    const value = setter instanceof Function ? setter(previousValue) : setter
+    if (previousValue === value) return
 
     values.set(atom, value)
     callActions("SET", atom, value)
