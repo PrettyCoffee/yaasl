@@ -84,6 +84,13 @@ const replaceToc = (text, toc) =>
     `${TOC_START}\n${toc}${TOC_END}`
   )
 
+const formatFiles = () => {
+  execSync(
+    "prettier **.md --arrow-parens=avoid --no-semi --single-quote=false --tab-width=2 --write",
+    { stdio: "inherit" }
+  )
+}
+
 getFiles()
   .then(files =>
     files.map(file => ({
@@ -91,10 +98,7 @@ getFiles()
       content: replaceToc(file.content, createToc(file.content)),
     }))
   )
-  .then(files => {
-    Promise.all(
-      files.map(({ path, content }) => writeFile(path, content))
-    ).then(() => {
-      execSync("prettier **.md  --write", { stdio: "inherit" })
-    })
-  })
+  .then(files =>
+    Promise.all(files.map(({ path, content }) => writeFile(path, content)))
+  )
+  .then(formatFiles)
