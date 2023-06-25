@@ -7,17 +7,17 @@ const getKey = (store: Store) => `${CONFIG.name}${store.toString()}`
 
 export interface ApplyDevtoolsOptions {
   disable?: boolean
-  preventInit?: boolean
 }
 
 export const reduxDevtools = middleware<ApplyDevtoolsOptions | undefined>(
   ({ type, store, atom, options = {}, value }) => {
-    if (type !== "SET") return
-    const { disable, preventInit } = options
-    const connection = getReduxConnection(getKey(store))
-    if (disable || connection == null) return
+    const { disable } = options
+    if (disable || type !== "SET") return
 
-    const updateAtomValue = connectAtom(store, connection, atom, preventInit)
+    const connection = getReduxConnection(getKey(store))
+    if (connection == null) return
+
+    const updateAtomValue = connectAtom(store, connection, atom)
     updateAtomValue(value)
   }
 )

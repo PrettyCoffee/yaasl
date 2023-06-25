@@ -81,14 +81,13 @@ const subscribeStore = (store: Store, connection: ConnectionResponse) =>
 export const connectAtom = (
   store: Store,
   connection: ConnectionResponse,
-  atom: Atom,
-  preventInit?: boolean
+  atom: Atom
 ) => {
   observedAtoms.add(atom)
   setCachedValue(store, atom, store.get(atom))
 
   if (!observedStores.has(store)) {
-    if (!preventInit) connection.init(cache.get(store))
+    connection.init(cache.get(store))
     const unsubscribe = subscribeStore(store, connection)
     subscribedStores.set(store, unsubscribe)
     observedStores.add(store)
