@@ -14,7 +14,7 @@ Middleware to make use of the [redux devtools](https://github.com/reduxjs/redux-
 
 Parameters:
 
-- `config.disable`: Disables the middleware. Useful for production.
+- `options.disable`: Disables the middleware. Useful for production.
 
 Returns: A middleware object
 

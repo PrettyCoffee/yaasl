@@ -36,6 +36,13 @@ interface Options {
 const getKey = (store: Store, atom: Atom) =>
   `${CONFIG.name}${store.toString()}/${atom.toString()}`
 
+/** Middleware to save and load atom values to the local storage.
+ *
+ * @param options.key Use your own key for the local storage.
+ *   Will be "{config-name}{store-name}/{atom-name}" by default.
+ *
+ * @returns A middleware object
+ **/
 export const localStorage = middleware<Options | undefined>(
   ({ type, atom, store, options = {}, value }) => {
     const key = options.key ?? getKey(store, atom)

@@ -14,6 +14,11 @@ export interface Middleware<Options = unknown> {
   hook: MiddlewareHook<Options>
 }
 
+/** Create middlewares to be used in combination with a atoms.
+ *
+ * @param hook Callback that is fired when the atom changes in a store.
+ * @returns A middleware function to be used in atoms
+ **/
 export const middleware =
   <Options = undefined>(hook: MiddlewareHook<Options>) =>
   (
