@@ -1,3 +1,4 @@
+const { execSync } = require("node:child_process")
 const { readdir, readFile, writeFile } = require("node:fs/promises")
 const { resolve } = require("node:path")
 
@@ -90,4 +91,10 @@ getFiles()
       content: replaceToc(file.content, createToc(file.content)),
     }))
   )
-  .then(files => files.forEach(({ path, content }) => writeFile(path, content)))
+  .then(files => {
+    Promise.all(
+      files.map(({ path, content }) => writeFile(path, content))
+    ).then(() => {
+      execSync("prettier **.md  --write", { stdio: "inherit" })
+    })
+  })
