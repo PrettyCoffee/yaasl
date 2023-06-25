@@ -1,11 +1,13 @@
 # directories
 demo
 src
+scripts
 
 # files
 .commitlintrc
 .eslintrc
 .gitattributes
+.release-it.json
 jest.config.json
 
 # patterns
