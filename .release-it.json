@@ -1,9 +1,16 @@
 {
+  "hooks": {
+    "before:init": ["npm run lint"],
+    "after:bump": "npm run build"
+  },
   "git": {
     "commitMessage": "chore: Release v${version}"
   },
   "npm": {
-    "publish": false
+    "publish": true
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "github": {
     "release": true
