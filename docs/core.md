@@ -1,5 +1,14 @@
 # yaasl/core
 
+<!-- >> TOC >> -->
+
+- [yaasl/core](#yaasl/core)
+  - [atom](#atom) [ [API](#api), [Usage Examples](#usage-examples) ]
+  - [store](#store) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
+  - [globalStore](#globalstore)
+  - [CONFIG](#config)
+  <!-- << TOC << -->
+
 ## atom
 
 Create atoms to be used in combination with a store.

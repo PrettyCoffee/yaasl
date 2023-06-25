@@ -49,6 +49,7 @@
     "test:watch": "npm run test -- --watchAll",
     "lint": "eslint ./src --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
+    "generate-docs": "node ./scripts/generateDocs.js",
     "prepare": "cozy-git-hooks install -q"
   },
   "peerDependencies": {

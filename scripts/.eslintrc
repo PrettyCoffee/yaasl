@@ -1,0 +1,4 @@
+{
+  "root": true,
+  "extends": ["@pretty-cozy/eslint-config/base"]
+}

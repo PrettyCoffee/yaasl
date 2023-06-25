@@ -2,18 +2,26 @@
 
 [![license](https://img.shields.io/github/license/PrettyCoffee/yaasl)](./LICENSE)
 
+<!-- >> TOC >> -->
+
+- [yaasl - yet another atomic store library](#yaasl---yet-another-atomic-store-library)
+  - [Packages](#packages)
+  - [Quickstart](#quickstart)
+  - [Usage examples](#usage-examples) [ [Vanilla typescript](#vanilla-typescript), [React](#react) ]
+  <!-- << TOC << -->
+
 This project is meant for personal use only.
 I won't stop you from using it, but I would rather recommend to use a similar
 and more solid solution like [jotai](https://jotai.org/) or [recoil](https://recoiljs.org/).
 
 ## Packages
 
-| Name                                     | Description                                                                              |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------- |
-| [yaasl/core](./docs/core.md)             | Core package with javascript functions to create atomic states and middleware for atoms. |
-| [yaasl/devtools](./docs/devtools.md)     | Devtools to debug `yaasl/core` atom states.                                              |
-| [yaasl/middleware](./docs/middleware.md) | Atom middleware helper and presets.                                                      |
-| [yaasl/react](./docs/react.md)           | React bindings for `yaasl/core`.                                                         |
+| Name                                     | Description                                                        |
+| ---------------------------------------- | ------------------------------------------------------------------ |
+| [yaasl/core](./docs/core.md)             | Core package with javascript functions to create atoms and stores. |
+| [yaasl/devtools](./docs/devtools.md)     | Devtools to debug `yaasl/core` atom states.                        |
+| [yaasl/middleware](./docs/middleware.md) | Atom middleware helper and presets.                                |
+| [yaasl/react](./docs/react.md)           | React bindings for `yaasl/core`.                                   |
 
 ## Quickstart
 
