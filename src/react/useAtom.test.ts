@@ -34,6 +34,16 @@ describe("Test useAtom", () => {
     expect(result.current[0]).toBe(nextValue)
   })
 
+  it("Allows passing a function into the setter", () => {
+    const numberAtom = atom({ defaultValue: 0 })
+    const { result } = renderHook(useAtom, { initialProps: numberAtom })
+
+    act(() => {
+      result.current[1](prev => prev + 1)
+    })
+    expect(result.current[0]).toBe(1)
+  })
+
   describe("Test with middleware", () => {
     const getMiddleware = () => {
       const onInit = jest.fn()

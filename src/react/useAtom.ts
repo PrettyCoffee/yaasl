@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 
 import { useStoreProvider } from "./StoreProvider"
 import { InferAtomValue, UnknownAtom, Action } from "../core"
+import { SetterOrValue } from "../core/store"
 import { Dispatch } from "../utils/utilTypes"
 
 const useAtomSubscription = <Atom extends UnknownAtom>(
@@ -46,7 +47,7 @@ export const useAtomValue = <Atom extends UnknownAtom>(atom: Atom) => {
 export const useSetAtom = <Atom extends UnknownAtom>(atom: Atom) => {
   const store = useStoreProvider()
   return useCallback(
-    (value: InferAtomValue<Atom>) => store.set(atom, value),
+    (setter: SetterOrValue<Atom>) => store.set(atom, setter),
     [atom, store]
   )
 }

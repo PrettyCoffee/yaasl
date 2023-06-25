@@ -55,8 +55,8 @@ const myAtom = atom({ defaultValue: 0 });
 const MyComponent = () => {
   // Will use myStore instead of globalStore when wrapped by the StoreProvider
   const [value, setValue] = useAtom(myAtom);
-
   const onClick = () => setValue(value + 1);
+  // Or: setValue(previous => previous + 1)
   return <button onClick={onClick}>value is {value}</button>;
 };
 

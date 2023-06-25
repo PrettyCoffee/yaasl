@@ -132,9 +132,7 @@ globalStore.init(counter);
 
 const Counter = () => {
   const [value, setValue] = useAtom(counter);
-
-  const onClick = () => setValue((value) => value + 1);
-
+  const onClick = () => setValue((previous) => previous + 1);
   return <button onClick={onClick}>count is {value}</button>;
 };
 ```
