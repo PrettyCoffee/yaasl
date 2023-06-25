@@ -3,7 +3,7 @@ import { freeze } from "../utils/freeze"
 import { Dispatch } from "../utils/utilTypes"
 
 export type ActionType = "INIT" | "SET" | "REMOVE"
-export interface ActionPayload<AtomValue> {
+export interface ActionPayload<AtomValue = unknown> {
   type: ActionType
   value?: AtomValue
 }
@@ -44,10 +44,10 @@ export interface Store {
   /** Unsubscribes from value changes */
   unsubscribe: <
     Atom extends UnknownAtom,
-    Action extends Dispatch<InferAtomValue<Atom>>
+    ThisAction extends Action<InferAtomValue<Atom>>
   >(
     atom: Atom,
-    action: Action
+    action: ThisAction
   ) => void
 }
 

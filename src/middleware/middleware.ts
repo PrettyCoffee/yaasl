@@ -1,7 +1,7 @@
 import { Atom, Store, ActionPayload } from "../core"
 import { freeze } from "../utils/freeze"
 
-interface MiddlewarePayload<Options> extends ActionPayload<unknown> {
+interface MiddlewarePayload<Options> extends ActionPayload {
   store: Store
   atom: Atom
   options: Options
