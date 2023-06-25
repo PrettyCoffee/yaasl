@@ -4,11 +4,15 @@ import { localStorage } from "yaasl/middleware"
 
 CONFIG.name = "demo-vanilla/"
 
-const counter = atom({name: "counter", defaultValue: 0, middleware: [reduxDevtools(), localStorage({})]})
+const counter = atom({
+  name: "counter",
+  defaultValue: 0,
+  middleware: [reduxDevtools(), localStorage()]
+})
   
-export function setupCounter(element: HTMLButtonElement) {
-  globalStore.init(counter)
+globalStore.init(counter)
 
+export function setupCounter(element: HTMLButtonElement) {
   const setCounter = (value: number) => {
     globalStore.set(counter, value)
   }

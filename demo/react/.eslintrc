@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "@pretty-cozy/eslint-config/base-ts",
+    "@pretty-cozy/eslint-config/react"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
+      },
+      "exports": {}
+    }
+  }
+}
