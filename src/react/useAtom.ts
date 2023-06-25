@@ -1,32 +1,53 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
-import { UnknownAtom, globalStore } from "../core"
+import { useStoreProvider } from "./StoreProvider"
+import { InferAtomValue, UnknownAtom, Action } from "../core"
+import { Dispatch } from "../utils/utilTypes"
 
-export const useAtomValue = <Atom extends UnknownAtom>(atom: Atom) => {
-  const [state, setState] = useState(globalStore.get(atom))
+const useAtomSubscription = <Atom extends UnknownAtom>(
+  atom: Atom,
+  onChange: Dispatch<InferAtomValue<Atom>>
+) => {
+  const store = useStoreProvider()
   const unsubscribe = useRef<() => void>(() => null)
 
   useEffect(() => {
     unsubscribe.current()
 
-    if (!globalStore.has(atom)) globalStore.init(atom)
+    const action: Action<InferAtomValue<Atom>> = ({ type, value }) =>
+      type === "SET" && onChange(value)
 
-    globalStore.subscribe(
-      atom,
-      ({ type, value }) => type === "SET" && setState(value)
-    )
+    store.subscribe(atom, action)
 
-    unsubscribe.current = () => globalStore.unsubscribe(atom, setState)
+    unsubscribe.current = () => store.unsubscribe(atom, action)
     return unsubscribe.current
-  }, [atom])
+  }, [atom, onChange, store])
+}
+
+const useAtomSetup = <Atom extends UnknownAtom>(atom: Atom) => {
+  const store = useStoreProvider()
+
+  useEffect(() => {
+    if (!store.has(atom)) store.init(atom)
+  }, [atom, store])
+}
+
+export const useAtomValue = <Atom extends UnknownAtom>(atom: Atom) => {
+  const store = useStoreProvider()
+  const [state, setState] = useState(store.get(atom))
+
+  // Must subscribe before setup
+  useAtomSubscription(atom, setState)
+  useAtomSetup(atom)
 
   return state
 }
 
 export const useSetAtom = <Atom extends UnknownAtom>(atom: Atom) => {
+  const store = useStoreProvider()
   return useCallback(
-    (value: Atom["defaultValue"]) => globalStore.set(atom, value),
-    [atom]
+    (value: InferAtomValue<Atom>) => store.set(atom, value),
+    [atom, store]
   )
 }
 
