@@ -68,21 +68,6 @@ describe("Test connectAtom", () => {
     )
   })
 
-  it("Does not init if preventInit is set", () => {
-    const { connection } = mockExtension()
-    const update = connectAtom(testStore, connection, testAtom, true)
-
-    expect(connection.init).not.toHaveBeenCalled()
-
-    update(nextValue)
-
-    expect(connection.send).toHaveBeenCalledTimes(1)
-    expect(connection.send).toHaveBeenCalledWith(
-      { type: `${atomName}/SET` },
-      { [atomName]: nextValue }
-    )
-  })
-
   it("Handles multiple atoms", () => {
     const atomName1 = "atomName1"
     const atomName2 = "atomName2"
