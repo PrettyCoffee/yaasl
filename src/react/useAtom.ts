@@ -51,6 +51,14 @@ export const useSetAtom = <Atom extends UnknownAtom>(atom: Atom) => {
   )
 }
 
+/** Use an atoms value and setter within the react lifecycle.
+ *  Will use the globalStore by default or
+ *  any store provided by a StoreProvider.
+ *
+ * @param atom Atom to be used for the state
+ *
+ * @returns A state value and state setter for the atom
+ */
 export const useAtom = <Atom extends UnknownAtom>(atom: Atom) => {
   const state = useAtomValue(atom)
   const setState = useSetAtom(atom)
