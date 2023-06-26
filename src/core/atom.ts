@@ -1,4 +1,5 @@
 import { Middleware } from "../middleware"
+import { MiddlewareAtomCallback as GenericMiddleware } from "../middleware/middleware"
 import { freeze } from "../utils/freeze"
 
 export interface AtomConfig<AtomValue> {
@@ -7,7 +8,7 @@ export interface AtomConfig<AtomValue> {
   /** Name of the atom. Must be unique among all atoms. */
   name?: string
   /** Middleware that will be applied on the atom */
-  middleware?: Middleware<any>[]
+  middleware?: GenericMiddleware<any>[]
 }
 
 export interface Atom<AtomValue = unknown> {
@@ -37,9 +38,12 @@ export const atom = <AtomValue>({
   defaultValue,
   name = `atom-${++key}`,
   middleware = [],
-}: AtomConfig<AtomValue>): Readonly<Atom<AtomValue>> =>
-  freeze({
+}: AtomConfig<AtomValue>): Readonly<Atom<AtomValue>> => {
+  const atom: Atom<AtomValue> = {
     defaultValue,
     toString: () => name,
-    middleware,
-  })
+    middleware: [],
+  }
+  if (middleware) atom.middleware = middleware.map(create => create(atom))
+  return freeze(atom)
+}

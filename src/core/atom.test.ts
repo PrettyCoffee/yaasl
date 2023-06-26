@@ -5,7 +5,7 @@ const defaultValue = "default"
 
 const testMiddleware: Middleware = {
   options: {},
-  hook: jest.fn(),
+  actions: { init: jest.fn() },
 }
 
 beforeEach(() => jest.resetAllMocks())
@@ -26,7 +26,7 @@ describe("Test atom", () => {
 
   it("Creates an atom with middleware", () => {
     expect(
-      atom({ defaultValue, middleware: [testMiddleware] }).middleware
+      atom({ defaultValue, middleware: [() => testMiddleware] }).middleware
     ).toStrictEqual([testMiddleware])
   })
 })

@@ -2,8 +2,16 @@ import { middleware } from "./middleware"
 import { atom } from "../core/atom"
 import { store } from "../core/store"
 
-const hook = jest.fn()
-const testMiddleware = middleware(hook)
+const init = jest.fn()
+const set = jest.fn()
+const remove = jest.fn()
+const testMiddleware = middleware({
+  init,
+  set,
+  remove,
+})
+
+const testAtom = atom({ defaultValue: "" })
 
 const defaultValue = "default"
 const nextValue = "next"
@@ -16,30 +24,33 @@ beforeEach(() => {
 
 describe("Test middleware", () => {
   it("Creates a middleware", () => {
-    expect(testMiddleware()).toHaveProperty("hook", hook)
+    const m = testMiddleware()(testAtom)
+    expect(m).toHaveProperty("actions.init")
+    expect(m).toHaveProperty("actions.set")
+    expect(m).toHaveProperty("actions.remove")
   })
 
   it("Calls middleware hook on init", () => {
     const testAtom = atom({ defaultValue, middleware: [testMiddleware()] })
     testStore.init(testAtom)
-    expect(hook).toHaveBeenCalledTimes(1)
+    expect(init).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(hook.mock.calls[0][0].type).toBe("init")
+    expect(init.mock.calls[0][0].value).toBe(testAtom.defaultValue)
   })
 
   it("Calls middleware hook on set", () => {
     const testAtom = atom({ defaultValue, middleware: [testMiddleware()] })
     testStore.set(testAtom, nextValue)
-    expect(hook).toHaveBeenCalledTimes(1)
+    expect(set).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(hook.mock.calls[0][0].type).toBe("set")
+    expect(set.mock.calls[0][0].value).toBe(nextValue)
   })
 
   it("Calls middleware hook on set", () => {
     const testAtom = atom({ defaultValue, middleware: [testMiddleware()] })
     testStore.remove(testAtom)
-    expect(hook).toHaveBeenCalledTimes(1)
+    expect(remove).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(hook.mock.calls[0][0].type).toBe("remove")
+    expect(remove.mock.calls[0][0].value).toBeUndefined()
   })
 })

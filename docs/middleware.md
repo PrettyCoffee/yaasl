@@ -15,23 +15,27 @@ Create middlewares to be used in combination with a atoms.
 
 Parameters:
 
-- `hook`: Callback that is fired when the atom changes in a store.
+- `setup`: Middleware actions or function to create middleware actions. Middleware actions are fired in the atom lifecycle, alongside to the subscriptions.
 
 Returns: A middleware function to be used in atoms
-
-- `atom.defaultValue`: Value that will be returned if the atom is not defined in the store
-- `atom.toString`: Returns the unique name of the atom
-- `atom.middleware`: Middleware that will be applied on the atom
 
 ### Usage Examples
 
 ```ts
-const logger = middleware(({ type, store, atom, value }) => {
-  console.log(
-    `${store.toString()} emitted action ${type} for atom ${atom.toString()} and set its value to ${
-      value ?? "undefined"
-    }`
-  );
+const logger = middleware({
+  init: ({ atom, store }) =>
+    console.log(
+      `Initiated atom "${atom.toString()}" in store "${store.toString()}"`
+    ),
+  set: ({ atom, store, value }) =>
+    console.log(
+      `Value of atom "${atom.toString()}" in store "${store.toString()}" was set to:`,
+      value
+    ),
+  remove: ({ atom, store }) =>
+    console.log(
+      `Remove atom "${atom.toString()}" from store "${store.toString()}"`
+    ),
 });
 
 const myAtom = atom({
@@ -42,16 +46,24 @@ const myAtom = atom({
 interface Options {
   disable?: boolean;
 }
-const loggerWithOptions = middleware<Options>(
-  ({ type, store, atom, value, options }) => {
-    if (!options.disable)
+const loggerWithOptions = middleware<Options>(({ options, atom }) => {
+  if (options.disable) return {};
+  const atomName = atom.toString();
+
+  return {
+    init: ({ store }) =>
       console.log(
-        `${store.toString()} emitted action ${type} for atom ${atom.toString()} and set its value to ${
-          value ?? "undefined"
-        }`
-      );
-  }
-);
+        `Initiated atom "${atomName}" in store "${store.toString()}"`
+      ),
+    set: ({ store, value }) =>
+      console.log(
+        `Value of atom "${atomName}" in store "${store.toString()}" was set to:`,
+        value
+      ),
+    remove: ({ store }) =>
+      console.log(`Remove atom "${atomName}" from store "${store.toString()}"`),
+  };
+});
 
 const myAtom = atom({
   defaultValue: "my-value",

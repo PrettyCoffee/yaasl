@@ -19,6 +19,22 @@ export interface ApplyDevtoolsOptions {
  * @returns The middleware to be used on atoms.
  **/
 export const reduxDevtools = middleware<ApplyDevtoolsOptions | undefined>(
+  ({ options = {} }) => {
+    if (options.disable) return {}
+
+    return {
+      set: ({ store, atom, value }) => {
+        const connection = getReduxConnection(getKey(store))
+        if (connection == null) return
+
+        const updateAtomValue = connectAtom(store, connection, atom)
+        updateAtomValue(value)
+      },
+    }
+  }
+)
+
+/*
   ({ type, store, atom, options = {}, value }) => {
     const { disable } = options
     if (disable || type !== "set") return
@@ -30,3 +46,4 @@ export const reduxDevtools = middleware<ApplyDevtoolsOptions | undefined>(
     updateAtomValue(value)
   }
 )
+*/

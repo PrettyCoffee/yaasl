@@ -65,7 +65,10 @@ describe("Test store", () => {
 
     expect(action).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(action.mock.calls[0][0]).toStrictEqual({ type: "remove" })
+    expect(action.mock.calls[0][0]).toStrictEqual({
+      type: "remove",
+      value: undefined,
+    })
   })
 
   it("handles multiple subscriptions and atoms", () => {

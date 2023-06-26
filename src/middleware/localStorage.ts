@@ -1,5 +1,5 @@
 import { middleware } from "./middleware"
-import { Atom, CONFIG, Store } from "../core"
+import { CONFIG, Store } from "../core"
 import { consoleMessage, log } from "../utils/log"
 
 const STORAGE = window.localStorage
@@ -33,9 +33,6 @@ interface Options {
   key?: string
 }
 
-const getKey = (store: Store, atom: Atom) =>
-  `${CONFIG.name}${store.toString()}/${atom.toString()}`
-
 /** Middleware to save and load atom values to the local storage.
  *
  * @param options.key Use your own key for the local storage.
@@ -44,21 +41,25 @@ const getKey = (store: Store, atom: Atom) =>
  * @returns A middleware object
  **/
 export const localStorage = middleware<Options | undefined>(
-  ({ type, atom, store, options = {}, value }) => {
-    const key = options.key ?? getKey(store, atom)
-    const existing = getStorageValue(key)
+  ({ atom, options = {} }) => {
+    const getKey = (store: Store) =>
+      options.key ?? `${CONFIG.name}${store.toString()}/${atom.toString()}`
 
-    switch (type) {
-      case "init":
+    return {
+      init: ({ store }) => {
+        const key = getKey(store)
+        const existing = getStorageValue(key)
         if (existing === null) setStorageValue(key, atom.defaultValue)
         else store.set(atom, existing)
-        break
-      case "set":
+      },
+      set: ({ store, value }) => {
+        const key = getKey(store)
         setStorageValue(key, value)
-        break
-      case "remove":
+      },
+      remove: ({ store }) => {
+        const key = getKey(store)
         STORAGE.removeItem(key)
-        break
+      },
     }
   }
 )

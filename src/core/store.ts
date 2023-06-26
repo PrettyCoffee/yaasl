@@ -73,18 +73,17 @@ export const store = ({
   const values = new WeakMap<UnknownAtom, unknown>()
   const subscriptions = new WeakMap<UnknownAtom, Set<Action<unknown>>>()
 
-  const store = {
+  const thisStore = {
     toString: () => name,
   }
 
   const callActions = (type: ActionType, atom: Atom, value?: unknown) => {
-    const payload = type === "remove" ? { type } : { type, value }
-
-    atom.middleware.forEach(({ hook, options }) =>
+    atom.middleware.forEach(({ actions, options }) =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      hook({ ...payload, options, atom, store: store as Store })
+      actions[type]?.({ value, options, atom, store: thisStore as Store })
     )
-    subscriptions.get(atom)?.forEach(action => action(payload))
+
+    subscriptions.get(atom)?.forEach(action => action({ type, value }))
   }
 
   const has: Store["has"] = atom => values.has(atom)
@@ -122,7 +121,7 @@ export const store = ({
     subscriptions.get(atom)?.delete(action)
 
   return freeze(
-    Object.assign(store, {
+    Object.assign(thisStore, {
       has,
       init,
       get,
