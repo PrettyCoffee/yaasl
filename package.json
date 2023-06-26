@@ -9,31 +9,22 @@
     "react"
   ],
   "author": "PrettyCoffee",
+  "homepage": "https://github.com/PrettyCoffee/yaasl",
   "license": "MIT",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/@types/index.d.ts",
   "exports": {
     ".": {
-      "import": {
-        "default": "./dist/mjs/index.js",
-        "types": "./dist/@types/index.d.ts"
-      },
-      "require": {
-        "default": "./dist/cjs/index.js",
-        "types": "./dist/@types/index.d.ts"
-      }
+      "types": "./dist/@types/index.d.ts",
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
     },
     "./*": {
-      "import": {
-        "default": "./dist/mjs/*/index.js",
-        "types": "./dist/@types/*/index.d.ts"
-      },
-      "require": {
-        "default": "./dist/cjs/*/index.js",
-        "types": "./dist/@types/*/index.d.ts"
-      }
+      "types": "./dist/@types/*/index.d.ts",
+      "import": "./dist/mjs/*/index.js",
+      "require": "./dist/cjs/*/index.js"
     }
   },
-  "main": "./dist/cjs/all.js",
-  "types": "./dist/@types/all.d.ts",
   "workspaces": [
     "./",
     "./demo/*"
