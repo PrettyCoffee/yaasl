@@ -16,7 +16,7 @@ const useAtomSubscription = <Atom extends UnknownAtom>(
     unsubscribe.current()
 
     const action: Action<InferAtomValue<Atom>> = ({ type, value }) =>
-      type === "SET" && onChange(value)
+      type === "set" && onChange(value)
 
     store.subscribe(atom, action)
 

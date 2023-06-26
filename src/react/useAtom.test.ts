@@ -53,8 +53,8 @@ describe("Test useAtom", () => {
         onSet,
         onInit,
         testMiddleware: middleware(({ type, value }) => {
-          if (type === "SET") onSet(value)
-          else if (type === "INIT") onInit(value)
+          if (type === "set") onSet(value)
+          else if (type === "init") onInit(value)
         }),
       }
     }

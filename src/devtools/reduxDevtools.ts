@@ -21,7 +21,7 @@ export interface ApplyDevtoolsOptions {
 export const reduxDevtools = middleware<ApplyDevtoolsOptions | undefined>(
   ({ type, store, atom, options = {}, value }) => {
     const { disable } = options
-    if (disable || type !== "SET") return
+    if (disable || type !== "set") return
 
     const connection = getReduxConnection(getKey(store))
     if (connection == null) return

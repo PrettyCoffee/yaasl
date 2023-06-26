@@ -40,7 +40,7 @@ describe("Test store", () => {
     testStore.set(testAtom, nextValue)
 
     expect(action).toHaveBeenCalledTimes(1)
-    expect(action).toHaveBeenCalledWith({ type: "SET", value: nextValue })
+    expect(action).toHaveBeenCalledWith({ type: "set", value: nextValue })
   })
 
   it("unsubscribes from an atom", () => {
@@ -65,7 +65,7 @@ describe("Test store", () => {
 
     expect(action).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(action.mock.calls[0][0]).toStrictEqual({ type: "REMOVE" })
+    expect(action.mock.calls[0][0]).toStrictEqual({ type: "remove" })
   })
 
   it("handles multiple subscriptions and atoms", () => {

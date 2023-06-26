@@ -49,14 +49,14 @@ export const localStorage = middleware<Options | undefined>(
     const existing = getStorageValue(key)
 
     switch (type) {
-      case "INIT":
+      case "init":
         if (existing === null) setStorageValue(key, atom.defaultValue)
         else store.set(atom, existing)
         break
-      case "SET":
+      case "set":
         setStorageValue(key, value)
         break
-      case "REMOVE":
+      case "remove":
         STORAGE.removeItem(key)
         break
     }

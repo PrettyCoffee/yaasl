@@ -2,7 +2,7 @@ import { Atom, InferAtomValue, UnknownAtom } from "./atom"
 import { freeze } from "../utils/freeze"
 import { Dispatch } from "../utils/utilTypes"
 
-export type ActionType = "INIT" | "SET" | "REMOVE"
+export type ActionType = "init" | "set" | "remove"
 export interface ActionPayload<AtomValue = unknown> {
   type: ActionType
   value?: AtomValue
@@ -78,7 +78,7 @@ export const store = ({
   }
 
   const callActions = (type: ActionType, atom: Atom, value?: unknown) => {
-    const payload = type === "REMOVE" ? { type } : { type, value }
+    const payload = type === "remove" ? { type } : { type, value }
 
     atom.middleware.forEach(({ hook, options }) =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -92,7 +92,7 @@ export const store = ({
   const init: Store["init"] = atom => {
     if (has(atom)) return
     values.set(atom, atom.defaultValue)
-    callActions("INIT", atom, atom.defaultValue)
+    callActions("init", atom, atom.defaultValue)
   }
 
   const get: Store["get"] = atom =>
@@ -104,12 +104,12 @@ export const store = ({
     if (previousValue === value) return
 
     values.set(atom, value)
-    callActions("SET", atom, value)
+    callActions("set", atom, value)
   }
 
   const remove: Store["remove"] = atom => {
     values.delete(atom)
-    callActions("REMOVE", atom)
+    callActions("remove", atom)
     subscriptions.delete(atom)
   }
 

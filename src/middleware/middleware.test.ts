@@ -24,7 +24,7 @@ describe("Test middleware", () => {
     testStore.init(testAtom)
     expect(hook).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(hook.mock.calls[0][0].type).toBe("INIT")
+    expect(hook.mock.calls[0][0].type).toBe("init")
   })
 
   it("Calls middleware hook on set", () => {
@@ -32,7 +32,7 @@ describe("Test middleware", () => {
     testStore.set(testAtom, nextValue)
     expect(hook).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(hook.mock.calls[0][0].type).toBe("SET")
+    expect(hook.mock.calls[0][0].type).toBe("set")
   })
 
   it("Calls middleware hook on set", () => {
@@ -40,6 +40,6 @@ describe("Test middleware", () => {
     testStore.remove(testAtom)
     expect(hook).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(hook.mock.calls[0][0].type).toBe("REMOVE")
+    expect(hook.mock.calls[0][0].type).toBe("remove")
   })
 })
