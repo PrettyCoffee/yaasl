@@ -1,13 +1,13 @@
 import { PropsWithChildren, createContext, useContext } from "react"
 
-import { Store, globalStore } from "../core"
+import { Store, globalStore, store as createStore } from "../core"
 
 const Context = createContext(globalStore)
 Context.displayName = "YaaslStoreContext"
 
 export interface StoreProviderProps {
   /** Store to be provided to yaasl atom hooks */
-  store: Store
+  store?: Store
 }
 
 /**
@@ -15,7 +15,7 @@ export interface StoreProviderProps {
  **/
 export const StoreProvider = ({
   children,
-  store,
+  store = createStore(),
 }: PropsWithChildren<StoreProviderProps>) => (
   <Context.Provider value={store}>{children}</Context.Provider>
 )
