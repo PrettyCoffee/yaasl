@@ -1,5 +1,6 @@
 import { getReduxConnection } from "./redux-devtools"
 import { connectAtom } from "./utils/connectAtom"
+import { updates } from "./utils/updates"
 import { CONFIG, Store } from "../core"
 import { middleware } from "../middleware"
 
@@ -24,6 +25,8 @@ export const reduxDevtools = middleware<ApplyDevtoolsOptions | undefined>(
 
     return {
       set: ({ store, atom, value }) => {
+        if (updates.isPaused(store)) return
+
         const connection = getReduxConnection(getKey(store))
         if (connection == null) return
 
@@ -33,17 +36,3 @@ export const reduxDevtools = middleware<ApplyDevtoolsOptions | undefined>(
     }
   }
 )
-
-/*
-  ({ type, store, atom, options = {}, value }) => {
-    const { disable } = options
-    if (disable || type !== "set") return
-
-    const connection = getReduxConnection(getKey(store))
-    if (connection == null) return
-
-    const updateAtomValue = connectAtom(store, connection, atom)
-    updateAtomValue(value)
-  }
-)
-*/

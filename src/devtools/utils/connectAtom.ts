@@ -1,3 +1,4 @@
+import { updates } from "./updates"
 import { Atom, Store } from "../../core"
 import { ConnectionResponse } from "../redux-devtools"
 
@@ -22,8 +23,9 @@ const getCachedValue = (store: Store, atom: Atom) => {
   return existing[atom.toString()]
 }
 
-const synchronize = (store: Store, state: Record<string, unknown>) =>
-  Array.from(observedAtoms).filter(atom => {
+const synchronize = (store: Store, state: Record<string, unknown>) => {
+  updates.pause(store)
+  const changedKeys = Array.from(observedAtoms).filter(atom => {
     const atomName = atom.toString()
     if (!(atomName in state)) return false
     const newValue = state[atomName]
@@ -34,6 +36,9 @@ const synchronize = (store: Store, state: Record<string, unknown>) =>
     store.set(atom, newValue)
     return true
   })
+  updates.resume(store)
+  return changedKeys
+}
 
 const getDefaultState = () =>
   Array.from(observedAtoms).reduce<Record<string, unknown>>((result, atom) => {
