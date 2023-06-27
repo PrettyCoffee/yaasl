@@ -57,7 +57,7 @@ Returns: A store object
 - `store.get`: Returns the current value of the atom in the store. Defaults to the defaultValue.
 - `store.set`: Sets the value of the atom in the store
 - `store.remove`: Removes the atoms value and subscriptions from the store
-- `store.subscribe`: Subscribes to value changes of the atom
+- `store.subscribe`: Subscribes to value changes of the atom and returns a function to unsubscribe from the action
 - `store.unsubscribe`: Unsubscribes from value changes
 
 ### Usage Examples
@@ -77,7 +77,9 @@ const action = ({ type, value }) => {
     console.log(value);
   }
 };
-myStore.subscribe(myAtom, action);
+const unsubscribe = myStore.subscribe(myAtom, action);
+unsubscribe();
+
 myStore.unsubscribe(myAtom, action);
 ```
 

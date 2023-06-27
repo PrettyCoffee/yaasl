@@ -18,9 +18,8 @@ const useAtomSubscription = <Atom extends UnknownAtom>(
     const action: Action<InferAtomValue<Atom>> = ({ type, value }) =>
       type === "set" && onChange(value)
 
-    store.subscribe(atom, action)
+    unsubscribe.current = store.subscribe(atom, action)
 
-    unsubscribe.current = () => store.unsubscribe(atom, action)
     return unsubscribe.current
   }, [atom, onChange, store])
 }

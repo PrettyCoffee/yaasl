@@ -43,6 +43,17 @@ describe("Test store", () => {
     expect(action).toHaveBeenCalledWith({ type: "set", value: nextValue })
   })
 
+  it("subscribe returns unsubscribe function", () => {
+    const action = jest.fn()
+    const testStore = store()
+
+    const unsub = testStore.subscribe(testAtom, action)
+    unsub()
+    testStore.set(testAtom, nextValue)
+
+    expect(action).not.toHaveBeenCalledTimes(1)
+  })
+
   it("unsubscribes from an atom", () => {
     const action = jest.fn()
     const testStore = store()

@@ -41,14 +41,14 @@ export interface Store {
   ) => void
   /** Removes the atoms value and subscriptions from the store */
   remove: <Atom extends UnknownAtom>(atom: Atom) => void
-  /** Subscribes to value changes of the atom */
+  /** Subscribes to value changes of the atom and returns a function to unsubscribe from the action */
   subscribe: <
     Atom extends UnknownAtom,
     ThisAction extends Action<InferAtomValue<Atom>>
   >(
     atom: Atom,
     action: ThisAction
-  ) => void
+  ) => () => void
   /** Unsubscribes from value changes */
   unsubscribe: <
     Atom extends UnknownAtom,
@@ -112,13 +112,16 @@ export const store = ({
     subscriptions.delete(atom)
   }
 
-  const subscribe: Store["subscribe"] = (atom, action) =>
+  const unsubscribe: Store["unsubscribe"] = (atom, action) =>
+    subscriptions.get(atom)?.delete(action)
+
+  const subscribe: Store["subscribe"] = (atom, action) => {
     subscriptions.has(atom)
       ? subscriptions.get(atom)?.add(action)
       : subscriptions.set(atom, new Set([action]))
 
-  const unsubscribe: Store["unsubscribe"] = (atom, action) =>
-    subscriptions.get(atom)?.delete(action)
+    return () => unsubscribe(atom, action)
+  }
 
   return freeze(
     Object.assign(thisStore, {
