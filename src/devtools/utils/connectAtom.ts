@@ -1,27 +1,12 @@
+import { cache } from "./cache"
 import { updates } from "./updates"
 import { Atom, Store } from "../../core"
 import { ConnectionResponse } from "../redux-devtools"
 
 /* Cache of the current value of all atoms. (Record<storeName, Record<atomName, atomValue>>) */
-let cache = new WeakMap<Store, Record<string, unknown | undefined>>()
 let observedAtoms = new Set<Atom>()
 let observedStores = new Set<Store>()
 let subscribedStores = new WeakMap<Store, (() => void) | undefined>()
-
-const setCachedValue = (store: Store, atom: Atom, value: unknown) => {
-  const existing = cache.get(store)
-  if (!existing) {
-    cache.set(store, { [atom.toString()]: value })
-  } else {
-    existing[atom.toString()] = value
-  }
-}
-
-const getCachedValue = (store: Store, atom: Atom) => {
-  const existing = cache.get(store)
-  if (!existing) return undefined
-  return existing[atom.toString()]
-}
 
 const synchronize = (store: Store, state: Record<string, unknown>) => {
   updates.pause(store)
@@ -29,10 +14,10 @@ const synchronize = (store: Store, state: Record<string, unknown>) => {
     const atomName = atom.toString()
     if (!(atomName in state)) return false
     const newValue = state[atomName]
-    const cachedValue = getCachedValue(store, atom)
+    const cachedValue = cache.getAtomValue(store, atom)
     if (newValue === cachedValue) return false
 
-    setCachedValue(store, atom, newValue)
+    cache.setAtomValue(store, atom, newValue)
     store.set(atom, newValue)
     return true
   })
@@ -66,7 +51,7 @@ const subscribeStore = (store: Store, connection: ConnectionResponse) =>
         break
 
       case "COMMIT":
-        connection.init(cache.get(store))
+        connection.init(cache.getStore(store))
         break
 
       case "IMPORT_STATE":
@@ -75,7 +60,7 @@ const subscribeStore = (store: Store, connection: ConnectionResponse) =>
           changedKeys.forEach(atom =>
             connection.send(
               { type: `${atom.toString()}/SET` },
-              cache.get(store)
+              cache.getStore(store)
             )
           )
         })
@@ -89,24 +74,24 @@ export const connectAtom = (
   atom: Atom
 ) => {
   observedAtoms.add(atom)
-  setCachedValue(store, atom, store.get(atom))
+  cache.setAtomValue(store, atom, store.get(atom))
 
   if (!observedStores.has(store)) {
-    connection.init(cache.get(store))
+    connection.init(cache.getStore(store))
     const unsubscribe = subscribeStore(store, connection)
     subscribedStores.set(store, unsubscribe)
     observedStores.add(store)
   }
 
   return (value: unknown) => {
-    setCachedValue(store, atom, value)
-    connection.send({ type: `${atom.toString()}/SET` }, cache.get(store))
+    cache.setAtomValue(store, atom, value)
+    connection.send({ type: `${atom.toString()}/SET` }, cache.getStore(store))
   }
 }
 
 /* For internal testing only */
 export const disconnectAllConnections = () => {
-  cache = new WeakMap()
+  cache.reset()
   observedAtoms = new Set()
 
   observedStores.forEach(store => subscribedStores.get(store)?.())
