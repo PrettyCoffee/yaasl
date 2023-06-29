@@ -1,4 +1,5 @@
 import { getReduxConnection } from "./redux-devtools"
+import { cache } from "./utils/cache"
 import { connectAtom } from "./utils/connectAtom"
 import { updates } from "./utils/updates"
 import { CONFIG, Store } from "../core"
@@ -24,14 +25,23 @@ export const reduxDevtools = middleware<ApplyDevtoolsOptions | undefined>(
     if (options.disable) return {}
 
     return {
+      init: ({ store, atom }) => {
+        const connection = getReduxConnection(getKey(store))
+        if (connection == null) return
+
+        connectAtom(connection, store, atom)
+      },
       set: ({ store, atom, value }) => {
         if (updates.isPaused(store)) return
 
         const connection = getReduxConnection(getKey(store))
         if (connection == null) return
 
-        const updateAtomValue = connectAtom(store, connection, atom)
-        updateAtomValue(value)
+        cache.setAtomValue(store, atom, value)
+        connection.send(
+          { type: `SET/${atom.toString()}` },
+          cache.getStore(store)
+        )
       },
     }
   }

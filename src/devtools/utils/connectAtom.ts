@@ -3,26 +3,24 @@ import { updates } from "./updates"
 import { Atom, Store } from "../../core"
 import { ConnectionResponse } from "../redux-devtools"
 
-/* Cache of the current value of all atoms. (Record<storeName, Record<atomName, atomValue>>) */
+let subscribedStores = new WeakMap<Store, (() => void) | undefined>()
 let observedAtoms = new Set<Atom>()
 let observedStores = new Set<Store>()
-let subscribedStores = new WeakMap<Store, (() => void) | undefined>()
 
 const synchronize = (store: Store, state: Record<string, unknown>) => {
   updates.pause(store)
-  const changedKeys = Array.from(observedAtoms).filter(atom => {
+  Array.from(observedAtoms).forEach(atom => {
     const atomName = atom.toString()
-    if (!(atomName in state)) return false
+    if (!(atomName in state)) return
+
     const newValue = state[atomName]
     const cachedValue = cache.getAtomValue(store, atom)
-    if (newValue === cachedValue) return false
+    if (newValue === cachedValue) return
 
     cache.setAtomValue(store, atom, newValue)
     store.set(atom, newValue)
-    return true
   })
   updates.resume(store)
-  return changedKeys
 }
 
 const getDefaultState = () =>
@@ -40,6 +38,10 @@ const subscribeStore = (store: Store, connection: ConnectionResponse) =>
         (JSON.parse(action.state) as Record<string, unknown>)
 
     switch (payload?.type) {
+      case "COMMIT":
+        connection.init(cache.getStore(store))
+        break
+
       case "JUMP_TO_ACTION":
       case "ROLLBACK":
         if (!nextState) return
@@ -48,44 +50,37 @@ const subscribeStore = (store: Store, connection: ConnectionResponse) =>
 
       case "RESET":
         synchronize(store, getDefaultState())
-        break
-
-      case "COMMIT":
-        connection.init(cache.getStore(store))
+        connection.send({ type: `RESET_ATOMS` }, cache.getStore(store))
         break
 
       case "IMPORT_STATE":
         payload.nextLiftedState.computedStates.forEach(({ state }) => {
-          const changedKeys = synchronize(store, state)
-          changedKeys.forEach(atom =>
-            connection.send(
-              { type: `${atom.toString()}/SET` },
-              cache.getStore(store)
-            )
-          )
+          synchronize(store, state)
+          connection.send({ type: `IMPORT_STORE` }, cache.getStore(store))
         })
         break
     }
   })
 
 export const connectAtom = (
-  store: Store,
   connection: ConnectionResponse,
+  store: Store,
   atom: Atom
 ) => {
-  observedAtoms.add(atom)
-  cache.setAtomValue(store, atom, store.get(atom))
+  const storeIsSubscribed = cache.hasStore(store)
+  const atomIsObserved = observedAtoms.has(atom)
 
-  if (!observedStores.has(store)) {
+  cache.setAtomValue(store, atom, atom.defaultValue)
+
+  if (!atomIsObserved) {
+    observedAtoms.add(atom)
+  }
+
+  if (!storeIsSubscribed) {
     connection.init(cache.getStore(store))
     const unsubscribe = subscribeStore(store, connection)
     subscribedStores.set(store, unsubscribe)
     observedStores.add(store)
-  }
-
-  return (value: unknown) => {
-    cache.setAtomValue(store, atom, value)
-    connection.send({ type: `${atom.toString()}/SET` }, cache.getStore(store))
   }
 }
 
