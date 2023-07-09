@@ -55,6 +55,7 @@ describe("Test connectAtom", () => {
   beforeEach(() => {
     const initial = store()
     testStore = { ...initial, set: jest.fn(initial.set) }
+    testStore.init(testAtom)
     disconnectAllConnections()
   })
 
@@ -84,6 +85,8 @@ describe("Test connectAtom", () => {
     const atomName2 = "atomName2"
     const atom1 = atom({ defaultValue: value, name: atomName1 })
     const atom2 = atom({ defaultValue: value, name: atomName2 })
+    testStore.init(atom1)
+    testStore.init(atom2)
 
     const { connection } = mockExtension()
 

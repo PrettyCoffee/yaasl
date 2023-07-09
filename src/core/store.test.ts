@@ -1,5 +1,6 @@
 import { atom } from "./atom"
 import { store } from "./store"
+import { mockConsole } from "../utils/mockConsole"
 
 const defaultValue = "default"
 const nextValue = "next"
@@ -7,13 +8,27 @@ const nextValue = "next"
 describe("Test store", () => {
   const testAtom = atom({ defaultValue })
 
-  it("returns default value if not set", () => {
+  const { error, resetConsole } = mockConsole()
+  afterAll(resetConsole)
+
+  it("logs error if atom is not initialized", () => {
     const testStore = store()
+    expect(testStore.get(testAtom)).toBe(undefined)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    expect(error.mock.calls[0][0]).toMatch(
+      /Initialize the atom .* in store .* before using it. \(yaasl\)/gi
+    )
+  })
+
+  it("returns default value if initialized", () => {
+    const testStore = store()
+    testStore.init(testAtom)
     expect(testStore.get(testAtom)).toBe(defaultValue)
   })
 
   it("sets a value", () => {
     const testStore = store()
+    testStore.init(testAtom)
     testStore.set(testAtom, nextValue)
     expect(testStore.get(testAtom)).toBe(nextValue)
   })
@@ -21,20 +36,23 @@ describe("Test store", () => {
   it("sets a value with a callback", () => {
     const testStore = store()
     const numberAtom = atom({ defaultValue: 0 })
+    testStore.init(numberAtom)
     testStore.set(numberAtom, prev => prev + 1)
     expect(testStore.get(numberAtom)).toBe(1)
   })
 
   it("removes an atom from the store", () => {
     const testStore = store()
+    testStore.init(testAtom)
     testStore.set(testAtom, nextValue)
     testStore.remove(testAtom)
-    expect(testStore.get(testAtom)).toBe(defaultValue)
+    expect(testStore.get(testAtom)).toBeUndefined()
   })
 
   it("subscribes to an atom", () => {
     const action = jest.fn()
     const testStore = store()
+    testStore.init(testAtom)
 
     testStore.subscribe(testAtom, action)
     testStore.set(testAtom, nextValue)
@@ -46,6 +64,7 @@ describe("Test store", () => {
   it("subscribe returns unsubscribe function", () => {
     const action = jest.fn()
     const testStore = store()
+    testStore.init(testAtom)
 
     const unsub = testStore.subscribe(testAtom, action)
     unsub()
@@ -57,6 +76,7 @@ describe("Test store", () => {
   it("unsubscribes from an atom", () => {
     const action = jest.fn()
     const testStore = store()
+    testStore.init(testAtom)
 
     testStore.set(testAtom, nextValue)
     testStore.subscribe(testAtom, action)
@@ -69,9 +89,12 @@ describe("Test store", () => {
   it("removes subscription if atom is removed", () => {
     const action = jest.fn()
     const testStore = store()
+    testStore.init(testAtom)
 
     testStore.subscribe(testAtom, action)
     testStore.remove(testAtom)
+
+    testStore.init(testAtom)
     testStore.set(testAtom, nextValue)
 
     expect(action).toHaveBeenCalledTimes(1)
@@ -88,6 +111,8 @@ describe("Test store", () => {
     const action1 = jest.fn()
     const action2 = jest.fn()
     const testStore = store()
+    testStore.init(atom1)
+    testStore.init(atom2)
 
     testStore.subscribe(atom1, action1)
     testStore.subscribe(atom2, action2)

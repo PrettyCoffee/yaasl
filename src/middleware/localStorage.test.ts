@@ -1,5 +1,6 @@
 import { localStorage } from "./localStorage"
 import { atom, store } from "../core"
+import { mockConsole } from "../utils/mockConsole"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {
@@ -36,6 +37,9 @@ const setup = (key?: string) => {
 }
 
 describe("Test applyLocalStorage", () => {
+  const { resetConsole, error } = mockConsole()
+  afterAll(resetConsole)
+
   it("Uses the initial value", () => {
     const { get, getStoreValue } = setup()
     expect(get()).toStrictEqual(defaultValue)
@@ -69,6 +73,7 @@ describe("Test applyLocalStorage", () => {
     set(nextValue)
     remove()
     expect(getStoreValue()).toBe(null)
-    expect(get()).toStrictEqual(defaultValue)
+    expect(get()).toStrictEqual(undefined)
+    expect(error).toHaveBeenCalledTimes(1) // get was called without init
   })
 })

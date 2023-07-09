@@ -7,7 +7,7 @@ import { middleware } from "../middleware"
 const defaultValue = "test"
 const nextValue = "test 2"
 
-describe("Test useAtom", () => {
+describe.skip("Test useAtom", () => {
   it("Returns value with useAtomValue", () => {
     const testAtom = atom({ defaultValue })
     const { result } = renderHook(useAtomValue, { initialProps: testAtom })

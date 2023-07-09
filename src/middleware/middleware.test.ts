@@ -40,6 +40,7 @@ describe("Test middleware", () => {
 
   it("Calls middleware hook on set", () => {
     const testAtom = atom({ defaultValue, middleware: [testMiddleware()] })
+    testStore.init(testAtom)
     testStore.set(testAtom, nextValue)
     expect(set).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -48,6 +49,7 @@ describe("Test middleware", () => {
 
   it("Calls middleware hook on set", () => {
     const testAtom = atom({ defaultValue, middleware: [testMiddleware()] })
+    testStore.init(testAtom)
     testStore.remove(testAtom)
     expect(remove).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

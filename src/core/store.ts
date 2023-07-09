@@ -1,5 +1,6 @@
 import { Atom, InferAtomValue, UnknownAtom } from "./atom"
 import { freeze } from "../utils/freeze"
+import { log } from "../utils/log"
 import { Dispatch } from "../utils/utilTypes"
 
 export type ActionType = "init" | "set" | "remove"
@@ -77,6 +78,13 @@ export const store = ({
     toString: () => name,
   }
 
+  const notInitializedError = (atom: Atom) => {
+    if (values.has(atom)) return
+    log.error(
+      `Initialize the atom "${atom.toString()}" in store "${name}" before using it.`
+    )
+  }
+
   const callActions = (type: ActionType, atom: Atom, value?: unknown) => {
     atom.middleware.forEach(({ actions, options }) =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -94,10 +102,12 @@ export const store = ({
     callActions("init", atom, atom.defaultValue)
   }
 
-  const get: Store["get"] = atom =>
-    !values.has(atom) ? atom.defaultValue : values.get(atom)
-
+  const get: Store["get"] = atom => {
+    notInitializedError(atom)
+    return values.get(atom)
+  }
   const set: Store["set"] = (atom, setter) => {
+    notInitializedError(atom)
     const previousValue = get(atom)
     const value = setter instanceof Function ? setter(previousValue) : setter
     if (previousValue === value) return
