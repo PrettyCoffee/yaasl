@@ -53,7 +53,7 @@ Returns: A store object
 
 - `store.toString`: Returns the unique name of the store
 - `store.has`: Check if the store has a value for the atom
-- `store.init`: Initialize the atom in the store
+- `store.init`: Initialize one or more atoms in the store
 - `store.get`: Returns the current value of the atom in the store. Defaults to the defaultValue.
 - `store.set`: Sets the value of the atom in the store
 - `store.remove`: Removes the atoms value and subscriptions from the store
@@ -67,6 +67,7 @@ const myStore = store();
 const myStore = store({ name: "my-store" });
 
 myStore.init(myAtom);
+myStore.init([atom1, atom2]);
 const currentValue = myStore.get(myAtom);
 myStore.set(myAtom, newValue);
 myStore.set(myAtom, (previousValue) => previousValue + "new");

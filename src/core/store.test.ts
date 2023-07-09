@@ -111,8 +111,7 @@ describe("Test store", () => {
     const action1 = jest.fn()
     const action2 = jest.fn()
     const testStore = store()
-    testStore.init(atom1)
-    testStore.init(atom2)
+    testStore.init([atom1, atom2])
 
     testStore.subscribe(atom1, action1)
     testStore.subscribe(atom2, action2)

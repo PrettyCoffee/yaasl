@@ -30,7 +30,7 @@ export interface Store {
   /** Check if the store has a value for the atom */
   has: (atom: Atom) => boolean
   /** Initialize the atom in the store */
-  init: (atom: Atom) => void
+  init: (atom: Atom | Atom[]) => void
   /** Returns the current value of the atom in the store.
    *  Defaults to the defaultValue.
    **/
@@ -97,6 +97,11 @@ export const store = ({
   const has: Store["has"] = atom => values.has(atom)
 
   const init: Store["init"] = atom => {
+    if (Array.isArray(atom)) {
+      atom.forEach(init)
+      return
+    }
+
     if (has(atom)) return
     values.set(atom, atom.defaultValue)
     callActions("init", atom, atom.defaultValue)
