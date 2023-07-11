@@ -34,8 +34,7 @@ const subscribeStore = (store: Store, connection: ConnectionResponse) =>
     const { payload } = action
     const nextState = !action.state
       ? null
-      : // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        (JSON.parse(action.state) as Record<string, unknown>)
+      : (JSON.parse(action.state) as Record<string, unknown>)
 
     switch (payload?.type) {
       case "COMMIT":

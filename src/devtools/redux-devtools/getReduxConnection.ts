@@ -36,7 +36,6 @@ export const getReduxConnection = (name: string) => {
   const extension = getReduxExtension()
   if (!extension) return null
 
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   connections[name] = extension.connect({ name })
   return connections[name]
 }

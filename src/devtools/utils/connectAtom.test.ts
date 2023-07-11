@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import { cache } from "./cache"
 import { connectAtom, disconnectAllConnections } from "./connectAtom"
 import { Store, store, atom, Atom } from "../../core"

@@ -20,7 +20,6 @@ const setStorageValue = <T>(key: string, value: T) => {
 const getStorageValue = <T>(key: string) => {
   const value = STORAGE.getItem(key)
   try {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return typeof value !== "string" ? null : (JSON.parse(value) as T)
   } catch {
     throw new Error(
