@@ -82,6 +82,7 @@ Middleware to save and load atom values to the local storage.
 Parameters:
 
 - `options.key`: Use your own key for the local storage. Will be "{config-name}/{atom-name}" by default.
+- `options.noTabSync`: Disable the synchronization of values over browser tabs.
 
 Returns: The middleware to be used on atoms.
 
