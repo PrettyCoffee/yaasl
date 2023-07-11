@@ -16,7 +16,7 @@ Parameters:
 
 - `options.disable`: Disables the middleware. Useful for production.
 
-Returns: A middleware object
+Returns: The middleware to be used on atoms.
 
 ### Usage Examples
 

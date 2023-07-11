@@ -17,11 +17,12 @@ Parameters:
 
 - `setup`: Middleware actions or function to create middleware actions. Middleware actions are fired in the atom lifecycle, alongside to the subscriptions.
 
-Returns: A middleware function to be used in atoms
+Returns: A middleware function to be used in atoms.
 
 ### Usage Examples
 
 ```ts
+// Create a middleware
 const logger = middleware({
   init: ({ atom, store }) =>
     console.log(
@@ -43,6 +44,7 @@ const myAtom = atom({
   middleware: [logger()],
 });
 
+// Create a middleware that has options
 interface Options {
   disable?: boolean;
 }
@@ -79,10 +81,9 @@ Middleware to save and load atom values to the local storage.
 
 Parameters:
 
-- `options.key`: Use your own key for the local storage.
-  Will be "{config-name}{store-name}/{atom-name}" by default.
+- `options.key`: Use your own key for the local storage. Will be "{config-name}/{atom-name}" by default.
 
-Returns: A middleware object
+Returns: The middleware to be used on atoms.
 
 ### Usage Examples
 

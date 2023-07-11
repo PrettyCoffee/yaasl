@@ -25,5 +25,11 @@ export class Derive<DerivedValue> extends Stateful<DerivedValue> {
   }
 }
 
+/** Creates a value, derived from one or more atoms or other derived values.
+ *
+ *  @param get Function to derive the new value.
+ *
+ *  @returns A derived instance.
+ **/
 export const derive = <DerivedValue>(get: Derivation<DerivedValue>) =>
   new Derive(get)

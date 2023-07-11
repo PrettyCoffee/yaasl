@@ -37,7 +37,7 @@ export interface Middleware<Options = unknown> {
  * @param setup Middleware actions or function to create middleware actions.
  *   Middleware actions are fired in the atom lifecycle, alongside to the subscriptions.
  *
- * @returns A middleware function to be used in atoms
+ * @returns A middleware function to be used in atoms.
  **/
 export const middleware =
   <Options = undefined>(setup: MiddlewareSetup<Options>) =>

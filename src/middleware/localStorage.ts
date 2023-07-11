@@ -35,9 +35,9 @@ interface Options {
 /** Middleware to save and load atom values to the local storage.
  *
  * @param options.key Use your own key for the local storage.
- *   Will be "{config-name}{atom-name}" by default.
+ *   Will be "{config-name}/{atom-name}" by default.
  *
- * @returns A middleware object
+ * @returns The middleware to be used on atoms.
  **/
 export const localStorage = middleware<Options | undefined>(
   ({ atom, options = {} }) => {

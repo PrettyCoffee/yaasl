@@ -4,13 +4,12 @@
 
 - [yaasl/react](#yaasl/react)
   - [useAtom](#useatom) [ [API](#api), [Usage Examples](#usage-examples) ]
-  - [StoreProvider](#storeprovider) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
+  - [useDerivedValue](#usederivedvalue) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   <!-- << TOC << -->
 
 ## useAtom
 
-Use an atoms value and setter within the react lifecycle.
-Will use the globalStore by default or any store provided by a StoreProvider.
+Use an atom's value and setter in the react lifecycle.
 
 **Note:** Use `useAtomValue` or `useSetAtom` to use value or setter separately.
 
@@ -18,12 +17,12 @@ Will use the globalStore by default or any store provided by a StoreProvider.
 
 Parameters:
 
-- `atom`: Atom to be used for the state
+- `atom`: Atom to be used.
 
-Returns: A state value and state setter for the atom
+Returns: A state value and state setter for the atom.
 
-- `[0]`: Stateful value of the atom
-- `[1]`: Setter function for the atom
+- `[0]`: Stateful value of the atom.
+- `[1]`: Setter function for the atom.
 
 ### Usage Examples
 
@@ -31,38 +30,41 @@ Returns: A state value and state setter for the atom
 const myAtom = atom({ defaultValue: 0 });
 const MyComponent = () => {
   const [value, setValue] = useAtom(myAtom);
-  const onClick = () => setValue(value + 1);
+
+  const onClick = () => setValue((previous) => previous + 1);
+
   return <button onClick={onClick}>value is {value}</button>;
 };
 ```
 
-## StoreProvider
+## useDerivedValue
 
-Provide a store to atom hooks. (e.g. useAtom)
+Use a derived value in the react lifecycle.
 
 ### API
 
-Props:
+Parameters:
 
-- `store`: Store to be provided to yaasl atom hooks
+- `derived`: Derived instance to be used.
+
+Returns: A stateful value.
 
 ### Usage Examples
 
 ```tsx
-const myStore = store();
-const myAtom = atom({ defaultValue: 0 });
+const myAtom = atom({ defaultValue: 2 });
+const double = derive(({ get }) => get(myAtom) * 2);
 
 const MyComponent = () => {
-  // Will use myStore instead of globalStore when wrapped by the StoreProvider
   const [value, setValue] = useAtom(myAtom);
-  const onClick = () => setValue(value + 1);
-  // Or: setValue(previous => previous + 1)
-  return <button onClick={onClick}>value is {value}</button>;
-};
+  const doubleValue = useDerivedValue(double);
 
-const MyApp = () => (
-  <StoreProvider store={myStore}>
-    <MyComponent />
-  </StoreProvider>
-);
+  const onClick = () => setValue(value + 1);
+
+  return (
+    <button onClick={onClick}>
+      {value} * 2 = {doubleValue}
+    </button>
+  );
+};
 ```

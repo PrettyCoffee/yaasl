@@ -16,12 +16,12 @@ and more solid solution like [jotai](https://jotai.org/) or [recoil](https://rec
 
 ## Packages
 
-| Name                                     | Description                                                        |
-| ---------------------------------------- | ------------------------------------------------------------------ |
-| [yaasl/core](./docs/core.md)             | Core package with javascript functions to create atoms and stores. |
-| [yaasl/devtools](./docs/devtools.md)     | Devtools to debug `yaasl/core` atom states.                        |
-| [yaasl/middleware](./docs/middleware.md) | Atom middleware helper and presets.                                |
-| [yaasl/react](./docs/react.md)           | React bindings for `yaasl/core`.                                   |
+| Name                                     | Description                                                                |
+| ---------------------------------------- | -------------------------------------------------------------------------- |
+| [yaasl/core](./docs/core.md)             | Core package with javascript functions to create atoms and derived states. |
+| [yaasl/devtools](./docs/devtools.md)     | Devtools to debug `yaasl/core` atom states.                                |
+| [yaasl/middleware](./docs/middleware.md) | Atom middleware helper and presets.                                        |
+| [yaasl/react](./docs/react.md)           | React bindings for `yaasl/core`.                                           |
 
 ## Quickstart
 
@@ -39,35 +39,17 @@ import { atom } from "yaasl/core";
 const myAtom = atom({ defaultValue: 0 });
 ```
 
-3. Initiate the atom in a store
-
-```ts
-import { globalStore } from "yaasl/core";
-
-// Use the global one
-globalStore.init(myAtom);
-```
-
 4. Use the atom
 
 ```ts
 // Read
-const currentValue = globalStore.get(atom);
+const currentValue = myAtom.snapshot(atom);
 // Write
-globalStore.set(atom, nextValue);
+myAtom.set(nextValue);
 // Subscribe to changes
-globalStore.subscribe(atom, ({ type, value }) => {
-  if (type === "SET") {
-    console(type, value);
-  }
+myAtom.subscribe((value) => {
+  console.log(value);
 });
-```
-
-5. Delete the atom if you don't need it anymore
-
-```ts
-// Use the global one
-globalStore.remove(myAtom);
 ```
 
 ## Usage examples
@@ -75,40 +57,34 @@ globalStore.remove(myAtom);
 ### Vanilla typescript
 
 ```ts
-import { atom, globalStore } from "yaasl/core";
+import { atom, CONFIG } from "yaasl/core";
 import { localStorage } from "yaasl/middleware";
 
-/* Create a counter atom that is connected to the local storage */
+// Provide an app name to yaasl
+CONFIG.name = "demo-vanilla";
+
+// Create a counter atom that is connected to the local storage
 const counter = atom({
+  name: "counter", // local storage key will be "demo-vanilla/counter"
   defaultValue: 0,
   middleware: [localStorage()],
 });
 
-/* Initiate the atom in a store */
-globalStore.init(counter);
-
-const setupCounter = (element: HTMLButtonElement) => {
-  const setCounter = (value: number) => {
-    /* Set the value of the atom in the store */
-    globalStore.set(counter, value);
-  };
-
+function setupCounter(element: HTMLButtonElement) {
   const updateCounterText = (value: number) =>
     (element.innerHTML = `count is ${value}`);
 
-  /* Subscribe to value changes */
-  globalStore.subscribe(
-    counter,
-    ({ type, value }) => type === "SET" && value && updateCounterText(value)
-  );
+  element.addEventListener("click", () => {
+    // Set the value of the atom
+    counter.set((previous) => previous + 1);
+  });
 
-  element.addEventListener("click", () =>
-    setCounter(globalStore.get(counter) + 1)
-  );
+  // Subscribe to value changes
+  counter.subscribe((value) => updateCounterText(value));
 
   // Read the value of the atom in the store
-  updateCounterText(globalStore.get(counter));
-};
+  updateCounterText(counter.snapshot());
+}
 
 const counter = document.getElementById("counter");
 setupCounter(counter);
@@ -117,22 +93,26 @@ setupCounter(counter);
 ### React
 
 ```tsx
-import { atom, globalStore } from "yaasl/core";
+import { atom, CONFIG } from "yaasl/core";
 import { localStorage } from "yaasl/middleware";
 import { useAtom } from "yaasl/react";
 
-/* Create a counter atom that is connected to the local storage */
+// Provide an app name to yaasl
+CONFIG.name = "demo-react";
+
+// Create a counter atom that is connected to the local storage
 const counter = atom({
+  name: "counter", // local storage key will be "demo-vanilla/counter"
   defaultValue: 0,
   middleware: [localStorage()],
 });
 
-/* Initiate the atom in a store */
-globalStore.init(counter);
-
-const Counter = () => {
+export const Counter = () => {
+  // Use the atom like you would use a state
   const [value, setValue] = useAtom(counter);
+
   const onClick = () => setValue((previous) => previous + 1);
+
   return <button onClick={onClick}>count is {value}</button>;
 };
 ```

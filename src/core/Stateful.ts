@@ -3,10 +3,20 @@ export class Stateful<Value = unknown> {
 
   constructor(protected value: Value) {}
 
+  /** Create a snapshot of the state.
+   *
+   * @returns The current value.
+   **/
   snapshot() {
     return this.value
   }
 
+  /** Subscribe to value changes.
+   *
+   *  @param callback Function to use the new value.
+   *
+   *  @returns A callback to unsubscribe the passed callback.
+   */
   subscribe(callback: (value: Value) => void) {
     this.listeners.add(callback)
     return () => this.listeners.delete(callback)

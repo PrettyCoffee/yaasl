@@ -5,9 +5,12 @@ type SetStateAction<ValueType> =
   | ((previous: ValueType) => ValueType)
   | ValueType
 
-interface AtomOptions<AtomValue> {
+interface AtomConfig<AtomValue> {
+  /** Value that will be returned if the atom is not defined in the store */
   defaultValue: AtomValue
+  /** Name of the atom. Must be unique among all atoms. */
   name?: string
+  /** Middleware that will be applied on the atom */
   middleware?: MiddlewareAtomCallback<any>[]
 }
 
@@ -22,13 +25,18 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
     defaultValue,
     name = `atom-${++key}`,
     middleware,
-  }: AtomOptions<AtomValue>) {
+  }: AtomConfig<AtomValue>) {
     super(defaultValue)
     this.name = name
     this.defaultValue = defaultValue
     this.initMiddleware(middleware)
   }
 
+  /** Set the value of the atom.
+   *
+   * @param next New value or function to create the
+   * new value based off the previous value.
+   */
   public set(next: SetStateAction<AtomValue>) {
     const value = next instanceof Function ? next(this.snapshot()) : next
     super.update(value)
@@ -47,5 +55,13 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
   }
 }
 
-export const atom = <AtomValue>(options: AtomOptions<AtomValue>) =>
-  new Atom(options)
+/** Creates an atom store.
+ *
+ * @param config.defaultValue Value that will be used initially.
+ * @param config.name Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}".
+ * @param config.middleware Middleware that will be applied on the atom.
+ *
+ * @returns An atom instance.
+ **/
+export const atom = <AtomValue>(config: AtomConfig<AtomValue>) =>
+  new Atom(config)
