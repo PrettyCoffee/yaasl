@@ -20,13 +20,13 @@ describe("Test atom", () => {
   })
 
   it("Returns the defaultValue initially", () => {
-    expect(atom({ defaultValue }).snapshot()).toBe(defaultValue)
+    expect(atom({ defaultValue }).get()).toBe(defaultValue)
   })
 
   it("Sets the value", () => {
     const testAtom = atom({ defaultValue })
     testAtom.set(nextValue)
-    expect(testAtom.snapshot()).toBe(nextValue)
+    expect(testAtom.get()).toBe(nextValue)
   })
 
   it("Subscribes to changes", () => {

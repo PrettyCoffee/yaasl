@@ -22,7 +22,7 @@ Parameters:
 
 Returns: An atom instance.
 
-- `result.snapshot`: Create a snapshot of the state.
+- `result.get`: Read the value of state.
 - `result.subscribe`: Subscribe to value changes.
 - `result.set`: Set the value of the atom.
 
@@ -41,7 +41,7 @@ const myAtom = atom({
 // Use an atom
 myAtom.set("next-value");
 myAtom.set((previous) => prvious + "next");
-const currentValue = myAtom.snapshot();
+const currentValue = myAtom.get();
 myAtom.subscribe((value) => console.log(value));
 ```
 
@@ -57,7 +57,7 @@ Parameters:
 
 Returns: A derived instance.
 
-- `result.snapshot`: Create a snapshot of the state.
+- `result.get`: Read the value of state.
 - `result.subscribe`: Subscribe to value changes.
 
 ### Usage Examples
@@ -69,7 +69,7 @@ const multiplier = derive(({ get }) => get(myAtom) * 2);
 const nested = derive(({ get }) => get(multiplier) + get(myAtom));
 
 // Use a derivation
-const currentValue = multiplier.snapshot();
+const currentValue = multiplier.get();
 multiplier.subscribe((value) => console.log(value));
 ```
 

@@ -16,7 +16,7 @@ describe("Test atom", () => {
       const val2 = get(atom2)
       return val1 + val2
     })
-    expect(testDerive.snapshot()).toBe(defaultValue + defaultValue)
+    expect(testDerive.get()).toBe(defaultValue + defaultValue)
   })
 
   it("Derives an inner value", () => {
@@ -27,7 +27,7 @@ describe("Test atom", () => {
     }
     const testAtom = atom({ defaultValue })
     const testDerive = derive(({ get }) => get(testAtom).current.value)
-    expect(testDerive.snapshot()).toBe(defaultValue.current.value)
+    expect(testDerive.get()).toBe(defaultValue.current.value)
   })
 
   it("Updates on change", () => {
@@ -41,9 +41,9 @@ describe("Test atom", () => {
     })
 
     atom1.set(nextValue)
-    expect(testDerive.snapshot()).toBe(nextValue + defaultValue)
+    expect(testDerive.get()).toBe(nextValue + defaultValue)
 
     atom2.set(nextValue)
-    expect(testDerive.snapshot()).toBe(nextValue + nextValue)
+    expect(testDerive.get()).toBe(nextValue + nextValue)
   })
 })

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { Stateful } from "../core"
 
 export const useStatefulValue = <ValueType>(atom: Stateful<ValueType>) => {
-  const [state, setState] = useState(atom.snapshot())
+  const [state, setState] = useState(atom.get())
   const unsubscribe = useRef<() => void>(() => null)
 
   useEffect(() => {

@@ -49,7 +49,7 @@ export const middleware =
     const { init, ...actions } =
       setup instanceof Function ? setup({ options, atom }) : setup
 
-    init?.({ options, atom, value: atom.snapshot() })
+    init?.({ options, atom, value: atom.get() })
 
     return {
       options,

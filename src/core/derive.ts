@@ -17,7 +17,7 @@ export class Derive<DerivedValue> extends Stateful<DerivedValue> {
       this.dependencies.add(dependency)
     }
 
-    return dependency.snapshot()
+    return dependency.get()
   }
 
   private deriveUpdate() {

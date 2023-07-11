@@ -19,7 +19,7 @@ describe("Test useAtom", () => {
     act(() => {
       result.current(nextValue)
     })
-    expect(testAtom.snapshot()).toBe(nextValue)
+    expect(testAtom.get()).toBe(nextValue)
   })
 
   it("Returns pair of value and setter with useAtom", () => {
@@ -31,7 +31,7 @@ describe("Test useAtom", () => {
       result.current[1](nextValue)
     })
     expect(result.current[0]).toBe(nextValue)
-    expect(testAtom.snapshot()).toBe(nextValue)
+    expect(testAtom.get()).toBe(nextValue)
   })
 
   /*
@@ -43,7 +43,7 @@ describe("Test useAtom", () => {
       result.current[1](prev => prev + 1)
     })
     expect(result.current[0]).toBe(1)
-    expect(numberAtom.snapshot()).toBe(1)
+    expect(numberAtom.get()).toBe(1)
   })
   */
 

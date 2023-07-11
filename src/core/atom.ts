@@ -38,7 +38,7 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
    * new value based off the previous value.
    */
   public set(next: SetStateAction<AtomValue>) {
-    const value = next instanceof Function ? next(this.snapshot()) : next
+    const value = next instanceof Function ? next(this.get()) : next
     super.update(value)
   }
 

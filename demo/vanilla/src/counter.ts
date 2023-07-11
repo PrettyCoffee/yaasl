@@ -18,5 +18,5 @@ export function setupCounter(element: HTMLButtonElement) {
     
   counter.subscribe((value) => updateCounterText(value))
 
-  updateCounterText(counter.snapshot())
+  updateCounterText(counter.get())
 }

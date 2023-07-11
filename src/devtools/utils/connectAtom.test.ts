@@ -127,7 +127,7 @@ describe("Test connectAtom", () => {
         payload: { type: "JUMP_TO_ACTION" },
       })
 
-      expect(testAtom.snapshot()).toBe(nextValue)
+      expect(testAtom.get()).toBe(nextValue)
     })
 
     it("Rolls back to a state", () => {
@@ -140,7 +140,7 @@ describe("Test connectAtom", () => {
         payload: { type: "ROLLBACK" },
       })
 
-      expect(testAtom.snapshot()).toBe(nextValue)
+      expect(testAtom.get()).toBe(nextValue)
     })
 
     it("Resets to initial values", () => {
@@ -155,7 +155,7 @@ describe("Test connectAtom", () => {
         payload: { type: "RESET", timestamp: 0 },
       })
 
-      expect(testAtom.snapshot()).toBe(value)
+      expect(testAtom.get()).toBe(value)
     })
 
     it("Commits the current state", () => {
@@ -171,7 +171,7 @@ describe("Test connectAtom", () => {
         payload: { type: "COMMIT", timestamp: 0 },
       })
 
-      expect(testAtom.snapshot()).toBe(value)
+      expect(testAtom.get()).toBe(value)
       expect(connection.init).toHaveBeenCalledTimes(1)
       expect(connection.init).toHaveBeenCalledWith({ [atomName]: nextValue })
     })

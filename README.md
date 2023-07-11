@@ -43,7 +43,7 @@ const myAtom = atom({ defaultValue: 0 });
 
 ```ts
 // Read
-const currentValue = myAtom.snapshot(atom);
+const currentValue = myAtom.get(atom);
 // Write
 myAtom.set(nextValue);
 // Subscribe to changes
@@ -83,7 +83,7 @@ function setupCounter(element: HTMLButtonElement) {
   counter.subscribe((value) => updateCounterText(value));
 
   // Read the value of the atom in the store
-  updateCounterText(counter.snapshot());
+  updateCounterText(counter.get());
 }
 
 const counter = document.getElementById("counter");

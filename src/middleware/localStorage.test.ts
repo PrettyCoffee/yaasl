@@ -30,20 +30,20 @@ const setup = (key?: string) => {
 describe("Test applyLocalStorage", () => {
   it("Uses the initial value", () => {
     const { testAtom, getStoreValue } = setup()
-    expect(testAtom.snapshot()).toStrictEqual(defaultValue)
+    expect(testAtom.get()).toStrictEqual(defaultValue)
     expect(getStoreValue()).toStrictEqual(defaultValue)
   })
 
   it("Uses the passed key", () => {
     const { testAtom, getStoreValue } = setup("test-key")
-    expect(testAtom.snapshot()).toStrictEqual(defaultValue)
+    expect(testAtom.get()).toStrictEqual(defaultValue)
     expect(getStoreValue()).toStrictEqual(defaultValue)
   })
 
   it("Loads an existing value", () => {
     window.localStorage.setItem(`atom`, JSON.stringify(nextValue))
     const { testAtom } = setup()
-    expect(testAtom.snapshot()).toStrictEqual(nextValue)
+    expect(testAtom.get()).toStrictEqual(nextValue)
   })
 
   it("Changes the value", () => {
@@ -51,7 +51,7 @@ describe("Test applyLocalStorage", () => {
 
     testAtom.set(nextValue)
 
-    expect(testAtom.snapshot()).toStrictEqual(nextValue)
+    expect(testAtom.get()).toStrictEqual(nextValue)
     expect(getStoreValue()).toStrictEqual(nextValue)
   })
 })

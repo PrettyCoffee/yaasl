@@ -12,7 +12,7 @@ export const connectAtom = (
   connection: ConnectionResponse,
   atom: Atom<any>
 ) => {
-  cache.setAtomValue(atom, atom.snapshot())
+  cache.setAtomValue(atom, atom.get())
 
   if (isInitPhase) {
     connection.init(cache.getStore())

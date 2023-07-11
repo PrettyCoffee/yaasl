@@ -3,11 +3,11 @@ export class Stateful<Value = unknown> {
 
   constructor(protected value: Value) {}
 
-  /** Create a snapshot of the state.
+  /** Read the value of state.
    *
    * @returns The current value.
    **/
-  snapshot() {
+  get() {
     return this.value
   }
 
@@ -23,7 +23,7 @@ export class Stateful<Value = unknown> {
   }
 
   private emit() {
-    this.listeners.forEach(listener => listener(this.snapshot()))
+    this.listeners.forEach(listener => listener(this.get()))
   }
 
   protected update(value: Value) {
