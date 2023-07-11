@@ -39,7 +39,7 @@ import { atom } from "yaasl/core";
 const myAtom = atom({ defaultValue: 0 });
 ```
 
-4. Use the atom
+3. Use the atom
 
 ```ts
 // Read
