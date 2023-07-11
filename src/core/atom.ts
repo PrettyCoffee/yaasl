@@ -1,49 +1,51 @@
-import { Middleware } from "../middleware"
-import { MiddlewareAtomCallback as GenericMiddleware } from "../middleware/middleware"
-import { freeze } from "../utils/freeze"
+import { Stateful } from "./Stateful"
+import { MiddlewareAtomCallback, Middleware } from "../middleware/middleware"
 
-export interface AtomConfig<AtomValue> {
-  /** Value that will be returned if the atom is not defined in the store */
+type SetStateAction<ValueType> =
+  | ((previous: ValueType) => ValueType)
+  | ValueType
+
+interface AtomOptions<AtomValue> {
   defaultValue: AtomValue
-  /** Name of the atom. Must be unique among all atoms. */
   name?: string
-  /** Middleware that will be applied on the atom */
-  middleware?: GenericMiddleware<any>[]
+  middleware?: MiddlewareAtomCallback<any>[]
 }
-
-export interface Atom<AtomValue = unknown> {
-  /** Value that will be returned if the atom is not defined in the store */
-  defaultValue: AtomValue
-  /** Returns the unique name of the atom */
-  toString: () => string
-  /** Middleware that will be applied on the atom */
-  middleware: Middleware<any>[]
-}
-
-export type UnknownAtom = Atom
-
-export type InferAtomValue<Atom extends UnknownAtom> = Atom["defaultValue"]
 
 let key = 0
 
-/** Create atoms to be used in combination with a store.
- *
- * @param config.defaultValue Value that will be returned if the atom is not defined in the store
- * @param config.name Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}".
- * @param config.middleware Middleware that will be applied on the atom
- *
- * @returns An atom object
- **/
-export const atom = <AtomValue>({
-  defaultValue,
-  name = `atom-${++key}`,
-  middleware = [],
-}: AtomConfig<AtomValue>): Readonly<Atom<AtomValue>> => {
-  const atom: Atom<AtomValue> = {
+export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
+  public readonly defaultValue: AtomValue
+  public readonly name: string
+  private middleware: Middleware[] = []
+
+  constructor({
     defaultValue,
-    toString: () => name,
-    middleware: [],
+    name = `atom-${++key}`,
+    middleware,
+  }: AtomOptions<AtomValue>) {
+    super(defaultValue)
+    this.name = name
+    this.defaultValue = defaultValue
+    this.initMiddleware(middleware)
   }
-  if (middleware) atom.middleware = middleware.map(create => create(atom))
-  return freeze(atom)
+
+  public set(next: SetStateAction<AtomValue>) {
+    const value = next instanceof Function ? next(this.snapshot()) : next
+    super.update(value)
+  }
+
+  private initMiddleware(middleware?: MiddlewareAtomCallback<unknown>[]) {
+    if (middleware == null) return
+
+    this.middleware = middleware.map(create => create(this as Atom<any>))
+
+    super.subscribe(value =>
+      this.middleware.forEach(({ actions, options }) =>
+        actions.set?.({ value, atom: this as Atom<any>, options })
+      )
+    )
+  }
 }
+
+export const atom = <AtomValue>(options: AtomOptions<AtomValue>) =>
+  new Atom(options)

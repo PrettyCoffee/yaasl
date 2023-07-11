@@ -1,13 +1,12 @@
 import { act, renderHook } from "@testing-library/react"
 
 import { useAtomValue, useSetAtom, useAtom } from "./useAtom"
-import { atom, globalStore } from "../core"
-import { middleware } from "../middleware"
+import { atom } from "../core"
 
 const defaultValue = "test"
 const nextValue = "test 2"
 
-describe.skip("Test useAtom", () => {
+describe("Test useAtom", () => {
   it("Returns value with useAtomValue", () => {
     const testAtom = atom({ defaultValue })
     const { result } = renderHook(useAtomValue, { initialProps: testAtom })
@@ -20,7 +19,7 @@ describe.skip("Test useAtom", () => {
     act(() => {
       result.current(nextValue)
     })
-    expect(globalStore.get(testAtom)).toBe(nextValue)
+    expect(testAtom.snapshot()).toBe(nextValue)
   })
 
   it("Returns pair of value and setter with useAtom", () => {
@@ -32,8 +31,10 @@ describe.skip("Test useAtom", () => {
       result.current[1](nextValue)
     })
     expect(result.current[0]).toBe(nextValue)
+    expect(testAtom.snapshot()).toBe(nextValue)
   })
 
+  /*
   it("Allows passing a function into the setter", () => {
     const numberAtom = atom({ defaultValue: 0 })
     const { result } = renderHook(useAtom, { initialProps: numberAtom })
@@ -42,8 +43,11 @@ describe.skip("Test useAtom", () => {
       result.current[1](prev => prev + 1)
     })
     expect(result.current[0]).toBe(1)
+    expect(numberAtom.snapshot()).toBe(1)
   })
+  */
 
+  /*
   describe("Test with middleware", () => {
     const getMiddleware = () => {
       const onInit = jest.fn()
@@ -80,4 +84,5 @@ describe.skip("Test useAtom", () => {
       expect(onSet).toHaveBeenCalledWith("42")
     })
   })
+  */
 })

@@ -1,8 +1,9 @@
-import { Atom, Store, ActionPayload, ActionType, UnknownAtom } from "../core"
-import { freeze } from "../utils/freeze"
+import { Atom } from "../core"
 
-interface MiddlewarePayload<Options> extends Omit<ActionPayload, "type"> {
-  store: Store
+export type ActionType = "init" | "set"
+
+interface MiddlewarePayload<Options> {
+  value: unknown
   atom: Atom
   options: Options
 }
@@ -14,12 +15,12 @@ type MiddlewareActions<Options> = Partial<
 >
 
 interface MiddlewareSetupProps<Options> {
-  atom: UnknownAtom
+  atom: Atom
   options: Options
 }
 
 export type MiddlewareAtomCallback<Options> = (
-  atom: UnknownAtom
+  atom: Atom<any>
 ) => Middleware<Options>
 
 export type MiddlewareSetup<Options> =
@@ -28,10 +29,10 @@ export type MiddlewareSetup<Options> =
 
 export interface Middleware<Options = unknown> {
   options: Options
-  actions: MiddlewareActions<Options>
+  actions: Omit<MiddlewareActions<Options>, "init">
 }
 
-/** Create middlewares to be used in combination with a atoms.
+/** Create middlewares to be used in combination with atoms.
  *
  * @param setup Middleware actions or function to create middleware actions.
  *   Middleware actions are fired in the atom lifecycle, alongside to the subscriptions.
@@ -43,28 +44,15 @@ export const middleware =
   (
     ...[optionsArg]: Options extends undefined ? [Options] | [] : [Options]
   ): MiddlewareAtomCallback<Options> =>
-  (atom: UnknownAtom): Middleware<Options> => {
+  (atom: Atom): Middleware<Options> => {
     const options = optionsArg as Options
-    const actions = setup instanceof Function ? setup({ options, atom }) : setup
+    const { init, ...actions } =
+      setup instanceof Function ? setup({ options, atom }) : setup
+
+    init?.({ options, atom, value: atom.snapshot() })
+
     return {
       options,
       actions,
     }
   }
-
-export interface Middleware2<Options = unknown> {
-  options: Options
-  hook: MiddlewareAction<Options>
-}
-
-/** Create middlewares to be used in combination with a atoms.
- *
- * @param hook Callback that is fired when the atom changes in a store.
- * @returns A middleware function to be used in atoms
- **/
-export const middleware2 =
-  <Options = undefined>(hook: MiddlewareAction<Options>) =>
-  (
-    ...[options]: Options extends undefined ? [Options] | [] : [Options]
-  ): Readonly<Middleware2<Options>> =>
-    freeze({ options: options as Options, hook })

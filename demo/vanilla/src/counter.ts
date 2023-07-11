@@ -1,8 +1,8 @@
-import { atom, CONFIG, globalStore } from "yaasl/core"
+import { atom, CONFIG } from "yaasl/core"
 import { reduxDevtools } from "yaasl/devtools"
 import { localStorage } from "yaasl/middleware"
 
-CONFIG.name = "demo-vanilla/"
+CONFIG.name = "demo-vanilla"
 
 const counter = atom({
   name: "counter",
@@ -10,19 +10,13 @@ const counter = atom({
   middleware: [reduxDevtools(), localStorage()]
 })
   
-globalStore.init(counter)
-
 export function setupCounter(element: HTMLButtonElement) {
-  const setCounter = (value: number) => {
-    globalStore.set(counter, value)
-  }
-
   const updateCounterText = (value: number) =>
     (element.innerHTML = `count is ${value}`)
 
-  globalStore.subscribe(counter, ({ type, value }) => type === "SET" && value && updateCounterText(value))
+    counter.subscribe((value) => value && updateCounterText(value))
 
-  element.addEventListener("click", () => setCounter(globalStore.get(counter) + 1))
+  element.addEventListener("click", () => counter.set((previous) => previous + 1))
 
-  updateCounterText(globalStore.get(counter))
+  updateCounterText(counter.snapshot())
 }

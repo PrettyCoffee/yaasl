@@ -1,6 +1,5 @@
 import { localStorage } from "./localStorage"
-import { atom, store } from "../core"
-import { mockConsole } from "../utils/mockConsole"
+import { atom } from "../core"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {
@@ -14,66 +13,45 @@ const setup = (key?: string) => {
     name: "atom",
     middleware: [localStorage({ key })],
   })
-  const testStore = store({ name: "store" })
-  const storeKey = key ? key : `store/atom`
-
-  testStore.init(testAtom)
+  const storeKey = key ? key : `atom`
 
   const getStoreValue = (): unknown => {
     const value = window.localStorage.getItem(storeKey)
     return value == null ? null : JSON.parse(value)
   }
 
-  const get = () => testStore.get(testAtom)
-  const set = (value: object) => testStore.set(testAtom, value)
-  const remove = () => testStore.remove(testAtom)
-
   return {
+    storeKey,
     getStoreValue,
-    get,
-    set,
-    remove,
+    testAtom,
   }
 }
 
 describe("Test applyLocalStorage", () => {
-  const { resetConsole, error } = mockConsole()
-  afterAll(resetConsole)
-
   it("Uses the initial value", () => {
-    const { get, getStoreValue } = setup()
-    expect(get()).toStrictEqual(defaultValue)
+    const { testAtom, getStoreValue } = setup()
+    expect(testAtom.snapshot()).toStrictEqual(defaultValue)
     expect(getStoreValue()).toStrictEqual(defaultValue)
   })
 
   it("Uses the passed key", () => {
-    const { get, getStoreValue } = setup("test-key")
-    expect(get()).toStrictEqual(defaultValue)
+    const { testAtom, getStoreValue } = setup("test-key")
+    expect(testAtom.snapshot()).toStrictEqual(defaultValue)
     expect(getStoreValue()).toStrictEqual(defaultValue)
   })
 
   it("Loads an existing value", () => {
-    window.localStorage.setItem(`store/atom`, JSON.stringify(nextValue))
-    const { get } = setup()
-    expect(get()).toStrictEqual(nextValue)
+    window.localStorage.setItem(`atom`, JSON.stringify(nextValue))
+    const { testAtom } = setup()
+    expect(testAtom.snapshot()).toStrictEqual(nextValue)
   })
 
   it("Changes the value", () => {
-    const { get, getStoreValue, set } = setup()
+    const { testAtom, getStoreValue } = setup()
 
-    set(nextValue)
+    testAtom.set(nextValue)
 
-    expect(get()).toStrictEqual(nextValue)
+    expect(testAtom.snapshot()).toStrictEqual(nextValue)
     expect(getStoreValue()).toStrictEqual(nextValue)
-  })
-
-  it("Removes the atom from localStorage", () => {
-    const { get, getStoreValue, set, remove } = setup()
-
-    set(nextValue)
-    remove()
-    expect(getStoreValue()).toBe(null)
-    expect(get()).toStrictEqual(undefined)
-    expect(error).toHaveBeenCalledTimes(1) // get was called without init
   })
 })

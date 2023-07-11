@@ -1,12 +1,7 @@
 import { atom } from "./atom"
-import { Middleware } from "../middleware"
 
 const defaultValue = "default"
-
-const testMiddleware: Middleware = {
-  options: {},
-  actions: { init: jest.fn() },
-}
+const nextValue = "next"
 
 beforeEach(() => jest.resetAllMocks())
 
@@ -16,17 +11,44 @@ describe("Test atom", () => {
   })
 
   it("Creates an atom with unique name", () => {
-    expect(atom({ defaultValue }).toString()).toMatch(/atom-\d+/)
+    expect(atom({ defaultValue }).name).toMatch(/atom-\d+/)
   })
 
   it("Creates an atom with custom name", () => {
     const name = "test"
-    expect(atom({ defaultValue, name }).toString()).toBe(name)
+    expect(atom({ defaultValue, name })).toHaveProperty("name", name)
   })
 
-  it("Creates an atom with middleware", () => {
-    expect(
-      atom({ defaultValue, middleware: [() => testMiddleware] }).middleware
-    ).toStrictEqual([testMiddleware])
+  it("Returns the defaultValue initially", () => {
+    expect(atom({ defaultValue }).snapshot()).toBe(defaultValue)
+  })
+
+  it("Sets the value", () => {
+    const testAtom = atom({ defaultValue })
+    testAtom.set(nextValue)
+    expect(testAtom.snapshot()).toBe(nextValue)
+  })
+
+  it("Subscribes to changes", () => {
+    const action = jest.fn()
+    const testAtom = atom({ defaultValue })
+
+    testAtom.subscribe(action)
+    expect(action).not.toHaveBeenCalled()
+    testAtom.set(nextValue)
+
+    expect(action).toHaveBeenCalledTimes(1)
+    expect(action).toHaveBeenCalledWith(nextValue)
+  })
+
+  it("Unsubscribes from changes", () => {
+    const action = jest.fn()
+    const testAtom = atom({ defaultValue })
+
+    const unsub = testAtom.subscribe(action)
+    unsub()
+    testAtom.set(nextValue)
+
+    expect(action).not.toHaveBeenCalled()
   })
 })

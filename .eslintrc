@@ -6,6 +6,7 @@
   "ignorePatterns": "**/demo/**",
   "rules": {
     "@typescript-eslint/consistent-type-assertions": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "import/no-extraneous-dependencies": ["error", {
       "peerDependencies": true
     }]

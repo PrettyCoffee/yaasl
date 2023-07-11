@@ -1,58 +1,63 @@
 import { middleware } from "./middleware"
-import { atom } from "../core/atom"
-import { store } from "../core/store"
+import { atom } from "../core"
 
 const init = jest.fn()
 const set = jest.fn()
-const remove = jest.fn()
 const testMiddleware = middleware({
   init,
   set,
-  remove,
 })
-
-const testAtom = atom({ defaultValue: "" })
 
 const defaultValue = "default"
 const nextValue = "next"
-let testStore = store()
+
+const testAtom = atom({ defaultValue })
 
 beforeEach(() => {
   jest.resetAllMocks()
-  testStore = store()
 })
 
 describe("Test middleware", () => {
   it("Creates a middleware", () => {
     const m = testMiddleware()(testAtom)
-    expect(m).toHaveProperty("actions.init")
-    expect(m).toHaveProperty("actions.set")
-    expect(m).toHaveProperty("actions.remove")
+    expect(m.actions).toHaveProperty("set")
+    expect(m).toHaveProperty("options")
   })
 
-  it("Calls middleware hook on init", () => {
-    const testAtom = atom({ defaultValue, middleware: [testMiddleware()] })
-    testStore.init(testAtom)
+  it("Accepts options", () => {
+    const testMiddleware = middleware<{ a: string }>({
+      init,
+      set,
+    })
+
+    const m = testMiddleware({ a: "testOptionValue" })(testAtom)
+    expect(m).toHaveProperty("options.a", "testOptionValue")
+  })
+
+  it("Calls the init function", () => {
+    const testAtom = atom({
+      defaultValue,
+      middleware: [testMiddleware()],
+    })
     expect(init).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(init.mock.calls[0][0].value).toBe(testAtom.defaultValue)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const callArgs = init.mock.calls[0][0]
+    expect(callArgs).toHaveProperty("atom", testAtom)
+    expect(callArgs).toHaveProperty("value", defaultValue)
+    expect(callArgs).toHaveProperty("options", undefined)
   })
 
-  it("Calls middleware hook on set", () => {
-    const testAtom = atom({ defaultValue, middleware: [testMiddleware()] })
-    testStore.init(testAtom)
-    testStore.set(testAtom, nextValue)
+  it("Calls the set function", () => {
+    const testAtom = atom({
+      defaultValue,
+      middleware: [testMiddleware()],
+    })
+    testAtom.set(nextValue)
     expect(set).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(set.mock.calls[0][0].value).toBe(nextValue)
-  })
-
-  it("Calls middleware hook on set", () => {
-    const testAtom = atom({ defaultValue, middleware: [testMiddleware()] })
-    testStore.init(testAtom)
-    testStore.remove(testAtom)
-    expect(remove).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(remove.mock.calls[0][0].value).toBeUndefined()
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const callArgs = set.mock.calls[0][0]
+    expect(callArgs).toHaveProperty("atom", testAtom)
+    expect(callArgs).toHaveProperty("value", nextValue)
+    expect(callArgs).toHaveProperty("options", undefined)
   })
 })

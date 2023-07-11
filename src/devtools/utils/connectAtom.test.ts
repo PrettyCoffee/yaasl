@@ -1,20 +1,19 @@
 import { cache } from "./cache"
-import { connectAtom, disconnectAllConnections } from "./connectAtom"
-import { Store, store, atom, Atom } from "../../core"
+import { atom, Atom } from "../../core"
 import {
   ConnectionResponse,
   ReduxDevtoolsExtension,
   Message,
 } from "../redux-devtools"
+import { connectAtom, disconnectAllConnections } from "../reduxDevtools"
 
 const update = (
   connection: ConnectionResponse,
-  store: Store,
-  atom: Atom,
+  atom: Atom<any>,
   value: unknown
 ) => {
-  cache.setAtomValue(store, atom, value)
-  connection.send({ type: `SET/${atom.toString()}` }, cache.getStore(store))
+  cache.setAtomValue(atom, value)
+  connection.send({ type: `SET/${atom.name}` }, cache.getStore())
 }
 
 const mockExtension = () => {
@@ -49,18 +48,15 @@ const nextValue = "test 2"
 const atomName = "atomName"
 
 describe("Test connectAtom", () => {
-  const testAtom = atom({ defaultValue: value, name: atomName })
-  let testStore: Store
+  let testAtom = atom({ defaultValue: value, name: atomName })
   beforeEach(() => {
-    const initial = store()
-    testStore = { ...initial, set: jest.fn(initial.set) }
-    testStore.init(testAtom)
+    testAtom = atom({ defaultValue: value, name: atomName })
     disconnectAllConnections()
   })
 
   it("Creates a connection", () => {
     const { connection } = mockExtension()
-    connectAtom(connection, testStore, testAtom)
+    connectAtom(connection, testAtom)
 
     expect(connection.init).toHaveBeenCalledTimes(1)
     expect(connection.init).toHaveBeenCalledWith({ [atomName]: value })
@@ -68,9 +64,9 @@ describe("Test connectAtom", () => {
 
   it("Returns a function to update the value", () => {
     const { connection } = mockExtension()
-    connectAtom(connection, testStore, testAtom)
+    connectAtom(connection, testAtom)
 
-    update(connection, testStore, testAtom, nextValue)
+    update(connection, testAtom, nextValue)
 
     expect(connection.send).toHaveBeenCalledTimes(1)
     expect(connection.send).toHaveBeenCalledWith(
@@ -84,29 +80,26 @@ describe("Test connectAtom", () => {
     const atomName2 = "atomName2"
     const atom1 = atom({ defaultValue: value, name: atomName1 })
     const atom2 = atom({ defaultValue: value, name: atomName2 })
-    testStore.init(atom1)
-    testStore.init(atom2)
 
     const { connection } = mockExtension()
 
-    connectAtom(connection, testStore, atom1)
+    connectAtom(connection, atom1)
     expect(connection.init).toHaveBeenCalledWith({ [atomName1]: value })
 
-    connectAtom(connection, testStore, atom2)
+    connectAtom(connection, atom2)
 
-    expect(connection.init).toHaveBeenCalledTimes(1)
     expect(connection.init).toHaveBeenCalledWith({
       [atomName1]: value,
       [atomName2]: value,
     })
 
-    update(connection, testStore, atom1, nextValue)
+    update(connection, atom1, nextValue)
     expect(connection.send).toHaveBeenCalledWith(
       { type: `SET/${atomName1}` },
       { [atomName1]: nextValue, [atomName2]: value }
     )
 
-    update(connection, testStore, atom2, nextValue)
+    update(connection, atom2, nextValue)
 
     expect(connection.send).toHaveBeenCalledTimes(2)
     expect(connection.send).toHaveBeenLastCalledWith(
@@ -118,7 +111,7 @@ describe("Test connectAtom", () => {
   describe("Test extension subscription", () => {
     it("Should subscribe", () => {
       const { connection, subscription } = mockExtension()
-      connectAtom(connection, testStore, testAtom)
+      connectAtom(connection, testAtom)
 
       expect(connection.subscribe).toHaveBeenCalled()
       expect(subscription.current).not.toBeUndefined()
@@ -126,7 +119,7 @@ describe("Test connectAtom", () => {
 
     it("Jumps to a state", () => {
       const { connection, subscription } = mockExtension()
-      connectAtom(connection, testStore, testAtom)
+      connectAtom(connection, testAtom)
 
       subscription.current?.({
         type: "DISPATCH",
@@ -134,12 +127,12 @@ describe("Test connectAtom", () => {
         payload: { type: "JUMP_TO_ACTION" },
       })
 
-      expect(testStore.get(testAtom)).toBe(nextValue)
+      expect(testAtom.snapshot()).toBe(nextValue)
     })
 
     it("Rolls back to a state", () => {
       const { connection, subscription } = mockExtension()
-      connectAtom(connection, testStore, testAtom)
+      connectAtom(connection, testAtom)
 
       subscription.current?.({
         type: "DISPATCH",
@@ -147,14 +140,14 @@ describe("Test connectAtom", () => {
         payload: { type: "ROLLBACK" },
       })
 
-      expect(testStore.get(testAtom)).toBe(nextValue)
+      expect(testAtom.snapshot()).toBe(nextValue)
     })
 
     it("Resets to initial values", () => {
       const { connection, subscription } = mockExtension()
-      connectAtom(connection, testStore, testAtom)
+      connectAtom(connection, testAtom)
 
-      update(connection, testStore, testAtom, nextValue)
+      update(connection, testAtom, nextValue)
 
       subscription.current?.({
         type: "DISPATCH",
@@ -162,15 +155,15 @@ describe("Test connectAtom", () => {
         payload: { type: "RESET", timestamp: 0 },
       })
 
-      expect(testStore.get(testAtom)).toBe(value)
+      expect(testAtom.snapshot()).toBe(value)
     })
 
     it("Commits the current state", () => {
       const { connection, subscription } = mockExtension()
-      connectAtom(connection, testStore, testAtom)
+      connectAtom(connection, testAtom)
       ;(connection.init as ReturnType<typeof jest.fn>).mockClear()
 
-      update(connection, testStore, testAtom, nextValue)
+      update(connection, testAtom, nextValue)
 
       subscription.current?.({
         type: "DISPATCH",
@@ -178,14 +171,16 @@ describe("Test connectAtom", () => {
         payload: { type: "COMMIT", timestamp: 0 },
       })
 
-      expect(testStore.get(testAtom)).toBe(value)
+      expect(testAtom.snapshot()).toBe(value)
       expect(connection.init).toHaveBeenCalledTimes(1)
       expect(connection.init).toHaveBeenCalledWith({ [atomName]: nextValue })
     })
 
     it("Imports a history of states", () => {
       const { connection, subscription } = mockExtension()
-      connectAtom(connection, testStore, testAtom)
+      const set = jest.fn()
+      testAtom.subscribe(set)
+      connectAtom(connection, testAtom)
 
       const states = [
         { state: { [atomName]: "1" } },
@@ -205,11 +200,7 @@ describe("Test connectAtom", () => {
       })
 
       states.forEach(({ state }, index) => {
-        expect(testStore.set).toHaveBeenNthCalledWith(
-          index + 1,
-          testAtom,
-          state[atomName]
-        )
+        expect(set).toHaveBeenNthCalledWith(index + 1, state[atomName])
       })
     })
   })
