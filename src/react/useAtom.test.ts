@@ -34,7 +34,6 @@ describe("Test useAtom", () => {
     expect(testAtom.get()).toBe(nextValue)
   })
 
-  /*
   it("Allows passing a function into the setter", () => {
     const numberAtom = atom({ defaultValue: 0 })
     const { result } = renderHook(useAtom, { initialProps: numberAtom })
@@ -45,44 +44,4 @@ describe("Test useAtom", () => {
     expect(result.current[0]).toBe(1)
     expect(numberAtom.get()).toBe(1)
   })
-  */
-
-  /*
-  describe("Test with middleware", () => {
-    const getMiddleware = () => {
-      const onInit = jest.fn()
-      const onSet = jest.fn()
-
-      return {
-        onSet,
-        onInit,
-        testMiddleware: middleware({
-          init: onInit,
-          set: onSet,
-        }),
-      }
-    }
-
-    it("Works with middleware atoms", () => {
-      const { onSet, onInit, testMiddleware } = getMiddleware()
-      const testAtom = atom({ defaultValue, middleware: [testMiddleware()] })
-
-      const { result } = renderHook(useAtom, {
-        initialProps: testAtom,
-      })
-
-      expect(onInit).toHaveBeenCalledTimes(1)
-      expect(onInit).toHaveBeenCalledWith(defaultValue)
-
-      expect(result.current[0]).toBe(defaultValue)
-
-      act(() => {
-        result.current[1]("42")
-      })
-      expect(result.current[0]).toBe("42")
-      expect(onSet).toHaveBeenCalledTimes(1)
-      expect(onSet).toHaveBeenCalledWith("42")
-    })
-  })
-  */
 })
