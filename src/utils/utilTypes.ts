@@ -3,24 +3,4 @@ export type Prettify<T> = {
   // eslint-disable-next-line @typescript-eslint/ban-types
 } & {}
 
-export type UnknownObject = Record<string, unknown>
-
-export type Fn<Args extends unknown[], Result> = (...args: Args) => Result
-
-export type InferFnArg<FunctionType, BaseType> = FunctionType extends Fn<
-  [infer Value],
-  BaseType
->
-  ? Value
-  : BaseType
-
-export type InferFnResult<FunctionType, BaseType> = FunctionType extends Fn<
-  [BaseType],
-  infer Value
->
-  ? Value
-  : BaseType
-
-export type Dispatch<Action> = Fn<[Action], void>
-
 export type SetStateAction<State> = State | ((prevState: State) => State)
