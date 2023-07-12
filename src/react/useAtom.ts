@@ -1,7 +1,8 @@
-import { useCallback, SetStateAction } from "react"
+import { useCallback } from "react"
 
 import { useStatefulValue } from "./useStatefulValue"
 import { Atom, Stateful } from "../core"
+import { SetStateAction } from "../utils/utilTypes"
 
 /** Use an atom's value in the react lifecycle.
  *

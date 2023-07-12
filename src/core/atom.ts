@@ -1,9 +1,6 @@
 import { Stateful } from "./Stateful"
 import { MiddlewareAtomCallback, Middleware } from "../middleware/middleware"
-
-type SetStateAction<ValueType> =
-  | ((previous: ValueType) => ValueType)
-  | ValueType
+import { SetStateAction } from "../utils/utilTypes"
 
 interface AtomConfig<AtomValue> {
   /** Value that will be returned if the atom is not defined in the store */

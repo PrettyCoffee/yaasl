@@ -22,3 +22,5 @@ export type InferFnResult<FunctionType, BaseType> = FunctionType extends Fn<
   : BaseType
 
 export type Dispatch<Action> = Fn<[Action], void>
+
+export type SetStateAction<State> = State | ((prevState: State) => State)
