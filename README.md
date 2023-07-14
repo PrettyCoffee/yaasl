@@ -16,12 +16,12 @@ and more solid solution like [jotai](https://jotai.org/) or [recoil](https://rec
 
 ## Packages
 
-| Name                                     | Description                                                                |
-| ---------------------------------------- | -------------------------------------------------------------------------- |
-| [yaasl/core](./docs/core.md)             | Core package with javascript functions to create atoms and derived states. |
-| [yaasl/devtools](./docs/devtools.md)     | Devtools to debug `yaasl/core` atom states.                                |
-| [yaasl/middleware](./docs/middleware.md) | Atom middleware helper and presets.                                        |
-| [yaasl/react](./docs/react.md)           | React bindings for `yaasl/core`.                                           |
+| Name                                     | Description                                                                |                                                                                               |
+| ---------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| [yaasl/core](./docs/core.md)             | Core package with javascript functions to create atoms and derived states. | [demo](https://codesandbox.io/p/sandbox/yaasl-vanilla-forked-qlkpjq?file=%2Fsrc%2Fcounter.ts) |
+| [yaasl/devtools](./docs/devtools.md)     | Devtools to debug `yaasl/core` atom states.                                |                                                                                               |
+| [yaasl/middleware](./docs/middleware.md) | Atom middleware helper and presets.                                        |                                                                                               |
+| [yaasl/react](./docs/react.md)           | React bindings for `yaasl/core`.                                           | [demo](https://codesandbox.io/p/sandbox/amazing-curie-8kzn2y?file=%2Fsrc%2FCounter.tsx)       |
 
 ## Quickstart
 
