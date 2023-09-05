@@ -1,8 +1,8 @@
-# yaasl/react
+# React
 
 <!-- >> TOC >> -->
 
-- [yaasl/react](#yaasl/react)
+- [React](#react)
   - [useAtom](#useatom) [ [API](#api), [Usage Examples](#usage-examples) ]
   - [useDerivedValue](#usederivedvalue) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   <!-- << TOC << -->

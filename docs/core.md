@@ -1,8 +1,8 @@
-# yaasl/core
+# Core
 
 <!-- >> TOC >> -->
 
-- [yaasl/core](#yaasl/core)
+- [Core](#core)
   - [atom](#atom) [ [API](#api), [Usage Examples](#usage-examples) ]
   - [derive](#derive) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   - [CONFIG](#config) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
@@ -40,7 +40,7 @@ const myAtom = atom({
 
 // Use an atom
 myAtom.set("next-value");
-myAtom.set((previous) => prvious + "next");
+myAtom.set((previous) => previous + "next");
 const currentValue = myAtom.get();
 myAtom.subscribe((value) => console.log(value));
 ```

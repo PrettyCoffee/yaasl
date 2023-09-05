@@ -1,8 +1,8 @@
-# yaasl/middleware
+# Middleware
 
 <!-- >> TOC >> -->
 
-- [yaasl/middleware](#yaasl/middleware)
+- [Middleware](#middleware)
   - [middleware](#middleware) [ [API](#api), [Usage Examples](#usage-examples) ]
   - [localStorage](#localstorage) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   <!-- << TOC << -->

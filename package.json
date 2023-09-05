@@ -15,14 +15,14 @@
   "types": "./dist/@types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/@types/index.d.ts",
-      "import": "./dist/mjs/index.js",
-      "require": "./dist/cjs/index.js"
+      "types": "./dist/@types/vanilla.index.d.ts",
+      "import": "./dist/mjs/vanilla.index.js",
+      "require": "./dist/cjs/vanilla.index.js"
     },
     "./*": {
-      "types": "./dist/@types/*/index.d.ts",
-      "import": "./dist/mjs/*/index.js",
-      "require": "./dist/cjs/*/index.js"
+      "types": "./dist/@types/*.index.d.ts",
+      "import": "./dist/mjs/*.index.js",
+      "require": "./dist/cjs/*.index.js"
     }
   },
   "workspaces": [

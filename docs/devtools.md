@@ -1,8 +1,8 @@
-# yaasl/devtools
+# Devtools
 
 <!-- >> TOC >> -->
 
-- [yaasl/devtools](#yaasl/devtools)
+- [Devtools](#devtools)
   - [reduxDevtools](#reduxdevtools) [ [API](#api), [Usage Examples](#usage-examples) ]
   <!-- << TOC << -->
 

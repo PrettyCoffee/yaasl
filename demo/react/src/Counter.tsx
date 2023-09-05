@@ -1,7 +1,4 @@
-import { atom, CONFIG } from "yaasl/core"
-import { reduxDevtools } from "yaasl/devtools"
-import { localStorage } from "yaasl/middleware"
-import { useAtom } from "yaasl/react"
+import { atom, CONFIG, reduxDevtools, localStorage, useAtom } from "yaasl/react"
 
 CONFIG.name = "demo-react"
 

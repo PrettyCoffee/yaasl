@@ -12,16 +12,14 @@
 
 This project is meant for personal use only.
 I won't stop you from using it, but I would rather recommend to use a similar
-and more solid solution like [jotai](https://jotai.org/) or [recoil](https://recoiljs.org/).
+and more mature solution like [jotai](https://jotai.org/).
 
 ## Packages
 
-| Name                                     | Description                                                                |                                                                                               |
-| ---------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| [yaasl/core](./docs/core.md)             | Core package with javascript functions to create atoms and derived states. | [demo](https://codesandbox.io/p/sandbox/yaasl-vanilla-forked-qlkpjq?file=%2Fsrc%2Fcounter.ts) |
-| [yaasl/devtools](./docs/devtools.md)     | Devtools to debug `yaasl/core` atom states.                                |                                                                                               |
-| [yaasl/middleware](./docs/middleware.md) | Atom middleware helper and presets.                                        |                                                                                               |
-| [yaasl/react](./docs/react.md)           | React bindings for `yaasl/core`.                                           | [demo](https://codesandbox.io/p/sandbox/amazing-curie-8kzn2y?file=%2Fsrc%2FCounter.tsx)       |
+| Name                           | Description                  |                                                                                               |
+| ------------------------------ | ---------------------------- | --------------------------------------------------------------------------------------------- |
+| [yaasl](./docs/core.md)        | Core package for vanilla JS. | [demo](https://codesandbox.io/p/sandbox/yaasl-vanilla-forked-qlkpjq?file=%2Fsrc%2Fcounter.ts) |
+| [yaasl/react](./docs/react.md) | React bindings for `yaasl`.  | [demo](https://codesandbox.io/p/sandbox/amazing-curie-8kzn2y?file=%2Fsrc%2FCounter.tsx)       |
 
 ## Quickstart
 
@@ -34,7 +32,7 @@ $ npm i yaasl
 2. Create an atom
 
 ```ts
-import { atom } from "yaasl/core";
+import { atom } from "yaasl";
 
 const myAtom = atom({ defaultValue: 0 });
 ```
@@ -57,8 +55,7 @@ myAtom.subscribe((value) => {
 ### Vanilla typescript
 
 ```ts
-import { atom, CONFIG } from "yaasl/core";
-import { localStorage } from "yaasl/middleware";
+import { atom, CONFIG, middleware } from "yaasl";
 
 // Provide an app name to yaasl
 CONFIG.name = "demo-vanilla";
@@ -93,9 +90,7 @@ setupCounter(counter);
 ### React
 
 ```tsx
-import { atom, CONFIG } from "yaasl/core";
-import { localStorage } from "yaasl/middleware";
-import { useAtom } from "yaasl/react";
+import { atom, CONFIG, localStorage, useAtom } from "yaasl/react";
 
 // Provide an app name to yaasl
 CONFIG.name = "demo-react";
