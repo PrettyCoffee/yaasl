@@ -1,4 +1,4 @@
-import { localStorage } from "./localStorage"
+import { LocalStorageOptions, localStorage } from "./localStorage"
 import { atom } from "../core"
 
 const defaultValue = { a: "A", b: "B" }
@@ -7,13 +7,13 @@ const nextValue = {
   d: "D",
 }
 
-const setup = (key?: string) => {
+const setup = (options: LocalStorageOptions = {}) => {
   const testAtom = atom<object>({
     defaultValue,
     name: "atom",
-    middleware: [localStorage({ key })],
+    middleware: [localStorage(options)],
   })
-  const storeKey = key ? key : `atom`
+  const storeKey = options.key ? options.key : `atom`
 
   const getStoreValue = (): unknown => {
     const value = window.localStorage.getItem(storeKey)
@@ -27,7 +27,7 @@ const setup = (key?: string) => {
   }
 }
 
-describe("Test applyLocalStorage", () => {
+describe("Test localStorage", () => {
   it("Uses the initial value", () => {
     const { testAtom, getStoreValue } = setup()
     expect(testAtom.get()).toStrictEqual(defaultValue)
@@ -35,7 +35,7 @@ describe("Test applyLocalStorage", () => {
   })
 
   it("Uses the passed key", () => {
-    const { testAtom, getStoreValue } = setup("test-key")
+    const { testAtom, getStoreValue } = setup({ key: "test-key" })
     expect(testAtom.get()).toStrictEqual(defaultValue)
     expect(getStoreValue()).toStrictEqual(defaultValue)
   })
@@ -53,5 +53,25 @@ describe("Test applyLocalStorage", () => {
 
     expect(testAtom.get()).toStrictEqual(nextValue)
     expect(getStoreValue()).toStrictEqual(nextValue)
+  })
+
+  it("Applies an expiration", () => {
+    jest.useFakeTimers()
+
+    const { testAtom, storeKey } = setup({ expiresIn: 300 })
+
+    testAtom.set(nextValue)
+
+    expect(testAtom.get()).toStrictEqual(nextValue)
+    expect(window.localStorage.getItem(storeKey + "-expires-at")).toBe(
+      String(Date.now() + 300)
+    )
+
+    jest.advanceTimersByTime(300)
+
+    expect(testAtom.get()).toStrictEqual(defaultValue)
+    expect(window.localStorage.getItem(storeKey + "-expires-at")).toBeNull()
+
+    jest.useRealTimers()
   })
 })

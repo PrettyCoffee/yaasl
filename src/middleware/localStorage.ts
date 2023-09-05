@@ -1,4 +1,5 @@
 import { middleware } from "./middleware"
+import { Expiration, ExpirationOptions } from "./utils/Expiration"
 import { Atom, CONFIG } from "../core"
 import { consoleMessage, log } from "../utils/log"
 
@@ -38,7 +39,8 @@ const syncOverBrowserTabs = (atom: Atom, atomKey: string) =>
     atom.set(parseStorageValue(key, newValue))
   })
 
-interface Options {
+export interface LocalStorageOptions
+  extends Pick<ExpirationOptions, "expiresAt" | "expiresIn"> {
   key?: string
   noTabSync?: boolean
 }
@@ -51,20 +53,40 @@ interface Options {
  *
  * @returns The middleware to be used on atoms.
  **/
-export const localStorage = middleware<Options | undefined>(
+export const localStorage = middleware<LocalStorageOptions | undefined>(
   ({ atom, options = {} }) => {
     const internalKey = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
     const key = options.key ?? internalKey
 
+    const hasExpiration = Boolean(options.expiresAt ?? options.expiresIn)
+    const expiration = new Expiration({
+      key: `${key}-expires-at`,
+      ...options,
+    })
+
+    const reset = () => {
+      expiration.remove()
+      atom.set(atom.defaultValue)
+    }
+
     return {
       init: ({ atom }) => {
         const existing = getStorageValue(key)
-        if (existing === null) setStorageValue(key, atom.defaultValue)
-        else atom.set(existing)
+        if (existing === null) {
+          setStorageValue(key, atom.defaultValue)
+        } else {
+          atom.set(existing)
+        }
 
         if (!options.noTabSync) syncOverBrowserTabs(atom, key)
+        if (hasExpiration) expiration.init(reset)
       },
-      set: ({ value }) => setStorageValue(key, value),
+      set: ({ value }) => {
+        setStorageValue(key, value)
+        if (hasExpiration && value !== atom.defaultValue) {
+          expiration.set(reset)
+        }
+      },
     }
   }
 )

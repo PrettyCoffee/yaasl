@@ -5,7 +5,7 @@ CONFIG.name = "demo-vanilla"
 const counter = atom({
   name: "counter",
   defaultValue: 0,
-  middleware: [reduxDevtools(), localStorage()],
+  middleware: [reduxDevtools(), localStorage({ expiresIn: 5000 })],
 })
 
 export function setupCounter(element: HTMLButtonElement) {

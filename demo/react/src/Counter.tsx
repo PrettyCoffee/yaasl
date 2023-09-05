@@ -5,7 +5,7 @@ CONFIG.name = "demo-react"
 const counter = atom({
   name: "counter",
   defaultValue: 0,
-  middleware: [localStorage(), reduxDevtools()]
+  middleware: [localStorage({ expiresIn: 5000 }), reduxDevtools()]
 })
 
 export const Counter = () => {
