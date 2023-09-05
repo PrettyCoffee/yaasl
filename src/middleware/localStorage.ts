@@ -50,6 +50,8 @@ export interface LocalStorageOptions
  * @param options.key Use your own key for the local storage.
  *   Will be "{config-name}/{atom-name}" by default.
  * @param options.noTabSync Disable the synchronization of values over browser tabs.
+ * @param options.expiresAt Date at which the value expires
+ * @param options.expiresIn Milliseconds in which the value expires. Will be ignored if expiresAt is set.
  *
  * @returns The middleware to be used on atoms.
  **/

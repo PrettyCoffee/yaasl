@@ -83,6 +83,8 @@ Parameters:
 
 - `options.key`: Use your own key for the local storage. Will be "{config-name}/{atom-name}" by default.
 - `options.noTabSync`: Disable the synchronization of values over browser tabs.
+- `options.expiresAt`: Date at which the value expires
+- `options.expiresIn`: Milliseconds in which the value expires. Will be ignored if expiresAt is set.
 
 Returns: The middleware to be used on atoms.
 
@@ -97,5 +99,11 @@ const atomWithStorage = atom({
 const atomWithStorage = atom({
   defaultValue: "my-value",
   middleware: [localStorage({ key: "my-key" })],
+});
+
+const dayInMilliseconds = 1000 * 60 * 60 * 24;
+const atomWithStorage = atom({
+  defaultValue: "my-value",
+  middleware: [localStorage({ key: "my-key", expiresIn: dayInMilliseconds })],
 });
 ```
