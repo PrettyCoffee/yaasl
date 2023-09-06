@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.0](https://github.com/PrettyCoffee/yaasl/compare/0.2.0...0.3.0) (2023-09-06)
+
+### Features
+
+- **atom:** Add method to unwrap promises ([1e536be](https://github.com/PrettyCoffee/yaasl/commit/1e536be7dbe3cbe86a2683f2c898e2b4cd1b7cd9))
+
 ## [0.2.0](https://github.com/PrettyCoffee/yaasl/compare/0.1.0...0.2.0) (2023-09-05)
 
 ### Features
