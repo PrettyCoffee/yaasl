@@ -39,6 +39,16 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
     super.update(value)
   }
 
+  /** Resolve the value of a promise and set as atom value.
+   *
+   * @param promise Promise to unwrap
+   */
+  public async unwrap(promise: Promise<AtomValue>) {
+    const value = await promise
+    this.set(value)
+    return value
+  }
+
   private initMiddleware(middleware?: MiddlewareAtomCallback<unknown>[]) {
     if (middleware == null) return
 

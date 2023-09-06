@@ -25,6 +25,7 @@ Returns: An atom instance.
 - `result.get`: Read the value of state.
 - `result.subscribe`: Subscribe to value changes.
 - `result.set`: Set the value of the atom.
+- `result.unwrap`: Resolve the value of a promise and set as atom value.
 
 ### Usage Examples
 
@@ -43,6 +44,9 @@ myAtom.set("next-value");
 myAtom.set((previous) => previous + "next");
 const currentValue = myAtom.get();
 myAtom.subscribe((value) => console.log(value));
+myAtom
+  .unwrap(fetch("https://beep-boop-beep.something"))
+  .catch((value) => console.error(value));
 ```
 
 ## derive

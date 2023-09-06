@@ -29,6 +29,12 @@ describe("Test atom", () => {
     expect(testAtom.get()).toBe(nextValue)
   })
 
+  it("Unwraps a promise", async () => {
+    const testAtom = atom({ defaultValue })
+    await testAtom.unwrap(Promise.resolve(nextValue))
+    expect(testAtom.get()).toBe(nextValue)
+  })
+
   it("Subscribes to changes", () => {
     const action = jest.fn()
     const testAtom = atom({ defaultValue })
