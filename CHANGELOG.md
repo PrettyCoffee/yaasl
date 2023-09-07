@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.0](https://github.com/PrettyCoffee/yaasl/compare/0.3.0...0.4.0) (2023-09-07)
+
+### Features
+
+- **localStorage:** Add option for custom parsers ([ba134b3](https://github.com/PrettyCoffee/yaasl/commit/ba134b304117cf71d0980ac3f9cceada47cb3ac7))
+
 ## [0.3.0](https://github.com/PrettyCoffee/yaasl/compare/0.2.0...0.3.0) (2023-09-06)
 
 ### Features
