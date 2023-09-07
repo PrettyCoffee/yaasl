@@ -85,6 +85,8 @@ Parameters:
 - `options.noTabSync`: Disable the synchronization of values over browser tabs.
 - `options.expiresAt`: Date at which the value expires
 - `options.expiresIn`: Milliseconds in which the value expires. Will be ignored if expiresAt is set.
+- `options.stringify`: Custom function to stringify a value. Defaults to JSON.stringify. Use this when handling complex datatypes like Maps or Sets.
+- `options.parse`: Custom function to parse a string from the store. Defaults to JSON.parse. Use this when handling complex datatypes like Maps or Sets.
 
 Returns: The middleware to be used on atoms.
 
@@ -94,16 +96,35 @@ Returns: The middleware to be used on atoms.
 const atomWithStorage = atom({
   defaultValue: "my-value",
   middleware: [localStorage()],
-});
+})
 
 const atomWithStorage = atom({
   defaultValue: "my-value",
   middleware: [localStorage({ key: "my-key" })],
-});
+})
 
-const dayInMilliseconds = 1000 * 60 * 60 * 24;
+const dayInMilliseconds = 1000 * 60 * 60 * 24
 const atomWithStorage = atom({
   defaultValue: "my-value",
-  middleware: [localStorage({ key: "my-key", expiresIn: dayInMilliseconds })],
-});
+  middleware: [localStorage({ expiresIn: dayInMilliseconds })],
+})
+
+const isMapEntry = (value: unknown): value is [unknown, unknown] =>
+  Array.isArray(value) && value.length === 2
+
+const mapParser: LocalStorageParser<Map<unknown, unknown>> = {
+  parse: text => {
+    const value: unknown = JSON.parse(text)
+    if (!Array.isArray(value) || !value.every(isMapEntry))
+      throw new Error("LocalStorage value is not a valid Map object")
+
+    return new Map(value)
+  },
+  stringify: value => JSON.stringify(Array.from(value.entries())),
+}
+
+const mapAtom = atom({
+  defaultValue: new Map<string, string>()
+  middleware: [localStorage({ parser: mapParser })],
+})
 ```

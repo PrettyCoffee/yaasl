@@ -1,4 +1,8 @@
-import { LocalStorageOptions, localStorage } from "./localStorage"
+import {
+  LocalStorageOptions,
+  LocalStorageParser,
+  localStorage,
+} from "./localStorage"
 import { atom } from "../core"
 
 const defaultValue = { a: "A", b: "B" }
@@ -28,6 +32,8 @@ const setup = (options: LocalStorageOptions = {}) => {
 }
 
 describe("Test localStorage", () => {
+  afterEach(() => window.localStorage.clear())
+
   it("Uses the initial value", () => {
     const { testAtom, getStoreValue } = setup()
     expect(testAtom.get()).toStrictEqual(defaultValue)
@@ -73,5 +79,49 @@ describe("Test localStorage", () => {
     expect(window.localStorage.getItem(storeKey + "-expires-at")).toBeNull()
 
     jest.useRealTimers()
+  })
+
+  describe("handles custom parsers", () => {
+    const isMapEntry = (value: unknown): value is [unknown, unknown] =>
+      Array.isArray(value) && value.length === 2
+
+    const mapParser: LocalStorageParser<Map<unknown, unknown>> = {
+      parse: text => {
+        const value: unknown = JSON.parse(text)
+        if (!Array.isArray(value) || !value.every(isMapEntry))
+          throw new Error("LocalStorage value is not a valid Map object")
+
+        return new Map(value)
+      },
+      stringify: value => JSON.stringify(Array.from(value.entries())),
+    }
+
+    it("Uses a custom parser", () => {
+      window.localStorage.setItem(
+        "mapAtom",
+        '[["string","value"],["number",42]]'
+      )
+      const mapAtom = atom({
+        name: "mapAtom",
+        defaultValue: new Map(),
+        middleware: [localStorage({ parser: mapParser })],
+      })
+      expect(mapAtom.get().get("string")).toBe("value")
+      expect(mapAtom.get().get("number")).toBe(42)
+    })
+
+    it("Uses a custom stringifier", () => {
+      atom({
+        name: "mapAtom",
+        defaultValue: new Map<string, string | number>([
+          ["string", "value"],
+          ["number", 42],
+        ]),
+        middleware: [localStorage({ parser: mapParser })],
+      })
+      expect(window.localStorage.getItem("mapAtom")).toBe(
+        '[["string","value"],["number",42]]'
+      )
+    })
   })
 })
