@@ -46,7 +46,7 @@ describe("Test Expiration", () => {
     expect(onExpire).toHaveBeenCalledTimes(1)
   })
 
-  it("Sets and expiration Date", () => {
+  it("Sets an expiration Date", () => {
     const expiration = new Expiration({ key, expiresAt: createDateIn(300) })
     const onExpire = jest.fn()
 
@@ -60,7 +60,7 @@ describe("Test Expiration", () => {
     expect(localStorage.getItem(key)).toBeNull()
   })
 
-  it("Sets and expiration timeout", () => {
+  it("Sets an expiration timeout", () => {
     const expiration = new Expiration({ key, expiresIn: 300 })
     const onExpire = jest.fn()
 
@@ -72,5 +72,17 @@ describe("Test Expiration", () => {
     jest.advanceTimersByTime(300)
     expect(onExpire).toHaveBeenCalledTimes(1)
     expect(localStorage.getItem(key)).toBeNull()
+  })
+
+  it("Stops an expiration if was removed", () => {
+    const expiration = new Expiration({ key, expiresIn: 300 })
+    const onExpire = jest.fn()
+
+    expiration.set(onExpire)
+    localStorage.removeItem(key)
+    expiration.init(onExpire)
+
+    jest.advanceTimersByTime(300)
+    expect(onExpire).not.toHaveBeenCalled()
   })
 })

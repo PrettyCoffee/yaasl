@@ -51,7 +51,10 @@ export class Expiration {
     if (!this.getExpiration) return
 
     const existing = STORAGE.getItem(this.key)
-    if (!existing) return
+    if (!existing) {
+      this.remove()
+      return
+    }
     const expiresIn = Number(existing) - Date.now()
 
     const isExpired = Number.isNaN(expiresIn) || expiresIn <= 0
