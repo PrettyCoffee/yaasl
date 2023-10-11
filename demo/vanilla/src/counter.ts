@@ -1,11 +1,11 @@
-import { atom, CONFIG, reduxDevtools, localStorage } from "yaasl"
+import { atom, CONFIG, reduxDevtools, localStorage, indexedDb } from "yaasl"
 
 CONFIG.name = "demo-vanilla"
 
 const counter = atom({
   name: "counter",
   defaultValue: 0,
-  middleware: [reduxDevtools(), localStorage({ expiresIn: 5000 })],
+  middleware: [localStorage({ expiresIn: 5000 }), indexedDb(), reduxDevtools() ],
 })
 
 export function setupCounter(element: HTMLButtonElement) {

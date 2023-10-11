@@ -3,3 +3,6 @@ export type { Middleware } from "./middleware"
 
 export { localStorage } from "./localStorage"
 export type { LocalStorageOptions, LocalStorageParser } from "./localStorage"
+
+export { indexedDb } from "./indexedDb"
+export type { IndexedDbOptions } from "./indexedDb"
