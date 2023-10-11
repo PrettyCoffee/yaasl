@@ -3,4 +3,6 @@ export type Prettify<T> = {
   // eslint-disable-next-line @typescript-eslint/ban-types
 } & {}
 
+export type Dispatch<T> = (value: T) => void
+
 export type SetStateAction<State> = State | ((prevState: State) => State)

@@ -1,65 +1,12 @@
 import { middleware } from "./middleware"
 import { Expiration, ExpirationOptions } from "./utils/Expiration"
-import { Atom, CONFIG } from "../core"
-import { consoleMessage, log } from "../utils/log"
-
-const STORAGE = window.localStorage
+import { LocalStorage } from "./utils/LocalStorage"
+import { CONFIG } from "../core"
 
 export interface LocalStorageParser<T = any> {
   parse: (value: string) => T
   stringify: (value: T) => string
 }
-
-const defaultParser: LocalStorageParser = {
-  parse: JSON.parse,
-  stringify: JSON.stringify,
-}
-
-const setStorageValue = <T>(
-  key: string,
-  value: T,
-  parser: LocalStorageParser
-) => {
-  try {
-    STORAGE.setItem(key, parser.stringify(value))
-  } catch {
-    log.error(
-      `Value of atom with local storage key "${key}" could not be set.`,
-      {
-        value,
-      }
-    )
-  }
-}
-
-const parseStorageValue = (
-  key: string,
-  value: string | null,
-  parser: LocalStorageParser
-) => {
-  try {
-    return typeof value !== "string" ? null : (parser.parse(value) as unknown)
-  } catch {
-    throw new Error(
-      consoleMessage(`Value of local storage key "${key}" could not be parsed.`)
-    )
-  }
-}
-
-const getStorageValue = (key: string, parser: LocalStorageParser) => {
-  const value = STORAGE.getItem(key)
-  return parseStorageValue(key, value, parser)
-}
-
-const syncOverBrowserTabs = (
-  atom: Atom,
-  atomKey: string,
-  parser: LocalStorageParser
-) =>
-  window.addEventListener("storage", ({ key, newValue }) => {
-    if (atomKey !== key) return
-    atom.set(parseStorageValue(key, newValue, parser))
-  })
 
 export interface LocalStorageOptions
   extends Pick<ExpirationOptions, "expiresAt" | "expiresIn"> {
@@ -91,12 +38,17 @@ export interface LocalStorageOptions
 export const localStorage = middleware<LocalStorageOptions | undefined>(
   ({ atom, options = {} }) => {
     const internalKey = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
-    const { key = internalKey, parser = defaultParser } = options
+    const { key = internalKey, parser, noTabSync } = options
 
     const hasExpiration = Boolean(options.expiresAt ?? options.expiresIn)
     const expiration = new Expiration({
       key: `${key}-expires-at`,
       ...options,
+    })
+
+    const storage = new LocalStorage<unknown>(key, {
+      parser,
+      onTabSync: noTabSync ? undefined : value => atom.set(value),
     })
 
     const reset = () => {
@@ -106,18 +58,17 @@ export const localStorage = middleware<LocalStorageOptions | undefined>(
 
     return {
       init: ({ atom }) => {
-        const existing = getStorageValue(key, parser)
+        const existing = storage.get()
         if (existing === null) {
-          setStorageValue(key, atom.defaultValue, parser)
+          storage.set(atom.defaultValue)
         } else {
           atom.set(existing)
         }
 
-        if (!options.noTabSync) syncOverBrowserTabs(atom, key, parser)
         if (hasExpiration) expiration.init(reset)
       },
       set: ({ value }) => {
-        setStorageValue(key, value, parser)
+        storage.set(value)
         if (hasExpiration && value !== atom.defaultValue) {
           expiration.set(reset)
         }
