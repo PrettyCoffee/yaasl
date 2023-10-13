@@ -14,6 +14,8 @@ This project is meant for personal use only.
 I won't stop you from using it, but I would rather recommend to use a similar
 and more mature solution like [jotai](https://jotai.org/).
 
+See the [docs](./docs) directory for detailed documentation.
+
 ## Packages
 
 | Name                           | Description                  |                                                                                               |
