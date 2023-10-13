@@ -61,26 +61,6 @@ describe("Test localStorage", () => {
     expect(getStoreValue()).toStrictEqual(nextValue)
   })
 
-  it("Applies an expiration", () => {
-    jest.useFakeTimers()
-
-    const { testAtom, storeKey } = setup({ expiresIn: 300 })
-
-    testAtom.set(nextValue)
-
-    expect(testAtom.get()).toStrictEqual(nextValue)
-    expect(window.localStorage.getItem(storeKey + "-expires-at")).toBe(
-      String(Date.now() + 300)
-    )
-
-    jest.advanceTimersByTime(300)
-
-    expect(testAtom.get()).toStrictEqual(defaultValue)
-    expect(window.localStorage.getItem(storeKey + "-expires-at")).toBeNull()
-
-    jest.useRealTimers()
-  })
-
   describe("handles custom parsers", () => {
     const isMapEntry = (value: unknown): value is [unknown, unknown] =>
       Array.isArray(value) && value.length === 2

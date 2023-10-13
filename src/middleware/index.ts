@@ -6,3 +6,6 @@ export type { LocalStorageOptions, LocalStorageParser } from "./localStorage"
 
 export { indexedDb } from "./indexedDb"
 export type { IndexedDbOptions } from "./indexedDb"
+
+export { expiration } from "./expiration"
+export type { ExpirationOptions } from "./expiration"

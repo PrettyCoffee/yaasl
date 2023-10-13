@@ -1,12 +1,14 @@
-import { atom, CONFIG, reduxDevtools, localStorage, useAtom, indexedDb } from "yaasl/react"
+import { atom, CONFIG, reduxDevtools, localStorage, useAtom, indexedDb, expiration } from "yaasl/react"
 
 CONFIG.name = "demo-react"
 
 const counter = atom({
   name: "counter",
   defaultValue: 0,
-  middleware: [localStorage({ expiresIn: 5000 }), indexedDb(), reduxDevtools()]
+  middleware: [localStorage(), indexedDb(), expiration({ expiresIn: 5000 }), reduxDevtools()]
 })
+
+counter.subscribe((value) => console.log("counter", value))
 
 export const Counter = () => {
   const [value, setValue] = useAtom(counter);
