@@ -22,7 +22,9 @@ export interface ExpirationOptions {
   expiresIn?: number | (() => number)
 }
 
-/** Middleware to make an atom value expirable.
+/** Middleware to make an atom value expirable and reset to its defaulValue.
+ *
+ * __Note:__ When using `expiresAt`, a function returning the date should be prefered since using a static date might end in an infinite loop.
  *
  * @param {ExpirationOptions | undefined} options
  * @param options.expiresAt Date at which the value expires

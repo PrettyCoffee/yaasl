@@ -83,8 +83,6 @@ Parameters:
 
 - `options.key`: Use your own key for the local storage. Will be "{config-name}/{atom-name}" by default.
 - `options.noTabSync`: Disable the synchronization of values over browser tabs.
-- `options.expiresAt`: Date at which the value expires
-- `options.expiresIn`: Milliseconds in which the value expires. Will be ignored if expiresAt is set.
 - `options.stringify`: Custom function to stringify a value. Defaults to JSON.stringify. Use this when handling complex datatypes like Maps or Sets.
 - `options.parse`: Custom function to parse a string from the store. Defaults to JSON.parse. Use this when handling complex datatypes like Maps or Sets.
 
@@ -101,12 +99,6 @@ const atomWithStorage = atom({
 const atomWithStorage = atom({
   defaultValue: "my-value",
   middleware: [localStorage({ key: "my-key" })],
-})
-
-const dayInMilliseconds = 1000 * 60 * 60 * 24
-const atomWithStorage = atom({
-  defaultValue: "my-value",
-  middleware: [localStorage({ expiresIn: dayInMilliseconds })],
 })
 
 const isMapEntry = (value: unknown): value is [unknown, unknown] =>
@@ -155,5 +147,44 @@ const atomWithDb = atom({
 const atomWithDb = atom({
   defaultValue: "my-value",
   middleware: [indexedDb({ key: "my-key" })],
+});
+```
+
+## expiration
+
+Middleware to make an atom value expirable and reset to its defaulValue.
+
+**Note:** When using `expiresAt`, a function returning the date should be prefered since using a static date might end in an infinite loop.
+
+### API
+
+Parameters:
+
+- `options.expiresAt`: Date at which the value expires
+- `options.expiresIn`: Milliseconds in which the value expires. Will be ignored if expiresAt is set.
+
+Returns: The middleware to be used on atoms.
+
+### Usage Examples
+
+```ts
+const tomorrow = () => {
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  return date;
+};
+
+const expiringAtom = atom({
+  defaultValue: "my-value",
+  middleware: [expiration({ expiresAt: tomorrow })],
+});
+
+const expiringAtom = atom({
+  defaultValue: "my-value",
+  middleware: [expiration({ expiresIn: 5000 })],
 });
 ```
