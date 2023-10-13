@@ -5,6 +5,8 @@
 - [Middleware](#middleware)
   - [middleware](#middleware) [ [API](#api), [Usage Examples](#usage-examples) ]
   - [localStorage](#localstorage) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
+  - [indexedDb](#indexeddb) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
+  - [expiration](#expiration) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
   <!-- << TOC << -->
 
 ## middleware
