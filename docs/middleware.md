@@ -128,3 +128,32 @@ const mapAtom = atom({
   middleware: [localStorage({ parser: mapParser })],
 })
 ```
+
+## indexedDb
+
+Middleware to save and load atom values to the local storage.
+
+Will use one database and store for all atoms with your `CONFIG.name`
+as name or `yaasl` if not set.
+
+### API
+
+Parameters:
+
+- `options.key`: Use your own store key. Will be `atom.name` by default.
+
+Returns: The middleware to be used on atoms.
+
+### Usage Examples
+
+```ts
+const atomWithDb = atom({
+  defaultValue: "my-value",
+  middleware: [indexedDb()],
+});
+
+const atomWithDb = atom({
+  defaultValue: "my-value",
+  middleware: [indexedDb({ key: "my-key" })],
+});
+```

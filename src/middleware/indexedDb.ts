@@ -5,9 +5,20 @@ import { CONFIG } from "../core"
 let atomDb: Store<unknown> | null = null
 
 export interface IndexedDbOptions {
+  /** Use your own store key. Will be `atom.name` by default. */
   key?: string
 }
 
+/** Middleware to save and load atom values to an indexedDb.
+ *
+ *  Will use one database and store for all atoms with your `CONFIG.name`
+ *  as name or `yaasl` if not set.
+ *
+ * @param {IndexedDbOptions | undefined} options
+ * @param options.key Use your own store key. Will be `atom.name` by default.
+ *
+ * @returns The middleware to be used on atoms.
+ **/
 export const indexedDb = middleware<IndexedDbOptions | undefined>(
   ({ atom, options }) => {
     const key = options?.key ?? atom.name
