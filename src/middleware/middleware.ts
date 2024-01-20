@@ -1,6 +1,6 @@
 import { Atom } from "../core"
 
-export type ActionType = "init" | "set"
+export type ActionType = "init" | "didInit" | "set"
 
 interface MiddlewarePayload<Options> {
   value: unknown

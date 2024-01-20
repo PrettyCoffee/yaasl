@@ -59,6 +59,10 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
         actions.set?.({ value, atom: this as Atom<any>, options })
       )
     )
+
+    this.middleware.forEach(({ actions, options }) =>
+      actions.didInit?.({ value: this.value, atom: this as Atom<any>, options })
+    )
   }
 }
 
