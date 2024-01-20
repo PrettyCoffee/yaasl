@@ -26,53 +26,34 @@ Returns: A middleware function to be used in atoms.
 ```ts
 // Create a middleware
 const logger = middleware({
-  init: ({ atom, store }) =>
-    console.log(
-      `Initiated atom "${atom.toString()}" in store "${store.toString()}"`
-    ),
-  set: ({ atom, store, value }) =>
-    console.log(
-      `Value of atom "${atom.toString()}" in store "${store.toString()}" was set to:`,
-      value
-    ),
-  remove: ({ atom, store }) =>
-    console.log(
-      `Remove atom "${atom.toString()}" from store "${store.toString()}"`
-    ),
-});
+  init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
+  set: ({ atom, value }) =>
+    console.log(`Value of atom "${atom.name}" was set to:`, value),
+})
 
 const myAtom = atom({
   defaultValue: "my-value",
   middleware: [logger()],
-});
+})
 
 // Create a middleware that has options
 interface Options {
-  disable?: boolean;
+  disable?: boolean
 }
-const loggerWithOptions = middleware<Options>(({ options, atom }) => {
-  if (options.disable) return {};
-  const atomName = atom.toString();
+const loggerWithOptions = middleware<Options>(({ options }) => {
+  if (options.disable) return {}
 
   return {
-    init: ({ store }) =>
-      console.log(
-        `Initiated atom "${atomName}" in store "${store.toString()}"`
-      ),
-    set: ({ store, value }) =>
-      console.log(
-        `Value of atom "${atomName}" in store "${store.toString()}" was set to:`,
-        value
-      ),
-    remove: ({ store }) =>
-      console.log(`Remove atom "${atomName}" from store "${store.toString()}"`),
-  };
-});
+    init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
+    set: ({ atom, value }) =>
+      console.log(`Value of atom "${atom.name}" was set to:`, value),
+  }
+})
 
 const myAtom = atom({
   defaultValue: "my-value",
   middleware: [loggerWithOptions({ disable: true })],
-});
+})
 ```
 
 ## localStorage
@@ -144,12 +125,12 @@ Returns: The middleware to be used on atoms.
 const atomWithDb = atom({
   defaultValue: "my-value",
   middleware: [indexedDb()],
-});
+})
 
 const atomWithDb = atom({
   defaultValue: "my-value",
   middleware: [indexedDb({ key: "my-key" })],
-});
+})
 ```
 
 ## expiration
@@ -171,22 +152,22 @@ Returns: The middleware to be used on atoms.
 
 ```ts
 const tomorrow = () => {
-  const date = new Date();
-  date.setDate(date.getDate() + 1);
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setSeconds(0);
-  date.setMilliseconds(0);
-  return date;
-};
+  const date = new Date()
+  date.setDate(date.getDate() + 1)
+  date.setHours(0)
+  date.setMinutes(0)
+  date.setSeconds(0)
+  date.setMilliseconds(0)
+  return date
+}
 
 const expiringAtom = atom({
   defaultValue: "my-value",
   middleware: [expiration({ expiresAt: tomorrow })],
-});
+})
 
 const expiringAtom = atom({
   defaultValue: "my-value",
   middleware: [expiration({ expiresIn: 5000 })],
-});
+})
 ```
