@@ -40,6 +40,7 @@
     "test:watch": "npm run test -- --watchAll",
     "lint": "eslint ./src --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
+    "validate": "run-s lint test build",
     "generate-docs": "node ./scripts/generateDocs.js",
     "prepare": "cozy-git-hooks install -q",
     "release": "release-it"
