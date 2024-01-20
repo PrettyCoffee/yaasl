@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/PrettyCoffee/yaasl/compare/0.5.0...0.6.0) (2024-01-20)
+
+### Features
+
+- **middleware:** Add didInit actions ([079422a](https://github.com/PrettyCoffee/yaasl/commit/079422a14b04dc55e0d94d06ab853af503224b20))
+- **migration:** Create migration middleware ([b962888](https://github.com/PrettyCoffee/yaasl/commit/b9628884c73a13ea832700194eb891477c78cd8b))
+
 ## [0.5.0](https://github.com/PrettyCoffee/yaasl/compare/0.4.0...0.5.0) (2023-10-13)
 
 ### Features
