@@ -3,15 +3,22 @@
 <!-- >> TOC >> -->
 
 - [Middleware](#middleware)
-  - [middleware](#middleware) [ [API](#api), [Actions](#actions), [Usage Examples](#usage-examples) ]
+  - [middleware](#middleware) [ [API](#api), [Usage Examples](#usage-examples) ]
   - [localStorage](#localstorage) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   - [indexedDb](#indexeddb) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
   - [expiration](#expiration) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
+  - [migration](#migration) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
   <!-- << TOC << -->
 
 ## middleware
 
 Create middlewares to be used in combination with a atoms.
+
+Middlewares can be used to interact with an atom by using the following lifecycle actions:
+
+- `init`: Action to be called when the atom is created, but before subscribing to `set` events.
+- `didInit`: Action to be called when the atom is created, but after subscribing to `set` events.
+- `set`: Action to be called when the atom's `set` function is called.
 
 ### API
 
@@ -20,14 +27,6 @@ Parameters:
 - `setup`: Middleware actions or function to create middleware actions. Middleware actions are fired in the atom lifecycle, alongside to the subscriptions.
 
 Returns: A middleware function to be used in atoms.
-
-### Actions
-
-When creating a middleware, you can use the following lifecycle actions:
-
-- `init`: Action to be called when the atom is created, but before subscribing to `set` events.
-- `didInit`: Action to be called when the atom is created, but after subscribing to `set` events.
-- `set`: Action to be called when the atom's `set` function is called.
 
 ### Usage Examples
 
@@ -182,4 +181,91 @@ const expiringAtom = atom({
   defaultValue: "my-value",
   middleware: [expiration({ expiresIn: 5000 })],
 });
+```
+
+## migration
+
+Middleware to migrate the persisted value of an atom to a newer version.
+You can use the `createMigrationStep` helper to create migration steps.
+
+### API
+
+Parameters:
+
+- `options.steps`: An array of migration steps to migrate an old value
+
+Returns: The middleware to be used on atoms.
+
+### Usage Examples
+
+#### Creating a migration step
+
+Lets imagine a situation where you created a persisted atom with two names: `name1` and `name2`.
+After a while you notice that you would want to have a string array instead for that.
+
+You would now like to convert the localStorage data of users to the new array.
+
+```ts
+/** The old datatype */
+interface NamesV1 {
+  name1: string;
+  name2: string;
+}
+
+/** Migration step from the old data type to a string array */
+const v1 = createMigrationStep({
+  previous: null,
+  version: "v1",
+  migrate: (data: NamesV1) => [data.name1, data.name2],
+  validate: (data): data is NamesV1 =>
+    data != null &&
+    typeof data === "object" &&
+    "name1" in data &&
+    "name2" in data,
+});
+
+/** Using the migration middleware with the created step */
+const nameAtom = atom<string[]>({
+  defaultValue: [],
+  middleware: [localStorage(), migration({ steps: [v1] })],
+});
+```
+
+#### Multiple migration steps
+
+Lets assume that you now furthermore want to assign a color to each name.
+For that, you may need to adapt the data structure of the array items like this:
+
+```ts
+interface ColoredName {
+  name: string;
+  color?: string;
+}
+```
+
+To achieve this, you can add a second migration step to the steps array of the `migration` middleware:
+
+```ts
+interface NamesV1 { ... }
+
+const v1 = createMigrationStep({
+  previous: null,
+  version: "v1",
+  ...
+})
+
+type NamesV2 = string[]
+
+const v2 = createMigrationStep({
+  previous: "v1",
+  version: "v2",
+  migrate: (data: NamesV2) => data.map(name => ({ name })),
+  validate: (data): data is NamesV2 =>
+    Array.isArray(data) && data.every(item => typeof item === "string"),
+})
+
+const nameAtom = atom<ColoredName[]>({
+  defaultValue: [],
+  middleware: [localStorage(), migration({ steps: [v1, v2] })],
+})
 ```
