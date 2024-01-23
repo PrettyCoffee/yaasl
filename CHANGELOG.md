@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.1](https://github.com/PrettyCoffee/yaasl/compare/0.6.0...0.6.1) (2024-01-23)
+
+### Bug Fixes
+
+- **devtools:** Only warn once when extension was not found ([efaab70](https://github.com/PrettyCoffee/yaasl/commit/efaab7072bdfd0f0c3e676de0b07cc467b9d132c))
+
 ## [0.6.0](https://github.com/PrettyCoffee/yaasl/compare/0.5.0...0.6.0) (2024-01-20)
 
 ### Features

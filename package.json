@@ -1,6 +1,6 @@
 {
   "name": "yaasl",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "yet another atomic store library",
   "keywords": [
     "atom",
