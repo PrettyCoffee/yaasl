@@ -43,7 +43,9 @@
     "validate": "run-s lint test build",
     "generate-docs": "node ./scripts/generateDocs.js",
     "prepare": "cozy-git-hooks install -q",
-    "release": "release-it"
+    "release:major": "release-it major",
+    "release:minor": "release-it minor",
+    "release:patch": "release-it patch"
   },
   "peerDependencies": {
     "react": ">=18"
