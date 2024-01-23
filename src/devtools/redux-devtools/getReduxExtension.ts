@@ -33,11 +33,16 @@ declare global {
   }
 }
 
+let didWarn = false
+
 /** Returns the global redux extension object if available */
 export const getReduxExtension = () => {
   const reduxExtension = window.__REDUX_DEVTOOLS_EXTENSION__
   if (!reduxExtension) {
-    log.warn("Redux devtools extension was not found")
+    if (!didWarn) {
+      didWarn = true
+      log.warn("Redux devtools extension was not found")
+    }
     return null
   }
 
