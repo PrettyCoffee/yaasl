@@ -46,4 +46,22 @@ describe("Test atom", () => {
     atom2.set(nextValue)
     expect(testDerive.get()).toBe(nextValue + nextValue)
   })
+
+  it("Only updates if actually changing the result", () => {
+    const a = { value: "test" }
+    const b = { value: "test" }
+    const next = { value: "next" }
+    const testAtom = atom({ defaultValue: { a, b, deeper: { a, b } } })
+    const testDerive = derive(({ get }) => get(testAtom).deeper.a)
+
+    const change = jest.fn()
+    testDerive.subscribe(change)
+
+    testAtom.set(prev => ({ ...prev, b: next }))
+    testAtom.set(prev => ({ ...prev, deeper: { ...prev.deeper, b: next } }))
+    expect(change).not.toHaveBeenCalled()
+
+    testAtom.set(prev => ({ ...prev, deeper: { ...prev.deeper, a: next } }))
+    expect(change).toHaveBeenCalledWith(next)
+  })
 })
