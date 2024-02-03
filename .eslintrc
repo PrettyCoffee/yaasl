@@ -1,9 +1,7 @@
 {
   "extends": [
-    "@pretty-cozy/eslint-config/base-ts",
-    "@pretty-cozy/eslint-config/react"
+    "@pretty-cozy/eslint-config/base-ts"
   ],
-  "ignorePatterns": "**/demo/**",
   "rules": {
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/no-explicit-any": "off",

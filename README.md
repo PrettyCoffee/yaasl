@@ -18,23 +18,26 @@ See the [docs](./docs) directory for detailed documentation.
 
 ## Packages
 
-| Name                           | Description                  |                                                                                               |
-| ------------------------------ | ---------------------------- | --------------------------------------------------------------------------------------------- |
-| [yaasl](./docs/core.md)        | Core package for vanilla JS. | [demo](https://codesandbox.io/p/sandbox/yaasl-vanilla-forked-qlkpjq?file=%2Fsrc%2Fcounter.ts) |
-| [yaasl/react](./docs/react.md) | React bindings for `yaasl`.  | [demo](https://codesandbox.io/p/sandbox/amazing-curie-8kzn2y?file=%2Fsrc%2FCounter.tsx)       |
+| Name                            | Description                  |                                                                                               |
+| ------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------- |
+| [@yaasl/core](./docs/core.md)   | Core package for vanilla JS. | [demo](https://codesandbox.io/p/sandbox/yaasl-vanilla-forked-qlkpjq?file=%2Fsrc%2Fcounter.ts) |
+| [@yaasl/react](./docs/react.md) | React bindings for `yaasl`.  | [demo](https://codesandbox.io/p/sandbox/amazing-curie-8kzn2y?file=%2Fsrc%2FCounter.tsx)       |
 
 ## Quickstart
 
 1. Install the package
 
 ```sh
-$ npm i yaasl
+$ npm i @yaasl/core
+
+# Or when using react
+$ npm i @yaasl/react
 ```
 
 2. Create an atom
 
 ```ts
-import { atom } from "yaasl";
+import { atom } from "@yaasl/core";
 
 const myAtom = atom({ defaultValue: 0 });
 ```
@@ -57,7 +60,7 @@ myAtom.subscribe((value) => {
 ### Vanilla typescript
 
 ```ts
-import { atom, CONFIG, middleware } from "yaasl";
+import { atom, CONFIG, middleware } from "@yaasl/core";
 
 // Provide an app name to yaasl
 CONFIG.name = "demo-vanilla";
@@ -92,7 +95,7 @@ setupCounter(counter);
 ### React
 
 ```tsx
-import { atom, CONFIG, localStorage, useAtom } from "yaasl/react";
+import { atom, CONFIG, localStorage, useAtom } from "@yaasl/react";
 
 // Provide an app name to yaasl
 CONFIG.name = "demo-react";

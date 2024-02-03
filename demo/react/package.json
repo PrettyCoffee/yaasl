@@ -7,13 +7,15 @@
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint ./src --ignore-path ../../.gitignore",
-    "lint:fix": "npm run lint -- --fix"
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "validate": "run-s lint build"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "yaasl": "file:../../"
+    "@yaasl/devtools": "file:../../packages/devtools",
+    "@yaasl/react": "file:../../packages/react"
   },
   "devDependencies": {
     "@types/react": "^18.2.18",
@@ -21,5 +23,10 @@
     "@vitejs/plugin-react": "^4.0.4",
     "typescript": "^5.1.6",
     "vite": "^4.4.8"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npm run lint:fix"
+    ]
   }
 }

@@ -5,7 +5,8 @@
 - [Core](#core)
   - [atom](#atom) [ [API](#api), [Usage Examples](#usage-examples) ]
   - [derive](#derive) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
-  - [CONFIG](#config) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
+  - [middleware](#middleware) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
+  - [CONFIG](#config) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
   <!-- << TOC << -->
 
 ## atom
@@ -75,6 +76,63 @@ const nested = derive(({ get }) => get(multiplier) + get(myAtom));
 // Use a derivation
 const currentValue = multiplier.get();
 multiplier.subscribe((value) => console.log(value));
+```
+
+## middleware
+
+Create middlewares to be used in combination with a atoms.
+
+Middlewares can be used to interact with an atom by using the following lifecycle actions:
+
+- `init`: Action to be called when the atom is created, but before subscribing to `set` events.
+- `didInit`: Action to be called when the atom is created, but after subscribing to `set` events.
+- `set`: Action to be called when the atom's `set` function is called.
+
+### API
+
+Parameters:
+
+- `setup`: Middleware actions or function to create middleware actions. Middleware actions are fired in the atom lifecycle, alongside to the subscriptions.
+
+Returns: A middleware function to be used in atoms.
+
+### Usage Examples
+
+```ts
+// Create a middleware
+const logger = middleware({
+  init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
+  didInit: ({ atom }) =>
+    console.log(`Did finish initialization of atom "${atom.name}"`),
+  set: ({ atom, value }) =>
+    console.log(`Value of atom "${atom.name}" was set to:`, value),
+});
+
+const myAtom = atom({
+  defaultValue: "my-value",
+  middleware: [logger()],
+});
+
+// Create a middleware that has options
+interface Options {
+  disable?: boolean;
+}
+const loggerWithOptions = middleware<Options>(({ options }) => {
+  if (options.disable) return {};
+
+  return {
+    init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
+    didInit: ({ atom }) =>
+      console.log(`Did finish initialization of atom "${atom.name}"`),
+    set: ({ atom, value }) =>
+      console.log(`Value of atom "${atom.name}" was set to:`, value),
+  };
+});
+
+const myAtom = atom({
+  defaultValue: "my-value",
+  middleware: [loggerWithOptions({ disable: true })],
+});
 ```
 
 ## CONFIG
