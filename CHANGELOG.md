@@ -1,44 +1,44 @@
 # Changelog
 
-## [0.6.1](https://github.com/PrettyCoffee/yaasl/compare/0.6.0...0.6.1) (2024-01-23)
+## 0.6.1 (2024-01-23)
 
 ### Bug Fixes
 
-- **devtools:** Only warn once when extension was not found ([efaab70](https://github.com/PrettyCoffee/yaasl/commit/efaab7072bdfd0f0c3e676de0b07cc467b9d132c))
+- **devtools:** Only warn once when extension was not found
 
-## [0.6.0](https://github.com/PrettyCoffee/yaasl/compare/0.5.0...0.6.0) (2024-01-20)
-
-### Features
-
-- **middleware:** Add didInit actions ([079422a](https://github.com/PrettyCoffee/yaasl/commit/079422a14b04dc55e0d94d06ab853af503224b20))
-- **migration:** Create migration middleware ([b962888](https://github.com/PrettyCoffee/yaasl/commit/b9628884c73a13ea832700194eb891477c78cd8b))
-
-## [0.5.0](https://github.com/PrettyCoffee/yaasl/compare/0.4.0...0.5.0) (2023-10-13)
+## 0.6.0 (2024-01-20)
 
 ### Features
 
-- **expiration:** Extract expiration middleware from localStorage ([fa9706c](https://github.com/PrettyCoffee/yaasl/commit/fa9706c93520835c25f9ff35e1e6b3d262ef0414))
-- **indexedDb:** Add indexedDb middleware ([e5e4deb](https://github.com/PrettyCoffee/yaasl/commit/e5e4deba39b6d40b3ae92dd0246cf9820bb07a57))
+- **middleware:** Add didInit actions
+- **migration:** Create migration middleware
 
-## [0.4.0](https://github.com/PrettyCoffee/yaasl/compare/0.3.0...0.4.0) (2023-09-07)
-
-### Features
-
-- **localStorage:** Add option for custom parsers ([ba134b3](https://github.com/PrettyCoffee/yaasl/commit/ba134b304117cf71d0980ac3f9cceada47cb3ac7))
-
-## [0.3.0](https://github.com/PrettyCoffee/yaasl/compare/0.2.0...0.3.0) (2023-09-06)
+## 0.5.0 (2023-10-13)
 
 ### Features
 
-- **atom:** Add method to unwrap promises ([1e536be](https://github.com/PrettyCoffee/yaasl/commit/1e536be7dbe3cbe86a2683f2c898e2b4cd1b7cd9))
+- **expiration:** Extract expiration middleware from localStorage
+- **indexedDb:** Add indexedDb middleware
 
-## [0.2.0](https://github.com/PrettyCoffee/yaasl/compare/0.1.0...0.2.0) (2023-09-05)
+## 0.4.0 (2023-09-07)
 
 ### Features
 
-- Improve package exports ([5446027](https://github.com/PrettyCoffee/yaasl/commit/5446027798e17387118c97e2c6cc9c63b2a3dfb3))
-- **localStorage:** Add expiration options ([5258273](https://github.com/PrettyCoffee/yaasl/commit/5258273dfd8438d55b6f67f3c6c6a9cb8036748d))
+- **localStorage:** Add option for custom parsers
 
-## [0.1.0](https://github.com/PrettyCoffee/yaasl/tree/0.1.0) (2023-07-11)
+## 0.3.0 (2023-09-06)
 
-Initial release 🎉
+### Features
+
+- **atom:** Add method to unwrap promises
+
+## 0.2.0 (2023-09-05)
+
+### Features
+
+- Improve package exports
+- **localStorage:** Add expiration options
+
+## 0.1.0 (2023-07-11)
+
+- Initial release 🎉
