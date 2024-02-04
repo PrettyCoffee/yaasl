@@ -7,7 +7,8 @@
 - [yaasl - yet another atomic store library](#yaasl---yet-another-atomic-store-library)
   - [Packages](#packages)
   - [Quickstart](#quickstart)
-  - [Usage examples](#usage-examples) [ [Vanilla typescript](#vanilla-typescript), [React](#react) ]
+- [Or when using react](#or-when-using-react)
+  - [Usage examples](#usage-examples) [ [Vanilla typescript](#vanilla-typescript), [React (or Preact)](<#react-(or-preact)>) ]
   <!-- << TOC << -->
 
 This project is meant for personal use only.
@@ -18,10 +19,11 @@ See the [docs](./docs) directory for detailed documentation.
 
 ## Packages
 
-| Name                            | Description                  |                                                                                               |
-| ------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------- |
-| [@yaasl/core](./docs/core.md)   | Core package for vanilla JS. | [demo](https://codesandbox.io/p/sandbox/yaasl-vanilla-forked-qlkpjq?file=%2Fsrc%2Fcounter.ts) |
-| [@yaasl/react](./docs/react.md) | React bindings for `yaasl`.  | [demo](https://codesandbox.io/p/sandbox/amazing-curie-8kzn2y?file=%2Fsrc%2FCounter.tsx)       |
+| Name                              | Description                  |                                                                                               |
+| --------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------- |
+| [@yaasl/core](./docs/core.md)     | Core package for vanilla JS. | [demo](https://codesandbox.io/p/sandbox/yaasl-vanilla-forked-qlkpjq?file=%2Fsrc%2Fcounter.ts) |
+| [@yaasl/react](./docs/react.md)   | React bindings for `yaasl`.  | [demo](https://codesandbox.io/p/sandbox/amazing-curie-8kzn2y?file=%2Fsrc%2FCounter.tsx)       |
+| [@yaasl/preact](./docs/preact.md) | Preact bindings for `yaasl`. |                                                                                               |
 
 ## Quickstart
 
@@ -92,10 +94,10 @@ const counter = document.getElementById("counter");
 setupCounter(counter);
 ```
 
-### React
+### React (or Preact)
 
 ```tsx
-import { atom, CONFIG, localStorage, useAtom } from "@yaasl/react";
+import { atom, CONFIG, localStorage, useAtom } from "@yaasl/react"; // or "@yaasl/preact"
 
 // Provide an app name to yaasl
 CONFIG.name = "demo-react";
