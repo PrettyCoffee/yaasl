@@ -1,5 +1,4 @@
-import { consoleMessage, log } from "../../utils/log"
-import { Dispatch } from "../../utils/utilTypes"
+import { consoleMessage, log, Dispatch } from "@yaasl/utils"
 
 const STORAGE = window.localStorage
 

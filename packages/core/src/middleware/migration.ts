@@ -1,6 +1,7 @@
+import { log } from "@yaasl/utils"
+
 import { middleware } from "./middleware"
 import { Atom, CONFIG } from "../base"
-import { log } from "../utils/log"
 
 export interface MigrationStep<
   Version extends string = string,

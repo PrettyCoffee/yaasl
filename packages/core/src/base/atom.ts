@@ -1,6 +1,7 @@
+import { SetStateAction } from "@yaasl/utils"
+
 import { Stateful } from "./Stateful"
 import { MiddlewareAtomCallback, Middleware } from "../middleware/middleware"
-import { SetStateAction } from "../utils/utilTypes"
 
 interface AtomConfig<AtomValue> {
   /** Value that will be returned if the atom is not defined in the store */

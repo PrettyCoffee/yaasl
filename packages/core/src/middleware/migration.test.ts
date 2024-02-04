@@ -1,7 +1,8 @@
+import { mockConsole } from "@yaasl/utils"
+
 import { localStorage } from "./localStorage"
 import { createMigrationStep, migration } from "./migration"
 import { atom } from "../base"
-import { mockConsole } from "../utils/mockConsole"
 
 const migrateV1 = jest.fn()
 const migrateV2 = jest.fn()
