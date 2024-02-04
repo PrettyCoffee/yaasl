@@ -36,8 +36,8 @@
     "validate": "run-s lint test build"
   },
   "dependencies": {
-    "@yaasl/core": "^0.7.0",
-    "@yaasl/utils": "^0.7.0"
+    "@yaasl/core": "0.7.0",
+    "@yaasl/utils": "0.7.0"
   },
   "jest": {
     "preset": "ts-jest",

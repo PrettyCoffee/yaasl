@@ -7,7 +7,6 @@ scripts
 .commitlintrc
 .eslintrc
 .gitattributes
-.release-it.json
 jest.config.json
 
 # patterns

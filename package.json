@@ -1,6 +1,6 @@
 {
   "name": "yaasl",
-  "version": "0.0.0",
+  "version": "0.7.0",
   "description": "yet another atomic store library",
   "author": "PrettyCoffee",
   "homepage": "https://github.com/PrettyCoffee/yaasl",
@@ -21,20 +21,18 @@
     "validate": "npm run validate --workspaces",
     "generate-docs": "node ./scripts/generateDocs.js",
     "prepare": "cozy-git-hooks install -q",
-    "release:major": "release-it major",
-    "release:minor": "release-it minor",
-    "release:patch": "release-it patch"
+    "release": "node ./scripts/release.js"
   },
   "devDependencies": {
     "@pretty-cozy/eslint-config": "^0.2.0",
     "@pretty-cozy/git-hooks": "^0.2.0",
-    "@release-it/conventional-changelog": "^8.0.1",
     "@types/jest": "^29.5.12",
+    "enquirer": "^2.4.1",
     "eslint-import-resolver-exports": "^1.0.0-beta.5",
+    "glob": "^10.3.10",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "npm-run-all": "^4.1.5",
-    "release-it": "^17.0.3",
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
     "typescript": "^5.3.3"
