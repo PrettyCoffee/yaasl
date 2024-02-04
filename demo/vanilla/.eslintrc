@@ -1,5 +1,9 @@
 {
+  "root": true,
   "extends": ["@pretty-cozy/eslint-config/base-ts"],
+  "parserOptions": {
+    "project": ["./tsconfig.json", "./tsconfig.node.json"]
+  },
   "settings": {
     "import/resolver": {
       "typescript": {
