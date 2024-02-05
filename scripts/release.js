@@ -123,8 +123,23 @@ promptVersion()
 
     return { newVersion, changelog }
   })
+  .then(payload => {
+    log.info("")
+    log.info("🗝️ Checking npm login")
+
+    let user = npm.isLoggedIn()
+    if (!user) {
+      npm.login()
+      user = npm.isLoggedIn()
+    }
+    log.success(`√ Logged in as ${user}`)
+
+    return payload
+  })
   .then(async ({ newVersion, changelog }) => {
     log.info("")
+    log.info("🛠️ Preparing for release")
+
     if (changelog) {
       await appendChangelog(changelog)
       log.success(`√ Changelog was updated`)

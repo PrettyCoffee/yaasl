@@ -12,6 +12,16 @@ const getPackages = async () => {
 
 const npm = {
   dryRun: false,
+  isLoggedIn: () => {
+    try {
+      return execSync(`npm whoami`, { stdio: "pipe" }).toString().trim()
+    } catch {
+      return false
+    }
+  },
+  login: () => {
+    execSync(`npm login --scope=@yaasl`, { stdio: "inherit" })
+  },
   publish: async () => {
     const dry = npm.dryRun ? "--dry-run" : ""
     const packages = await getPackages()
