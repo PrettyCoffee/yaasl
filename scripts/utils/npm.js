@@ -10,14 +10,19 @@ const getPackages = async () => {
   return packages.map(require).map(({ name }) => name)
 }
 
-const publish = async () => {
-  const packages = await getPackages()
-  packages.forEach(workspace => {
-    execSync(`npm publish --workspace ${workspace}`, {
-      stdio: "pipe",
+const npm = {
+  dryRun: false,
+  publish: async () => {
+    const dry = npm.dryRun ? "--dry-run" : ""
+    const packages = await getPackages()
+
+    packages.forEach(workspace => {
+      execSync(`npm publish ${dry} --workspace ${workspace}`, {
+        stdio: "pipe",
+      })
+      log.success(`√ Published ${workspace}`)
     })
-    log.success(`√ Published ${workspace}`)
-  })
+  },
 }
 
-module.exports = { npm: { publish } }
+module.exports = { npm }

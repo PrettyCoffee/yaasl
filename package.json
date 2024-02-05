@@ -22,7 +22,7 @@
     "validate": "npm run validate --workspaces",
     "generate-docs": "node ./scripts/generateDocs.js",
     "prepare": "cozy-git-hooks install -q",
-    "release": "node ./scripts/release.js"
+    "release": "node ./scripts/release.js --dry-run"
   },
   "devDependencies": {
     "@pretty-cozy/eslint-config": "^0.2.0",

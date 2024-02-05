@@ -9,6 +9,17 @@ const { npm } = require("./utils/npm")
 const { setVersion } = require("./utils/setVersion")
 const { version } = require("./utils/version")
 
+const args = process.argv.slice(2)
+
+const dryRun = args.includes("--dry-run")
+
+git.dryRun = dryRun
+npm.dryRun = dryRun
+
+if (dryRun) {
+  log.warn("Dry run enabled, only changelog will be updated")
+}
+
 /** @returns {Promise<string>} */
 const promptExactVersion = () =>
   prompt({
@@ -119,7 +130,9 @@ promptVersion()
       log.success(`√ Changelog was updated`)
     }
 
-    await setVersion(newVersion)
+    if (!dryRun) {
+      await setVersion(newVersion)
+    }
     log.success(`√ Package versions were updated`)
 
     git.commit(`chore: Release ${newVersion}`)
