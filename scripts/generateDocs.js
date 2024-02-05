@@ -35,7 +35,10 @@ const getHeadlines = text =>
     .map(parseHeadline)
 
 const getHeadlineLink = (text, link) =>
-  `[${text}](#${link.replaceAll(" ", "-").toLowerCase()})`
+  `[${text}](#${link
+    .replace(/[()]+/gi, "")
+    .replaceAll(" ", "-")
+    .toLowerCase()})`
 
 const groupHeadlines = headlines => {
   const usedHeadlines = []

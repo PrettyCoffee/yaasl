@@ -7,7 +7,7 @@
 - [yaasl - yet another atomic store library](#yaasl---yet-another-atomic-store-library)
   - [Packages](#packages)
   - [Quickstart](#quickstart)
-  - [Usage examples](#usage-examples) [ [Vanilla typescript](#vanilla-typescript), [React (or Preact)](<#react-(or-preact)>) ]
+  - [Usage examples](#usage-examples) [ [Vanilla typescript](#vanilla-typescript), [React (or Preact)](#react-or-preact) ]
   <!-- << TOC << -->
 
 This project is meant for personal use only.
