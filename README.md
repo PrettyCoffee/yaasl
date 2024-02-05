@@ -7,7 +7,6 @@
 - [yaasl - yet another atomic store library](#yaasl---yet-another-atomic-store-library)
   - [Packages](#packages)
   - [Quickstart](#quickstart)
-- [Or when using react](#or-when-using-react)
   - [Usage examples](#usage-examples) [ [Vanilla typescript](#vanilla-typescript), [React (or Preact)](<#react-(or-preact)>) ]
   <!-- << TOC << -->
 
@@ -27,13 +26,12 @@ See the [docs](./docs) directory for detailed documentation.
 
 ## Quickstart
 
-1. Install the package
+1. Pick one of the main packages
 
 ```sh
 $ npm i @yaasl/core
-
-# Or when using react
 $ npm i @yaasl/react
+$ npm i @yaasl/preact
 ```
 
 2. Create an atom
