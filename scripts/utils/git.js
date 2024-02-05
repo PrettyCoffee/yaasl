@@ -1,4 +1,4 @@
-const { execSync } = require("node:child_process")
+const { exec } = require("./exec")
 
 const removeCommitHash = commit => commit.replace(/^[a-f0-9]+ /, "")
 
@@ -6,53 +6,49 @@ const git = {
   dryRun: false,
   /**
    * @param {string} version
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  commit: message => {
-    execSync(`git add -A`, { stdio: "pipe" })
+  commit: async message => {
+    await exec(`git add -A`)
     const dry = git.dryRun ? "--dry-run" : ""
-    execSync(`git commit ${dry} -m "${message}"`, { stdio: "pipe" })
+    await exec(`git commit ${dry} -m "${message}"`)
   },
   /**
    * @param {string} version
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  tag: version => {
+  tag: async version => {
     if (git.dryRun) return
-    execSync(`git tag ${version}`, { stdio: "pipe" })
+    await exec(`git tag ${version}`)
   },
   /**
-   * @returns {string}
+   * @returns {Promise<string>}
    */
-  latestTag: () =>
-    execSync(`git describe --tags --abbrev=0`, { stdio: "pipe" })
-      .toString()
-      .trim(),
+  latestTag: () => exec(`git describe --tags --abbrev=0`),
   /**
-   * @returns {string[]}
+   * @returns {Promise<string[]>}
    */
   allTags: () =>
-    execSync(`git tag -l --sort=version:refname`, { stdio: "pipe" })
-      .toString()
-      .trim()
-      .split("\n")
-      // Ignore tags with extensions
-      .filter(version => /^\d+\.\d+\.\d+$/.test(version)),
+    exec(`git tag -l --sort=version:refname`).then(tags =>
+      tags
+        .split("\n")
+        // Ignore tags with extensions
+        .filter(version => /^\d+\.\d+\.\d+$/.test(version))
+    ),
   /**
    * @param {string | undefined} startTag
    * @param {string | undefined} endTag
-   * @returns {string[]}
+   * @returns {Promise<string[]>}
    **/
-  getCommits: (startTag, endTag) => {
-    const start = startTag ?? git.allTags().at(-1)
+  getCommits: async (startTag, endTag) => {
+    const tags = await git.allTags()
+    const start = startTag ?? tags.at(-1)
     const end = endTag ?? "HEAD"
+
     const command = `git log ${start}..${end} --oneline`
-    return execSync(command, { stdio: "pipe" })
-      .toString()
-      .trim()
-      .split("\n")
-      .filter(Boolean)
-      .map(removeCommitHash)
+    return exec(command).then(commits =>
+      commits.split("\n").filter(Boolean).map(removeCommitHash)
+    )
   },
 }
 

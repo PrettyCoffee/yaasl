@@ -107,7 +107,7 @@ promptVersion()
       return { newVersion }
     }
 
-    const changelog = createChangelog(newVersion)
+    const changelog = await createChangelog(newVersion)
     log.muted(`\n# Changelog\n\n${changelog}`)
 
     const { ok } = await prompt({
@@ -123,14 +123,14 @@ promptVersion()
 
     return { newVersion, changelog }
   })
-  .then(payload => {
+  .then(async payload => {
     log.info("")
     log.info("🗝️ Checking npm login")
 
-    let user = npm.isLoggedIn()
+    let user = await npm.whoAmI()
     if (!user) {
-      npm.login()
-      user = npm.isLoggedIn()
+      await npm.login()
+      user = await npm.whoAmI()
     }
     log.success(`√ Logged in as ${user}`)
 
@@ -150,10 +150,10 @@ promptVersion()
     }
     log.success(`√ Package versions were updated`)
 
-    git.commit(`chore: Release ${newVersion}`)
+    await git.commit(`chore: Release ${newVersion}`)
     log.success(`√ Committed all changes`)
 
-    git.tag(newVersion)
+    await git.tag(newVersion)
     log.success(`√ Created git tag ${newVersion}`)
 
     log.info(`\n📦 Publishing all packages to npm...`)

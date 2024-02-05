@@ -1,5 +1,4 @@
-const { execSync } = require("child_process")
-
+const { exec } = require("./exec")
 const { log } = require("./log")
 const { workspaces } = require("../../package.json")
 
@@ -12,26 +11,26 @@ const getPackages = async () => {
 
 const npm = {
   dryRun: false,
-  isLoggedIn: () => {
+  whoAmI: () => {
     try {
-      return execSync(`npm whoami`, { stdio: "pipe" }).toString().trim()
+      return exec(`npm whoami`)
     } catch {
-      return false
+      return Promise.resolve(null)
     }
   },
-  login: () => {
-    execSync(`npm login --scope=@yaasl`, { stdio: "inherit" })
+  login: async () => {
+    await exec(`npm login --scope=@yaasl`)
   },
   publish: async () => {
     const dry = npm.dryRun ? "--dry-run" : ""
     const packages = await getPackages()
 
-    packages.forEach(workspace => {
-      execSync(`npm publish ${dry} --workspace ${workspace}`, {
-        stdio: "pipe",
-      })
-      log.success(`√ Published ${workspace}`)
-    })
+    const promises = packages.map(workspace =>
+      exec(`npm publish ${dry} --workspace ${workspace}`).then(() =>
+        log.success(`√ Published ${workspace}`)
+      )
+    )
+    await Promise.all(promises)
   },
 }
 

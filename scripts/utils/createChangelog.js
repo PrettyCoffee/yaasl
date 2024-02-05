@@ -7,6 +7,7 @@ const types = ["fix", "feat"]
 const isChangeCommit = commit => types.includes(commit.type)
 const isNotInternal = commit => commit.scope !== "internal"
 
+/** @param {string} commit */
 const parseCommit = commit => {
   const [, type, scope, breaking, message] = commitRegex.exec(commit) ?? []
   return { type, scope, breaking: !!breaking, message, full: commit }
@@ -68,15 +69,16 @@ const printChangelog = (version, commits) => {
   return result
 }
 
-const createChangelog = version => {
-  const commits = git
+const createChangelog = async version =>
+  git
     .getCommits()
-    .map(parseCommit)
-    .filter(isChangeCommit)
-    .filter(isNotInternal)
-    .sort(sortCommits)
-
-  return printChangelog(version, commits)
-}
+    .then(commits =>
+      commits
+        .map(parseCommit)
+        .filter(isChangeCommit)
+        .filter(isNotInternal)
+        .sort(sortCommits)
+    )
+    .then(commits => printChangelog(version, commits))
 
 module.exports = { createChangelog }
