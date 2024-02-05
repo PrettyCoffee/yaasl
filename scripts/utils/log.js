@@ -7,12 +7,25 @@ const colors = {
   reset: "\x1b[0m",
 }
 
+const color = {
+  /** @param {string} message */
+  red: message => colors.red + message + colors.reset,
+  /** @param {string} message */
+  green: message => colors.green + message + colors.reset,
+  /** @param {string} message */
+  yellow: message => colors.yellow + message + colors.reset,
+  /** @param {string} message */
+  blue: message => colors.blue + message + colors.reset,
+  /** @param {string} message */
+  gray: message => colors.gray + message + colors.reset,
+}
+
 /**
  * @param {string} message
  * @param {{ color: keyof Omit<typeof colors, "reset">, type: "error" | "info" | "warn" }} options
  * */
-const log = (message, { color, type = "info" }) =>
-  console[type](`${colors[color]}${message}${colors.reset}`)
+const log = (message, { color: colorArg, type = "info" }) =>
+  console[type](color[colorArg](message))
 
 const extendedLog = Object.assign(log, {
   /** @param {string} message */
@@ -27,4 +40,4 @@ const extendedLog = Object.assign(log, {
   success: message => log(message, { color: "green", type: "info" }),
 })
 
-module.exports = { log: extendedLog }
+module.exports = { log: extendedLog, color }

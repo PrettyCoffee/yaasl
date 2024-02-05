@@ -1,5 +1,4 @@
 const { exec } = require("./exec")
-const { log } = require("./log")
 const { workspaces } = require("../../package.json")
 
 const getPackages = async () => {
@@ -21,13 +20,13 @@ const npm = {
   login: async () => {
     await exec(`npm login --scope=@yaasl`)
   },
-  publish: async () => {
+  publish: async onPublish => {
     const dry = npm.dryRun ? "--dry-run" : ""
     const packages = await getPackages()
 
     const promises = packages.map(workspace =>
       exec(`npm publish ${dry} --workspace ${workspace}`).then(() =>
-        log.success(`√ Published ${workspace}`)
+        onPublish(workspace)
       )
     )
     await Promise.all(promises)

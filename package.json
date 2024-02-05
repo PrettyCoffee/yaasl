@@ -17,7 +17,7 @@
     "build": "npm run build --workspaces",
     "test": "jest --testMatch **/*.test.*",
     "test:watch": "npm run test -- --watchAll",
-    "lint": "npx eslint . --ext .ts,.tsx --ignore-path .gitignore",
+    "lint": "npx eslint . --ext .ts,.tsx,.js --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "validate": "npm run validate --workspaces",
     "generate-docs": "node ./scripts/generateDocs.js",

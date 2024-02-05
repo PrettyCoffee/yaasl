@@ -7,6 +7,7 @@ const { git } = require("./utils/git")
 const { log } = require("./utils/log")
 const { npm } = require("./utils/npm")
 const { setVersion } = require("./utils/setVersion")
+const { spinner } = require("./utils/spinner")
 const { version } = require("./utils/version")
 
 const args = process.argv.slice(2)
@@ -66,15 +67,15 @@ const getVersionChoices = () => {
 }
 
 /** @returns {Promise<string>} */
-const promptVersion = () => {
-  return prompt({
+const promptVersion = async () => {
+  const { version } = await prompt({
     type: "select",
     name: "version",
     message: "Pick a version to release",
     choices: getVersionChoices(),
-  }).then(async ({ version }) =>
-    version !== "exact" ? version : promptExactVersion()
-  )
+  })
+
+  return version !== "exact" ? version : promptExactVersion()
 }
 
 const appendChangelog = async changes => {
@@ -89,6 +90,8 @@ const appendChangelog = async changes => {
     throw new Error("Something went wrong while appending the changelog")
   }
 }
+
+const spin = spinner()
 
 promptVersion()
   .then(async newVersion => {
@@ -125,39 +128,49 @@ promptVersion()
   })
   .then(async payload => {
     log.info("")
-    log.info("🗝️ Checking npm login")
 
+    spin.start("Checking npm login")
     let user = await npm.whoAmI()
     if (!user) {
       await npm.login()
       user = await npm.whoAmI()
     }
-    log.success(`√ Logged in as ${user}`)
+    spin.step(`Logged in as ${user}`)
+    spin.success("Authentication completed")
 
     return payload
   })
   .then(async ({ newVersion, changelog }) => {
     log.info("")
-    log.info("🛠️ Preparing for release")
 
+    spin.start("Preparing for release")
     if (changelog) {
       await appendChangelog(changelog)
-      log.success(`√ Changelog was updated`)
+      spin.step("Changelog was updated")
     }
 
     if (!dryRun) {
       await setVersion(newVersion)
     }
-    log.success(`√ Package versions were updated`)
+    spin.step(`Package versions were updated`)
 
     await git.commit(`chore: Release ${newVersion}`)
-    log.success(`√ Committed all changes`)
+    spin.step(`Committed all changes`)
 
     await git.tag(newVersion)
-    log.success(`√ Created git tag ${newVersion}`)
+    spin.step(`Created git tag ${newVersion}`)
 
-    log.info(`\n📦 Publishing all packages to npm...`)
-    await npm.publish()
+    spin.success(`Preparation was completed`)
+    return newVersion
+  })
+  .then(async newVersion => {
+    log.info("")
 
-    log.success(`\n🎉 Successfully published ${newVersion}`)
+    spin.start(`Publishing all packages to npm`)
+    await npm.publish(async workspace => {
+      spin.step(`Published ${workspace}`)
+    })
+    spin.success(`Successfully published ${newVersion}`)
+
+    log.info("")
   })
