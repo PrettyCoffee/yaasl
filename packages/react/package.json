@@ -44,8 +44,8 @@
     "@yaasl/core": "0.7.0"
   },
   "devDependencies": {
-    "@testing-library/react": "^14.1.2",
-    "@types/react": "^18.2.48",
+    "@testing-library/react": "^14.2.1",
+    "@types/react": "^18.2.54",
     "react": "^18.2.0"
   },
   "jest": {
