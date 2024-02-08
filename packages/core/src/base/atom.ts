@@ -55,6 +55,10 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
 
     this.middleware = middleware.map(create => create(this as Atom<any>))
 
+    this.middleware.forEach(({ actions, options }) =>
+      actions.init?.({ value: this.value, atom: this as Atom<any>, options })
+    )
+
     super.subscribe(value =>
       this.middleware.forEach(({ actions, options }) =>
         actions.set?.({ value, atom: this as Atom<any>, options })

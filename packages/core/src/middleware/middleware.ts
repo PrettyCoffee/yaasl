@@ -29,7 +29,7 @@ export type MiddlewareSetup<Options> =
 
 export interface Middleware<Options = unknown> {
   options: Options
-  actions: Omit<MiddlewareActions<Options>, "init">
+  actions: MiddlewareActions<Options>
 }
 
 /** Create middlewares to be used in combination with atoms.
@@ -46,10 +46,7 @@ export const middleware =
   ): MiddlewareAtomCallback<Options> =>
   (atom: Atom): Middleware<Options> => {
     const options = optionsArg as Options
-    const { init, ...actions } =
-      setup instanceof Function ? setup({ options, atom }) : setup
-
-    init?.({ options, atom, value: atom.get() })
+    const actions = setup instanceof Function ? setup({ options, atom }) : setup
 
     return {
       options,
