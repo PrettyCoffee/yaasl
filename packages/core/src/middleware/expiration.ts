@@ -1,6 +1,6 @@
 import { middleware } from "./middleware"
-import { Expiration } from "./utils/Expiration"
 import { CONFIG } from "../base"
+import { Expiration } from "../utils/Expiration"
 
 const STORAGE = window.localStorage
 

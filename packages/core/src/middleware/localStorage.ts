@@ -1,6 +1,6 @@
 import { middleware } from "./middleware"
-import { LocalStorage } from "./utils/LocalStorage"
 import { CONFIG } from "../base"
+import { LocalStorage } from "../utils/LocalStorage"
 
 export interface LocalStorageParser<T = any> {
   parse: (value: string) => T

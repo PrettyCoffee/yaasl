@@ -1,6 +1,6 @@
 import { middleware } from "./middleware"
-import { Store } from "./utils/Store"
 import { CONFIG } from "../base"
+import { Store } from "../utils/Store"
 
 let atomDb: Store<unknown> | null = null
 
