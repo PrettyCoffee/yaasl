@@ -18,6 +18,7 @@ let key = 0
 export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
   public readonly defaultValue: AtomValue
   public readonly name: string
+  public didInit: Promise<void> | boolean = false
 
   constructor({
     defaultValue,
@@ -29,9 +30,17 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
     this.defaultValue = defaultValue
 
     if (!middleware || middleware.length === 0) {
+      this.didInit = true
       return
     }
-    new MiddlewareDispatcher({ atom: this, middleware })
+    const { didInit } = new MiddlewareDispatcher({ atom: this, middleware })
+    if (typeof didInit === "boolean") {
+      this.didInit = didInit
+    } else {
+      this.didInit = didInit.then(() => {
+        this.didInit = true
+      })
+    }
   }
 
   /** Set the value of the atom.

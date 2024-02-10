@@ -1,4 +1,7 @@
 import { atom } from "./atom"
+import { middleware } from "../middleware"
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 const defaultValue = "default"
 const nextValue = "next"
@@ -56,5 +59,33 @@ describe("Test atom", () => {
     testAtom.set(nextValue)
 
     expect(action).not.toHaveBeenCalled()
+  })
+
+  describe("synchronizes didInit status", () => {
+    it("Sets true if no midleware was passed", () => {
+      const testAtom = atom({ defaultValue })
+      expect(testAtom.didInit).toBe(true)
+    })
+
+    it("Sets true if middleware is sync", () => {
+      const init = jest.fn()
+      const didInit = jest.fn()
+
+      const m = middleware({ init, didInit })
+      const testAtom = atom({ defaultValue, middleware: [m()] })
+      expect(testAtom.didInit).toBe(true)
+    })
+
+    it("Updates if middleware is async", async () => {
+      const m = middleware({
+        init: () => sleep(1),
+        didInit: () => sleep(1),
+      })
+      const testAtom = atom({ defaultValue, middleware: [m()] })
+
+      expect(testAtom.didInit).toBeInstanceOf(Promise)
+      await testAtom.didInit
+      expect(testAtom.didInit).toBe(true)
+    })
   })
 })

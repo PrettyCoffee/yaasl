@@ -26,6 +26,8 @@ Returns: An atom instance.
 - `result.get`: Read the value of state.
 - `result.subscribe`: Subscribe to value changes.
 - `result.set`: Set the value of the atom.
+- `result.didInit`: State of the atom's middleware initialization process.
+  Will be a promise if the initialization is pending and `true` if finished.
 - `result.unwrap`: Resolve the value of a promise and set as atom value.
 
 ### Usage Examples
@@ -85,7 +87,9 @@ Create middlewares to be used in combination with a atoms.
 Middlewares can be used to interact with an atom by using the following lifecycle actions:
 
 - `init`: Action to be called when the atom is created, but before subscribing to `set` events.
+  May return a promise that can be awaited by using `atom.didInit`.
 - `didInit`: Action to be called when the atom is created, but after subscribing to `set` events.
+  May return a promise that can be awaited by using `atom.didInit`.
 - `set`: Action to be called when the atom's `set` function is called.
 
 ### API

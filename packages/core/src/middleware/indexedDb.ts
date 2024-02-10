@@ -27,7 +27,7 @@ export const indexedDb = middleware<IndexedDbOptions | undefined>(
         if (!atomDb) {
           atomDb = new Store(CONFIG.name ?? "yaasl")
         }
-        void atomDb.get(key).then(async value => {
+        return atomDb.get(key).then(async value => {
           if (value !== undefined) {
             atom.set(value)
           } else {

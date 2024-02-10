@@ -8,11 +8,11 @@ interface MiddlewarePayload<Options> {
   options: Options
 }
 
-type MiddlewareAction<Options> = (payload: MiddlewarePayload<Options>) => void
-
-type MiddlewareActions<Options> = Partial<
-  Record<ActionType, MiddlewareAction<Options>>
->
+export interface MiddlewareActions<Options> {
+  init?: (payload: MiddlewarePayload<Options>) => Promise<any> | void
+  didInit?: (payload: MiddlewarePayload<Options>) => Promise<any> | void
+  set?: (payload: MiddlewarePayload<Options>) => void
+}
 
 interface MiddlewareSetupProps<Options> {
   atom: Atom

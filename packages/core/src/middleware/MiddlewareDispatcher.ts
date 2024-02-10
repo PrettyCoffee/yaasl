@@ -1,5 +1,9 @@
 import { Middleware, ActionType, MiddlewareAtomCallback } from "./middleware"
 import { Atom } from "../base/atom"
+import { Thenable } from "../utils/Thenable"
+
+const isPromise = (value: unknown): value is Promise<any> =>
+  value instanceof Promise
 
 interface MiddlewareDispatcherConstructor {
   atom: Atom<any>
@@ -7,18 +11,26 @@ interface MiddlewareDispatcherConstructor {
 }
 
 export class MiddlewareDispatcher {
+  public didInit: Promise<void> | boolean = false
   private middleware: Middleware[] = []
 
   constructor({ atom, middleware }: MiddlewareDispatcherConstructor) {
     this.middleware = middleware.map(create => create(atom))
 
-    this.callMiddlewareAction("init", atom)
-    this.subscribeSetters(atom)
-    this.callMiddlewareAction("didInit", atom)
+    const result = this.callMiddlewareAction("init", atom)
+      .then(() => this.subscribeSetters(atom))
+      .then(() => this.callMiddlewareAction("didInit", atom))
+      .then(() => {
+        this.didInit = true
+      })
+
+    if (result instanceof Promise) {
+      this.didInit = result
+    }
   }
 
   private subscribeSetters(atom: Atom) {
-    atom.subscribe(value => this.callMiddlewareAction("set", atom, value))
+    atom.subscribe(value => void this.callMiddlewareAction("set", atom, value))
   }
 
   private callMiddlewareAction(
@@ -26,10 +38,13 @@ export class MiddlewareDispatcher {
     atom: Atom,
     value = atom.get()
   ) {
-    this.middleware.forEach(middleware => {
+    const result = this.middleware.map(middleware => {
       const { actions, options } = middleware
       const actionFn = actions[action]
-      actionFn?.({ value, atom, options })
+      return actionFn?.({ value, atom, options })
     })
+
+    const promises = result.filter(isPromise)
+    return promises.length ? Promise.all(promises) : new Thenable()
   }
 }
