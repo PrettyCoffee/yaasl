@@ -111,12 +111,13 @@ promptVersion()
     }
 
     const changelog = await createChangelog(newVersion)
+    await appendChangelog(changelog)
     log.muted(`\n# Changelog\n\n${changelog}`)
 
     const { ok } = await prompt({
       type: "toggle",
       name: "ok",
-      message: `Do you want to release the above changes with version ${newVersion}?`,
+      message: `Do you want to release the above changes with version ${newVersion}?\n  You can edit the changelog before continuing.\n `,
       initial: true,
     })
 
@@ -124,7 +125,7 @@ promptVersion()
       throw new Error("Cancelled by user")
     }
 
-    return { newVersion, changelog }
+    return { newVersion }
   })
   .then(async payload => {
     log.info("")
@@ -140,15 +141,10 @@ promptVersion()
 
     return payload
   })
-  .then(async ({ newVersion, changelog }) => {
+  .then(async ({ newVersion }) => {
     log.info("")
 
     spin.start("Preparing for release")
-    if (changelog) {
-      await appendChangelog(changelog)
-      spin.step("Changelog was updated")
-    }
-
     if (!dryRun) {
       await setVersion(newVersion)
     }

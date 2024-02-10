@@ -24,7 +24,7 @@ const sortCommits = (a, b) => {
 
 const printCommit = commit => {
   const content = commit.scope
-    ? `[${commit.scope}]: ${commit.message}`
+    ? `**${commit.scope}:** ${commit.message}`
     : `${commit.message}`
   return `- ${content}\n`
 }
