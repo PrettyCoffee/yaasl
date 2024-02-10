@@ -23,6 +23,7 @@ Returns: A state value and state setter for the atom.
 
 - `[0]`: Stateful value of the atom.
 - `[1]`: Setter function for the atom.
+- `[2]`: Boolean that indicates if the atom did finish initializing.
 
 ### Usage Examples
 
