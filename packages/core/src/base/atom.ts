@@ -1,7 +1,8 @@
 import { SetStateAction } from "@yaasl/utils"
 
 import { Stateful } from "./Stateful"
-import { MiddlewareAtomCallback, Middleware } from "../middleware/middleware"
+import { MiddlewareAtomCallback } from "../middleware/middleware"
+import { MiddlewareDispatcher } from "../middleware/MiddlewareDispatcher"
 
 interface AtomConfig<AtomValue> {
   /** Value that will be returned if the atom is not defined in the store */
@@ -17,7 +18,6 @@ let key = 0
 export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
   public readonly defaultValue: AtomValue
   public readonly name: string
-  private middleware: Middleware[] = []
 
   constructor({
     defaultValue,
@@ -27,7 +27,11 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
     super(defaultValue)
     this.name = name
     this.defaultValue = defaultValue
-    this.initMiddleware(middleware)
+
+    if (!middleware || middleware.length === 0) {
+      return
+    }
+    new MiddlewareDispatcher({ atom: this, middleware })
   }
 
   /** Set the value of the atom.
@@ -48,26 +52,6 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
     const value = await promise
     this.set(value)
     return value
-  }
-
-  private initMiddleware(middleware?: MiddlewareAtomCallback<unknown>[]) {
-    if (middleware == null) return
-
-    this.middleware = middleware.map(create => create(this as Atom<any>))
-
-    this.middleware.forEach(({ actions, options }) =>
-      actions.init?.({ value: this.value, atom: this as Atom<any>, options })
-    )
-
-    super.subscribe(value =>
-      this.middleware.forEach(({ actions, options }) =>
-        actions.set?.({ value, atom: this as Atom<any>, options })
-      )
-    )
-
-    this.middleware.forEach(({ actions, options }) =>
-      actions.didInit?.({ value: this.value, atom: this as Atom<any>, options })
-    )
   }
 }
 
