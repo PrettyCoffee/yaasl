@@ -78,6 +78,21 @@ const promptVersion = async () => {
   return version !== "exact" ? version : promptExactVersion()
 }
 
+const promptContinue = async text => {
+  const { ok } = await prompt({
+    type: "toggle",
+    name: "ok",
+    message: text,
+    initial: true,
+  })
+
+  if (!ok) {
+    throw new Error("Cancelled by user")
+  }
+
+  return true
+}
+
 const appendChangelog = async changes => {
   const changelog = await readFile("CHANGELOG.md", "utf-8")
   const newChangelog = changelog.replace(
@@ -114,16 +129,9 @@ promptVersion()
     await appendChangelog(changelog)
     log.muted(`\n# Changelog\n\n${changelog}`)
 
-    const { ok } = await prompt({
-      type: "toggle",
-      name: "ok",
-      message: `Do you want to release the above changes with version ${newVersion}?\n  You can edit the changelog before continuing.\n `,
-      initial: true,
-    })
-
-    if (!ok) {
-      throw new Error("Cancelled by user")
-    }
+    await promptContinue(
+      `Do you want to release the above changes with version ${newVersion}?\n  You can edit the changelog before continuing.\n `
+    )
 
     return { newVersion }
   })
@@ -161,6 +169,8 @@ promptVersion()
   })
   .then(async newVersion => {
     log.info("")
+
+    await promptContinue(`Do you want to push and publish the applied changes?`)
 
     spin.start(`Publishing all packages to npm`)
     await npm.publish(async workspace => {
