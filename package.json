@@ -1,6 +1,6 @@
 {
   "name": "yaasl",
-  "version": "0.7.0",
+  "version": "0.7.0-alpha.0",
   "description": "yet another atomic store library",
   "author": "PrettyCoffee",
   "homepage": "https://github.com/PrettyCoffee/yaasl",
@@ -22,7 +22,7 @@
     "validate": "npm run validate --workspaces",
     "generate-docs": "node ./scripts/generateDocs.js",
     "prepare": "cozy-git-hooks install -q",
-    "release": "node ./scripts/release.js --dry-run",
+    "release": "node ./scripts/release.js",
     "upgrade": "ncu --deep -u -t minor -f !@yaasl/*",
     "upgrade:latest": "npm run upgrade -- -t latest"
   },
