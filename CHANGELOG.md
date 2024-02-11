@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.7.0 (2024-02-11)
+
+### Breaking Changes
+
+- Restructure project as monorepo
+
+### Features
+
+- **middleware:** Allow waiting for promises returned by init and didInit
+- **middleware:** Execute all setups before calling init action
+- **preact:** Add preact bindings
+- **react:** Add didInit state to useAtom hook
+
 ## 0.6.1 (2024-01-23)
 
 ### Bug Fixes
