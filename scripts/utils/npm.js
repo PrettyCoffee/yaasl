@@ -25,8 +25,8 @@ const npm = {
     const packages = await getPackages()
 
     const promises = packages.map(workspace =>
-      exec(`npm publish ${dry} --workspace ${workspace}`).then(() =>
-        onPublish(workspace)
+      exec(`npm publish ${dry} --workspace ${workspace} --access=public`).then(
+        () => onPublish(workspace)
       )
     )
     await Promise.all(promises)
