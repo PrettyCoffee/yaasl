@@ -10,7 +10,7 @@ const git = {
    */
   commit: async message => {
     await exec(`git add -A`)
-    const dry = git.dryRun ? "--dry-run" : ""
+    const dry = git.dryRun ? "--dry-run --allow-empty" : ""
     await exec(`git commit ${dry} -m "${message}"`)
   },
   /**
