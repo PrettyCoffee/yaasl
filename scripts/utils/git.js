@@ -13,6 +13,10 @@ const git = {
     const dry = git.dryRun ? "--dry-run --allow-empty" : ""
     await exec(`git commit ${dry} -m "${message}"`)
   },
+  push: async () => {
+    const dry = git.dryRun ? "--dry-run" : ""
+    await exec(`git push ${dry}`)
+  },
   /**
    * @param {string} version
    * @returns {Promise<void>}

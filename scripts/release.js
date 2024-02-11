@@ -169,8 +169,15 @@ promptVersion()
   })
   .then(async newVersion => {
     log.info("")
-
     await promptContinue(`Do you want to push and publish the applied changes?`)
+    log.info("")
+
+    spin.start("Pushing changes to github")
+    await git.push()
+    spin.step(`Pushed changes`)
+    spin.success("Successfully pushed commits and tags")
+
+    log.info("")
 
     spin.start(`Publishing all packages to npm`)
     await npm.publish(async workspace => {
