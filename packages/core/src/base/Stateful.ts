@@ -1,5 +1,7 @@
+type Callback<Value> = (value: Value, previous: Value) => void
+
 export class Stateful<Value = unknown> {
-  private listeners = new Set<(value: Value) => void>()
+  private listeners = new Set<Callback<Value>>()
 
   constructor(protected value: Value) {}
 
@@ -17,19 +19,20 @@ export class Stateful<Value = unknown> {
    *
    *  @returns A callback to unsubscribe the passed callback.
    */
-  subscribe(callback: (value: Value) => void) {
+  subscribe(callback: Callback<Value>) {
     this.listeners.add(callback)
     return () => this.listeners.delete(callback)
   }
 
-  private emit() {
-    this.listeners.forEach(listener => listener(this.get()))
+  private emit(value: Value, previous: Value) {
+    this.listeners.forEach(listener => listener(value, previous))
   }
 
   protected update(value: Value) {
     if (this.value !== value) {
+      const previous = this.value
       this.value = value
-      this.emit()
+      this.emit(value, previous)
     }
   }
 }

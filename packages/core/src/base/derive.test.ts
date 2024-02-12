@@ -48,8 +48,8 @@ describe("Test atom", () => {
   })
 
   it("Only updates if actually changing the result", () => {
-    const a = { value: "test" }
-    const b = { value: "test" }
+    const a = { value: "test-a" }
+    const b = { value: "test-b" }
     const next = { value: "next" }
     const testAtom = atom({ defaultValue: { a, b, deeper: { a, b } } })
     const testDerive = derive(({ get }) => get(testAtom).deeper.a)
@@ -62,6 +62,6 @@ describe("Test atom", () => {
     expect(change).not.toHaveBeenCalled()
 
     testAtom.set(prev => ({ ...prev, deeper: { ...prev.deeper, a: next } }))
-    expect(change).toHaveBeenCalledWith(next)
+    expect(change).toHaveBeenCalledWith(next, a)
   })
 })

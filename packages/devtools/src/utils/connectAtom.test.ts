@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return -- doesn't matter for tests */
 import { atom, Atom } from "@yaasl/core"
 
 import { cache } from "./cache"
@@ -180,7 +181,7 @@ describe("Test connectAtom", () => {
     it("Imports a history of states", () => {
       const { connection, subscription } = mockExtension()
       const set = jest.fn()
-      testAtom.subscribe(set)
+      testAtom.subscribe(value => set(value))
       connectAtom(connection, testAtom)
 
       const states = [

@@ -47,7 +47,7 @@ describe("Test atom", () => {
     testAtom.set(nextValue)
 
     expect(action).toHaveBeenCalledTimes(1)
-    expect(action).toHaveBeenCalledWith(nextValue)
+    expect(action).toHaveBeenCalledWith(nextValue, defaultValue)
   })
 
   it("Unsubscribes from changes", () => {

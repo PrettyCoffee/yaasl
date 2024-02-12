@@ -4,7 +4,7 @@ import { Stateful } from "./Stateful"
 import { MiddlewareAtomCallback } from "../middleware/middleware"
 import { MiddlewareDispatcher } from "../middleware/MiddlewareDispatcher"
 
-interface AtomConfig<AtomValue> {
+export interface AtomConfig<AtomValue> {
   /** Value that will be returned if the atom is not defined in the store */
   defaultValue: AtomValue
   /** Name of the atom. Must be unique among all atoms. */
