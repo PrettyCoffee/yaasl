@@ -1,9 +1,7 @@
 import { Middleware, ActionType, MiddlewareAtomCallback } from "./middleware"
 import { Atom } from "../base/atom"
+import { isPromise } from "../utils/isPromise"
 import { Thenable } from "../utils/Thenable"
-
-const isPromise = (value: unknown): value is Promise<any> =>
-  value instanceof Promise
 
 interface MiddlewareDispatcherConstructor {
   atom: Atom<any>
