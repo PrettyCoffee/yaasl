@@ -97,4 +97,42 @@ describe("Test Thenable", () => {
       expect(await result).toBe(5)
     })
   })
+
+  describe(".isThenable method", () => {
+    it.each`
+      name          | value                 | result
+      ${"Thenable"} | ${new Thenable(0)}    | ${true}
+      ${"Promise"}  | ${Promise.resolve(0)} | ${false}
+      ${"number"}   | ${0}                  | ${false}
+    `("$name will result in $result", ({ value, result }) => {
+      expect(Thenable.isThenable(value)).toBe(result)
+    })
+  })
+
+  describe(".all method", () => {
+    it("combines thenables", async () => {
+      const result = Thenable.all([new Thenable(1), new Thenable(2)])
+      expect(result).toBeInstanceOf(Thenable)
+      expect(await result).toEqual([1, 2])
+    })
+
+    it("combines promises", async () => {
+      const result = Thenable.all([
+        sleep(1).then(() => 1),
+        sleep(3).then(() => 2),
+      ])
+      expect(result).toBeInstanceOf(Promise)
+      expect(await result).toEqual([1, 2])
+    })
+
+    it("combines thenables and promises", async () => {
+      const result = Thenable.all([
+        new Thenable(1),
+        sleep(1).then(() => 2),
+        new Thenable(3),
+      ])
+      expect(result).toBeInstanceOf(Promise)
+      expect(await result).toEqual([1, 2, 3])
+    })
+  })
 })

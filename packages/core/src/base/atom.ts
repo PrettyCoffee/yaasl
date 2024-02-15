@@ -18,7 +18,7 @@ let key = 0
 export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
   public readonly defaultValue: AtomValue
   public readonly name: string
-  public didInit: Promise<void> | boolean = false
+  public didInit: PromiseLike<void> | boolean = false
 
   constructor({
     defaultValue,
