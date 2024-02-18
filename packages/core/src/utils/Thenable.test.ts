@@ -21,14 +21,14 @@ describe("Test Thenable", () => {
 
   describe(".then method", () => {
     it("returns a Thenable", () => {
-      const testFn = jest.fn()
+      const testFn = vi.fn()
       const result = new Thenable("test").then(testFn)
       expect(result).toBeInstanceOf(Thenable)
       expect(testFn).toHaveBeenCalledWith("test")
     })
 
     it("returns a Promise", async () => {
-      const testFn = jest.fn()
+      const testFn = vi.fn()
       const result = new Thenable("test").then(value =>
         sleep(5).then(() => testFn(value))
       )

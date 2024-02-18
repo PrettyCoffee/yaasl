@@ -1,9 +1,9 @@
 import { middleware } from "./middleware"
 import { Atom, atom } from "../base"
 
-const didInit = jest.fn()
-const init = jest.fn()
-const set = jest.fn()
+const didInit = vi.fn()
+const init = vi.fn()
+const set = vi.fn()
 const testMiddleware = middleware({
   init,
   didInit,
@@ -18,7 +18,7 @@ const testAtom = atom({ defaultValue })
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 beforeEach(() => {
-  jest.resetAllMocks()
+  vi.resetAllMocks()
 })
 
 describe("Test middleware", () => {

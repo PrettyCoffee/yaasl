@@ -10,79 +10,79 @@ const createDateIn = (ms: number) => {
 
 describe("Test Expiration", () => {
   beforeAll(() => {
-    jest.useFakeTimers()
+    vi.useFakeTimers()
   })
   afterAll(() => {
-    jest.useRealTimers
+    vi.useRealTimers
   })
 
   it("Loads existing expiration", () => {
     localStorage.setItem(key, createDateIn(100).valueOf().toString())
     const expiration = new Expiration({ key, expiresAt: createDateIn(300) })
-    const onExpire = jest.fn()
+    const onExpire = vi.fn()
 
     expiration.init(onExpire)
     expect(onExpire).not.toHaveBeenCalled()
 
-    jest.advanceTimersByTime(100)
+    vi.advanceTimersByTime(100)
     expect(onExpire).toHaveBeenCalledTimes(1)
     expect(localStorage.getItem(key)).toBeNull()
 
-    jest.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300)
     expect(onExpire).toHaveBeenCalledTimes(1)
   })
 
   it("Resets if existing expiration is faulty", () => {
     localStorage.setItem(key, "this-is-not-a-date")
     const expiration = new Expiration({ key, expiresAt: createDateIn(300) })
-    const onExpire = jest.fn()
+    const onExpire = vi.fn()
 
     expiration.init(onExpire)
 
     expect(onExpire).toHaveBeenCalledTimes(1)
     expect(localStorage.getItem(key)).toBeNull()
 
-    jest.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300)
     expect(onExpire).toHaveBeenCalledTimes(1)
   })
 
   it("Sets an expiration Date", () => {
     const expiration = new Expiration({ key, expiresAt: createDateIn(300) })
-    const onExpire = jest.fn()
+    const onExpire = vi.fn()
 
     expiration.set(onExpire)
 
     expect(localStorage.getItem(key)).toBe(String(Date.now() + 300))
     expect(onExpire).not.toHaveBeenCalled()
 
-    jest.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300)
     expect(onExpire).toHaveBeenCalledTimes(1)
     expect(localStorage.getItem(key)).toBeNull()
   })
 
   it("Sets an expiration timeout", () => {
     const expiration = new Expiration({ key, expiresIn: 300 })
-    const onExpire = jest.fn()
+    const onExpire = vi.fn()
 
     expiration.set(onExpire)
 
     expect(localStorage.getItem(key)).toBe(String(Date.now() + 300))
     expect(onExpire).not.toHaveBeenCalled()
 
-    jest.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300)
     expect(onExpire).toHaveBeenCalledTimes(1)
     expect(localStorage.getItem(key)).toBeNull()
   })
 
   it("Stops an expiration if was removed", () => {
     const expiration = new Expiration({ key, expiresIn: 300 })
-    const onExpire = jest.fn()
+    const onExpire = vi.fn()
 
     expiration.set(onExpire)
     localStorage.removeItem(key)
     expiration.init(onExpire)
 
-    jest.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300)
     expect(onExpire).not.toHaveBeenCalled()
   })
 })

@@ -29,8 +29,8 @@
     "compile:mjs": "tsc -p ./tsconfig.node.json --outDir ./dist/mjs -m es2020 -t es2020",
     "compile:cjs": "tsc -p ./tsconfig.node.json --outDir ./dist/cjs -m commonjs -t es2015",
     "compile:types": "tsc -p ./tsconfig.node.json --outDir ./dist/@types --declaration --emitDeclarationOnly",
-    "test": "jest --testMatch ./**/*.test.*",
-    "test:watch": "npm run test -- --watchAll",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "validate": "run-s lint test build"
@@ -38,10 +38,6 @@
   "dependencies": {
     "@yaasl/core": "0.7.0",
     "@yaasl/utils": "0.7.0"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "jsdom"
   },
   "eslintConfig": {
     "extends": [

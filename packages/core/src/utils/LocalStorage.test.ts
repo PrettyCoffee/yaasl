@@ -6,7 +6,7 @@ const value = { foo: "bar" }
 describe("Test LocalStorage", () => {
   beforeEach(() => {
     localStorage.clear()
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it("gets null if the key does not exist", () => {
@@ -41,8 +41,8 @@ describe("Test LocalStorage", () => {
 
   describe("uses the parser", () => {
     const parser = {
-      parse: jest.fn().mockReturnValue(value),
-      stringify: jest.fn().mockReturnValue(JSON.stringify(value)),
+      parse: vi.fn().mockReturnValue(value),
+      stringify: vi.fn().mockReturnValue(JSON.stringify(value)),
     }
 
     it("stringify function when setting a value", () => {
@@ -61,12 +61,10 @@ describe("Test LocalStorage", () => {
 
   describe("handleTabSync", () => {
     it("should add event listener if onTabSync is passed", () => {
-      const addEventListener = jest.fn()
-      jest
-        .spyOn(window, "addEventListener")
-        .mockImplementation(addEventListener)
+      const addEventListener = vi.fn()
+      vi.spyOn(window, "addEventListener").mockImplementation(addEventListener)
 
-      new LocalStorage(key, { onTabSync: jest.fn() })
+      new LocalStorage(key, { onTabSync: vi.fn() })
 
       expect(addEventListener).toHaveBeenCalledWith(
         "storage",
@@ -75,10 +73,8 @@ describe("Test LocalStorage", () => {
     })
 
     it("should not add event listener if onTabSync is not passed", () => {
-      const addEventListener = jest.fn()
-      jest
-        .spyOn(window, "addEventListener")
-        .mockImplementation(addEventListener)
+      const addEventListener = vi.fn()
+      vi.spyOn(window, "addEventListener").mockImplementation(addEventListener)
 
       new LocalStorage(key)
 

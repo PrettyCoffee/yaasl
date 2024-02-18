@@ -6,7 +6,9 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 const defaultValue = "default"
 const nextValue = "next"
 
-beforeEach(() => jest.resetAllMocks())
+beforeEach(() => {
+  vi.resetAllMocks()
+})
 
 describe("Test atom", () => {
   it("Creates an atom with default value", () => {
@@ -39,7 +41,7 @@ describe("Test atom", () => {
   })
 
   it("Subscribes to changes", () => {
-    const action = jest.fn()
+    const action = vi.fn()
     const testAtom = atom({ defaultValue })
 
     testAtom.subscribe(action)
@@ -51,7 +53,7 @@ describe("Test atom", () => {
   })
 
   it("Unsubscribes from changes", () => {
-    const action = jest.fn()
+    const action = vi.fn()
     const testAtom = atom({ defaultValue })
 
     const unsub = testAtom.subscribe(action)
@@ -68,8 +70,8 @@ describe("Test atom", () => {
     })
 
     it("Sets true if middleware is sync", () => {
-      const init = jest.fn()
-      const didInit = jest.fn()
+      const init = vi.fn()
+      const didInit = vi.fn()
 
       const m = middleware({ init, didInit })
       const testAtom = atom({ defaultValue, middleware: [m()] })

@@ -22,16 +22,16 @@ const mockExtension = () => {
   const initial = undefined as ((Action: Message) => void) | undefined
   const subscription = { current: initial }
   const connection: ConnectionResponse = {
-    subscribe: jest.fn(sub => {
-      subscription.current = jest.fn(sub)
+    subscribe: vi.fn(sub => {
+      subscription.current = vi.fn(sub)
       return () => null
     }),
-    send: jest.fn(),
-    init: jest.fn(),
+    send: vi.fn(),
+    init: vi.fn(),
   }
 
   const extension: ReduxDevtoolsExtension = {
-    connect: jest.fn(() => connection),
+    connect: vi.fn(() => connection),
     disconnect: () => null,
   }
 
@@ -163,7 +163,7 @@ describe("Test connectAtom", () => {
     it("Commits the current state", () => {
       const { connection, subscription } = mockExtension()
       connectAtom(connection, testAtom)
-      ;(connection.init as ReturnType<typeof jest.fn>).mockClear()
+      ;(connection.init as ReturnType<typeof vi.fn>).mockClear()
 
       update(connection, testAtom, nextValue)
 
@@ -180,7 +180,7 @@ describe("Test connectAtom", () => {
 
     it("Imports a history of states", () => {
       const { connection, subscription } = mockExtension()
-      const set = jest.fn()
+      const set = vi.fn()
       testAtom.subscribe(value => set(value))
       connectAtom(connection, testAtom)
 

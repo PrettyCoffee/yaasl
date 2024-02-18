@@ -12,11 +12,11 @@ const storeKey = "atom-expires-at"
 
 describe("Test expiration", () => {
   beforeEach(() => {
-    jest.useFakeTimers()
+    vi.useFakeTimers()
   })
   afterEach(() => {
     window.localStorage.clear()
-    jest.useRealTimers()
+    vi.useRealTimers()
   })
 
   it("expires in given milliseconds", () => {
@@ -31,7 +31,7 @@ describe("Test expiration", () => {
     expect(testAtom.get()).toStrictEqual(nextValue)
     expect(window.localStorage.getItem(storeKey)).toBe(String(Date.now() + 300))
 
-    jest.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300)
 
     expect(testAtom.get()).toStrictEqual(defaultValue)
     expect(window.localStorage.getItem(storeKey)).toBeNull()
@@ -52,7 +52,7 @@ describe("Test expiration", () => {
       String(expirationDate.valueOf())
     )
 
-    jest.advanceTimersByTime(300)
+    vi.advanceTimersByTime(300)
 
     expect(testAtom.get()).toStrictEqual(defaultValue)
     expect(window.localStorage.getItem(storeKey)).toBeNull()
@@ -71,7 +71,7 @@ describe("Test expiration", () => {
     expect(testAtom.get()).toStrictEqual(nextValue)
     expect(window.localStorage.getItem(storeKey)).toBe(String(existing))
 
-    jest.advanceTimersByTime(150)
+    vi.advanceTimersByTime(150)
 
     expect(testAtom.get()).toStrictEqual(defaultValue)
     expect(window.localStorage.getItem(storeKey)).toBeNull()

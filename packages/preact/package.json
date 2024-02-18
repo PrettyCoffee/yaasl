@@ -31,8 +31,8 @@
     "compile:mjs": "tsc -p ./tsconfig.node.json --outDir ./dist/mjs -m es2020 -t es2020",
     "compile:cjs": "tsc -p ./tsconfig.node.json --outDir ./dist/cjs -m commonjs -t es2015",
     "compile:types": "tsc -p ./tsconfig.node.json --outDir ./dist/@types --declaration --emitDeclarationOnly",
-    "test": "jest --testMatch ./**/*.test.*.ignore --passWithNoTests",
-    "test:watch": "npm run test -- --watchAll",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest watch --passWithNoTests",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "validate": "run-s lint test build"
@@ -47,10 +47,6 @@
   "devDependencies": {
     "@testing-library/preact": "^3.2.3",
     "preact": "^10.19.3"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "jsdom"
   },
   "eslintConfig": {
     "extends": [

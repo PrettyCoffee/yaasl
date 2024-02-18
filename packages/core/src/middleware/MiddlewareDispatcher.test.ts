@@ -44,7 +44,7 @@ describe("Test MiddlewareDispatcher", () => {
   `(
     "{ init: $initType, didInit: $didInitType }",
     (types: TestOptions["types"]) => {
-      const testFn = jest.fn()
+      const testFn = vi.fn()
       const m = createMiddleware({
         types: types,
         labels: ["init", "didInit", "set"],
@@ -85,7 +85,7 @@ describe("Test MiddlewareDispatcher", () => {
   )
 
   it("waits for all tasks to finish", async () => {
-    const testFn = jest.fn()
+    const testFn = vi.fn()
     const testAtom = atom({ defaultValue: 0 })
     const m1 = createMiddleware({
       types: { initType: "async", didInitType: "async" },

@@ -4,7 +4,7 @@ import { derive } from "./derive"
 const defaultValue = "default"
 const nextValue = "next"
 
-beforeEach(() => jest.resetAllMocks())
+beforeEach(() => vi.resetAllMocks())
 
 describe("Test atom", () => {
   it("Derives a value", () => {
@@ -54,7 +54,7 @@ describe("Test atom", () => {
     const testAtom = atom({ defaultValue: { a, b, deeper: { a, b } } })
     const testDerive = derive(({ get }) => get(testAtom).deeper.a)
 
-    const change = jest.fn()
+    const change = vi.fn()
     testDerive.subscribe(change)
 
     testAtom.set(prev => ({ ...prev, b: next }))

@@ -1,7 +1,7 @@
 export const mockConsole = () => {
   const oldConsole = global.console
-  const error = jest.fn()
-  const warn = jest.fn()
+  const error = vi.fn<unknown[], unknown>()
+  const warn = vi.fn<unknown[], unknown>()
 
   global.console = { ...global.console, error, warn }
 

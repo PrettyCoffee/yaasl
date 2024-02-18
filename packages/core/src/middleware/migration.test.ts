@@ -4,8 +4,8 @@ import { localStorage } from "./localStorage"
 import { createMigrationStep, migration } from "./migration"
 import { atom } from "../base"
 
-const migrateV1 = jest.fn()
-const migrateV2 = jest.fn()
+const migrateV1 = vi.fn()
+const migrateV2 = vi.fn()
 
 const v1 = createMigrationStep({
   previous: null,
@@ -30,7 +30,7 @@ const testName = "test-name"
 describe("Test migration", () => {
   beforeEach(() => {
     window.localStorage.clear()
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it("Sets latest version if none is present", () => {
