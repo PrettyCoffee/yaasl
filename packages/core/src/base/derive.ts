@@ -1,14 +1,14 @@
 import { Stateful } from "./Stateful"
 
-type Derivation<T> = (context: { get: <V>(dep: Stateful<V>) => V }) => T
+type DeriveFn<Value> = (context: { get: <V>(dep: Stateful<V>) => V }) => Value
 
-export class Derive<DerivedValue> extends Stateful<DerivedValue> {
+export class Derive<Value> extends Stateful<Value> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private dependencies = new Set<Stateful<any>>()
 
-  constructor(private readonly derivation: Derivation<DerivedValue>) {
-    super(undefined as DerivedValue)
-    this.value = derivation({ get: dep => this.addDependency(dep) })
+  constructor(private readonly derive: DeriveFn<Value>) {
+    super(undefined as Value)
+    this.value = derive({ get: dep => this.addDependency(dep) })
   }
 
   private addDependency<V>(dependency: Stateful<V>) {
@@ -21,7 +21,7 @@ export class Derive<DerivedValue> extends Stateful<DerivedValue> {
   }
 
   private deriveUpdate() {
-    this.update(this.derivation({ get: dep => this.addDependency(dep) }))
+    this.update(this.derive({ get: dep => this.addDependency(dep) }))
   }
 }
 
@@ -31,5 +31,4 @@ export class Derive<DerivedValue> extends Stateful<DerivedValue> {
  *
  *  @returns A derived instance.
  **/
-export const derive = <DerivedValue>(get: Derivation<DerivedValue>) =>
-  new Derive(get)
+export const derive = <Value>(get: DeriveFn<Value>) => new Derive(get)

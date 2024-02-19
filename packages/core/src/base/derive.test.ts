@@ -4,7 +4,9 @@ import { derive } from "./derive"
 const defaultValue = "default"
 const nextValue = "next"
 
-beforeEach(() => vi.resetAllMocks())
+beforeEach(() => {
+  vi.resetAllMocks()
+})
 
 describe("Test atom", () => {
   it("Derives a value", () => {

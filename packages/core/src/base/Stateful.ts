@@ -9,7 +9,7 @@ export class Stateful<Value = unknown> {
    *
    * @returns The current value.
    **/
-  get() {
+  public get() {
     return this.value
   }
 
@@ -19,7 +19,7 @@ export class Stateful<Value = unknown> {
    *
    *  @returns A callback to unsubscribe the passed callback.
    */
-  subscribe(callback: Callback<Value>) {
+  public subscribe(callback: Callback<Value>) {
     this.listeners.add(callback)
     return () => this.listeners.delete(callback)
   }

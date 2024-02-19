@@ -4,9 +4,9 @@ import { Stateful } from "./Stateful"
 import { MiddlewareAtomCallback } from "../middleware/middleware"
 import { MiddlewareDispatcher } from "../middleware/MiddlewareDispatcher"
 
-export interface AtomConfig<AtomValue> {
+export interface AtomConfig<Value> {
   /** Value that will be returned if the atom is not defined in the store */
-  defaultValue: AtomValue
+  defaultValue: Value
   /** Name of the atom. Must be unique among all atoms. */
   name?: string
   /** Middleware that will be applied on the atom */
@@ -15,8 +15,8 @@ export interface AtomConfig<AtomValue> {
 
 let key = 0
 
-export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
-  public readonly defaultValue: AtomValue
+export class Atom<Value = unknown> extends Stateful<Value> {
+  public readonly defaultValue: Value
   public readonly name: string
   public didInit: PromiseLike<void> | boolean = false
 
@@ -24,7 +24,7 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
     defaultValue,
     name = `atom-${++key}`,
     middleware,
-  }: AtomConfig<AtomValue>) {
+  }: AtomConfig<Value>) {
     super(defaultValue)
     this.name = name
     this.defaultValue = defaultValue
@@ -48,7 +48,7 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
    * @param next New value or function to create the
    * new value based off the previous value.
    */
-  public set(next: SetStateAction<AtomValue>) {
+  public set(next: SetStateAction<Value>) {
     const value = next instanceof Function ? next(this.get()) : next
     super.update(value)
   }
@@ -57,7 +57,7 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
    *
    * @param promise Promise to unwrap
    */
-  public async unwrap(promise: Promise<AtomValue>) {
+  public async unwrap(promise: Promise<Value>) {
     const value = await promise
     this.set(value)
     return value
@@ -72,5 +72,4 @@ export class Atom<AtomValue = unknown> extends Stateful<AtomValue> {
  *
  * @returns An atom instance.
  **/
-export const atom = <AtomValue>(config: AtomConfig<AtomValue>) =>
-  new Atom(config)
+export const atom = <Value>(config: AtomConfig<Value>) => new Atom(config)
