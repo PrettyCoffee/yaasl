@@ -8,7 +8,7 @@ beforeEach(() => {
   vi.resetAllMocks()
 })
 
-describe("Test atom", () => {
+describe("Test derive", () => {
   it("Derives a value", () => {
     const atom1 = atom({ defaultValue })
     const atom2 = atom({ defaultValue })
@@ -65,5 +65,72 @@ describe("Test atom", () => {
 
     testAtom.set(prev => ({ ...prev, deeper: { ...prev.deeper, a: next } }))
     expect(change).toHaveBeenCalledWith(next, a)
+  })
+
+  describe("SettableDerive", () => {
+    it("Elevates a new value", () => {
+      const defaultValue = 1
+      const atom1 = atom({ defaultValue })
+
+      const testDerive = derive(
+        ({ get }) => get(atom1) * 2,
+        ({ value, set }) => set(atom1, value / 2)
+      )
+
+      testDerive.set(4)
+      expect(atom1.get()).toBe(2)
+    })
+
+    it("Elevates multiple dependencies", () => {
+      const defaultValue = 1
+      const atom1 = atom({ defaultValue })
+      const atom2 = atom({ defaultValue })
+
+      const testDerive = derive(
+        ({ get }) => ({
+          value1: get(atom1),
+          value2: get(atom2),
+        }),
+        ({ value, set }) => {
+          set(atom1, value.value1)
+          set(atom2, value.value2)
+        }
+      )
+
+      expect(testDerive.get()).toEqual({ value1: 1, value2: 1 })
+
+      atom1.set(4)
+      expect(testDerive.get()).toEqual({ value1: 4, value2: 1 })
+
+      testDerive.set({ value1: 2, value2: 2 })
+      expect(atom1.get()).toBe(2)
+      expect(atom2.get()).toBe(2)
+    })
+
+    it("Can use the previous value", () => {
+      const defaultValue = { foo: "bar", value: 1 }
+      const atom1 = atom({ defaultValue })
+
+      const testDerive = derive(
+        ({ get }) => get(atom1).value,
+        ({ value, set }) => set(atom1, prev => ({ ...prev, value }))
+      )
+
+      testDerive.set(prev => prev + 1)
+      expect(atom1.get()).toStrictEqual({ foo: "bar", value: 2 })
+      expect(testDerive.get()).toBe(2)
+    })
+
+    it("Throws an error if set and get dependencies do not match", () => {
+      const atom1 = atom({ defaultValue })
+      const atom2 = atom({ defaultValue })
+
+      expect(() =>
+        derive(
+          ({ get }) => get(atom1),
+          ({ value, set }) => set(atom2, value)
+        )
+      ).toThrow()
+    })
   })
 })

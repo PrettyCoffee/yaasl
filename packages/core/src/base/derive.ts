@@ -1,34 +1,121 @@
+import { consoleMessage, SetStateAction } from "@yaasl/utils"
+
+import { Atom } from "./atom"
 import { Stateful } from "./Stateful"
 
-type DeriveFn<Value> = (context: { get: <V>(dep: Stateful<V>) => V }) => Value
+type GetterFn<Value> = (context: { get: <V>(dep: Stateful<V>) => V }) => Value
+
+type SetterFn<Value> = (context: {
+  value: Value
+  set: <V>(dep: Atom<V> | SettableDerive<V>, next: SetStateAction<V>) => void
+}) => void
 
 export class Derive<Value> extends Stateful<Value> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private dependencies = new Set<Stateful<any>>()
+  protected readonly getterDependencies = new Set<Stateful<any>>()
 
-  constructor(private readonly derive: DeriveFn<Value>) {
+  constructor(private readonly getter: GetterFn<Value>) {
     super(undefined as Value)
-    this.value = derive({ get: dep => this.addDependency(dep) })
+    this.value = getter({ get: dep => this.addGetDependency(dep) })
   }
 
-  private addDependency<V>(dependency: Stateful<V>) {
-    if (!this.dependencies.has(dependency)) {
+  private addGetDependency<V>(dependency: Stateful<V>) {
+    if (!this.getterDependencies.has(dependency)) {
       dependency.subscribe(() => this.deriveUpdate())
-      this.dependencies.add(dependency)
+      this.getterDependencies.add(dependency)
     }
 
     return dependency.get()
   }
 
   private deriveUpdate() {
-    this.update(this.derive({ get: dep => this.addDependency(dep) }))
+    this.update(this.getter({ get: dep => this.addGetDependency(dep) }))
   }
 }
 
-/** Creates a value, derived from one or more atoms or other derived values.
+export class SettableDerive<Value = unknown> extends Derive<Value> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected readonly setterDependencies = new Set<
+    Atom<any> | SettableDerive<any>
+  >()
+
+  constructor(
+    getter: GetterFn<Value>,
+    private readonly setter: SetterFn<Value>
+  ) {
+    super(getter)
+    setter({
+      value: this.get(),
+      set: dep => this.addSetDependency(dep),
+    })
+    if (!this.compareDependencies()) {
+      throw new Error(
+        consoleMessage(
+          "The set and get dependencies of a derived atom do not match."
+        )
+      )
+    }
+  }
+
+  /** Set the value of the derived atom.
+   *
+   * @param next New value or function to create the
+   * new value based off the previous value.
+   */
+  public set(next: SetStateAction<Value>) {
+    const value = next instanceof Function ? next(this.get()) : next
+    this.setter({
+      value,
+      set: (atom, next) => {
+        const value = next instanceof Function ? next(atom.get()) : next
+        atom.set(value)
+      },
+    })
+  }
+
+  private addSetDependency<V>(dependency: Atom<V> | SettableDerive<V>) {
+    if (!this.setterDependencies.has(dependency)) {
+      this.setterDependencies.add(dependency)
+    }
+  }
+
+  private compareDependencies() {
+    const { getterDependencies, setterDependencies } = this
+    if (getterDependencies.size !== setterDependencies.size) {
+      return false
+    }
+
+    return Array.from(setterDependencies).every(dependency =>
+      getterDependencies.has(dependency)
+    )
+  }
+}
+
+/** A derive atom that allows deriving and elevating values from and
+ *  to one or multiple other stateful elements.
  *
- *  @param get Function to derive the new value.
+ *  **Note:**
+ *    - `getter` and `setter` should not have any side effects
+ *    - `getter` and `setter` must use the same atoms
  *
- *  @returns A derived instance.
+ *  @param getter Function to derive a new value from other stateful elements.
+ *  @param setter Function to elevate a new value to it's stateful dependents.
+ *
+ *  @returns A derive instance.
  **/
-export const derive = <Value>(get: DeriveFn<Value>) => new Derive(get)
+export function derive<Value>(getter: GetterFn<Value>): Derive<Value>
+export function derive<Value>(
+  getter: GetterFn<Value>,
+  setter: SetterFn<Value>
+): SettableDerive<Value>
+
+export function derive<Value>(
+  getter: GetterFn<Value>,
+  setter?: SetterFn<Value>
+) {
+  if (setter) {
+    return new SettableDerive(getter, setter)
+  } else {
+    return new Derive(getter)
+  }
+}

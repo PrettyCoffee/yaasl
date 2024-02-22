@@ -60,14 +60,18 @@ Creates a value, derived from one or more atoms or other derived values.
 
 Parameters:
 
-- `get`: Function to derive the new value.
+- `getter` Function to derive a new value from other stateful elements.
+- `setter` Function to elevate a new value to it's stateful dependents.
 
 Returns: A derived instance.
 
 - `result.get`: Read the value of state.
+- `result.set`: Set the value of the derived atom. (only available if a setter was passed)
 - `result.subscribe`: Subscribe to value changes.
 
 ### Usage Examples
+
+With a getter:
 
 ```ts
 const myAtom = atom({ defaultValue: 1 });
@@ -78,6 +82,26 @@ const nested = derive(({ get }) => get(multiplier) + get(myAtom));
 // Use a derivation
 const currentValue = multiplier.get();
 multiplier.subscribe((value) => console.log(value));
+```
+
+With a getter and setter:
+
+```ts
+const post = atom({
+  defaultValue: {
+    title: "About ducks...",
+    content: "They are pretty cute, don't you think?",
+    views: 41,
+  },
+});
+// Create a derive atom
+const views = derive(
+  ({ get }) => get(video).views,
+  ({ value, set }) => set(video, { ...video.get(), views: value })
+);
+// Set value of the derive atom
+views.set(42);
+// -> post.get().views will be 42
 ```
 
 ## middleware
