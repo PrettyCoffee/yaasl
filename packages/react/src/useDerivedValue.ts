@@ -1,6 +1,6 @@
 import { Derive } from "@yaasl/core"
 
-import { useStatefulValue } from "./useStatefulValue"
+import { useStatefulValue } from "./useStateful"
 
 /** Use a derived value in the react lifecycle.
  *

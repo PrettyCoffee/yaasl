@@ -1,8 +1,8 @@
-import { useCallback, SetStateAction, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 
 import { Atom, Stateful } from "@yaasl/core"
 
-import { useStatefulValue } from "./useStatefulValue"
+import { useSetStateful, useStatefulValue } from "./useStateful"
 
 /** Use an atom's value in the react lifecycle.
  *
@@ -20,7 +20,7 @@ export const useAtomValue = <ValueType>(atom: Stateful<ValueType>) =>
  * @returns A setter function for the atom.
  **/
 export const useSetAtom = <ValueType>(atom: Atom<ValueType>) =>
-  useCallback((next: SetStateAction<ValueType>) => atom.set(next), [atom])
+  useSetStateful(atom)
 
 /** Use an atom's initialization state in the react lifecycle.
  *
