@@ -1,4 +1,4 @@
 export { useAtom, useSetAtom, useAtomValue, useAtomDidInit } from "./useAtom"
-export { useDeriveValue } from "./useDeriveValue"
+export { useDerive, useSetDerive, useDeriveValue } from "./useDerive"
 
 export * from "@yaasl/core"
