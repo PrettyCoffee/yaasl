@@ -1,8 +1,7 @@
 import { Atom, Stateful } from "@yaasl/core"
-import { SetStateAction } from "@yaasl/utils"
-import { useCallback, useEffect, useState } from "preact/hooks"
+import { useEffect, useState } from "preact/hooks"
 
-import { useStatefulValue } from "./useStatefulValue"
+import { useStatefulValue, useSetStateful } from "./useStateful"
 
 /** Use an atom's value in the preact lifecycle.
  *
@@ -20,7 +19,7 @@ export const useAtomValue = <ValueType>(atom: Stateful<ValueType>) =>
  * @returns A setter function for the atom.
  **/
 export const useSetAtom = <ValueType>(atom: Atom<ValueType>) =>
-  useCallback((next: SetStateAction<ValueType>) => atom.set(next), [atom])
+  useSetStateful(atom)
 
 /** Use an atom's initialization state in the preact lifecycle.
  *
