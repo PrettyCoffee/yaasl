@@ -1,6 +1,6 @@
 {
   "name": "@yaasl/preact",
-  "version": "0.8.0-alpha.0",
+  "version": "0.8.0-alpha.1",
   "description": "yet another atomic store library (preact)",
   "author": "PrettyCoffee",
   "license": "MIT",
@@ -41,8 +41,8 @@
     "preact": ">=10"
   },
   "dependencies": {
-    "@yaasl/core": "0.8.0-alpha.0",
-    "@yaasl/utils": "0.8.0-alpha.0"
+    "@yaasl/core": "0.8.0-alpha.1",
+    "@yaasl/utils": "0.8.0-alpha.1"
   },
   "devDependencies": {
     "@testing-library/preact": "^3.2.3",
