@@ -155,6 +155,7 @@ promptVersion()
     spin.start("Preparing for release")
     if (!dryRun) {
       await setVersion(newVersion)
+      await npm.install()
     }
     spin.step(`Package versions were updated`)
 

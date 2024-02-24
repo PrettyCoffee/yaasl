@@ -20,6 +20,9 @@ const npm = {
   login: async () => {
     await exec(`npm login --scope=@yaasl`)
   },
+  install: async () => {
+    await exec(`npm i`)
+  },
   publish: async onPublish => {
     const dry = npm.dryRun ? "--dry-run" : ""
     const packages = await getPackages()
