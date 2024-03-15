@@ -44,5 +44,8 @@
     "*.{json,md,html}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "@pretty-cozy/release-tools": "^0.3.0-alpha.0"
   }
 }

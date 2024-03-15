@@ -1,4 +1,4 @@
-const { git } = require("./git")
+const { git } = require("@pretty-cozy/release-tools")
 
 const commitRegex = /^([a-z]+)(?:\((.+)\))?(!)?:\s*(.+)/
 

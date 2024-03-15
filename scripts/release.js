@@ -1,81 +1,26 @@
 const { readFile, writeFile } = require("node:fs/promises")
 
+const {
+  git,
+  npm,
+  promptVersion,
+  createSpinner,
+  Version,
+} = require("@pretty-cozy/release-tools")
 const { prompt } = require("enquirer")
 
 const { createChangelog } = require("./utils/createChangelog")
-const { git } = require("./utils/git")
 const { log } = require("./utils/log")
-const { npm } = require("./utils/npm")
+const { publishAll } = require("./utils/publishAll")
 const { setVersion } = require("./utils/setVersion")
-const { spinner } = require("./utils/spinner")
-const { version } = require("./utils/version")
+const { version: currentVersion } = require("../package.json")
 
 const args = process.argv.slice(2)
 
 const dryRun = args.includes("--dry-run")
 
-git.dryRun = dryRun
-npm.dryRun = dryRun
-
 if (dryRun) {
   log.warn("Dry run enabled, only changelog will be updated")
-}
-
-/** @returns {Promise<string>} */
-const promptExactVersion = () =>
-  prompt({
-    type: "input",
-    name: "version",
-    message: "Enter a version",
-    initial: version.current.full,
-    validate: value => (version.isValid(value) ? true : "Format must be x.x.x"),
-  }).then(({ version }) => version)
-
-const getVersionChoices = () => {
-  const exact = { message: "exact", value: "exact", hint: "x.x.x" }
-
-  const { extension } = version.current
-  if (extension) {
-    const current = version.getNext("current")
-    const extensionBump = version.getNext("extension")
-
-    return [
-      {
-        message: "release",
-        value: current,
-        hint: `${current} (remove ${extension})`,
-      },
-      {
-        message: `bump ${extension}`,
-        value: extensionBump,
-        hint: extensionBump,
-      },
-      exact,
-    ]
-  }
-
-  const nextMajor = version.getNext("major")
-  const nextMinor = version.getNext("minor")
-  const nextPatch = version.getNext("patch")
-
-  return [
-    { message: "major", value: nextMajor, hint: nextMajor },
-    { message: "minor", value: nextMinor, hint: nextMinor },
-    { message: "patch", value: nextPatch, hint: nextPatch },
-    exact,
-  ]
-}
-
-/** @returns {Promise<string>} */
-const promptVersion = async () => {
-  const { version } = await prompt({
-    type: "select",
-    name: "version",
-    message: "Pick a version to release",
-    choices: getVersionChoices(),
-  })
-
-  return version !== "exact" ? version : promptExactVersion()
 }
 
 const promptContinue = async text => {
@@ -106,22 +51,12 @@ const appendChangelog = async changes => {
   }
 }
 
-const spin = spinner()
+const spinner = createSpinner()
 
-promptVersion()
+promptVersion(currentVersion)
   .then(async newVersion => {
-    if (version.parse(newVersion).extension) {
-      const { ok } = await prompt({
-        type: "toggle",
-        name: "ok",
-        message: `Do you want to release version ${newVersion}?`,
-        initial: true,
-      })
-
-      if (!ok) {
-        throw new Error("Cancelled by user")
-      }
-
+    if (Version.parse(newVersion).extension) {
+      await promptContinue(`Do you want to release version ${newVersion}?`)
       return { newVersion }
     }
 
@@ -138,34 +73,38 @@ promptVersion()
   .then(async payload => {
     log.info("")
 
-    spin.start("Checking npm login")
+    spinner.start("Checking npm login")
     let user = await npm.whoAmI()
     if (!user) {
-      await npm.login()
+      await npm.login({ scope: "@yaasl" })
       user = await npm.whoAmI()
     }
-    spin.step(`Logged in as ${user}`)
-    spin.success("Authentication completed")
+    spinner.step(`Logged in as ${user}`)
+    spinner.success("Authentication completed")
 
     return payload
   })
   .then(async ({ newVersion }) => {
     log.info("")
 
-    spin.start("Preparing for release")
+    spinner.start("Preparing for release")
     if (!dryRun) {
       await setVersion(newVersion)
       await npm.install()
     }
-    spin.step(`Package versions were updated`)
+    spinner.step(`Package versions were updated`)
 
-    await git.commit(`chore: Release ${newVersion}`)
-    spin.step(`Committed all changes`)
+    await git.commit({ message: `chore: Release ${newVersion}`, dryRun })
+    spinner.step(`Committed all changes`)
 
-    await git.tag(newVersion)
-    spin.step(`Created git tag ${newVersion}`)
+    await git.tag({
+      version: newVersion,
+      message: `Release ${newVersion}`,
+      dryRun,
+    })
+    spinner.step(`Created git tag ${newVersion}`)
 
-    spin.success(`Preparation was completed`)
+    spinner.success(`Preparation was completed`)
     return newVersion
   })
   .then(async newVersion => {
@@ -173,18 +112,18 @@ promptVersion()
     await promptContinue(`Do you want to push and publish the applied changes?`)
     log.info("")
 
-    spin.start("Pushing changes to github")
-    await git.push()
-    spin.step(`Pushed changes`)
-    spin.success("Successfully pushed commits and tags")
+    spinner.start("Pushing changes to github")
+    await git.push({ dryRun })
+    spinner.step(`Pushed changes`)
+    spinner.success("Successfully pushed commits and tags")
 
     log.info("")
 
-    spin.start(`Publishing all packages to npm`)
-    await npm.publish(async workspace => {
-      spin.step(`Published ${workspace}`)
-    })
-    spin.success(`Successfully published ${newVersion}`)
+    spinner.start(`Publishing all packages to npm`)
+    await publishAll(workspace => {
+      spinner.step(`Published ${workspace}`)
+    }, dryRun)
+    spinner.success(`Successfully published ${newVersion}`)
 
     log.info("")
   })
