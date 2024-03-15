@@ -1,6 +1,6 @@
 {
   "name": "@yaasl/core",
-  "version": "0.8.0-alpha.2",
+  "version": "0.8.0-alpha.3",
   "description": "yet another atomic store library (vanilla-js)",
   "author": "PrettyCoffee",
   "license": "MIT",
@@ -38,7 +38,7 @@
     "validate": "run-s lint test build"
   },
   "dependencies": {
-    "@yaasl/utils": "0.8.0-alpha.2"
+    "@yaasl/utils": "0.8.0-alpha.3"
   },
   "eslintConfig": {
     "extends": [

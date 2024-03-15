@@ -1,6 +1,6 @@
 {
   "name": "@yaasl/devtools",
-  "version": "0.8.0-alpha.2",
+  "version": "0.8.0-alpha.3",
   "description": "yaasl redux-devtools-extension middleware",
   "author": "PrettyCoffee",
   "license": "MIT",
@@ -36,8 +36,8 @@
     "validate": "run-s lint test build"
   },
   "dependencies": {
-    "@yaasl/core": "0.8.0-alpha.2",
-    "@yaasl/utils": "0.8.0-alpha.2"
+    "@yaasl/core": "0.8.0-alpha.3",
+    "@yaasl/utils": "0.8.0-alpha.3"
   },
   "eslintConfig": {
     "extends": [
