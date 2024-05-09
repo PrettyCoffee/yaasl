@@ -1,9 +1,4 @@
-import { isPromiseLike } from "./isPromiseLike"
-import { Thenable } from "./Thenable"
-
-const toVoid = () => {
-  // omit args
-}
+import { toVoid, isPromiseLike, Thenable } from "@yaasl/utils"
 
 type Task = () => PromiseLike<unknown> | unknown
 

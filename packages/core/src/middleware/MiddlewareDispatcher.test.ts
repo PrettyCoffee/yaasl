@@ -1,7 +1,8 @@
+import { sleep } from "@yaasl/utils"
+
 import { middleware } from "./middleware"
 import { MiddlewareDispatcher } from "./MiddlewareDispatcher"
 import { atom } from "../base"
-import { sleep } from "../utils/sleep"
 
 interface TestOptions {
   types: {

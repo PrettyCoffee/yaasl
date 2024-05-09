@@ -1,6 +1,6 @@
+import { sleep, Thenable } from "@yaasl/utils"
+
 import { Scheduler } from "./Scheduler"
-import { sleep } from "./sleep"
-import { Thenable } from "./Thenable"
 
 const execOrder = () => {
   const calls: string[] = []

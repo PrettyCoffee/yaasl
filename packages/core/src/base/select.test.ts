@@ -1,7 +1,8 @@
+import { sleep } from "@yaasl/utils"
+
 import { atom } from "./atom"
 import { select } from "./select"
 import { middleware } from "../middleware"
-import { sleep } from "../utils/sleep"
 
 const defaultValue = {
   value: "test",

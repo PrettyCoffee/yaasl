@@ -1,4 +1,4 @@
-import { consoleMessage, SetStateAction } from "@yaasl/utils"
+import { consoleMessage, SetStateAction, toVoid } from "@yaasl/utils"
 
 import { Atom } from "./atom"
 import { Stateful } from "./Stateful"
@@ -9,7 +9,7 @@ const allDidInit = (atoms: Stateful[]) => {
     .filter(
       (didInit): didInit is PromiseLike<void> => typeof didInit !== "boolean"
     )
-  return inits.length === 0 ? true : Promise.all(inits).then(() => undefined)
+  return inits.length === 0 ? true : Promise.all(inits).then(toVoid)
 }
 
 type GetterFn<Value> = (context: { get: <V>(dep: Stateful<V>) => V }) => Value

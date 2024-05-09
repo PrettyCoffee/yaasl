@@ -1,7 +1,8 @@
+import { sleep } from "@yaasl/utils"
+
 import { atom } from "./atom"
 import { derive } from "./derive"
 import { middleware } from "../middleware"
-import { sleep } from "../utils/sleep"
 
 const defaultValue = "default"
 const nextValue = "next"

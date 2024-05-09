@@ -1,6 +1,7 @@
+import { sleep } from "@yaasl/utils"
+
 import { middleware } from "./middleware"
 import { Atom, atom } from "../base"
-import { sleep } from "../utils/sleep"
 
 const didInit = vi.fn()
 const init = vi.fn()

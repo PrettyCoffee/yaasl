@@ -1,6 +1,7 @@
+import { isPromiseLike } from "@yaasl/utils"
+
 import { Middleware, ActionType, MiddlewareAtomCallback } from "./middleware"
 import { Atom } from "../base/atom"
-import { isPromiseLike } from "../utils/isPromiseLike"
 import { Scheduler } from "../utils/Scheduler"
 
 interface MiddlewareDispatcherConstructor {
