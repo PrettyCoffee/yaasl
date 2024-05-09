@@ -3,6 +3,15 @@ import { consoleMessage, SetStateAction } from "@yaasl/utils"
 import { Atom } from "./atom"
 import { Stateful } from "./Stateful"
 
+const allDidInit = (atoms: Stateful[]) => {
+  const inits = atoms
+    .map(atom => atom.didInit)
+    .filter(
+      (didInit): didInit is PromiseLike<void> => typeof didInit !== "boolean"
+    )
+  return inits.length === 0 ? true : Promise.all(inits).then(() => undefined)
+}
+
 type GetterFn<Value> = (context: { get: <V>(dep: Stateful<V>) => V }) => Value
 
 type SetterFn<Value> = (context: {
@@ -17,6 +26,7 @@ export class Derive<Value> extends Stateful<Value> {
   constructor(private readonly getter: GetterFn<Value>) {
     super(undefined as Value)
     this.value = getter({ get: dep => this.addGetDependency(dep) })
+    this.setDidInit(allDidInit(Array.from(this.getterDependencies)))
   }
 
   private addGetDependency<V>(dependency: Stateful<V>) {

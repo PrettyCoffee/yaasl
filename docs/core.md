@@ -64,6 +64,8 @@ Returns: A select instance.
 
 - `result.get`: Read the value of state.
 - `result.subscribe`: Subscribe to value changes.
+- `result.didInit`: State of the dependents middleware initialization processes.
+  Will be a promise if the initialization is pending and `true` if finished.
 
 ### Usage Examples
 
@@ -93,6 +95,8 @@ Returns: A derived instance.
 - `result.get`: Read the value of state.
 - `result.set`: Set the value of the derived atom. (only available if a setter was passed)
 - `result.subscribe`: Subscribe to value changes.
+- `result.didInit`: State of the dependents middleware initialization processes.
+  Will be a promise if the initialization is pending and `true` if finished.
 
 ### Usage Examples
 

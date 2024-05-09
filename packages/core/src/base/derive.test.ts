@@ -1,5 +1,7 @@
 import { atom } from "./atom"
 import { derive } from "./derive"
+import { middleware } from "../middleware"
+import { sleep } from "../utils/sleep"
 
 const defaultValue = "default"
 const nextValue = "next"
@@ -131,6 +133,27 @@ describe("Test derive", () => {
           ({ value, set }) => set(atom2, value)
         )
       ).toThrow()
+    })
+  })
+
+  describe("synchronizes didInit status", () => {
+    it("Sets true if no midleware was passed", () => {
+      const testAtom = atom({ defaultValue: 1 })
+      const testDerive = derive(({ get }) => get(testAtom) * 2)
+      expect(testDerive.didInit).toBe(true)
+    })
+
+    it("Updates if middleware is async", async () => {
+      const m = middleware({
+        init: () => sleep(1),
+        didInit: () => sleep(1),
+      })
+      const testAtom = atom({ defaultValue: 1, middleware: [m()] })
+      const testDerive = derive(({ get }) => get(testAtom) * 2)
+
+      expect(testDerive.didInit).toBeInstanceOf(Promise)
+      await testDerive.didInit
+      expect(testDerive.didInit).toBe(true)
     })
   })
 })

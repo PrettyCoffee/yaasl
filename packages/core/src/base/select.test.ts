@@ -1,5 +1,7 @@
 import { atom } from "./atom"
 import { select } from "./select"
+import { middleware } from "../middleware"
+import { sleep } from "../utils/sleep"
 
 const defaultValue = {
   value: "test",
@@ -52,5 +54,26 @@ describe("Test select", () => {
 
     testAtom.set(prev => ({ ...prev, otherValue: "next" }))
     expect(onChange).not.toHaveBeenCalled()
+  })
+
+  describe("synchronizes didInit status", () => {
+    it("Sets true if no midleware was passed", () => {
+      const testAtom = atom({ defaultValue })
+      const selected = select(testAtom, "value")
+      expect(selected.didInit).toBe(true)
+    })
+
+    it("Updates if middleware is async", async () => {
+      const m = middleware({
+        init: () => sleep(1),
+        didInit: () => sleep(1),
+      })
+      const testAtom = atom({ defaultValue, middleware: [m()] })
+      const selected = select(testAtom, "value")
+
+      expect(selected.didInit).toBeInstanceOf(Promise)
+      await selected.didInit
+      expect(selected.didInit).toBe(true)
+    })
   })
 })

@@ -1,6 +1,7 @@
 type Callback<Value> = (value: Value, previous: Value) => void
 
 export class Stateful<Value = unknown> {
+  public didInit: PromiseLike<void> | boolean = false
   private listeners = new Set<Callback<Value>>()
 
   constructor(protected value: Value) {}
@@ -33,6 +34,16 @@ export class Stateful<Value = unknown> {
       const previous = this.value
       this.value = value
       this.emit(value, previous)
+    }
+  }
+
+  protected setDidInit(didInit: boolean | PromiseLike<void>) {
+    if (typeof didInit === "boolean") {
+      this.didInit = true
+    } else {
+      this.didInit = didInit.then(() => {
+        this.didInit = true
+      })
     }
   }
 }

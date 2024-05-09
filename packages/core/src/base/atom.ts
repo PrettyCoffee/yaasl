@@ -18,7 +18,6 @@ let key = 0
 export class Atom<Value = unknown> extends Stateful<Value> {
   public readonly defaultValue: Value
   public readonly name: string
-  public didInit: PromiseLike<void> | boolean = false
 
   constructor({
     defaultValue,
@@ -34,13 +33,7 @@ export class Atom<Value = unknown> extends Stateful<Value> {
       return
     }
     const { didInit } = new MiddlewareDispatcher({ atom: this, middleware })
-    if (typeof didInit === "boolean") {
-      this.didInit = didInit
-    } else {
-      this.didInit = didInit.then(() => {
-        this.didInit = true
-      })
-    }
+    this.setDidInit(didInit)
   }
 
   /** Set the value of the atom.

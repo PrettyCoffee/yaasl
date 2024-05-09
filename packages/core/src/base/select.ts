@@ -35,6 +35,7 @@ export class Select<
   ) {
     super(selectValue(parent.get(), path))
     parent.subscribe(state => this.update(selectValue(state, path)))
+    this.setDidInit(parent.didInit)
   }
 }
 
