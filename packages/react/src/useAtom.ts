@@ -6,9 +6,9 @@ import { useSetStateful, useStatefulValue } from "./useStateful"
 
 /** Use an atom's value in the react lifecycle.
  *
- * @param atom Atom to be used. Can also be used with derived and selected atoms.
+ * @param atom Atom to be used.
  *
- * @returns A stateful value.
+ * @returns The atom's value.
  **/
 export const useAtomValue = <ValueType>(atom: Stateful<ValueType>) =>
   useStatefulValue(atom)
@@ -40,8 +40,6 @@ export const useAtomDidInit = <ValueType>(atom: Stateful<ValueType>) => {
 }
 
 /** Use an atom's value and setter in the react lifecycle.
- *
- * **Note:** Use `useAtomValue` or `useSetAtom` to use value or setter separately.
  *
  * @param atom Atom to be used.
  *

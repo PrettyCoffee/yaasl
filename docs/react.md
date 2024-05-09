@@ -3,15 +3,84 @@
 <!-- >> TOC >> -->
 
 - [React](#react)
-  - [useAtom](#useatom) [ [API](#api), [Usage Examples](#usage-examples) ]
+  - [useAtomValue](#useatomvalue) [ [API](#api), [Usage Examples](#usage-examples) ]
+  - [useSetAtom](#usesetatom) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
+  - [useAtomDidInit](#useatomdidinit) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
+  - [useAtom](#useatom) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
   <!-- << TOC << -->
+
+## useAtomValue
+
+Use an atom's value in the react lifecycle.
+
+### API
+
+Parameters:
+
+- `atom`: Atom to be used.
+
+Returns: The atom's value.
+
+### Usage Examples
+
+```tsx
+const myAtom = atom({ defaultValue: 0 });
+const MyComponent = () => {
+  const value = useAtomValue(myAtom);
+  return <span>value is {value}</span>;
+};
+```
+
+## useSetAtom
+
+Set an atom's value in the react lifecycle.
+
+### API
+
+Parameters:
+
+- `atom`: Atom to be used.
+
+Returns: A setter function for the atom.
+
+### Usage Examples
+
+```tsx
+const myAtom = atom({ defaultValue: 0 });
+const MyComponent = () => {
+  const setValue = useSetAtom(myAtom);
+
+  const onClick = () => setValue((previous) => previous + 1);
+
+  return <button onClick={onClick}>Increment value</button>;
+};
+```
+
+## useAtomDidInit
+
+Use an atom's initialization state in the react lifecycle.
+
+### API
+
+Parameters:
+
+- `atom`: Atom to be used.
+
+Returns: A boolean indicating if the atom has finished initializing yet.
+
+### Usage Examples
+
+```tsx
+const myAtom = atom({ defaultValue: 0 });
+const MyComponent = () => {
+  const didInit = useAtomDidInit(myAtom);
+  return <span>{didInit ? "Initialization finished" : "Initializing..."}</span>;
+};
+```
 
 ## useAtom
 
 Use an atom's value and setter in the react lifecycle.
-Can be used with any result of `atom`, `derive` or `select`.
-
-**Note:** Use `useAtomValue` or `useSetAtom` to use value or setter separately.
 
 ### API
 
