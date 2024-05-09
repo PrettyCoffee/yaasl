@@ -4,6 +4,9 @@ import { Stateful } from "./Stateful"
 import { MiddlewareAtomCallback } from "../middleware/middleware"
 import { MiddlewareDispatcher } from "../middleware/MiddlewareDispatcher"
 
+// TODO YAASL
+// - Add atom({ effect }) - could serve as local middleware
+
 export interface AtomConfig<Value> {
   /** Value that will be returned if the atom is not defined in the store */
   defaultValue: Value
