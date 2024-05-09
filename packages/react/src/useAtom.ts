@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
 
-import { Atom, Stateful } from "@yaasl/core"
+import { Stateful } from "@yaasl/core"
 
 import { useSetStateful, useStatefulValue } from "./useStateful"
 
 /** Use an atom's value in the react lifecycle.
  *
- * @param atom Atom to be used.
+ * @param atom Atom to be used. Can also be used with derived and selected atoms.
  *
  * @returns A stateful value.
  **/
@@ -19,7 +19,7 @@ export const useAtomValue = <ValueType>(atom: Stateful<ValueType>) =>
  *
  * @returns A setter function for the atom.
  **/
-export const useSetAtom = <ValueType>(atom: Atom<ValueType>) =>
+export const useSetAtom = <ValueType>(atom: Stateful<ValueType>) =>
   useSetStateful(atom)
 
 /** Use an atom's initialization state in the react lifecycle.
@@ -28,7 +28,7 @@ export const useSetAtom = <ValueType>(atom: Atom<ValueType>) =>
  *
  *  @returns A boolean indicating if the atom has finished initializing yet.
  **/
-export const useAtomDidInit = <ValueType>(atom: Atom<ValueType>) => {
+export const useAtomDidInit = <ValueType>(atom: Stateful<ValueType>) => {
   const [didInit, setDidInit] = useState(atom.didInit === true)
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export const useAtomDidInit = <ValueType>(atom: Atom<ValueType>) => {
  *
  * @returns [value, setValue, didInit]
  **/
-export const useAtom = <ValueType>(atom: Atom<ValueType>) => {
+export const useAtom = <ValueType>(atom: Stateful<ValueType>) => {
   const state = useAtomValue(atom)
   const setState = useSetAtom(atom)
   const didInit = useAtomDidInit(atom)

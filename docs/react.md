@@ -4,12 +4,12 @@
 
 - [React](#react)
   - [useAtom](#useatom) [ [API](#api), [Usage Examples](#usage-examples) ]
-  - [useDerive](#usederive) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   <!-- << TOC << -->
 
 ## useAtom
 
 Use an atom's value and setter in the react lifecycle.
+Can be used with any result of `atom`, `derive` or `select`.
 
 **Note:** Use `useAtomValue` or `useSetAtom` to use value or setter separately.
 
@@ -27,6 +27,8 @@ Returns: A state value and state setter for the atom.
 
 ### Usage Examples
 
+With an `atom` result:
+
 ```tsx
 const myAtom = atom({ defaultValue: 0 });
 const MyComponent = () => {
@@ -38,24 +40,23 @@ const MyComponent = () => {
 };
 ```
 
-## useDerive
+With a `select` result:
 
-Use a derive atom's value and setter in the react lifecycle.
+```tsx
+const myAtom = atom({ defaultValue: { current: { value: 0 } } });
+const myAtomValue = select(myAtom, "current.value");
+const MyComponent = () => {
+  const setState = useSetAtom(myAtom);
+  const value = useAtomValue(myAtomValue);
 
-**Note:**
+  const onClick = () =>
+    setState((prev) => ({ current: { value: prev.current.value + 1 } }));
 
-- Use `useDeriveValue` or `useSetDerive` to use value or setter separately.
-- Setter can only be used if the derive atom is settable.
+  return <button onClick={onClick}>value is {value}</button>;
+};
+```
 
-### API
-
-Parameters:
-
-- `derive`: Derive atom to be used.
-
-Returns: [value, setValue]
-
-### Usage Examples
+With a `derive` result:
 
 ```tsx
 const myAtom = atom({ defaultValue: 2 });
@@ -66,7 +67,7 @@ const double = derive(
 
 const MyComponent = () => {
   const value = useAtomValue(myAtom);
-  const [doubleValue, setDoubleValue] = useDerive(double);
+  const [doubleValue, setDoubleValue] = useAtom(double);
 
   const onClick = () => setDoubleValue(doubleValue + 2);
 
