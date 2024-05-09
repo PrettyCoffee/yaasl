@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@testing-library/preact": "^3.2.3",
-    "preact": "^10.19.5"
+    "preact": "^10.21.0"
   },
   "eslintConfig": {
     "extends": [
