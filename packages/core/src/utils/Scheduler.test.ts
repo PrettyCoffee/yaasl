@@ -1,7 +1,6 @@
 import { Scheduler } from "./Scheduler"
+import { sleep } from "./sleep"
 import { Thenable } from "./Thenable"
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 const execOrder = () => {
   const calls: string[] = []

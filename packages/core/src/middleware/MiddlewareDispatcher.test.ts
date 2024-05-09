@@ -1,9 +1,7 @@
 import { middleware } from "./middleware"
 import { MiddlewareDispatcher } from "./MiddlewareDispatcher"
 import { atom } from "../base"
-
-const sleep = (ms: number) =>
-  new Promise(resolve => setTimeout(() => resolve(true), ms))
+import { sleep } from "../utils/sleep"
 
 interface TestOptions {
   types: {

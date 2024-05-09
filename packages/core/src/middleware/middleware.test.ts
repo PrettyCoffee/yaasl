@@ -1,5 +1,6 @@
 import { middleware } from "./middleware"
 import { Atom, atom } from "../base"
+import { sleep } from "../utils/sleep"
 
 const didInit = vi.fn()
 const init = vi.fn()
@@ -14,8 +15,6 @@ const defaultValue = "default"
 const nextValue = "next"
 
 const testAtom = atom({ defaultValue })
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 beforeEach(() => {
   vi.resetAllMocks()

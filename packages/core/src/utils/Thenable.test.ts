@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return -- doesn't matter for testing */
+import { sleep } from "./sleep"
 import { Thenable } from "./Thenable"
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 describe("Test Thenable", () => {
   it("Creates a Thenable", () => {

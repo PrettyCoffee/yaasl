@@ -1,7 +1,6 @@
 import { atom } from "./atom"
 import { middleware } from "../middleware"
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+import { sleep } from "../utils/sleep"
 
 const defaultValue = "default"
 const nextValue = "next"
