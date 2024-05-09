@@ -4,9 +4,10 @@
 
 - [Core](#core)
   - [atom](#atom) [ [API](#api), [Usage Examples](#usage-examples) ]
-  - [derive](#derive) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
-  - [middleware](#middleware) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
-  - [CONFIG](#config) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
+  - [select](#select) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
+  - [derive](#derive) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
+  - [middleware](#middleware) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
+  - [CONFIG](#config) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
   <!-- << TOC << -->
 
 ## atom
@@ -46,6 +47,34 @@ myAtom.set("next-value");
 myAtom.set((previous) => previous + "next");
 const currentValue = myAtom.get();
 myAtom.subscribe((value) => console.log(value));
+```
+
+## select
+
+Creates a value, selected from any stateful value.
+
+### API
+
+Parameters:
+
+- `parent` The parent element to select a value from. The internal state must be an object.
+- `path` The path to the value you want to select.
+
+Returns: A select instance.
+
+- `result.get`: Read the value of state.
+- `result.subscribe`: Subscribe to value changes.
+
+### Usage Examples
+
+```ts
+const myAtom = atom({ defaultValue: { nested: { value: 0 } } });
+// Create a selector
+const value = select(myAtom, "nested.value");
+
+// Use a selector
+const currentValue = value.get();
+value.subscribe((value) => console.log(value));
 ```
 
 ## derive
