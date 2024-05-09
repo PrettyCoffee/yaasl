@@ -52,16 +52,6 @@ export class Atom<Value = unknown> extends Stateful<Value> {
     const value = next instanceof Function ? next(this.get()) : next
     super.update(value)
   }
-
-  /** Resolve the value of a promise and set as atom value.
-   *
-   * @param promise Promise to unwrap
-   */
-  public async unwrap(promise: Promise<Value>) {
-    const value = await promise
-    this.set(value)
-    return value
-  }
 }
 
 /** Creates an atom store.

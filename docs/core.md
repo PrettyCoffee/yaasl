@@ -28,7 +28,6 @@ Returns: An atom instance.
 - `result.set`: Set the value of the atom.
 - `result.didInit`: State of the atom's middleware initialization process.
   Will be a promise if the initialization is pending and `true` if finished.
-- `result.unwrap`: Resolve the value of a promise and set as atom value.
 
 ### Usage Examples
 
@@ -47,9 +46,6 @@ myAtom.set("next-value");
 myAtom.set((previous) => previous + "next");
 const currentValue = myAtom.get();
 myAtom.subscribe((value) => console.log(value));
-myAtom
-  .unwrap(fetch("https://beep-boop-beep.something"))
-  .catch((value) => console.error(value));
 ```
 
 ## derive
