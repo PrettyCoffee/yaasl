@@ -106,7 +106,7 @@ export interface MigrationOptions {
   steps: MigrationStep[]
 }
 
-export const migration = middleware<MigrationOptions>({
+export const migration = middleware<MigrationOptions, unknown>({
   didInit: ({ atom, options }) => {
     const steps = sortMigrations(options.steps)
     const currentVersion = getVersion(atom)
