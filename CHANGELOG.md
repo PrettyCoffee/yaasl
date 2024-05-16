@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.8.0 (2024-05-16)
+
+### Breaking Changes
+
+- **atom:** Remove promise unwrapping
+- **preact:** Remove useDerive hooks
+- **react:** Remove useDerive hooks
+
+### Features
+
+- **core:** Add didInit to all atom types
+- **core:** Pass previous value when subscribing to atom or derive
+- **select:** Create atom selector helper
+- **derive:** Add derive setter functions
+- **middleware:** Allow providing atom value types
+- **preact:** Add hooks to use settable derive atoms
+- **preact:** Allow any atom type in useAtom
+- **react:** Add hooks to use settable derive atoms
+- **react:** Allow any atom type in useAtom
+
 ## 0.7.0 (2024-02-11)
 
 ### Breaking Changes

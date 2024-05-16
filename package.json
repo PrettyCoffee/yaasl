@@ -1,6 +1,6 @@
 {
   "name": "yaasl",
-  "version": "0.8.0-alpha.4",
+  "version": "0.8.0",
   "description": "yet another atomic store library",
   "author": "PrettyCoffee",
   "homepage": "https://github.com/PrettyCoffee/yaasl",
