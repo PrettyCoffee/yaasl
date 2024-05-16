@@ -28,17 +28,17 @@
     "upgrade:latest": "npm run upgrade -- -t latest"
   },
   "devDependencies": {
-    "@pretty-cozy/eslint-config": "^0.3.0",
-    "@pretty-cozy/git-hooks": "^0.3.0",
-    "@pretty-cozy/release-tools": "^0.3.0",
+    "@pretty-cozy/eslint-config": "^0.3.1",
+    "@pretty-cozy/git-hooks": "^0.3.1",
+    "@pretty-cozy/release-tools": "^0.3.1",
     "@vitest/coverage-v8": "^1.6.0",
     "enquirer": "^2.4.1",
     "eslint-import-resolver-exports": "^1.0.0-beta.5",
-    "glob": "^10.3.12",
+    "glob": "^10.3.15",
     "jsdom": "^24.0.0",
     "npm-check-updates": "^16.14.20",
     "npm-run-all": "^4.1.5",
-    "rimraf": "^5.0.5",
+    "rimraf": "^5.0.7",
     "typescript": "^5.4.5",
     "vitest": "^1.6.0"
   },
