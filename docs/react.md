@@ -109,14 +109,14 @@ const MyComponent = () => {
 };
 ```
 
-With a `select` result:
+With a `createSelector` result:
 
 ```tsx
 const myAtom = createAtom({ defaultValue: { current: { value: 0 } } });
-const myAtomValue = select(myAtom, "current.value");
+const selected = createSelector(myAtom, "current.value");
 const MyComponent = () => {
   const setState = useSetAtom(myAtom);
-  const value = useAtomValue(myAtomValue);
+  const value = useAtomValue(selected);
 
   const onClick = () =>
     setState((prev) => ({ current: { value: prev.current.value + 1 } }));

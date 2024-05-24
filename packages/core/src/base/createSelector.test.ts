@@ -1,7 +1,7 @@
 import { sleep } from "@yaasl/utils"
 
 import { createAtom } from "./createAtom"
-import { select } from "./select"
+import { createSelector } from "./createSelector"
 import { effect } from "../effects"
 
 const defaultValue = {
@@ -18,22 +18,22 @@ beforeEach(() => {
   vi.resetAllMocks()
 })
 
-describe("Test select", () => {
+describe("Test createSelector", () => {
   it("Selects a value", () => {
     const testAtom = createAtom({ defaultValue })
-    const selected = select(testAtom, "value")
+    const selected = createSelector(testAtom, "value")
     expect(selected.get()).toBe(defaultValue.value)
   })
 
   it("Selects a deep value", () => {
     const testAtom = createAtom({ defaultValue })
-    const selected = select(testAtom, "deep.deeper.value")
+    const selected = createSelector(testAtom, "deep.deeper.value")
     expect(selected.get()).toBe(defaultValue.deep.deeper.value)
   })
 
   it("Subscribes to selected value", () => {
     const testAtom = createAtom({ defaultValue })
-    const selected = select(testAtom, "value")
+    const selected = createSelector(testAtom, "value")
 
     const onChange = vi.fn()
     selected.subscribe(onChange)
@@ -47,7 +47,7 @@ describe("Test select", () => {
 
   it("Only calls subscribers if selected value changes", () => {
     const testAtom = createAtom({ defaultValue })
-    const selected = select(testAtom, "value")
+    const selected = createSelector(testAtom, "value")
 
     const onChange = vi.fn()
     selected.subscribe(onChange)
@@ -60,7 +60,7 @@ describe("Test select", () => {
   describe("synchronizes didInit status", () => {
     it("Sets true if no effects were passed", () => {
       const testAtom = createAtom({ defaultValue })
-      const selected = select(testAtom, "value")
+      const selected = createSelector(testAtom, "value")
       expect(selected.didInit).toBe(true)
     })
 
@@ -70,7 +70,7 @@ describe("Test select", () => {
         didInit: () => sleep(1),
       })
       const testAtom = createAtom({ defaultValue, effects: [e()] })
-      const selected = select(testAtom, "value")
+      const selected = createSelector(testAtom, "value")
 
       expect(selected.didInit).toBeInstanceOf(Promise)
       await selected.didInit

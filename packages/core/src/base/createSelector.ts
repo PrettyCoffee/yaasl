@@ -25,7 +25,7 @@ const selectValue = <State extends Selectable, Value>(
       state
     ) as Value
 
-export class Select<
+export class Selector<
   Path extends DeepKeys<State>,
   State extends Selectable
 > extends Stateful<DeepValue<State, Path>> {
@@ -44,9 +44,12 @@ export class Select<
  *  @param parent The parent element to select a value from. The internal state must be an object.
  *  @param path The path to the value you want to select.
  *
- *  @returns A select instance.
+ *  @returns A selector instance.
  **/
-export const select = <Path extends DeepKeys<State>, State extends Selectable>(
+export const createSelector = <
+  Path extends DeepKeys<State>,
+  State extends Selectable
+>(
   parent: Stateful<State>,
   path: Path
-) => new Select(parent, path)
+) => new Selector(parent, path)
