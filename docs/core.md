@@ -6,8 +6,9 @@
   - [atom](#atom) [ [API](#api), [Usage Examples](#usage-examples) ]
   - [select](#select) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   - [derive](#derive) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
-  - [middleware](#middleware) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
-  - [CONFIG](#config) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
+  - [createActions](#createactions) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
+  - [middleware](#middleware) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
+  - [CONFIG](#config) [ [API](#api-5), [Usage Examples](#usage-examples-5) ]
   <!-- << TOC << -->
 
 ## atom
@@ -131,6 +132,33 @@ const views = derive(
 // Set value of the derive atom
 views.set(42);
 // -> post.get().views will be 42
+```
+
+## createActions
+
+Create actions to change the state of an atom.
+
+### API
+
+Parameters:
+
+- `atom` Atom to be used.
+- `reducers` Reducers for custom actions to set the atoms value.
+
+Returns: Actions to change the state of the atom.
+
+### Usage Examples
+
+```ts
+const counter = atom({ defaultValue: 0 });
+const actions = createActions(counter, {
+  increment: (state) => state + 1,
+  decrement: (state) => state - 1,
+  add: (state, value: number) => state + value,
+  subtract: (state, value: number) => state - value,
+});
+actions.increment();
+actions.add(5);
 ```
 
 ## middleware
