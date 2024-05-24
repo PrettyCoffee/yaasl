@@ -8,6 +8,11 @@
     "@typescript-eslint/no-invalid-void-type": "off",
     "import/no-extraneous-dependencies": ["error", {
       "peerDependencies": true
+    }],
+    "@typescript-eslint/ban-types": ["error", {
+        "types": {
+          "{}": false
+        }
     }]
   },
   "overrides": [
