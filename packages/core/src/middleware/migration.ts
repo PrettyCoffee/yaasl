@@ -99,13 +99,23 @@ const performMigration = (
 }
 
 export interface MigrationOptions {
-  /** Migration steps to perform.
+  /** An array of migration steps to perform for outdated values.
    *
-   *  Note: One step must have a `previous` version set to null as entry point.
+   *  __Note:__ One step must have a `previous` version set to null as entry point.
    **/
   steps: MigrationStep[]
 }
 
+/** Middleware to migrate the persisted value of an atom to a newer version.
+ *  You can use the `createMigrationStep` helper to create migration steps.
+ *
+ *  @param {MigrationOptions} options
+ *  @param options.steps An array of migration steps to perform for outdated values.
+ *
+ * __Note:__ One step must have a `previous` version set to null as entry point.
+ *
+ *  @returns The middleware to be used on atoms.
+ **/
 export const migration = middleware<MigrationOptions, unknown>({
   didInit: ({ atom, options }) => {
     const steps = sortMigrations(options.steps)
@@ -141,6 +151,12 @@ export const migration = middleware<MigrationOptions, unknown>({
   },
 })
 
+/** Helper to create a step for the migration middleware.
+ *
+ *  @param migration Migration step to create.
+ *
+ *  @returns The migration step.
+ **/
 export const createMigrationStep = <
   Version extends string,
   PreviousVersion extends string | null,

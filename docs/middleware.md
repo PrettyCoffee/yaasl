@@ -136,6 +136,8 @@ Parameters:
 
 - `options.steps`: An array of migration steps to migrate an old value
 
+  **Note:** One step must have a `previous` version set to null as entry point.
+
 Returns: The middleware to be used on atoms.
 
 ### Usage Examples
