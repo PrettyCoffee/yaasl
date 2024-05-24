@@ -1,5 +1,5 @@
 import { Atom } from "./createAtom"
-import { SettableDerive } from "./derive"
+import { SettableDerive } from "./createDerived"
 
 type Reducer<State> = (state: State, ...payloadArgs: any[]) => State
 export type Reducers<State> = Record<string, Reducer<State>>

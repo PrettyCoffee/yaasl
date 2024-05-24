@@ -129,7 +129,7 @@ With a `derive` result:
 
 ```tsx
 const myAtom = createAtom({ defaultValue: 2 });
-const double = derive(
+const double = createDerived(
   ({ get }) => get(myAtom) * 2,
   ({ value, set }) => set(myAtom, value / 2)
 );

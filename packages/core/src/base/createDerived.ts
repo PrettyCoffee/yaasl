@@ -113,13 +113,13 @@ export class SettableDerive<Value = unknown> extends Derive<Value> {
  *
  *  @returns A derive instance.
  **/
-export function derive<Value>(getter: GetterFn<Value>): Derive<Value>
-export function derive<Value>(
+export function createDerived<Value>(getter: GetterFn<Value>): Derive<Value>
+export function createDerived<Value>(
   getter: GetterFn<Value>,
   setter: SetterFn<Value>
 ): SettableDerive<Value>
 
-export function derive<Value>(
+export function createDerived<Value>(
   getter: GetterFn<Value>,
   setter?: SetterFn<Value>
 ) {

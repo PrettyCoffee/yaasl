@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react"
-import { createAtom, derive } from "@yaasl/core"
+import { createAtom, createDerived } from "@yaasl/core"
 
 import { useAtomValue, useSetAtom, useAtom } from "./useAtom"
 
@@ -49,21 +49,21 @@ describe("Test useAtom", () => {
 describe("Test useAtom with derived values", () => {
   it("Returns the derive value", () => {
     const testAtom = createAtom({ defaultValue: 1 })
-    const testDerive = derive(({ get }) => get(testAtom) * 2)
+    const testDerive = createDerived(({ get }) => get(testAtom) * 2)
     const { result } = renderHook(useAtom, { initialProps: testDerive })
     expect(result.current[0]).toBe(2)
   })
 
   it("Throws an error if setter is used if derive is not settable", () => {
     const testAtom = createAtom({ defaultValue: 1 })
-    const testDerive = derive(({ get }) => get(testAtom) * 2)
+    const testDerive = createDerived(({ get }) => get(testAtom) * 2)
     const { result } = renderHook(useAtom, { initialProps: testDerive })
     expect(() => result.current[1](2)).toThrow()
   })
 
   it("Uses settable derive atoms", () => {
     const testAtom = createAtom({ defaultValue: 1 })
-    const testDerive = derive(
+    const testDerive = createDerived(
       ({ get }) => get(testAtom) * 2,
       ({ value, set }) => set(testAtom, value / 2)
     )

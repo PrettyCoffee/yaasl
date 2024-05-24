@@ -5,7 +5,7 @@
 - [Core](#core)
   - [createAtom](#createatom) [ [API](#api), [Usage Examples](#usage-examples) ]
   - [select](#select) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
-  - [derive](#derive) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
+  - [createDerived](#createderived) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
   - [createActions](#createactions) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
   - [effect](#effect) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
   - [CONFIG](#config) [ [API](#api-5), [Usage Examples](#usage-examples-5) ]
@@ -82,7 +82,7 @@ const currentValue = value.get();
 value.subscribe((value) => console.log(value));
 ```
 
-## derive
+## createDerived
 
 Creates a value, derived from one or more atoms or other derived values.
 
@@ -108,8 +108,8 @@ With a getter:
 ```ts
 const myAtom = createAtom({ defaultValue: 1 });
 // Create a derivation
-const multiplier = derive(({ get }) => get(myAtom) * 2);
-const nested = derive(({ get }) => get(multiplier) + get(myAtom));
+const multiplier = createDerived(({ get }) => get(myAtom) * 2);
+const nested = createDerived(({ get }) => get(multiplier) + get(myAtom));
 
 // Use a derivation
 const currentValue = multiplier.get();
@@ -127,7 +127,7 @@ const post = createAtom({
   },
 });
 // Create a derive atom
-const views = derive(
+const views = createDerived(
   ({ get }) => get(video).views,
   ({ value, set }) => set(video, { ...video.get(), views: value })
 );
