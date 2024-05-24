@@ -1,4 +1,4 @@
-import { Atom, CONFIG, middleware } from "@yaasl/core"
+import { Atom, CONFIG, effect } from "@yaasl/core"
 
 import { ConnectionResponse, getReduxConnection } from "./redux-devtools"
 import { cache } from "./utils/cache"
@@ -33,9 +33,9 @@ export interface ReduxDevtoolsOptions {
  *
  * @param options.disable Disables the middleware. Useful for production.
  *
- * @returns The middleware to be used on atoms.
+ * @returns The effect to be used on atoms.
  **/
-export const reduxDevtools = middleware<ReduxDevtoolsOptions | undefined>(
+export const reduxDevtools = effect<ReduxDevtoolsOptions | undefined>(
   ({ atom, options = {} }) => {
     if (options.disable) return {}
     const connection = getReduxConnection(getKey())

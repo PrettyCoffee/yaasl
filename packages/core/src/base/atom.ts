@@ -2,17 +2,17 @@ import { SetStateAction } from "@yaasl/utils"
 
 import { Actions, Reducers, createActions } from "./createActions"
 import { Stateful } from "./Stateful"
-import { MiddlewareAtomCallback } from "../middleware/middleware"
-import { MiddlewareDispatcher } from "../middleware/MiddlewareDispatcher"
+import { EffectAtomCallback } from "../effects/effect"
+import { EffectDispatcher } from "../effects/EffectDispatcher"
 
 export interface AtomConfig<Value, R extends Reducers<Value> = {}> {
   /** Value that will be used initially. */
   defaultValue: Value
   /** Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}". */
   name?: string
-  /** Middleware that will be applied on the atom. */
-  middleware?: MiddlewareAtomCallback<any>[]
-  /** Reducers for custom actions to set the atoms value. */
+  /** Effects that will be applied on the atom. */
+  effects?: EffectAtomCallback<any>[]
+  /** Reducers for custom actions to set the atom's value. */
   reducers?: R
 }
 
@@ -29,7 +29,7 @@ export class Atom<
   constructor({
     defaultValue,
     name = `atom-${++key}`,
-    middleware,
+    effects,
     reducers = {} as R,
   }: AtomConfig<Value, R>) {
     super(defaultValue)
@@ -37,11 +37,11 @@ export class Atom<
     this.defaultValue = defaultValue
     this.actions = createActions(this, reducers)
 
-    if (!middleware || middleware.length === 0) {
+    if (!effects || effects.length === 0) {
       this.didInit = true
       return
     }
-    const { didInit } = new MiddlewareDispatcher({ atom: this, middleware })
+    const { didInit } = new EffectDispatcher({ atom: this, effects })
     this.setDidInit(didInit)
   }
 
@@ -60,17 +60,17 @@ export class Atom<
  *
  * @param config.defaultValue Value that will be used initially.
  * @param config.name Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}".
- * @param config.middleware Middleware that will be applied on the atom.
- * @param config.reducers Reducers for custom actions to set the atoms value.
+ * @param config.effects Effects that will be applied on the atom.
+ * @param config.reducers Reducers for custom actions to set the atom's value.
  *
  * @returns An atom instance.
  * - `result.get`: Read the value of state.
  * - `result.subscribe`: Subscribe to value changes.
  * - `result.set`: Set the value of the atom.
  * - `result.actions`: All actions that were created with reducers.
- * - `result.didInit`: State of the atom's middleware initialization process.
+ * - `result.didInit`: State of the atom's effects initialization process.
  *   Will be a promise if the initialization is pending and `true` if finished.
  **/
-export const atom = <Value, R extends Reducers<Value>>(
+export const atom = <Value, R extends Reducers<Value> = {}>(
   config: AtomConfig<Value, R>
 ) => new Atom(config)

@@ -15,7 +15,7 @@ const setup = (options: LocalStorageOptions = {}) => {
   const testAtom = atom<object>({
     defaultValue,
     name: "atom",
-    middleware: [localStorage(options)],
+    effects: [localStorage(options)],
   })
   const storeKey = options.key ? options.key : `atom`
 
@@ -84,7 +84,7 @@ describe("Test localStorage", () => {
       const mapAtom = atom({
         name: "mapAtom",
         defaultValue: new Map(),
-        middleware: [localStorage({ parser: mapParser })],
+        effects: [localStorage({ parser: mapParser })],
       })
       expect(mapAtom.get().get("string")).toBe("value")
       expect(mapAtom.get().get("number")).toBe(42)
@@ -97,7 +97,7 @@ describe("Test localStorage", () => {
           ["string", "value"],
           ["number", 42],
         ]),
-        middleware: [localStorage({ parser: mapParser })],
+        effects: [localStorage({ parser: mapParser })],
       })
       expect(window.localStorage.getItem("mapAtom")).toBe(
         '[["string","value"],["number",42]]'

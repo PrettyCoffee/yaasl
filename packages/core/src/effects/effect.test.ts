@@ -1,12 +1,12 @@
 import { sleep } from "@yaasl/utils"
 
-import { middleware } from "./middleware"
+import { effect } from "./effect"
 import { Atom, atom } from "../base"
 
 const didInit = vi.fn()
 const init = vi.fn()
 const set = vi.fn()
-const testMiddleware = middleware({
+const testEffect = effect({
   init,
   didInit,
   set,
@@ -21,27 +21,27 @@ beforeEach(() => {
   vi.resetAllMocks()
 })
 
-describe("Test middleware", () => {
-  it("Creates a middleware", () => {
-    const m = testMiddleware()(testAtom)
-    expect(m.actions).toHaveProperty("set")
-    expect(m).toHaveProperty("options")
+describe("Test effect", () => {
+  it("Creates an effect", () => {
+    const e = testEffect()(testAtom)
+    expect(e.actions).toHaveProperty("set")
+    expect(e).toHaveProperty("options")
   })
 
   it("Accepts options", () => {
-    const testMiddleware = middleware<{ a: string }>({
+    const testEffect = effect<{ a: string }>({
       init,
       set,
     })
 
-    const m = testMiddleware({ a: "testOptionValue" })(testAtom)
-    expect(m).toHaveProperty("options.a", "testOptionValue")
+    const e = testEffect({ a: "testOptionValue" })(testAtom)
+    expect(e).toHaveProperty("options.a", "testOptionValue")
   })
 
   it("Calls the init function", () => {
     const testAtom = atom({
       defaultValue,
-      middleware: [testMiddleware()],
+      effects: [testEffect()],
     })
     expect(init).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -54,7 +54,7 @@ describe("Test middleware", () => {
   it("Calls the didInit function", () => {
     const testAtom = atom({
       defaultValue,
-      middleware: [testMiddleware()],
+      effects: [testEffect()],
     })
     expect(didInit).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -67,7 +67,7 @@ describe("Test middleware", () => {
   it("Calls the set function", () => {
     const testAtom = atom({
       defaultValue,
-      middleware: [testMiddleware()],
+      effects: [testEffect()],
     })
     testAtom.set(nextValue)
     expect(set).toHaveBeenCalledTimes(1)
@@ -81,7 +81,7 @@ describe("Test middleware", () => {
   it("Calls the actions in the correct order", () => {
     const actionOrder: string[] = []
 
-    const order = middleware(() => {
+    const order = effect(() => {
       actionOrder.push("setup")
       return {
         init: () => {
@@ -99,7 +99,7 @@ describe("Test middleware", () => {
 
     const testAtom = atom({
       defaultValue,
-      middleware: [order()],
+      effects: [order()],
     })
 
     expect(actionOrder).toEqual(["setup", "init", "didInit", "set"])
@@ -107,10 +107,10 @@ describe("Test middleware", () => {
     expect(actionOrder).toEqual(["setup", "init", "didInit", "set", "set"])
   })
 
-  it("Sets didInit to true when no middleware was async", () => {
+  it("Sets didInit to true when no effect was asynchronous", () => {
     const testAtom = atom({
       defaultValue,
-      middleware: [testMiddleware()],
+      effects: [testEffect()],
     })
 
     expect(testAtom.didInit).toBe(true)
@@ -133,7 +133,7 @@ describe("Test middleware", () => {
         atom.set(value + 1)
       }
 
-      const counterMiddleware = middleware({
+      const counterEffect = effect({
         init: ({ atom, value }) => {
           return initType === "sync"
             ? perform(atom, value)
@@ -147,7 +147,7 @@ describe("Test middleware", () => {
       })
       const testAtom = atom({
         defaultValue: 0,
-        middleware: [counterMiddleware()],
+        effects: [counterEffect()],
       })
 
       await testAtom.didInit
@@ -157,11 +157,11 @@ describe("Test middleware", () => {
     }
   )
 
-  describe("Async middleware", () => {
+  describe("Async effect", () => {
     it("allows async init", async () => {
       const actionOrder: string[] = []
 
-      const order = middleware({
+      const order = effect({
         init: () =>
           sleep(10).then(() => {
             actionOrder.push("init")
@@ -173,7 +173,7 @@ describe("Test middleware", () => {
 
       const testAtom = atom({
         defaultValue,
-        middleware: [order()],
+        effects: [order()],
       })
 
       expect(actionOrder).toEqual([])
@@ -185,7 +185,7 @@ describe("Test middleware", () => {
     it("allows async didInit", async () => {
       const actionOrder: string[] = []
 
-      const order = middleware({
+      const order = effect({
         init: () => {
           actionOrder.push("init")
         },
@@ -197,7 +197,7 @@ describe("Test middleware", () => {
 
       const testAtom = atom({
         defaultValue,
-        middleware: [order()],
+        effects: [order()],
       })
 
       expect(actionOrder).toEqual(["init"])
@@ -209,7 +209,7 @@ describe("Test middleware", () => {
     it("allows init and didInit to be async", async () => {
       const actionOrder: string[] = []
 
-      const order = middleware(() => {
+      const order = effect(() => {
         actionOrder.push("setup")
         return {
           init: () =>
@@ -225,7 +225,7 @@ describe("Test middleware", () => {
 
       const testAtom = atom({
         defaultValue,
-        middleware: [order()],
+        effects: [order()],
       })
 
       expect(actionOrder).toEqual(["setup"])
@@ -234,9 +234,9 @@ describe("Test middleware", () => {
       expect(testAtom.didInit).toBe(true)
     })
 
-    it("persists the value over multiple async middleware actions", async () => {
+    it("persists the value over multiple async effect actions", async () => {
       const values: number[] = []
-      const counterMiddleware = middleware({
+      const counterEffect = effect({
         init: ({ atom, value }) => {
           return sleep(10).then(() => {
             if (typeof value !== "number") return
@@ -254,7 +254,7 @@ describe("Test middleware", () => {
       })
       const testAtom = atom({
         defaultValue: 0,
-        middleware: [counterMiddleware()],
+        effects: [counterEffect()],
       })
 
       await testAtom.didInit

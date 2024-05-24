@@ -1,6 +1,6 @@
 import { log } from "@yaasl/utils"
 
-import { middleware } from "./middleware"
+import { effect } from "./effect"
 import { Atom, CONFIG } from "../base"
 
 export interface MigrationStep<
@@ -106,7 +106,7 @@ export interface MigrationOptions {
   steps: MigrationStep[]
 }
 
-/** Middleware to migrate the persisted value of an atom to a newer version.
+/** Effect to migrate the persisted value of an atom to a newer version.
  *  You can use the `createMigrationStep` helper to create migration steps.
  *
  *  @param {MigrationOptions} options
@@ -114,9 +114,9 @@ export interface MigrationOptions {
  *
  * __Note:__ One step must have a `previous` version set to null as entry point.
  *
- *  @returns The middleware to be used on atoms.
+ *  @returns The effect to be used on atoms.
  **/
-export const migration = middleware<MigrationOptions, unknown>({
+export const migration = effect<MigrationOptions, unknown>({
   didInit: ({ atom, options }) => {
     const steps = sortMigrations(options.steps)
     const currentVersion = getVersion(atom)
@@ -151,7 +151,7 @@ export const migration = middleware<MigrationOptions, unknown>({
   },
 })
 
-/** Helper to create a step for the migration middleware.
+/** Helper to create a step for the migration effect.
  *
  *  @param migration Migration step to create.
  *

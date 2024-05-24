@@ -1,7 +1,7 @@
 import { sleep } from "@yaasl/utils"
 
-import { middleware } from "./middleware"
-import { MiddlewareDispatcher } from "./MiddlewareDispatcher"
+import { effect } from "./effect"
+import { EffectDispatcher } from "./EffectDispatcher"
 import { atom } from "../base"
 
 interface TestOptions {
@@ -13,13 +13,13 @@ interface TestOptions {
   onEmit: (value: string) => void
   wait?: number
 }
-const createMiddleware = ({
+const createEffect = ({
   onEmit,
   types: { initType, didInitType },
   labels: [init, didInit, set],
   wait = 10,
 }: TestOptions) =>
-  middleware({
+  effect({
     init: () => {
       return initType === "sync"
         ? onEmit(init)
@@ -33,7 +33,7 @@ const createMiddleware = ({
     set: () => onEmit(set),
   })
 
-describe("Test MiddlewareDispatcher", () => {
+describe("Test EffectDispatcher", () => {
   describe.each`
     initType   | didInitType
     ${"sync"}  | ${"sync"}
@@ -44,7 +44,7 @@ describe("Test MiddlewareDispatcher", () => {
     "{ init: $initType, didInit: $didInitType }",
     (types: TestOptions["types"]) => {
       const testFn = vi.fn()
-      const m = createMiddleware({
+      const e = createEffect({
         types: types,
         labels: ["init", "didInit", "set"],
         onEmit: testFn,
@@ -57,9 +57,9 @@ describe("Test MiddlewareDispatcher", () => {
       it("sets the didInit status correctly", async () => {
         const testAtom = atom({ defaultValue: 0 })
 
-        const dispatcher = new MiddlewareDispatcher({
+        const dispatcher = new EffectDispatcher({
           atom: testAtom,
-          middleware: [m()],
+          effects: [e()],
         })
 
         if (types.initType === "async" || types.didInitType === "async") {
@@ -72,9 +72,9 @@ describe("Test MiddlewareDispatcher", () => {
       it("calls init and didInit", async () => {
         const testAtom = atom({ defaultValue: 0 })
 
-        const dispatcher = new MiddlewareDispatcher({
+        const dispatcher = new EffectDispatcher({
           atom: testAtom,
-          middleware: [m()],
+          effects: [e()],
         })
 
         await dispatcher.didInit
@@ -86,22 +86,22 @@ describe("Test MiddlewareDispatcher", () => {
   it("waits for all tasks to finish", async () => {
     const testFn = vi.fn()
     const testAtom = atom({ defaultValue: 0 })
-    const m1 = createMiddleware({
+    const e1 = createEffect({
       types: { initType: "async", didInitType: "async" },
       labels: ["init1", "didInit1", "set1"],
       onEmit: testFn,
       wait: 5,
     })
-    const m2 = createMiddleware({
+    const e2 = createEffect({
       types: { initType: "async", didInitType: "async" },
       labels: ["init2", "didInit2", "set2"],
       onEmit: testFn,
       wait: 1,
     })
 
-    const dispatcher = new MiddlewareDispatcher({
+    const dispatcher = new EffectDispatcher({
       atom: testAtom,
-      middleware: [m1(), m2()],
+      effects: [e1(), e2()],
     })
 
     const getMocks = () => testFn.mock.calls.flat() as string[]

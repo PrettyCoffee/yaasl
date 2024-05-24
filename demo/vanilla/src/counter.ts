@@ -6,7 +6,7 @@ CONFIG.name = "demo-vanilla"
 const counter = atom({
   name: "counter",
   defaultValue: 0,
-  middleware: [
+  effects: [
     localStorage(),
     indexedDb(),
     expiration({ expiresIn: 5000 }),

@@ -23,7 +23,7 @@ describe("Test expiration", () => {
     const testAtom = atom<object>({
       defaultValue,
       name,
-      middleware: [expiration({ expiresIn: 300 })],
+      effects: [expiration({ expiresIn: 300 })],
     })
 
     testAtom.set(nextValue)
@@ -42,7 +42,7 @@ describe("Test expiration", () => {
     const testAtom = atom<object>({
       defaultValue,
       name,
-      middleware: [expiration({ expiresAt: expirationDate })],
+      effects: [expiration({ expiresAt: expirationDate })],
     })
 
     testAtom.set(nextValue)
@@ -65,7 +65,7 @@ describe("Test expiration", () => {
     const testAtom = atom<object>({
       defaultValue,
       name,
-      middleware: [expiration({ expiresIn: 300 }), localStorage({ key: name })],
+      effects: [expiration({ expiresIn: 300 }), localStorage({ key: name })],
     })
 
     expect(testAtom.get()).toStrictEqual(nextValue)

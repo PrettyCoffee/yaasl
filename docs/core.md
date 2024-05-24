@@ -7,7 +7,7 @@
   - [select](#select) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   - [derive](#derive) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
   - [createActions](#createactions) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
-  - [middleware](#middleware) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
+  - [effect](#effect) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
   - [CONFIG](#config) [ [API](#api-5), [Usage Examples](#usage-examples-5) ]
   <!-- << TOC << -->
 
@@ -21,8 +21,8 @@ Parameters:
 
 - `config.defaultValue`: Value that will be used initially.
 - `config.name`: Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}".
-- `config.middleware`: Middleware that will be applied on the atom.
-- `config.reducers`: Reducers for custom actions to set the atoms value.
+- `config.effects`: Effects that will be applied on the atom.
+- `config.reducers`: Reducers for custom actions to set the atom's value.
 
 Returns: An atom instance.
 
@@ -30,7 +30,7 @@ Returns: An atom instance.
 - `result.subscribe`: Subscribe to value changes.
 - `result.set`: Set the value of the atom.
 - `result.actions`: All actions that were created with reducers.
-- `result.didInit`: State of the atom's middleware initialization process.
+- `result.didInit`: State of the atom's effects initialization process.
   Will be a promise if the initialization is pending and `true` if finished.
 
 ### Usage Examples
@@ -42,7 +42,7 @@ const myAtom = atom<string | null>({ defaultValue: null });
 const myAtom = atom({
   defaultValue: "my-value",
   name: "custom-name",
-  middleware: [localStorage(), reduxDevtools()],
+  effects: [localStorage(), reduxDevtools()],
 });
 
 // Use an atom
@@ -67,7 +67,7 @@ Returns: A select instance.
 
 - `result.get`: Read the value of state.
 - `result.subscribe`: Subscribe to value changes.
-- `result.didInit`: State of the dependents middleware initialization processes.
+- `result.didInit`: State of the dependents effects initialization processes.
   Will be a promise if the initialization is pending and `true` if finished.
 
 ### Usage Examples
@@ -98,7 +98,7 @@ Returns: A derived instance.
 - `result.get`: Read the value of state.
 - `result.set`: Set the value of the derived atom. (only available if a setter was passed)
 - `result.subscribe`: Subscribe to value changes.
-- `result.didInit`: State of the dependents middleware initialization processes.
+- `result.didInit`: State of the dependents effects initialization processes.
   Will be a promise if the initialization is pending and `true` if finished.
 
 ### Usage Examples
@@ -163,11 +163,11 @@ actions.increment();
 actions.add(5);
 ```
 
-## middleware
+## effect
 
-Create middlewares to be used in combination with a atoms.
+Create effects to be used in combination with atoms.
 
-Middlewares can be used to interact with an atom by using the following lifecycle actions:
+Effects can be used to interact with an atom by using the following lifecycle actions:
 
 - `init`: Action to be called when the atom is created, but before subscribing to `set` events.
   May return a promise that can be awaited by using `atom.didInit`.
@@ -179,15 +179,15 @@ Middlewares can be used to interact with an atom by using the following lifecycl
 
 Parameters:
 
-- `setup`: Middleware actions or function to create middleware actions. Middleware actions are fired in the atom lifecycle, alongside to the subscriptions.
+- `setup`: Effect actions or function to create effect actions. Effect actions are fired in the atom lifecycle, alongside to the subscriptions.
 
-Returns: A middleware function to be used in atoms.
+Returns: An effect function to be used in atoms.
 
 ### Usage Examples
 
 ```ts
-// Create a middleware
-const logger = middleware({
+// Create an effect
+const logger = effect({
   init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
   didInit: ({ atom }) =>
     console.log(`Did finish initialization of atom "${atom.name}"`),
@@ -197,14 +197,14 @@ const logger = middleware({
 
 const myAtom = atom({
   defaultValue: "my-value",
-  middleware: [logger()],
+  effects: [logger()],
 });
 
-// Create a middleware that has options
+// Create an effect that has options
 interface Options {
   disable?: boolean;
 }
-const loggerWithOptions = middleware<Options>(({ options }) => {
+const loggerWithOptions = effect<Options>(({ options }) => {
   if (options.disable) return {};
 
   return {
@@ -218,7 +218,7 @@ const loggerWithOptions = middleware<Options>(({ options }) => {
 
 const myAtom = atom({
   defaultValue: "my-value",
-  middleware: [loggerWithOptions({ disable: true })],
+  effects: [loggerWithOptions({ disable: true })],
 });
 ```
 

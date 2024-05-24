@@ -1,7 +1,7 @@
 import { sleep } from "@yaasl/utils"
 
 import { atom } from "./atom"
-import { middleware } from "../middleware"
+import { effect } from "../effects"
 
 const defaultValue = "default"
 const nextValue = "next"
@@ -58,26 +58,26 @@ describe("Test atom", () => {
   })
 
   describe("synchronizes didInit status", () => {
-    it("Sets true if no midleware was passed", () => {
+    it("Sets true if no effect was passed", () => {
       const testAtom = atom({ defaultValue })
       expect(testAtom.didInit).toBe(true)
     })
 
-    it("Sets true if middleware is sync", () => {
+    it("Sets true if effects are synchronous", () => {
       const init = vi.fn()
       const didInit = vi.fn()
 
-      const m = middleware({ init, didInit })
-      const testAtom = atom({ defaultValue, middleware: [m()] })
+      const e = effect({ init, didInit })
+      const testAtom = atom({ defaultValue, effects: [e()] })
       expect(testAtom.didInit).toBe(true)
     })
 
-    it("Updates if middleware is async", async () => {
-      const m = middleware({
+    it("Updates if effects are asynchronous", async () => {
+      const e = effect({
         init: () => sleep(1),
         didInit: () => sleep(1),
       })
-      const testAtom = atom({ defaultValue, middleware: [m()] })
+      const testAtom = atom({ defaultValue, effects: [e()] })
 
       expect(testAtom.didInit).toBeInstanceOf(Promise)
       await testAtom.didInit

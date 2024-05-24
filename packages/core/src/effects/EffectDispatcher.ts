@@ -1,25 +1,25 @@
 import { isPromiseLike } from "@yaasl/utils"
 
-import { Middleware, ActionType, MiddlewareAtomCallback } from "./middleware"
+import { Effect, ActionType, EffectAtomCallback } from "./effect"
 import { Atom } from "../base/atom"
 import { Scheduler } from "../utils/Scheduler"
 
-interface MiddlewareDispatcherConstructor {
+interface EffectDispatcherConstructor {
   atom: Atom<any>
-  middleware: MiddlewareAtomCallback<any>[]
+  effects: EffectAtomCallback<any>[]
 }
 
-export class MiddlewareDispatcher {
+export class EffectDispatcher {
   public didInit: PromiseLike<void> | boolean = false
-  private middleware: Middleware[] = []
+  private effects: Effect[] = []
   private scheduler = new Scheduler()
 
-  constructor({ atom, middleware }: MiddlewareDispatcherConstructor) {
-    this.middleware = middleware.map(create => create(atom))
+  constructor({ atom, effects }: EffectDispatcherConstructor) {
+    this.effects = effects.map(create => create(atom))
 
-    this.callMiddlewareAction("init", atom)
+    this.callEffectAction("init", atom)
     this.subscribeSetters(atom)
-    this.callMiddlewareAction("didInit", atom)
+    this.callEffectAction("didInit", atom)
 
     const { queue } = this.scheduler
     if (!isPromiseLike(queue)) {
@@ -32,16 +32,16 @@ export class MiddlewareDispatcher {
   }
 
   private subscribeSetters(atom: Atom) {
-    atom.subscribe(value => this.callMiddlewareAction("set", atom, () => value))
+    atom.subscribe(value => this.callEffectAction("set", atom, () => value))
   }
 
-  private callMiddlewareAction(
+  private callEffectAction(
     action: ActionType,
     atom: Atom,
     /* Must be a function to make sure it is using the latest value when used in promise */
     getValue = () => atom.get()
   ) {
-    const tasks = this.middleware.map(({ actions, options }) => {
+    const tasks = this.effects.map(({ actions, options }) => {
       const actionFn = actions[action]
       return () => actionFn?.({ value: getValue(), atom, options })
     })

@@ -2,7 +2,7 @@ import { sleep } from "@yaasl/utils"
 
 import { atom } from "./atom"
 import { select } from "./select"
-import { middleware } from "../middleware"
+import { effect } from "../effects"
 
 const defaultValue = {
   value: "test",
@@ -58,18 +58,18 @@ describe("Test select", () => {
   })
 
   describe("synchronizes didInit status", () => {
-    it("Sets true if no midleware was passed", () => {
+    it("Sets true if no effects were passed", () => {
       const testAtom = atom({ defaultValue })
       const selected = select(testAtom, "value")
       expect(selected.didInit).toBe(true)
     })
 
-    it("Updates if middleware is async", async () => {
-      const m = middleware({
+    it("Updates if effects are asynchronous", async () => {
+      const e = effect({
         init: () => sleep(1),
         didInit: () => sleep(1),
       })
-      const testAtom = atom({ defaultValue, middleware: [m()] })
+      const testAtom = atom({ defaultValue, effects: [e()] })
       const selected = select(testAtom, "value")
 
       expect(selected.didInit).toBeInstanceOf(Promise)

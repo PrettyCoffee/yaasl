@@ -16,19 +16,19 @@ Parameters:
 
 - `options.disable`: Disables the middleware. Useful for production.
 
-Returns: The middleware to be used on atoms.
+Returns: The effect to be used on atoms.
 
 ### Usage Examples
 
 ```ts
 const atomWithDevtools = atom({
   defaultValue: "my-value",
-  middleware: [reduxDevtools()],
+  effects: [reduxDevtools()],
 });
 
 const isProduction = import.meta.env.PROD;
 const atomWithDevtools = atom({
   defaultValue: "my-value",
-  middleware: [reduxDevtools({ disable: isProduction })],
+  effects: [reduxDevtools({ disable: isProduction })],
 });
 ```

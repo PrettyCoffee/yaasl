@@ -1,4 +1,4 @@
-import { middleware } from "./middleware"
+import { effect } from "./effect"
 import { CONFIG } from "../base"
 import { Expiration } from "../utils/Expiration"
 
@@ -22,7 +22,7 @@ export interface ExpirationOptions {
   expiresIn?: number | (() => number)
 }
 
-/** Middleware to make an atom value expirable and reset to its defaulValue.
+/** Effect to make an atom value expirable and reset to its defaulValue.
  *
  * __Note:__ When using `expiresAt`, a function returning the date should be prefered since using a static date might end in an infinite loop.
  *
@@ -30,9 +30,9 @@ export interface ExpirationOptions {
  * @param options.expiresAt Date at which the value expires
  * @param options.expiresIn Milliseconds in which the value expires. Will be ignored if expiresAt is set.
  *
- * @returns The middleware to be used on atoms.
+ * @returns The effect to be used on atoms.
  **/
-export const expiration = middleware<ExpirationOptions>(
+export const expiration = effect<ExpirationOptions>(
   ({ atom, options = {} }) => {
     const hasExpiration = Boolean(options.expiresAt ?? options.expiresIn)
     if (!hasExpiration) return {}

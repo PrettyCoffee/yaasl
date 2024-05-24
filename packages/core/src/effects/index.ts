@@ -1,5 +1,5 @@
-export { middleware } from "./middleware"
-export type { Middleware } from "./middleware"
+export { effect } from "./effect"
+export type { Effect } from "./effect"
 
 export { localStorage } from "./localStorage"
 export type { LocalStorageOptions, LocalStorageParser } from "./localStorage"

@@ -1,4 +1,4 @@
-import { middleware } from "./middleware"
+import { effect } from "./effect"
 import { CONFIG } from "../base"
 import { Store } from "../utils/Store"
 
@@ -17,9 +17,9 @@ export interface IndexedDbOptions {
  * @param {IndexedDbOptions | undefined} options
  * @param options.key Use your own store key. Will be `atom.name` by default.
  *
- * @returns The middleware to be used on atoms.
+ * @returns The effect to be used on atoms.
  **/
-export const indexedDb = middleware<IndexedDbOptions | undefined>(
+export const indexedDb = effect<IndexedDbOptions | undefined>(
   ({ atom, options }) => {
     const key = options?.key ?? atom.name
     return {

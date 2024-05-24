@@ -37,7 +37,7 @@ describe("Test migration", () => {
     atom({
       name: testName,
       defaultValue: { value: "1" },
-      middleware: [localStorage(), migration({ steps: [v1, v2] })],
+      effects: [localStorage(), migration({ steps: [v1, v2] })],
     })
 
     expect(migrateV1).not.toHaveBeenCalled()
@@ -50,7 +50,7 @@ describe("Test migration", () => {
     const testAtom = atom({
       name: testName,
       defaultValue: { value: "1" },
-      middleware: [localStorage(), migration({ steps: [v1, v2] })],
+      effects: [localStorage(), migration({ steps: [v1, v2] })],
     })
 
     expect(migrateV1).toHaveBeenCalledWith(0)
@@ -65,7 +65,7 @@ describe("Test migration", () => {
     const testAtom = atom({
       name: testName,
       defaultValue: { value: "1" },
-      middleware: [localStorage(), migration({ steps: [v1, v2] })],
+      effects: [localStorage(), migration({ steps: [v1, v2] })],
     })
 
     expect(migrateV1).not.toHaveBeenCalled()
@@ -88,7 +88,7 @@ describe("Test migration", () => {
     const testAtom = atom({
       name: testName,
       defaultValue: { value: "1" },
-      middleware: [localStorage(), migration({ steps: [v1, throwingV2] })],
+      effects: [localStorage(), migration({ steps: [v1, throwingV2] })],
     })
     expect(testAtom.get()).toBe(0)
     expect(window.localStorage.getItem(`${testName}-version`)).toBe(null)
@@ -104,7 +104,7 @@ describe("Test migration", () => {
     const testAtom = atom({
       name: testName,
       defaultValue: { value: "1" },
-      middleware: [localStorage(), migration({ steps: [v1, v2] })],
+      effects: [localStorage(), migration({ steps: [v1, v2] })],
     })
 
     expect(testAtom.get()).toEqual("0")

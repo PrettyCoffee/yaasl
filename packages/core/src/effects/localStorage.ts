@@ -1,4 +1,4 @@
-import { middleware } from "./middleware"
+import { effect } from "./effect"
 import { CONFIG } from "../base"
 import { LocalStorage } from "../utils/LocalStorage"
 
@@ -29,9 +29,9 @@ export interface LocalStorageOptions {
  * @param options.noTabSync Disable the synchronization of values over browser tabs.
  * @param options.parser Custom functions to stringify and parse values. Defaults to JSON.stringify and JSON.parse. Use this when handling complex datatypes like Maps or Sets.
  *
- * @returns The middleware to be used on atoms.
+ * @returns The effect to be used on atoms.
  **/
-export const localStorage = middleware<LocalStorageOptions | undefined>(
+export const localStorage = effect<LocalStorageOptions | undefined>(
   ({ atom, options = {} }) => {
     const internalKey = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
     const { key = internalKey, parser, noTabSync } = options

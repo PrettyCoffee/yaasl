@@ -60,7 +60,7 @@ myAtom.subscribe((value) => {
 ### Vanilla typescript
 
 ```ts
-import { atom, CONFIG, middleware } from "@yaasl/core";
+import { atom, CONFIG, effect } from "@yaasl/core";
 
 // Provide an app name to yaasl
 CONFIG.name = "demo-vanilla";
@@ -69,7 +69,7 @@ CONFIG.name = "demo-vanilla";
 const counter = atom({
   name: "counter", // local storage key will be "demo-vanilla/counter"
   defaultValue: 0,
-  middleware: [localStorage()],
+  effects: [localStorage()],
 });
 
 function setupCounter(element: HTMLButtonElement) {
@@ -104,7 +104,7 @@ CONFIG.name = "demo-react";
 const counter = atom({
   name: "counter", // local storage key will be "demo-vanilla/counter"
   defaultValue: 0,
-  middleware: [localStorage()],
+  effects: [localStorage()],
 });
 
 export const Counter = () => {
