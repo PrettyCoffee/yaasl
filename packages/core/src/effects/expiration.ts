@@ -1,4 +1,4 @@
-import { effect } from "./effect"
+import { createEffect } from "./createEffect"
 import { CONFIG } from "../base"
 import { Expiration } from "../utils/Expiration"
 
@@ -32,7 +32,7 @@ export interface ExpirationOptions {
  *
  * @returns The effect to be used on atoms.
  **/
-export const expiration = effect<ExpirationOptions>(
+export const expiration = createEffect<ExpirationOptions>(
   ({ atom, options = {} }) => {
     const hasExpiration = Boolean(options.expiresAt ?? options.expiresIn)
     if (!hasExpiration) return {}

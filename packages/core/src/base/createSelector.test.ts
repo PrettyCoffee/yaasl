@@ -2,7 +2,7 @@ import { sleep } from "@yaasl/utils"
 
 import { createAtom } from "./createAtom"
 import { createSelector } from "./createSelector"
-import { effect } from "../effects"
+import { createEffect } from "../effects"
 
 const defaultValue = {
   value: "test",
@@ -65,7 +65,7 @@ describe("Test createSelector", () => {
     })
 
     it("Updates if effects are asynchronous", async () => {
-      const e = effect({
+      const e = createEffect({
         init: () => sleep(1),
         didInit: () => sleep(1),
       })

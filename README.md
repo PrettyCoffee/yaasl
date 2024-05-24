@@ -60,7 +60,7 @@ myAtom.subscribe((value) => {
 ### Vanilla typescript
 
 ```ts
-import { createAtom, CONFIG, effect } from "@yaasl/core";
+import { createAtom, CONFIG, localStorage } from "@yaasl/core";
 
 // Provide an app name to yaasl
 CONFIG.name = "demo-vanilla";

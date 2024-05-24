@@ -1,5 +1,5 @@
-export { effect } from "./effect"
-export type { Effect } from "./effect"
+export { createEffect } from "./createEffect"
+export type { Effect } from "./createEffect"
 
 export { localStorage } from "./localStorage"
 export type { LocalStorageOptions, LocalStorageParser } from "./localStorage"

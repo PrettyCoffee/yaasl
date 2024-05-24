@@ -2,7 +2,7 @@ import { SetStateAction } from "@yaasl/utils"
 
 import { Actions, Reducers, createActions } from "./createActions"
 import { Stateful } from "./Stateful"
-import { EffectAtomCallback } from "../effects/effect"
+import { EffectAtomCallback } from "../effects/createEffect"
 import { EffectDispatcher } from "../effects/EffectDispatcher"
 
 export interface AtomConfig<Value, R extends Reducers<Value> = {}> {

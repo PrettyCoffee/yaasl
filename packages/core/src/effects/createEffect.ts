@@ -49,7 +49,7 @@ export interface Effect<Options = unknown, AtomValue = unknown> {
  *
  * @returns The effect to be used on atoms.
  **/
-export const effect =
+export const createEffect =
   <Options = undefined, AtomValue = any>(
     setup: EffectSetup<Options, AtomValue>
   ) =>

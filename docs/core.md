@@ -7,7 +7,7 @@
   - [createSelector](#createselector) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   - [createDerived](#createderived) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
   - [createActions](#createactions) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
-  - [effect](#effect) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
+  - [createEffect](#createeffect) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
   - [CONFIG](#config) [ [API](#api-5), [Usage Examples](#usage-examples-5) ]
   <!-- << TOC << -->
 
@@ -163,7 +163,7 @@ actions.increment();
 actions.add(5);
 ```
 
-## effect
+## createEffect
 
 Create effects to be used in combination with atoms.
 
@@ -187,7 +187,7 @@ Returns: An effect function to be used in atoms.
 
 ```ts
 // Create an effect
-const logger = effect({
+const logger = createEffect({
   init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
   didInit: ({ atom }) =>
     console.log(`Did finish initialization of atom "${atom.name}"`),
@@ -204,7 +204,7 @@ const myAtom = createAtom({
 interface Options {
   disable?: boolean;
 }
-const loggerWithOptions = effect<Options>(({ options }) => {
+const loggerWithOptions = createEffect<Options>(({ options }) => {
   if (options.disable) return {};
 
   return {

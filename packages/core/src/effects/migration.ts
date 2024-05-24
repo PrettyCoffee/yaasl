@@ -1,6 +1,6 @@
 import { log } from "@yaasl/utils"
 
-import { effect } from "./effect"
+import { createEffect } from "./createEffect"
 import { Atom, CONFIG } from "../base"
 
 export interface MigrationStep<
@@ -116,7 +116,7 @@ export interface MigrationOptions {
  *
  *  @returns The effect to be used on atoms.
  **/
-export const migration = effect<MigrationOptions, unknown>({
+export const migration = createEffect<MigrationOptions, unknown>({
   didInit: ({ atom, options }) => {
     const steps = sortMigrations(options.steps)
     const currentVersion = getVersion(atom)

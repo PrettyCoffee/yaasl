@@ -1,6 +1,6 @@
 import { sleep } from "@yaasl/utils"
 
-import { effect } from "./effect"
+import { createEffect } from "./createEffect"
 import { EffectDispatcher } from "./EffectDispatcher"
 import { createAtom } from "../base"
 
@@ -13,13 +13,13 @@ interface TestOptions {
   onEmit: (value: string) => void
   wait?: number
 }
-const createEffect = ({
+const testEffect = ({
   onEmit,
   types: { initType, didInitType },
   labels: [init, didInit, set],
   wait = 10,
 }: TestOptions) =>
-  effect({
+  createEffect({
     init: () => {
       return initType === "sync"
         ? onEmit(init)
@@ -44,7 +44,7 @@ describe("Test EffectDispatcher", () => {
     "{ init: $initType, didInit: $didInitType }",
     (types: TestOptions["types"]) => {
       const testFn = vi.fn()
-      const e = createEffect({
+      const e = testEffect({
         types: types,
         labels: ["init", "didInit", "set"],
         onEmit: testFn,
@@ -86,13 +86,13 @@ describe("Test EffectDispatcher", () => {
   it("waits for all tasks to finish", async () => {
     const testFn = vi.fn()
     const testAtom = createAtom({ defaultValue: 0 })
-    const e1 = createEffect({
+    const e1 = testEffect({
       types: { initType: "async", didInitType: "async" },
       labels: ["init1", "didInit1", "set1"],
       onEmit: testFn,
       wait: 5,
     })
-    const e2 = createEffect({
+    const e2 = testEffect({
       types: { initType: "async", didInitType: "async" },
       labels: ["init2", "didInit2", "set2"],
       onEmit: testFn,

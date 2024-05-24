@@ -1,4 +1,4 @@
-import { Atom, CONFIG, effect } from "@yaasl/core"
+import { Atom, CONFIG, createEffect } from "@yaasl/core"
 
 import { ConnectionResponse, getReduxConnection } from "./redux-devtools"
 import { cache } from "./utils/cache"
@@ -35,7 +35,7 @@ export interface ReduxDevtoolsOptions {
  *
  * @returns The effect to be used on atoms.
  **/
-export const reduxDevtools = effect<ReduxDevtoolsOptions | undefined>(
+export const reduxDevtools = createEffect<ReduxDevtoolsOptions | undefined>(
   ({ atom, options = {} }) => {
     if (options.disable) return {}
     const connection = getReduxConnection(getKey())

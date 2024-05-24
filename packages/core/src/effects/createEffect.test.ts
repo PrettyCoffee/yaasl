@@ -1,12 +1,12 @@
 import { sleep } from "@yaasl/utils"
 
-import { effect } from "./effect"
+import { createEffect } from "./createEffect"
 import { Atom, createAtom } from "../base"
 
 const didInit = vi.fn()
 const init = vi.fn()
 const set = vi.fn()
-const testEffect = effect({
+const testEffect = createEffect({
   init,
   didInit,
   set,
@@ -21,7 +21,7 @@ beforeEach(() => {
   vi.resetAllMocks()
 })
 
-describe("Test effect", () => {
+describe("Test createEffect", () => {
   it("Creates an effect", () => {
     const e = testEffect()(testAtom)
     expect(e.actions).toHaveProperty("set")
@@ -29,7 +29,7 @@ describe("Test effect", () => {
   })
 
   it("Accepts options", () => {
-    const testEffect = effect<{ a: string }>({
+    const testEffect = createEffect<{ a: string }>({
       init,
       set,
     })
@@ -81,7 +81,7 @@ describe("Test effect", () => {
   it("Calls the actions in the correct order", () => {
     const actionOrder: string[] = []
 
-    const order = effect(() => {
+    const order = createEffect(() => {
       actionOrder.push("setup")
       return {
         init: () => {
@@ -133,7 +133,7 @@ describe("Test effect", () => {
         atom.set(value + 1)
       }
 
-      const counterEffect = effect({
+      const counterEffect = createEffect({
         init: ({ atom, value }) => {
           return initType === "sync"
             ? perform(atom, value)
@@ -161,7 +161,7 @@ describe("Test effect", () => {
     it("allows async init", async () => {
       const actionOrder: string[] = []
 
-      const order = effect({
+      const order = createEffect({
         init: () =>
           sleep(10).then(() => {
             actionOrder.push("init")
@@ -185,7 +185,7 @@ describe("Test effect", () => {
     it("allows async didInit", async () => {
       const actionOrder: string[] = []
 
-      const order = effect({
+      const order = createEffect({
         init: () => {
           actionOrder.push("init")
         },
@@ -209,7 +209,7 @@ describe("Test effect", () => {
     it("allows init and didInit to be async", async () => {
       const actionOrder: string[] = []
 
-      const order = effect(() => {
+      const order = createEffect(() => {
         actionOrder.push("setup")
         return {
           init: () =>
@@ -236,7 +236,7 @@ describe("Test effect", () => {
 
     it("persists the value over multiple async effect actions", async () => {
       const values: number[] = []
-      const counterEffect = effect({
+      const counterEffect = createEffect({
         init: ({ atom, value }) => {
           return sleep(10).then(() => {
             if (typeof value !== "number") return

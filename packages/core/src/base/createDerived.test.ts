@@ -2,7 +2,7 @@ import { sleep } from "@yaasl/utils"
 
 import { createAtom } from "./createAtom"
 import { createDerived } from "./createDerived"
-import { effect } from "../effects"
+import { createEffect } from "../effects"
 
 const defaultValue = "default"
 const nextValue = "next"
@@ -145,7 +145,7 @@ describe("Test derive", () => {
     })
 
     it("Updates if effects are asynchronous", async () => {
-      const e = effect({
+      const e = createEffect({
         init: () => sleep(1),
         didInit: () => sleep(1),
       })

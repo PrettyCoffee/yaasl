@@ -1,4 +1,4 @@
-import { effect } from "./effect"
+import { createEffect } from "./createEffect"
 import { CONFIG } from "../base"
 import { LocalStorage } from "../utils/LocalStorage"
 
@@ -31,7 +31,7 @@ export interface LocalStorageOptions {
  *
  * @returns The effect to be used on atoms.
  **/
-export const localStorage = effect<LocalStorageOptions | undefined>(
+export const localStorage = createEffect<LocalStorageOptions | undefined>(
   ({ atom, options = {} }) => {
     const internalKey = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
     const { key = internalKey, parser, noTabSync } = options

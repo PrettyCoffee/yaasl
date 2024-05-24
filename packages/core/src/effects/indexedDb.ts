@@ -1,4 +1,4 @@
-import { effect } from "./effect"
+import { createEffect } from "./createEffect"
 import { CONFIG } from "../base"
 import { Store } from "../utils/Store"
 
@@ -19,7 +19,7 @@ export interface IndexedDbOptions {
  *
  * @returns The effect to be used on atoms.
  **/
-export const indexedDb = effect<IndexedDbOptions | undefined>(
+export const indexedDb = createEffect<IndexedDbOptions | undefined>(
   ({ atom, options }) => {
     const key = options?.key ?? atom.name
     return {

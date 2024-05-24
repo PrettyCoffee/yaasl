@@ -1,7 +1,7 @@
 import { sleep } from "@yaasl/utils"
 
 import { createAtom } from "./createAtom"
-import { effect } from "../effects"
+import { createEffect } from "../effects"
 
 const defaultValue = "default"
 const nextValue = "next"
@@ -70,13 +70,13 @@ describe("Test atom", () => {
       const init = vi.fn()
       const didInit = vi.fn()
 
-      const e = effect({ init, didInit })
+      const e = createEffect({ init, didInit })
       const testAtom = createAtom({ defaultValue, effects: [e()] })
       expect(testAtom.didInit).toBe(true)
     })
 
     it("Updates if effects are asynchronous", async () => {
-      const e = effect({
+      const e = createEffect({
         init: () => sleep(1),
         didInit: () => sleep(1),
       })
