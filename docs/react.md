@@ -24,7 +24,7 @@ Returns: The atom's value.
 ### Usage Examples
 
 ```tsx
-const myAtom = atom({ defaultValue: 0 });
+const myAtom = createAtom({ defaultValue: 0 });
 const MyComponent = () => {
   const value = useAtomValue(myAtom);
   return <span>value is {value}</span>;
@@ -46,7 +46,7 @@ Returns: A setter function for the atom.
 ### Usage Examples
 
 ```tsx
-const myAtom = atom({ defaultValue: 0 });
+const myAtom = createAtom({ defaultValue: 0 });
 const MyComponent = () => {
   const setValue = useSetAtom(myAtom);
 
@@ -71,7 +71,7 @@ Returns: A boolean indicating if the atom has finished initializing yet.
 ### Usage Examples
 
 ```tsx
-const myAtom = atom({ defaultValue: 0 });
+const myAtom = createAtom({ defaultValue: 0 });
 const MyComponent = () => {
   const didInit = useAtomDidInit(myAtom);
   return <span>{didInit ? "Initialization finished" : "Initializing..."}</span>;
@@ -99,7 +99,7 @@ Returns: A state value and state setter for the atom.
 With an `atom` result:
 
 ```tsx
-const myAtom = atom({ defaultValue: 0 });
+const myAtom = createAtom({ defaultValue: 0 });
 const MyComponent = () => {
   const [value, setValue] = useAtom(myAtom);
 
@@ -112,7 +112,7 @@ const MyComponent = () => {
 With a `select` result:
 
 ```tsx
-const myAtom = atom({ defaultValue: { current: { value: 0 } } });
+const myAtom = createAtom({ defaultValue: { current: { value: 0 } } });
 const myAtomValue = select(myAtom, "current.value");
 const MyComponent = () => {
   const setState = useSetAtom(myAtom);
@@ -128,7 +128,7 @@ const MyComponent = () => {
 With a `derive` result:
 
 ```tsx
-const myAtom = atom({ defaultValue: 2 });
+const myAtom = createAtom({ defaultValue: 2 });
 const double = derive(
   ({ get }) => get(myAtom) * 2,
   ({ value, set }) => set(myAtom, value / 2)

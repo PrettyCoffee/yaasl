@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return -- doesn't matter for tests */
-import { atom, Atom } from "@yaasl/core"
+import { createAtom, Atom } from "@yaasl/core"
 
 import { cache } from "./cache"
 import {
@@ -50,9 +50,9 @@ const nextValue = "test 2"
 const atomName = "atomName"
 
 describe("Test connectAtom", () => {
-  let testAtom = atom({ defaultValue: value, name: atomName })
+  let testAtom = createAtom({ defaultValue: value, name: atomName })
   beforeEach(() => {
-    testAtom = atom({ defaultValue: value, name: atomName })
+    testAtom = createAtom({ defaultValue: value, name: atomName })
     disconnectAllConnections()
   })
 
@@ -80,8 +80,8 @@ describe("Test connectAtom", () => {
   it("Handles multiple atoms", () => {
     const atomName1 = "atomName1"
     const atomName2 = "atomName2"
-    const atom1 = atom({ defaultValue: value, name: atomName1 })
-    const atom2 = atom({ defaultValue: value, name: atomName2 })
+    const atom1 = createAtom({ defaultValue: value, name: atomName1 })
+    const atom2 = createAtom({ defaultValue: value, name: atomName2 })
 
     const { connection } = mockExtension()
 

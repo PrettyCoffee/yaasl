@@ -1,9 +1,9 @@
-import { atom } from "./atom"
 import { createActions } from "./createActions"
+import { createAtom } from "./createAtom"
 
 describe("Test createActions", () => {
   it("Creates actions", () => {
-    const testAtom = atom({ defaultValue: 0 })
+    const testAtom = createAtom({ defaultValue: 0 })
     const actions = createActions(testAtom, {
       increment: state => state + 1,
       decrement: state => state - 1,
@@ -15,7 +15,7 @@ describe("Test createActions", () => {
   })
 
   it("Allows using the existing state in actions", () => {
-    const testAtom = atom({ defaultValue: 0 })
+    const testAtom = createAtom({ defaultValue: 0 })
     const actions = createActions(testAtom, {
       increment: state => state + 1,
       decrement: state => state - 1,
@@ -31,7 +31,7 @@ describe("Test createActions", () => {
   })
 
   it("Allows passing a payload to actions", () => {
-    const testAtom = atom({ defaultValue: 0 })
+    const testAtom = createAtom({ defaultValue: 0 })
     const actions = createActions(testAtom, {
       increment: state => state + 1,
       decrement: state => state - 1,
@@ -46,7 +46,7 @@ describe("Test createActions", () => {
   })
 
   it("Allows passing multiple payload args to actions", () => {
-    const testAtom = atom({ defaultValue: 0 })
+    const testAtom = createAtom({ defaultValue: 0 })
     const actions = createActions(testAtom, {
       add: (state, ...values: number[]) =>
         values.reduce((a, b) => a + b, state),

@@ -1,6 +1,6 @@
 import { expiration } from "./expiration"
 import { localStorage } from "./localStorage"
-import { atom } from "../base"
+import { createAtom } from "../base"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {
@@ -20,7 +20,7 @@ describe("Test expiration", () => {
   })
 
   it("expires in given milliseconds", () => {
-    const testAtom = atom<object>({
+    const testAtom = createAtom<object>({
       defaultValue,
       name,
       effects: [expiration({ expiresIn: 300 })],
@@ -39,7 +39,7 @@ describe("Test expiration", () => {
 
   it("expires at a specific date", () => {
     const expirationDate = new Date(Date.now() + 300)
-    const testAtom = atom<object>({
+    const testAtom = createAtom<object>({
       defaultValue,
       name,
       effects: [expiration({ expiresAt: expirationDate })],
@@ -62,7 +62,7 @@ describe("Test expiration", () => {
     const existing = Date.now() + 150
     window.localStorage.setItem(storeKey, String(existing))
     window.localStorage.setItem(name, JSON.stringify(nextValue))
-    const testAtom = atom<object>({
+    const testAtom = createAtom<object>({
       defaultValue,
       name,
       effects: [expiration({ expiresIn: 300 }), localStorage({ key: name })],

@@ -1,7 +1,7 @@
 import { sleep } from "@yaasl/utils"
 
 import { effect } from "./effect"
-import { Atom, atom } from "../base"
+import { Atom, createAtom } from "../base"
 
 const didInit = vi.fn()
 const init = vi.fn()
@@ -15,7 +15,7 @@ const testEffect = effect({
 const defaultValue = "default"
 const nextValue = "next"
 
-const testAtom = atom({ defaultValue })
+const testAtom = createAtom({ defaultValue })
 
 beforeEach(() => {
   vi.resetAllMocks()
@@ -39,7 +39,7 @@ describe("Test effect", () => {
   })
 
   it("Calls the init function", () => {
-    const testAtom = atom({
+    const testAtom = createAtom({
       defaultValue,
       effects: [testEffect()],
     })
@@ -52,7 +52,7 @@ describe("Test effect", () => {
   })
 
   it("Calls the didInit function", () => {
-    const testAtom = atom({
+    const testAtom = createAtom({
       defaultValue,
       effects: [testEffect()],
     })
@@ -65,7 +65,7 @@ describe("Test effect", () => {
   })
 
   it("Calls the set function", () => {
-    const testAtom = atom({
+    const testAtom = createAtom({
       defaultValue,
       effects: [testEffect()],
     })
@@ -97,7 +97,7 @@ describe("Test effect", () => {
       }
     })
 
-    const testAtom = atom({
+    const testAtom = createAtom({
       defaultValue,
       effects: [order()],
     })
@@ -108,7 +108,7 @@ describe("Test effect", () => {
   })
 
   it("Sets didInit to true when no effect was asynchronous", () => {
-    const testAtom = atom({
+    const testAtom = createAtom({
       defaultValue,
       effects: [testEffect()],
     })
@@ -145,7 +145,7 @@ describe("Test effect", () => {
             : sleep(10).then(() => perform(atom, value))
         },
       })
-      const testAtom = atom({
+      const testAtom = createAtom({
         defaultValue: 0,
         effects: [counterEffect()],
       })
@@ -171,7 +171,7 @@ describe("Test effect", () => {
         },
       })
 
-      const testAtom = atom({
+      const testAtom = createAtom({
         defaultValue,
         effects: [order()],
       })
@@ -195,7 +195,7 @@ describe("Test effect", () => {
           }),
       })
 
-      const testAtom = atom({
+      const testAtom = createAtom({
         defaultValue,
         effects: [order()],
       })
@@ -223,7 +223,7 @@ describe("Test effect", () => {
         }
       })
 
-      const testAtom = atom({
+      const testAtom = createAtom({
         defaultValue,
         effects: [order()],
       })
@@ -252,7 +252,7 @@ describe("Test effect", () => {
           })
         },
       })
-      const testAtom = atom({
+      const testAtom = createAtom({
         defaultValue: 0,
         effects: [counterEffect()],
       })

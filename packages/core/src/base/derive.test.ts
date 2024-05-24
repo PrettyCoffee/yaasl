@@ -1,6 +1,6 @@
 import { sleep } from "@yaasl/utils"
 
-import { atom } from "./atom"
+import { createAtom } from "./createAtom"
 import { derive } from "./derive"
 import { effect } from "../effects"
 
@@ -13,8 +13,8 @@ beforeEach(() => {
 
 describe("Test derive", () => {
   it("Derives a value", () => {
-    const atom1 = atom({ defaultValue })
-    const atom2 = atom({ defaultValue })
+    const atom1 = createAtom({ defaultValue })
+    const atom2 = createAtom({ defaultValue })
 
     const testDerive = derive(({ get }) => {
       const val1 = get(atom1)
@@ -30,14 +30,14 @@ describe("Test derive", () => {
         value: "test",
       },
     }
-    const testAtom = atom({ defaultValue })
+    const testAtom = createAtom({ defaultValue })
     const testDerive = derive(({ get }) => get(testAtom).current.value)
     expect(testDerive.get()).toBe(defaultValue.current.value)
   })
 
   it("Updates on change", () => {
-    const atom1 = atom({ defaultValue })
-    const atom2 = atom({ defaultValue })
+    const atom1 = createAtom({ defaultValue })
+    const atom2 = createAtom({ defaultValue })
 
     const testDerive = derive(({ get }) => {
       const val1 = get(atom1)
@@ -56,7 +56,7 @@ describe("Test derive", () => {
     const a = { value: "test-a" }
     const b = { value: "test-b" }
     const next = { value: "next" }
-    const testAtom = atom({ defaultValue: { a, b, deeper: { a, b } } })
+    const testAtom = createAtom({ defaultValue: { a, b, deeper: { a, b } } })
     const testDerive = derive(({ get }) => get(testAtom).deeper.a)
 
     const change = vi.fn()
@@ -73,7 +73,7 @@ describe("Test derive", () => {
   describe("SettableDerive", () => {
     it("Elevates a new value", () => {
       const defaultValue = 1
-      const atom1 = atom({ defaultValue })
+      const atom1 = createAtom({ defaultValue })
 
       const testDerive = derive(
         ({ get }) => get(atom1) * 2,
@@ -86,8 +86,8 @@ describe("Test derive", () => {
 
     it("Elevates multiple dependencies", () => {
       const defaultValue = 1
-      const atom1 = atom({ defaultValue })
-      const atom2 = atom({ defaultValue })
+      const atom1 = createAtom({ defaultValue })
+      const atom2 = createAtom({ defaultValue })
 
       const testDerive = derive(
         ({ get }) => ({
@@ -112,7 +112,7 @@ describe("Test derive", () => {
 
     it("Can use the previous value", () => {
       const defaultValue = { foo: "bar", value: 1 }
-      const atom1 = atom({ defaultValue })
+      const atom1 = createAtom({ defaultValue })
 
       const testDerive = derive(
         ({ get }) => get(atom1).value,
@@ -125,8 +125,8 @@ describe("Test derive", () => {
     })
 
     it("Throws an error if set and get dependencies do not match", () => {
-      const atom1 = atom({ defaultValue })
-      const atom2 = atom({ defaultValue })
+      const atom1 = createAtom({ defaultValue })
+      const atom2 = createAtom({ defaultValue })
 
       expect(() =>
         derive(
@@ -139,7 +139,7 @@ describe("Test derive", () => {
 
   describe("synchronizes didInit status", () => {
     it("Sets true if no effects were passed", () => {
-      const testAtom = atom({ defaultValue: 1 })
+      const testAtom = createAtom({ defaultValue: 1 })
       const testDerive = derive(({ get }) => get(testAtom) * 2)
       expect(testDerive.didInit).toBe(true)
     })
@@ -149,7 +149,7 @@ describe("Test derive", () => {
         init: () => sleep(1),
         didInit: () => sleep(1),
       })
-      const testAtom = atom({ defaultValue: 1, effects: [e()] })
+      const testAtom = createAtom({ defaultValue: 1, effects: [e()] })
       const testDerive = derive(({ get }) => get(testAtom) * 2)
 
       expect(testDerive.didInit).toBeInstanceOf(Promise)

@@ -2,7 +2,7 @@ import { sleep } from "@yaasl/utils"
 
 import { effect } from "./effect"
 import { EffectDispatcher } from "./EffectDispatcher"
-import { atom } from "../base"
+import { createAtom } from "../base"
 
 interface TestOptions {
   types: {
@@ -55,7 +55,7 @@ describe("Test EffectDispatcher", () => {
       })
 
       it("sets the didInit status correctly", async () => {
-        const testAtom = atom({ defaultValue: 0 })
+        const testAtom = createAtom({ defaultValue: 0 })
 
         const dispatcher = new EffectDispatcher({
           atom: testAtom,
@@ -70,7 +70,7 @@ describe("Test EffectDispatcher", () => {
       })
 
       it("calls init and didInit", async () => {
-        const testAtom = atom({ defaultValue: 0 })
+        const testAtom = createAtom({ defaultValue: 0 })
 
         const dispatcher = new EffectDispatcher({
           atom: testAtom,
@@ -85,7 +85,7 @@ describe("Test EffectDispatcher", () => {
 
   it("waits for all tasks to finish", async () => {
     const testFn = vi.fn()
-    const testAtom = atom({ defaultValue: 0 })
+    const testAtom = createAtom({ defaultValue: 0 })
     const e1 = createEffect({
       types: { initType: "async", didInitType: "async" },
       labels: ["init1", "didInit1", "set1"],

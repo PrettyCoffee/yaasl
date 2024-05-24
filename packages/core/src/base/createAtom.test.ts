@@ -1,6 +1,6 @@
 import { sleep } from "@yaasl/utils"
 
-import { atom } from "./atom"
+import { createAtom } from "./createAtom"
 import { effect } from "../effects"
 
 const defaultValue = "default"
@@ -12,31 +12,34 @@ beforeEach(() => {
 
 describe("Test atom", () => {
   it("Creates an atom with default value", () => {
-    expect(atom({ defaultValue })).toHaveProperty("defaultValue", defaultValue)
+    expect(createAtom({ defaultValue })).toHaveProperty(
+      "defaultValue",
+      defaultValue
+    )
   })
 
   it("Creates an atom with unique name", () => {
-    expect(atom({ defaultValue }).name).toMatch(/atom-\d+/)
+    expect(createAtom({ defaultValue }).name).toMatch(/atom-\d+/)
   })
 
   it("Creates an atom with custom name", () => {
     const name = "test"
-    expect(atom({ defaultValue, name })).toHaveProperty("name", name)
+    expect(createAtom({ defaultValue, name })).toHaveProperty("name", name)
   })
 
   it("Returns the defaultValue initially", () => {
-    expect(atom({ defaultValue }).get()).toBe(defaultValue)
+    expect(createAtom({ defaultValue }).get()).toBe(defaultValue)
   })
 
   it("Sets the value", () => {
-    const testAtom = atom({ defaultValue })
+    const testAtom = createAtom({ defaultValue })
     testAtom.set(nextValue)
     expect(testAtom.get()).toBe(nextValue)
   })
 
   it("Subscribes to changes", () => {
     const action = vi.fn()
-    const testAtom = atom({ defaultValue })
+    const testAtom = createAtom({ defaultValue })
 
     testAtom.subscribe(action)
     expect(action).not.toHaveBeenCalled()
@@ -48,7 +51,7 @@ describe("Test atom", () => {
 
   it("Unsubscribes from changes", () => {
     const action = vi.fn()
-    const testAtom = atom({ defaultValue })
+    const testAtom = createAtom({ defaultValue })
 
     const unsub = testAtom.subscribe(action)
     unsub()
@@ -59,7 +62,7 @@ describe("Test atom", () => {
 
   describe("synchronizes didInit status", () => {
     it("Sets true if no effect was passed", () => {
-      const testAtom = atom({ defaultValue })
+      const testAtom = createAtom({ defaultValue })
       expect(testAtom.didInit).toBe(true)
     })
 
@@ -68,7 +71,7 @@ describe("Test atom", () => {
       const didInit = vi.fn()
 
       const e = effect({ init, didInit })
-      const testAtom = atom({ defaultValue, effects: [e()] })
+      const testAtom = createAtom({ defaultValue, effects: [e()] })
       expect(testAtom.didInit).toBe(true)
     })
 
@@ -77,7 +80,7 @@ describe("Test atom", () => {
         init: () => sleep(1),
         didInit: () => sleep(1),
       })
-      const testAtom = atom({ defaultValue, effects: [e()] })
+      const testAtom = createAtom({ defaultValue, effects: [e()] })
 
       expect(testAtom.didInit).toBeInstanceOf(Promise)
       await testAtom.didInit

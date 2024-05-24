@@ -1,4 +1,4 @@
-export * from "./atom"
+export * from "./createAtom"
 export * from "./derive"
 export * from "./config"
 export * from "./select"

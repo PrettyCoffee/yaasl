@@ -37,9 +37,9 @@ $ npm i @yaasl/preact
 2. Create an atom
 
 ```ts
-import { atom } from "@yaasl/core";
+import { createAtom } from "@yaasl/core";
 
-const myAtom = atom({ defaultValue: 0 });
+const myAtom = createAtom({ defaultValue: 0 });
 ```
 
 3. Use the atom
@@ -60,13 +60,13 @@ myAtom.subscribe((value) => {
 ### Vanilla typescript
 
 ```ts
-import { atom, CONFIG, effect } from "@yaasl/core";
+import { createAtom, CONFIG, effect } from "@yaasl/core";
 
 // Provide an app name to yaasl
 CONFIG.name = "demo-vanilla";
 
 // Create a counter atom that is connected to the local storage
-const counter = atom({
+const counter = createAtom({
   name: "counter", // local storage key will be "demo-vanilla/counter"
   defaultValue: 0,
   effects: [localStorage()],
@@ -95,13 +95,13 @@ setupCounter(counter);
 ### React (or Preact)
 
 ```tsx
-import { atom, CONFIG, localStorage, useAtom } from "@yaasl/react"; // or "@yaasl/preact"
+import { createAtom, CONFIG, localStorage, useAtom } from "@yaasl/react"; // or "@yaasl/preact"
 
 // Provide an app name to yaasl
 CONFIG.name = "demo-react";
 
 // Create a counter atom that is connected to the local storage
-const counter = atom({
+const counter = createAtom({
   name: "counter", // local storage key will be "demo-vanilla/counter"
   defaultValue: 0,
   effects: [localStorage()],

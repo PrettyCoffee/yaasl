@@ -1,6 +1,6 @@
 import { reduxDevtools } from "@yaasl/devtools"
 import {
-  atom,
+  createAtom,
   CONFIG,
   localStorage,
   useAtom,
@@ -10,7 +10,7 @@ import {
 
 CONFIG.name = "demo-react"
 
-const counter = atom({
+const counter = createAtom({
   name: "counter",
   defaultValue: 0,
   effects: [

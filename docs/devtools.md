@@ -21,13 +21,13 @@ Returns: The effect to be used on atoms.
 ### Usage Examples
 
 ```ts
-const atomWithDevtools = atom({
+const atomWithDevtools = createAtom({
   defaultValue: "my-value",
   effects: [reduxDevtools()],
 });
 
 const isProduction = import.meta.env.PROD;
-const atomWithDevtools = atom({
+const atomWithDevtools = createAtom({
   defaultValue: "my-value",
   effects: [reduxDevtools({ disable: isProduction })],
 });

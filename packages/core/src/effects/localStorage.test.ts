@@ -3,7 +3,7 @@ import {
   LocalStorageParser,
   localStorage,
 } from "./localStorage"
-import { atom } from "../base"
+import { createAtom } from "../base"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {
@@ -12,7 +12,7 @@ const nextValue = {
 }
 
 const setup = (options: LocalStorageOptions = {}) => {
-  const testAtom = atom<object>({
+  const testAtom = createAtom<object>({
     defaultValue,
     name: "atom",
     effects: [localStorage(options)],
@@ -81,7 +81,7 @@ describe("Test localStorage", () => {
         "mapAtom",
         '[["string","value"],["number",42]]'
       )
-      const mapAtom = atom({
+      const mapAtom = createAtom({
         name: "mapAtom",
         defaultValue: new Map(),
         effects: [localStorage({ parser: mapParser })],
@@ -91,7 +91,7 @@ describe("Test localStorage", () => {
     })
 
     it("Uses a custom stringifier", () => {
-      atom({
+      createAtom({
         name: "mapAtom",
         defaultValue: new Map<string, string | number>([
           ["string", "value"],

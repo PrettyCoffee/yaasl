@@ -2,7 +2,7 @@ import { mockConsole } from "@yaasl/utils"
 
 import { localStorage } from "./localStorage"
 import { createMigrationStep, migration } from "./migration"
-import { atom } from "../base"
+import { createAtom } from "../base"
 
 const migrateV1 = vi.fn()
 const migrateV2 = vi.fn()
@@ -34,7 +34,7 @@ describe("Test migration", () => {
   })
 
   it("Sets latest version if none is present", () => {
-    atom({
+    createAtom({
       name: testName,
       defaultValue: { value: "1" },
       effects: [localStorage(), migration({ steps: [v1, v2] })],
@@ -47,7 +47,7 @@ describe("Test migration", () => {
 
   it("Migrates from missing version", () => {
     window.localStorage.setItem(testName, "0")
-    const testAtom = atom({
+    const testAtom = createAtom({
       name: testName,
       defaultValue: { value: "1" },
       effects: [localStorage(), migration({ steps: [v1, v2] })],
@@ -62,7 +62,7 @@ describe("Test migration", () => {
   it("Migrates from a previous version", () => {
     window.localStorage.setItem(testName, '"0"')
     window.localStorage.setItem(`${testName}-version`, v1.version)
-    const testAtom = atom({
+    const testAtom = createAtom({
       name: testName,
       defaultValue: { value: "1" },
       effects: [localStorage(), migration({ steps: [v1, v2] })],
@@ -85,7 +85,7 @@ describe("Test migration", () => {
         throw new Error("test-error")
       },
     })
-    const testAtom = atom({
+    const testAtom = createAtom({
       name: testName,
       defaultValue: { value: "1" },
       effects: [localStorage(), migration({ steps: [v1, throwingV2] })],
@@ -101,7 +101,7 @@ describe("Test migration", () => {
     const { error, resetConsole } = mockConsole()
 
     window.localStorage.setItem(testName, '"0"')
-    const testAtom = atom({
+    const testAtom = createAtom({
       name: testName,
       defaultValue: { value: "1" },
       effects: [localStorage(), migration({ steps: [v1, v2] })],

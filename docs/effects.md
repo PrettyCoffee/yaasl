@@ -26,12 +26,12 @@ Returns: The effect to be used on atoms.
 ### Usage Examples
 
 ```ts
-const atomWithStorage = atom({
+const atomWithStorage = createAtom({
   defaultValue: "my-value",
   effects: [localStorage()],
 })
 
-const atomWithStorage = atom({
+const atomWithStorage = createAtom({
   defaultValue: "my-value",
   effects: [localStorage({ key: "my-key" })],
 })
@@ -50,7 +50,7 @@ const mapParser: LocalStorageParser<Map<unknown, unknown>> = {
   stringify: value => JSON.stringify(Array.from(value.entries())),
 }
 
-const mapAtom = atom({
+const mapAtom = createAtom({
   defaultValue: new Map<string, string>()
   effects: [localStorage({ parser: mapParser })],
 })
@@ -73,12 +73,12 @@ Returns: The effect to be used on atoms.
 ### Usage Examples
 
 ```ts
-const atomWithDb = atom({
+const atomWithDb = createAtom({
   defaultValue: "my-value",
   effects: [indexedDb()],
 });
 
-const atomWithDb = atom({
+const atomWithDb = createAtom({
   defaultValue: "my-value",
   effects: [indexedDb({ key: "my-key" })],
 });
@@ -112,12 +112,12 @@ const tomorrow = () => {
   return date;
 };
 
-const expiringAtom = atom({
+const expiringAtom = createAtom({
   defaultValue: "my-value",
   effects: [expiration({ expiresAt: tomorrow })],
 });
 
-const expiringAtom = atom({
+const expiringAtom = createAtom({
   defaultValue: "my-value",
   effects: [expiration({ expiresIn: 5000 })],
 });
@@ -167,7 +167,7 @@ const v1 = createMigrationStep({
 });
 
 /** Using the migration effect with the created step */
-const nameAtom = atom<string[]>({
+const nameAtom = createAtom<string[]>({
   defaultValue: [],
   effects: [localStorage(), migration({ steps: [v1] })],
 });
@@ -206,7 +206,7 @@ const v2 = createMigrationStep({
     Array.isArray(data) && data.every(item => typeof item === "string"),
 })
 
-const nameAtom = atom<ColoredName[]>({
+const nameAtom = createAtom<ColoredName[]>({
   defaultValue: [],
   effects: [localStorage(), migration({ steps: [v1, v2] })],
 })

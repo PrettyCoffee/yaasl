@@ -1,7 +1,7 @@
 import { isPromiseLike } from "@yaasl/utils"
 
 import { Effect, ActionType, EffectAtomCallback } from "./effect"
-import { Atom } from "../base/atom"
+import { Atom } from "../base/createAtom"
 import { Scheduler } from "../utils/Scheduler"
 
 interface EffectDispatcherConstructor {

@@ -1,6 +1,6 @@
 import { consoleMessage, SetStateAction, toVoid } from "@yaasl/utils"
 
-import { Atom } from "./atom"
+import { Atom } from "./createAtom"
 import { Stateful } from "./Stateful"
 
 const allDidInit = (atoms: Stateful[]) => {

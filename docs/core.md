@@ -3,7 +3,7 @@
 <!-- >> TOC >> -->
 
 - [Core](#core)
-  - [atom](#atom) [ [API](#api), [Usage Examples](#usage-examples) ]
+  - [createAtom](#createatom) [ [API](#api), [Usage Examples](#usage-examples) ]
   - [select](#select) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
   - [derive](#derive) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
   - [createActions](#createactions) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
@@ -11,7 +11,7 @@
   - [CONFIG](#config) [ [API](#api-5), [Usage Examples](#usage-examples-5) ]
   <!-- << TOC << -->
 
-## atom
+## createAtom
 
 Creates an atom store.
 
@@ -37,9 +37,9 @@ Returns: An atom instance.
 
 ```ts
 // Create an atom
-const myAtom = atom({ defaultValue: "my-value" });
-const myAtom = atom<string | null>({ defaultValue: null });
-const myAtom = atom({
+const myAtom = createAtom({ defaultValue: "my-value" });
+const myAtom = createAtom<string | null>({ defaultValue: null });
+const myAtom = createAtom({
   defaultValue: "my-value",
   name: "custom-name",
   effects: [localStorage(), reduxDevtools()],
@@ -73,7 +73,7 @@ Returns: A select instance.
 ### Usage Examples
 
 ```ts
-const myAtom = atom({ defaultValue: { nested: { value: 0 } } });
+const myAtom = createAtom({ defaultValue: { nested: { value: 0 } } });
 // Create a selector
 const value = select(myAtom, "nested.value");
 
@@ -106,7 +106,7 @@ Returns: A derived instance.
 With a getter:
 
 ```ts
-const myAtom = atom({ defaultValue: 1 });
+const myAtom = createAtom({ defaultValue: 1 });
 // Create a derivation
 const multiplier = derive(({ get }) => get(myAtom) * 2);
 const nested = derive(({ get }) => get(multiplier) + get(myAtom));
@@ -119,7 +119,7 @@ multiplier.subscribe((value) => console.log(value));
 With a getter and setter:
 
 ```ts
-const post = atom({
+const post = createAtom({
   defaultValue: {
     title: "About ducks...",
     content: "They are pretty cute, don't you think?",
@@ -152,7 +152,7 @@ Returns: Actions to change the state of the atom.
 ### Usage Examples
 
 ```ts
-const counter = atom({ defaultValue: 0 });
+const counter = createAtom({ defaultValue: 0 });
 const actions = createActions(counter, {
   increment: (state) => state + 1,
   decrement: (state) => state - 1,
@@ -195,7 +195,7 @@ const logger = effect({
     console.log(`Value of atom "${atom.name}" was set to:`, value),
 });
 
-const myAtom = atom({
+const myAtom = createAtom({
   defaultValue: "my-value",
   effects: [logger()],
 });
@@ -216,7 +216,7 @@ const loggerWithOptions = effect<Options>(({ options }) => {
   };
 });
 
-const myAtom = atom({
+const myAtom = createAtom({
   defaultValue: "my-value",
   effects: [loggerWithOptions({ disable: true })],
 });

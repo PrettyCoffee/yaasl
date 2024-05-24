@@ -1,4 +1,4 @@
-import { Atom } from "./atom"
+import { Atom } from "./createAtom"
 import { SettableDerive } from "./derive"
 
 type Reducer<State> = (state: State, ...payloadArgs: any[]) => State
@@ -23,7 +23,7 @@ export type Actions<State, R extends Reducers<State>> = {
  *  @returns Actions to change the state of the atom.
  *
  *  @example
- *  const counter = atom({ defaultValue: 0 })
+ *  const counter = createAtom({ defaultValue: 0 })
  *  const actions = createActions(counter, {
  *    increment: (state) => state + 1,
  *    decrement: (state) => state - 1,

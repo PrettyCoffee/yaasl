@@ -71,6 +71,6 @@ export class Atom<
  * - `result.didInit`: State of the atom's effects initialization process.
  *   Will be a promise if the initialization is pending and `true` if finished.
  **/
-export const atom = <Value, R extends Reducers<Value> = {}>(
+export const createAtom = <Value, R extends Reducers<Value> = {}>(
   config: AtomConfig<Value, R>
 ) => new Atom(config)
