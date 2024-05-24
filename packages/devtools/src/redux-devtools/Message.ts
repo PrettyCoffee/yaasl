@@ -1,8 +1,6 @@
-import { Action } from "./Action"
+import { Prettify } from "@yaasl/utils"
 
-type Prettify<T> = {
-  [K in keyof T]: T[K]
-} & {}
+import { Action } from "./Action"
 
 /* Currently not required
 
