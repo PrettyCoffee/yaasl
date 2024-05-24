@@ -1,15 +1,18 @@
 import { Atom } from "./atom"
 import { SettableDerive } from "./derive"
 
-type Reducer<State> = (state: State, payload: any) => State
+type Reducer<State> = (state: State, ...payloadArgs: any[]) => State
 export type Reducers<State> = Record<string, Reducer<State>>
 
-type Payload<R extends Reducer<any>> = Parameters<R>[1] extends undefined
-  ? []
-  : [payload: Parameters<R>[1]]
+type Payload<R extends Reducer<any>> = Parameters<R> extends [
+  any,
+  ...infer PayloadArgs
+]
+  ? PayloadArgs
+  : []
 
 export type Actions<State, R extends Reducers<State>> = {
-  [K in keyof R]: (...args: Payload<R[K]>) => void
+  [K in keyof R]: (...payloadArgs: Payload<R[K]>) => void
 }
 
 /** Create actions to change the state of an atom.
@@ -36,8 +39,8 @@ export const createActions = <State, R extends Reducers<State>>(
 ) =>
   Object.entries(reducers).reduce<Actions<State, Reducers<State>>>(
     (result, [key, reducerFn]) => {
-      result[key] = (payload?: unknown) => {
-        atom.set((state: State) => reducerFn(state, payload))
+      result[key] = (...payloadArgs: unknown[]) => {
+        atom.set((state: State) => reducerFn(state, ...payloadArgs))
       }
       return result
     },
