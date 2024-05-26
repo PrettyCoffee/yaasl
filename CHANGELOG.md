@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.9.0 (2024-05-26)
+
+### Breaking Changes
+
+- **createAtom:** Rename atom to createAtom
+- **createDerived:** Rename derive to createDerived
+- **createEffect:** Rename middleware to createEffect
+- **createSelector:** Rename select to createSelector
+
+### Features
+
+- **atom:** Add reducers option to create actions
+- **createActions:** Add createActions helper
+- **createSelector:** Add combiner selectors
+
 ## 0.8.0 (2024-05-16)
 
 ### Breaking Changes
