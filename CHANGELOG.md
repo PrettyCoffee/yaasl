@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.2 (2024-05-26)
+
+### Misc
+
+- Improve jsdocs
+
 ## 0.9.1 (2024-05-26)
 
 ### Bug Fixes
