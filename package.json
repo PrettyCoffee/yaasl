@@ -28,9 +28,9 @@
     "upgrade:latest": "npm run upgrade -- -t latest"
   },
   "devDependencies": {
-    "@pretty-cozy/eslint-config": "^0.3.1",
-    "@pretty-cozy/git-hooks": "^0.3.1",
-    "@pretty-cozy/release-tools": "^0.3.1",
+    "@pretty-cozy/eslint-config": "^0.4.0",
+    "@pretty-cozy/git-hooks": "^0.4.0",
+    "@pretty-cozy/release-tools": "^0.4.0",
     "@vitest/coverage-v8": "^1.6.0",
     "enquirer": "^2.4.1",
     "eslint-import-resolver-exports": "^1.0.0-beta.5",

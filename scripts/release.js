@@ -88,6 +88,9 @@ promptVersion(currentVersion)
     log.info("")
 
     spinner.start("Preparing for release")
+    await npm.run("build")
+    spinner.step(`Package builds were completed`)
+
     if (!dryRun) {
       await setVersion(newVersion)
       await npm.install()
