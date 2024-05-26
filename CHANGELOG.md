@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1 (2024-05-26)
+
+### Bug Fixes
+
+- **createAtom:** Use correct types for reducers
+
 ## 0.9.0 (2024-05-26)
 
 ### Breaking Changes
