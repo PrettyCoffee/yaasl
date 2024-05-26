@@ -4,11 +4,12 @@
 
 - [Core](#core)
   - [createAtom](#createatom) [ [API](#api), [Usage Examples](#usage-examples) ]
-  - [createSelector](#createselector) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
-  - [createDerived](#createderived) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
-  - [createActions](#createactions) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
-  - [createEffect](#createeffect) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
-  - [CONFIG](#config) [ [API](#api-5), [Usage Examples](#usage-examples-5) ]
+  - [createSelector (key path)](#createselector-key-path) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
+  - [createSelector (combiner function)](#createselector-combiner-function) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
+  - [createDerived](#createderived) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
+  - [createActions](#createactions) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
+  - [createEffect](#createeffect) [ [API](#api-5), [Usage Examples](#usage-examples-5) ]
+  - [CONFIG](#config) [ [API](#api-6), [Usage Examples](#usage-examples-6) ]
   <!-- << TOC << -->
 
 ## createAtom
@@ -52,33 +53,67 @@ const currentValue = myAtom.get();
 myAtom.subscribe((value) => console.log(value));
 ```
 
-## createSelector
+## createSelector (key path)
 
-Creates a value, selected from any stateful value.
+Creates a value, selected from one atom with an object value by using a key path.
 
 ### API
 
 Parameters:
 
-- `parent` The parent element to select a value from. The internal state must be an object.
+- `atom` The atom to select a value from. The internal state must be an object.
 - `path` The path to the value you want to select.
 
-Returns: A selector instance.
+Returns: A PathSelector instance.
 
 - `result.get`: Read the value of state.
 - `result.subscribe`: Subscribe to value changes.
-- `result.didInit`: State of the dependents effects initialization processes.
+- `result.didInit`: State of the atom's effects initialization processes.
   Will be a promise if the initialization is pending and `true` if finished.
 
 ### Usage Examples
 
 ```ts
-const myAtom = createAtom({ defaultValue: { nested: { value: 0 } } });
-// Create a selector
+const myAtom = createAtom({ defaultValue: { nested: { value: 42 } } });
+// Create a path selector
 const selected = createSelector(myAtom, "nested.value");
 
 // Use a selector
 const currentValue = selected.get();
+selected.subscribe((value) => console.log(value));
+```
+
+## createSelector (combiner function)
+
+Creates a value, selected from multiple atoms by using a combiner function.
+
+### API
+
+Parameters:
+
+- `atoms` Atoms you need to combine to receive the new value.
+- `combiner` Combiner function to use the atom values and create a new value.
+
+Returns: A CombinerSelector instance.
+
+- `result.get`: Read the value of state.
+- `result.subscribe`: Subscribe to value changes.
+- `result.didInit`: State of the atoms effects initialization processes.
+  Will be a promise if the initialization is pending and `true` if finished.
+
+### Usage Examples
+
+```ts
+const atom1 = createAtom({ defaultValue: 2 });
+const atom2 = createAtom({ defaultValue: 40 });
+// Create a combiner selector
+const selected = createSelector(
+  [atom1, atom2],
+  (value1, value2) => value1 + value2
+);
+
+// Use a selector
+const currentValue = selected.get(); // -> 42
 selected.subscribe((value) => console.log(value));
 ```
 
@@ -106,13 +141,14 @@ Returns: A derived instance.
 With a getter:
 
 ```ts
-const myAtom = createAtom({ defaultValue: 1 });
+const atom1 = createAtom({ defaultValue: 2 });
+const atom2 = createAtom({ defaultValue: 20 });
 // Create a derivation
-const multiplier = createDerived(({ get }) => get(myAtom) * 2);
-const nested = createDerived(({ get }) => get(multiplier) + get(myAtom));
+const twice = createDerived(({ get }) => get(atom2) * 2);
+const added = createDerived(({ get }) => get(atom1) + get(twice));
 
 // Use a derivation
-const currentValue = multiplier.get();
+const currentValue = added.get(); // -> 2 + (20 * 2) = 42
 multiplier.subscribe((value) => console.log(value));
 ```
 

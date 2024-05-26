@@ -1,5 +1,5 @@
+export * from "./config"
 export * from "./createAtom"
 export * from "./createDerived"
-export * from "./config"
 export * from "./createSelector"
 export * from "./Stateful"
