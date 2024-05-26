@@ -60,6 +60,25 @@ describe("Test atom", () => {
     expect(action).not.toHaveBeenCalled()
   })
 
+  it("Adds actions to the atom", () => {
+    const testAtom = createAtom({
+      defaultValue: 0,
+      reducers: {
+        increment: state => state + 1,
+        decrement: state => state - 1,
+        add: (state, payload: number) => state + payload,
+      },
+    })
+
+    expect(testAtom.get()).toBe(0)
+    testAtom.actions.increment()
+    expect(testAtom.get()).toBe(1)
+    testAtom.actions.add(122)
+    expect(testAtom.get()).toBe(123)
+    testAtom.actions.add(123)
+    expect(testAtom.get()).toBe(246)
+  })
+
   describe("synchronizes didInit status", () => {
     it("Sets true if no effect was passed", () => {
       const testAtom = createAtom({ defaultValue })

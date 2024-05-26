@@ -5,7 +5,10 @@ import { Stateful } from "./Stateful"
 import { EffectAtomCallback } from "../effects/createEffect"
 import { EffectDispatcher } from "../effects/EffectDispatcher"
 
-export interface AtomConfig<Value, R extends Reducers<Value> = {}> {
+export interface AtomConfig<
+  Value,
+  R extends Reducers<Value> = Reducers<Value>
+> {
   /** Value that will be used initially. */
   defaultValue: Value
   /** Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}". */
@@ -20,7 +23,7 @@ let key = 0
 
 export class Atom<
   Value = unknown,
-  R extends Reducers<Value> = {}
+  R extends Reducers<Value> = Reducers<Value>
 > extends Stateful<Value> {
   public readonly defaultValue: Value
   public readonly name: string
@@ -71,6 +74,6 @@ export class Atom<
  * - `result.didInit`: State of the atom's effects initialization process.
  *   Will be a promise if the initialization is pending and `true` if finished.
  **/
-export const createAtom = <Value, R extends Reducers<Value> = {}>(
+export const createAtom = <Value, R extends Reducers<Value> = Reducers<Value>>(
   config: AtomConfig<Value, R>
 ) => new Atom(config)
