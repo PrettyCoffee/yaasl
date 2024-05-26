@@ -25,8 +25,11 @@ export class Atom<
   Value = unknown,
   R extends Reducers<Value> = Reducers<Value>
 > extends Stateful<Value> {
+  /** Default value of the atom. */
   public readonly defaultValue: Value
+  /** Identifier of the atom. */
   public readonly name: string
+  /** Actions that can be used to set the atom's value. */
   public readonly actions: Actions<Value, R>
 
   constructor({
@@ -67,12 +70,6 @@ export class Atom<
  * @param config.reducers Reducers for custom actions to set the atom's value.
  *
  * @returns An atom instance.
- * - `result.get`: Read the value of state.
- * - `result.subscribe`: Subscribe to value changes.
- * - `result.set`: Set the value of the atom.
- * - `result.actions`: All actions that were created with reducers.
- * - `result.didInit`: State of the atom's effects initialization process.
- *   Will be a promise if the initialization is pending and `true` if finished.
  **/
 export const createAtom = <Value, R extends Reducers<Value> = Reducers<Value>>(
   config: AtomConfig<Value, R>

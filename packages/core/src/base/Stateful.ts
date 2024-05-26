@@ -1,7 +1,9 @@
 type Callback<Value> = (value: Value, previous: Value) => void
 
 export class Stateful<Value = unknown> {
+  /** Promise that resolves when the states initialization was finished. */
   public didInit: PromiseLike<void> | boolean = false
+
   private listeners = new Set<Callback<Value>>()
 
   constructor(protected value: Value) {}
