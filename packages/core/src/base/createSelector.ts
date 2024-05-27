@@ -1,27 +1,25 @@
-import { toVoid } from "@yaasl/utils"
+import { Prettify, toVoid } from "@yaasl/utils"
 
 import { Stateful } from "./Stateful"
 
 // -- Path selector
 
-type PathableState = Record<string | number, unknown>
+type PathableValue = Record<string | number, unknown>
 
-type DeepKeys<State> = State extends PathableState
+export type ObjPath<Obj> = Prettify<Obj> extends PathableValue
   ? {
-      [K in keyof State]: `${Exclude<K, symbol>}${
-        | ""
-        | `.${DeepKeys<State[K]>}`}`
-    }[keyof State]
+      [K in keyof Obj]: `${Exclude<K, symbol>}${"" | `.${ObjPath<Obj[K]>}`}`
+    }[keyof Obj]
   : never
 
-type DeepValue<State, Path> = State extends PathableState
+type ObjPathValue<State, Path> = State extends PathableValue
   ? Path extends `${infer Current}.${infer Next}`
-    ? DeepValue<State[Current], Next>
+    ? ObjPathValue<State[Current], Next>
     : State[Path & string]
   : never
 
-const selectPath = <State, Path extends DeepKeys<State>>(
-  state: State,
+const selectPath = <ParentValue, Path extends ObjPath<ParentValue>>(
+  state: ParentValue,
   path: Path
 ) =>
   path
@@ -29,12 +27,13 @@ const selectPath = <State, Path extends DeepKeys<State>>(
     .reduce<unknown>(
       (result, key) => (result as Record<string, unknown>)[key],
       state
-    ) as DeepValue<State, Path>
+    ) as ObjPathValue<ParentValue, Path>
 
-export class PathSelector<State, Path extends DeepKeys<State>> extends Stateful<
-  DeepValue<State, Path>
-> {
-  constructor(atom: Stateful<State>, path: Path) {
+export class PathSelector<
+  ParentValue,
+  Path extends ObjPath<ParentValue>
+> extends Stateful<ObjPathValue<ParentValue, Path>> {
+  constructor(atom: Stateful<ParentValue>, path: Path) {
     super(selectPath(atom.get(), path))
     atom.subscribe(state => this.update(selectPath(state, path)))
     this.setDidInit(atom.didInit)
@@ -53,23 +52,23 @@ const allDidInit = (atoms: Stateful[]) => {
 }
 
 type InferValuesFromAtoms<
-  Atoms extends readonly unknown[],
-  States extends unknown[] = []
-> = Atoms extends [Stateful<infer Value>, ...infer Rest]
-  ? InferValuesFromAtoms<Rest, [...States, Value]>
-  : States
+  ParentAtoms extends readonly unknown[],
+  ParentValues extends unknown[] = []
+> = ParentAtoms extends [Stateful<infer Value>, ...infer Rest]
+  ? InferValuesFromAtoms<Rest, [...ParentValues, Value]>
+  : ParentValues
 
 export class CombinerSelector<
-  State,
-  Atoms extends [Stateful<any>, ...Stateful<any>[]]
-> extends Stateful<State> {
+  ParentAtoms extends [Stateful<any>, ...Stateful<any>[]],
+  CombinedValue
+> extends Stateful<CombinedValue> {
   constructor(
-    atoms: Atoms,
-    combiner: (...res: InferValuesFromAtoms<Atoms>) => State
+    atoms: ParentAtoms,
+    combiner: (...res: InferValuesFromAtoms<ParentAtoms>) => CombinedValue
   ) {
     const selectState = () => {
       const values = atoms.map<unknown>(atom => atom.get())
-      return combiner(...(values as InferValuesFromAtoms<Atoms>))
+      return combiner(...(values as InferValuesFromAtoms<ParentAtoms>))
     }
 
     super(selectState())
@@ -88,10 +87,10 @@ interface CreateSelectorOverloads {
    *
    *  @returns A PathSelector instance.
    **/
-  <State, Path extends DeepKeys<State>>(
-    atom: Stateful<State>,
+  <ParentValue, Path extends ObjPath<ParentValue>>(
+    atom: Stateful<ParentValue>,
     path: Path
-  ): PathSelector<State, Path>
+  ): PathSelector<ParentValue, Path>
 
   /** Creates a value, selected from one atom with an object value by using a key path.
    *
@@ -100,10 +99,10 @@ interface CreateSelectorOverloads {
    *
    *  @returns A CombinerSelector instance.
    **/
-  <Atoms extends [Stateful<any>, ...Stateful<any>[]], CombinedState>(
-    states: Atoms,
-    combiner: (...res: InferValuesFromAtoms<Atoms>) => CombinedState
-  ): CombinerSelector<CombinedState, Atoms>
+  <ParentAtoms extends [Stateful<any>, ...Stateful<any>[]], CombinedValue>(
+    states: ParentAtoms,
+    combiner: (...res: InferValuesFromAtoms<ParentAtoms>) => CombinedValue
+  ): CombinerSelector<ParentAtoms, CombinedValue>
 }
 
 export const createSelector: CreateSelectorOverloads = (
