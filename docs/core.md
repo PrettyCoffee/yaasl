@@ -23,14 +23,12 @@ Parameters:
 - `config.defaultValue`: Value that will be used initially.
 - `config.name`: Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}".
 - `config.effects`: Effects that will be applied on the atom.
-- `config.reducers`: Reducers for custom actions to set the atom's value.
 
 Returns: An atom instance.
 
 - `result.get`: Read the value of state.
 - `result.subscribe`: Subscribe to value changes.
 - `result.set`: Set the value of the atom.
-- `result.actions`: All actions that were created with reducers.
 - `result.didInit`: State of the atom's effects initialization process.
   Will be a promise if the initialization is pending and `true` if finished.
 
