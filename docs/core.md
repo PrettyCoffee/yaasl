@@ -197,6 +197,78 @@ actions.increment();
 actions.add(5);
 ```
 
+## createSlice
+
+Create s slice of state that represents an atom with its own reducers and actions.
+
+### API
+
+Parameters: Accepts the same parameters as `createAtom` and additionally:
+
+- `config.reducers` Reducers for custom actions to set the atom's value.
+- `config.selectors` Path or combiner selectors to use the atom's values to create new ones.
+
+Returns: An atom instance with actions and selectors.
+
+### Usage Examples
+
+With a primitive value:
+
+```ts
+const counter = createSlice({
+  defaultValue: 0,
+  reducers: {
+    increment: (state) => state + 1,
+    add: (state, ...values: number[]) => values.reduce((a, b) => a + b, state),
+  },
+  selectors: {
+    double: (state) => state * 2,
+  },
+});
+
+counter.actions.increment();
+counter.get(); // -> 0 + 1 = 1
+counter.actions.add(10, 10);
+counter.get(); // -> 1 + 10 + 10 = 21
+counter.selectors.double.get(); // -> 21 * 2 = 42
+```
+
+With an object value and path selectors:
+
+```ts
+const article = createSlice({
+  defaultValue: {
+    title: "About ducks...",
+    content: "They are pretty cute, don't you think?",
+    metrics: {
+      views: 68,
+      upvotes: 46,
+      downvotes: 4,
+    }
+  },
+
+  reducers: {
+    incrementViews: (state) => ({
+      ...state,
+      metrics: {
+        ...state.metrics,
+        views: views: state.metrics.views + 1,
+      }
+    }),
+  },
+
+  selectors: {
+    views: "metrics.views",
+    voteBalance: ({ metrics }) =>
+      metrics.upvotes - metrics.downvotes,
+  },
+})
+
+article.actions.incrementViews()
+article.selectors.views.get() // -> 69
+article.selectors.voteBalance.get() // -> 46 - 4 = 42
+```
+
 ## createEffect
 
 Create effects to be used in combination with atoms.

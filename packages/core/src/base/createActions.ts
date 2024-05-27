@@ -18,7 +18,7 @@ export type Actions<State, R extends Reducers<State>> = {
 /** Create actions to change the state of an atom.
  *
  *  @param atom Atom to be used.
- *  @param reducers Reducers for custom actions to set the atoms value.
+ *  @param reducers Reducers for custom actions to set the atom's value.
  *
  *  @returns Actions to change the state of the atom.
  *

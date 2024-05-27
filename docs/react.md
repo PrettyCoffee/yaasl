@@ -23,10 +23,38 @@ Returns: The atom's value.
 
 ### Usage Examples
 
+With a `createAtom` result:
+
 ```tsx
 const myAtom = createAtom({ defaultValue: 0 });
 const MyComponent = () => {
   const value = useAtomValue(myAtom);
+  return <span>value is {value}</span>;
+};
+```
+
+With a `createSelector` result:
+
+```tsx
+const myAtom = createAtom({ defaultValue: { count: 0 } });
+const count = createSelector(myAtom, "count");
+const MyComponent = () => {
+  const value = useAtomValue(count);
+  return <span>value is {value}</span>;
+};
+```
+
+With a `createSlice` result:
+
+```tsx
+const mySlice = createSlice({
+  defaultValue: { count: 0 }
+  selectors: {
+    count: "count"
+  }
+});
+const MyComponent = () => {
+  const value = useAtomValue(mySlice.selectors.count);
   return <span>value is {value}</span>;
 };
 ```
@@ -91,12 +119,12 @@ Parameters:
 Returns: A state value and state setter for the atom.
 
 - `[0]`: Stateful value of the atom.
-- `[1]`: Setter function for the atom.
+- `[1]`: Setter function for the atom. Will throw an error if the atom is not settable (e.g. selectors).
 - `[2]`: Boolean that indicates if the atom did finish initializing.
 
 ### Usage Examples
 
-With an `atom` result:
+With a `createAtom` result:
 
 ```tsx
 const myAtom = createAtom({ defaultValue: 0 });
@@ -109,23 +137,7 @@ const MyComponent = () => {
 };
 ```
 
-With a `createSelector` result:
-
-```tsx
-const myAtom = createAtom({ defaultValue: { current: { value: 0 } } });
-const selected = createSelector(myAtom, "current.value");
-const MyComponent = () => {
-  const setState = useSetAtom(myAtom);
-  const value = useAtomValue(selected);
-
-  const onClick = () =>
-    setState((prev) => ({ current: { value: prev.current.value + 1 } }));
-
-  return <button onClick={onClick}>value is {value}</button>;
-};
-```
-
-With a `derive` result:
+With a `createDerived` result:
 
 ```tsx
 const myAtom = createAtom({ defaultValue: 2 });
