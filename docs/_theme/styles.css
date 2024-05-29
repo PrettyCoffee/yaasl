@@ -19,8 +19,11 @@
   outline-offset: 2px;
 }
 
-.github-corner > svg {
-  color: var(--bg-page);
+.github-corner{
+  z-index: 9999;
+   > svg {
+    color: var(--bg-page);
+  }
 }
 
 body, article.markdown-section {
