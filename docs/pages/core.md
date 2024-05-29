@@ -124,7 +124,9 @@ Returns: A derived instance.
 
 ### Usage Examples
 
-With a getter:
+<!-- tabs:start -->
+
+#### **Getter only**
 
 ```ts
 const atom1 = createAtom({ defaultValue: 2 });
@@ -138,7 +140,7 @@ const currentValue = added.get(); // -> 2 + (20 * 2) = 42
 multiplier.subscribe((value) => console.log(value));
 ```
 
-With a getter and setter:
+#### **Getter + setter**
 
 ```ts
 const post = createAtom({
@@ -157,6 +159,8 @@ const views = createDerived(
 views.set(42);
 // -> post.get().views will be 42
 ```
+
+<!-- tabs:end -->
 
 ## createActions
 
@@ -200,7 +204,9 @@ Returns: An atom instance with actions and selectors.
 
 ### Usage Examples
 
-With a primitive value:
+<!-- tabs:start -->
+
+#### **Primitive value**
 
 ```ts
 const counter = createSlice({
@@ -221,7 +227,7 @@ counter.get(); // -> 1 + 10 + 10 = 21
 counter.selectors.double.get(); // -> 21 * 2 = 42
 ```
 
-With an object value and path selectors:
+#### **Object value + path selectors**
 
 ```ts
 const article = createSlice({
@@ -257,6 +263,8 @@ article.selectors.views.get() // -> 69
 article.selectors.voteBalance.get() // -> 46 - 4 = 42
 ```
 
+<!-- tabs:end -->
+
 ## createEffect
 
 Create effects to be used in combination with atoms.
@@ -279,8 +287,11 @@ Returns: An effect function to be used in atoms.
 
 ### Usage Examples
 
+<!-- tabs:start -->
+
+#### **Simple**
+
 ```ts
-// Create an effect
 const logger = createEffect({
   init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
   didInit: ({ atom }) =>
@@ -293,8 +304,11 @@ const myAtom = createAtom({
   defaultValue: "my-value",
   effects: [logger()],
 });
+```
 
-// Create an effect that has options
+#### **With options**
+
+```ts
 interface Options {
   disable?: boolean;
 }
@@ -315,6 +329,8 @@ const myAtom = createAtom({
   effects: [loggerWithOptions({ disable: true })],
 });
 ```
+
+<!-- tabs:end -->
 
 ## CONFIG
 

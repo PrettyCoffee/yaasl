@@ -12,6 +12,6 @@ See the [docs](./docs) directory for detailed documentation.
 
 | Name                              | Description                  |                                                                                               |
 | --------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------- |
-| [@yaasl/core](./docs/core.md)     | Core package for vanilla JS. | [demo](https://codesandbox.io/p/sandbox/yaasl-vanilla-forked-qlkpjq?file=%2Fsrc%2Fcounter.ts) |
-| [@yaasl/react](./docs/react.md)   | React bindings for `yaasl`.  | [demo](https://codesandbox.io/p/sandbox/amazing-curie-8kzn2y?file=%2Fsrc%2FCounter.tsx)       |
-| [@yaasl/preact](./docs/preact.md) | Preact bindings for `yaasl`. |                                                                                               |
+| [@yaasl/core](/pages/core.md)     | Core package for vanilla JS. | [demo](https://codesandbox.io/p/sandbox/yaasl-vanilla-forked-qlkpjq?file=%2Fsrc%2Fcounter.ts) |
+| [@yaasl/react](/pages/react.md)   | React bindings for `yaasl`.  | [demo](https://codesandbox.io/p/sandbox/amazing-curie-8kzn2y?file=%2Fsrc%2FCounter.tsx)       |
+| [@yaasl/preact](/pages/preact.md) | Preact bindings for `yaasl`. |                                                                                               |

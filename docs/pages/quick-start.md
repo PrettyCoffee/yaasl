@@ -29,7 +29,11 @@ myAtom.subscribe((value) => {
 });
 ```
 
-## Example: Typescript
+## Examples
+
+<!-- tabs:start -->
+
+### **Typescript**
 
 ```ts
 import { createAtom, CONFIG, localStorage } from "@yaasl/core";
@@ -64,7 +68,7 @@ const counter = document.getElementById("counter");
 setupCounter(counter);
 ```
 
-## Example: React (or Preact)
+### **React (or Preact)**
 
 ```tsx
 import { createAtom, CONFIG, localStorage, useAtom } from "@yaasl/react"; // or "@yaasl/preact"
@@ -88,3 +92,5 @@ export const Counter = () => {
   return <button onClick={onClick}>count is {value}</button>;
 };
 ```
+
+<!-- tabs:end -->

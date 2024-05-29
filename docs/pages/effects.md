@@ -16,17 +16,25 @@ Returns: The effect to be used on atoms.
 
 ### Usage Examples
 
+<!-- tabs:start -->
+
+#### **Basic usage**
+
 ```ts
 const atomWithStorage = createAtom({
   defaultValue: "my-value",
   effects: [localStorage()],
-})
+});
 
 const atomWithStorage = createAtom({
   defaultValue: "my-value",
   effects: [localStorage({ key: "my-key" })],
-})
+});
+```
 
+#### **Custom parser**
+
+```ts
 const isMapEntry = (value: unknown): value is [unknown, unknown] =>
   Array.isArray(value) && value.length === 2
 
@@ -46,6 +54,8 @@ const mapAtom = createAtom({
   effects: [localStorage({ parser: mapParser })],
 })
 ```
+
+<!-- tabs:end -->
 
 ## indexedDb
 
@@ -92,6 +102,19 @@ Returns: The effect to be used on atoms.
 
 ### Usage Examples
 
+<!-- tabs:start -->
+
+#### **Expires in**
+
+```ts
+const expiringAtom = createAtom({
+  defaultValue: "my-value",
+  effects: [expiration({ expiresIn: 5000 })],
+});
+```
+
+#### **Epires at**
+
 ```ts
 const tomorrow = () => {
   const date = new Date();
@@ -107,12 +130,9 @@ const expiringAtom = createAtom({
   defaultValue: "my-value",
   effects: [expiration({ expiresAt: tomorrow })],
 });
-
-const expiringAtom = createAtom({
-  defaultValue: "my-value",
-  effects: [expiration({ expiresIn: 5000 })],
-});
 ```
+
+<!-- tabs:end -->
 
 ## migration
 
@@ -131,7 +151,9 @@ Returns: The effect to be used on atoms.
 
 ### Usage Examples
 
-#### Creating a migration step
+<!-- tabs:start -->
+
+#### **Single step**
 
 Lets imagine a situation where you created a persisted atom with two names: `name1` and `name2`.
 After a while you notice that you would want to have a string array instead for that.
@@ -164,7 +186,7 @@ const nameAtom = createAtom<string[]>({
 });
 ```
 
-#### Multiple migration steps
+#### **Multiple steps**
 
 Lets assume that you now furthermore want to assign a color to each name.
 For that, you may need to adapt the data structure of the array items like this:
@@ -202,3 +224,5 @@ const nameAtom = createAtom<ColoredName[]>({
   effects: [localStorage(), migration({ steps: [v1, v2] })],
 })
 ```
+
+<!-- tabs:end -->

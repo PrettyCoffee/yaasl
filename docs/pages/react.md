@@ -16,7 +16,9 @@ Returns: The atom's value.
 
 ### Usage Examples
 
-With a `createAtom` result:
+<!-- tabs:start -->
+
+#### **atom**
 
 ```tsx
 const myAtom = createAtom({ defaultValue: 0 });
@@ -26,7 +28,7 @@ const MyComponent = () => {
 };
 ```
 
-With a `createSelector` result:
+#### **selector**
 
 ```tsx
 const myAtom = createAtom({ defaultValue: { count: 0 } });
@@ -37,7 +39,7 @@ const MyComponent = () => {
 };
 ```
 
-With a `createSlice` result:
+#### **slice**
 
 ```tsx
 const mySlice = createSlice({
@@ -47,10 +49,14 @@ const mySlice = createSlice({
   }
 });
 const MyComponent = () => {
-  const value = useAtomValue(mySlice.selectors.count);
-  return <span>value is {value}</span>;
+  const slice = useAtomValue(mySlice);
+  const count = useAtomValue(mySlice.selectors.count);
+
+  return <span>count is {count}</span>;
 };
 ```
+
+<!-- tabs:end -->
 
 ## useSetAtom
 
@@ -117,7 +123,9 @@ Returns: A state value and state setter for the atom.
 
 ### Usage Examples
 
-With a `createAtom` result:
+<!-- tabs:start -->
+
+#### **atom**
 
 ```tsx
 const myAtom = createAtom({ defaultValue: 0 });
@@ -130,7 +138,7 @@ const MyComponent = () => {
 };
 ```
 
-With a `createDerived` result:
+#### **derived**
 
 ```tsx
 const myAtom = createAtom({ defaultValue: 2 });
@@ -152,3 +160,5 @@ const MyComponent = () => {
   );
 };
 ```
+
+<!-- tabs:end -->
