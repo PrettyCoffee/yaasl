@@ -1,13 +1,6 @@
 # React
 
-<!-- >> TOC >> -->
-
-- [React](#react)
-  - [useAtomValue](#useatomvalue) [ [API](#api), [Usage Examples](#usage-examples) ]
-  - [useSetAtom](#usesetatom) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
-  - [useAtomDidInit](#useatomdidinit) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
-  - [useAtom](#useatom) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
-  <!-- << TOC << -->
+Hooks to use all kinds of atoms in an react environment.
 
 ## useAtomValue
 

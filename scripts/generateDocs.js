@@ -15,7 +15,7 @@ const getFiles = () =>
   readdir(docsDir)
     .then(list => [
       resolve(rootDir, "README.md"),
-      ...list.map(file => resolve(docsDir, file)),
+      //...list.map(file => resolve(docsDir, file)),
     ])
     .then(files => Promise.all(files.map(getFile)))
 

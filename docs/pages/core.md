@@ -1,17 +1,5 @@
 # Core
 
-<!-- >> TOC >> -->
-
-- [Core](#core)
-  - [createAtom](#createatom) [ [API](#api), [Usage Examples](#usage-examples) ]
-  - [createSelector (key path)](#createselector-key-path) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
-  - [createSelector (combiner function)](#createselector-combiner-function) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
-  - [createDerived](#createderived) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
-  - [createActions](#createactions) [ [API](#api-4), [Usage Examples](#usage-examples-4) ]
-  - [createEffect](#createeffect) [ [API](#api-5), [Usage Examples](#usage-examples-5) ]
-  - [CONFIG](#config) [ [API](#api-6), [Usage Examples](#usage-examples-6) ]
-  <!-- << TOC << -->
-
 ## createAtom
 
 Creates an atom store.
@@ -81,7 +69,7 @@ const currentValue = selected.get();
 selected.subscribe((value) => console.log(value));
 ```
 
-## createSelector (combiner function)
+## createSelector (combiner)
 
 Creates a value, selected from multiple atoms by using a combiner function.
 

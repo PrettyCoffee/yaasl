@@ -1,14 +1,5 @@
 # Effects
 
-<!-- >> TOC >> -->
-
-- [Effects](#effects)
-  - [localStorage](#localstorage) [ [API](#api), [Usage Examples](#usage-examples) ]
-  - [indexedDb](#indexeddb) [ [API](#api-1), [Usage Examples](#usage-examples-1) ]
-  - [expiration](#expiration) [ [API](#api-2), [Usage Examples](#usage-examples-2) ]
-  - [migration](#migration) [ [API](#api-3), [Usage Examples](#usage-examples-3) ]
-  <!-- << TOC << -->
-
 ## localStorage
 
 Middleware to save and load atom values to the local storage.

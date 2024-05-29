@@ -1,4 +1,5 @@
-# Compiled code
+*.afdesign
+docs/CHANGELOG.md
 dist
 
 # Logs

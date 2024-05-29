@@ -1,11 +1,5 @@
 # Devtools
 
-<!-- >> TOC >> -->
-
-- [Devtools](#devtools)
-  - [reduxDevtools](#reduxdevtools) [ [API](#api), [Usage Examples](#usage-examples) ]
-  <!-- << TOC << -->
-
 ## reduxDevtools
 
 Middleware to make use of the [redux devtools](https://github.com/reduxjs/redux-devtools) browser extension.

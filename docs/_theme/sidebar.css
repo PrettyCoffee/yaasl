@@ -1,0 +1,156 @@
+aside {
+  background-color: var(--bg-base);
+
+  ul {
+    padding: 0!important;
+    margin-left: 1rem!important;
+  }
+
+  .search {
+    z-index: 1;
+    position: sticky;
+    top: 0;
+    border-bottom: 4px solid var(--bg-page);
+    background-color: var(--bg-base);
+    padding: 0.5rem;
+    
+    .clear-button.show {
+      position: absolute;
+      min-height: 2.5rem;
+      min-width: 2.5rem;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 0.25rem;
+      right: 0.5rem;
+
+      svg {
+        display: none;
+      }
+      &::after {
+        content: "×";
+        position: absolute;
+        font-size: 2rem;
+        color: var(--text-muted);
+        line-height: 0;
+        translate: 0 -0.05rem;
+      }
+
+      &:hover {
+        background-color: var(--bg-hover);
+      }
+      &:active {
+        background-color: var(--bg-active);
+      }
+    }
+
+    input {
+      height: 2.5rem;
+      padding-right: 2.5rem;
+
+      background-color: var(--bg-page);
+      border: 1px solid var(--text-muted);
+      border-radius: 0.25rem;
+      color: var(--text-base);
+      
+      &::placeholder {
+        color: var(--text-gentle);
+      }
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    .matching-post {
+      border-bottom: 1px solid var(--text-muted);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+      &:first-of-type {
+        margin-top: 0.5rem;
+      }
+      a {
+        display: block;
+        border-radius: 0.25rem;
+        padding: 0.5rem;
+      }
+      a:hover {
+        text-decoration: none;
+        background-color: var(--bg-hover);
+      }
+      h2 {
+        margin: 0;
+        margin-bottom: 0.25rem;
+        border: 0;
+        font-size: 1.2rem;
+        color: var(--text-gentle);
+      }
+      p {
+        margin: 0;
+        color: var(--text-gentle);
+      }
+    }
+  }
+
+  .app-name {
+    padding: 0 2rem;
+    img {
+      width: 100%;
+    }
+  }
+
+  .sidebar-nav {
+    padding-right: 1rem;
+  
+    li {
+      --x-spacing: 0.5rem;
+
+      * {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      & > p:not(:has(a)) {
+        margin: 1rem var(--x-spacing) 0.5rem var(--x-spacing);
+        line-height: 1.5;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--text-muted);
+      }
+      
+      a {
+        display: block;
+        padding: 0 var(--x-spacing);
+        height: 2rem;
+        color: var(--text-gentle);
+        &:visited {
+          color: var(--text-gentle);
+        }
+        border-radius: 0.25rem;
+        &:hover, &:focus-visible {
+          background-color: var(--bg-hover);
+        }
+        &:active {
+          background-color: var(--bg-active);
+        }
+      }
+
+    }
+
+    li.active, p.active {
+      > a {
+        color: var(--accent);
+        position: relative;
+      }
+      > a::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 0.2rem;
+        background-color: var(--accent);
+        inset: 0.25rem;
+        left: unset;
+        border-radius: 50vh;
+      }
+    }
+  }
+}

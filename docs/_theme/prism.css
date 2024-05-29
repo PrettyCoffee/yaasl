@@ -1,0 +1,77 @@
+pre {
+  position: relative;
+  background-color: var(--bg-base);
+  border-radius: 0.25rem;
+  
+  font-family: "Fira Code", monospace;
+  font-weight: 400;
+  
+  code {
+    padding: 1rem;
+    overflow: auto;
+    width: 100%;
+    display: block;
+    max-height: min(600px,90vh);
+  }
+  
+  
+  .docsify-copy-code-button {
+    border-radius: 0.25rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    height: 2.5rem;
+
+    --bgl-layer: transparent;
+    background:
+      var(--bg-page)
+      linear-gradient(0, var(--bgl-layer), var(--bgl-layer))!important;
+
+    &:active {
+      --bgl-layer: var(--bg-active);
+    }
+  }
+
+  span {
+    &.token {
+      color: var(--text-muted);
+    }
+    &.token.keyword {
+      color: var(--color-violet);
+    }
+    &.token.function {
+      color: var(--color-blue);
+    }
+    &.token.string {
+      color: var(--color-green);
+    }
+    &.token.number {
+      color: var(--color-orange);
+    }
+    &.token.builtin {
+      color: var(--color-red);
+    }
+    &.token.interpolation {
+      color: var(--text-base);
+    }
+    &.token.class-name {
+      color: var(--color-yellow);
+    }
+    &.token.constant {
+      color: var(--text-base);
+    }
+
+    /* JSX */
+    &.token.script.language-javascript {
+      color: var(--text-base);
+    }
+    &.token.plain-text {
+      color: var(--text-base);
+    }
+    &.token.tag {
+      color: var(--color-red);
+    }
+    &.token.attr-name {
+      color: var(--color-yellow);
+    }
+  }
+}
