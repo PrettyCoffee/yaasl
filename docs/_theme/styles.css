@@ -74,13 +74,6 @@ body, article.markdown-section {
 article.markdown-section {
   max-width: 80ch;
   margin: 0 auto;
-
-  > *:not(h1):not(h2) {
-    margin-left: 1.5rem;
-  }
-  > h1, > h2 {
-    margin-left: 0.5rem;
-  }
   
   /* -- Paragraph -- */
 
@@ -148,8 +141,12 @@ article.markdown-section {
       position: relative;
       border: none;
       height: 2.5rem;
-      margin-right: 0.5rem;
+      margin: 0.25rem;
       padding: 0 0.75rem;
+
+      &:first-of-type {
+        margin-left: 0;
+      }
       
       border-radius: 0.25rem;
       color: var(--text-gentle);

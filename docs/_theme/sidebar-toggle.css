@@ -78,9 +78,35 @@ body.close .sidebar-toggle {
 @media screen and (max-width: 768px) {
   body .sidebar-toggle {
     left: var(--toggle-offset);
+
+    body.close & {
+      left: calc(300px + var(--toggle-offset));
+    }
   }
 
-  body.close .sidebar-toggle {
-    left: calc(300px + var(--toggle-offset));
+  button.sidebar-toggle > div.sidebar-toggle-button > span {
+    &:nth-child(1) {
+      transform: translate(0, -0.5rem) rotate(0);
+    }
+    &:nth-child(2) {
+      opacity: 1;
+      transform: translate(0) rotate(0);
+    }
+    &:nth-child(3) {
+      transform: translate(0, 0.5rem) rotate(0);
+    }
+    
+    body.close & {
+      &:nth-child(1) {
+        transform: translate(0) rotate(0.125turn);
+      }
+      &:nth-child(2) {
+        transform: translate(0) rotate(0.125turn);
+        opacity: 0;
+      }
+      &:nth-child(3) {
+        transform: translate(0) rotate(-0.125turn);
+      }
+    }
   }
 }
