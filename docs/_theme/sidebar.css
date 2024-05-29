@@ -1,3 +1,23 @@
+@media screen and (max-width: 400px) {
+  :root:has(body.close), body.close .content {
+    overflow: hidden;
+  }
+  body.close .content {
+    transform: translateX(-100vw);
+  }
+  body .sidebar {
+    left: 100vw;
+    transform: translateX(0);
+    width: 100vw;
+  }
+  body.close .sidebar {
+    transform: translateX(-100vw);
+    .search {
+      padding-left: 3.5rem;
+    }
+  }
+}
+
 aside {
   background-color: var(--bg-base);
 
