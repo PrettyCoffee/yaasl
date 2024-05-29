@@ -227,7 +227,7 @@ counter.get(); // -> 1 + 10 + 10 = 21
 counter.selectors.double.get(); // -> 21 * 2 = 42
 ```
 
-#### **Object value + path selectors**
+#### **Object value**
 
 ```ts
 const article = createSlice({
