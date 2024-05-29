@@ -1,0 +1,187 @@
+@import url("./fonts/fonts.css");
+@import url("./theme.css");
+@import url("./coverpage.css");
+@import url("./sidebar.css");
+@import url("./sidebar-toggle.css");
+@import url("./prism.css");
+
+:root, body {
+  font-family: Quicksand, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-base);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+*:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.github-corner > svg {
+  color: var(--bg-page);
+}
+
+body, article.markdown-section {
+  
+  /* -- Anchor -- */
+  
+  a {
+    border-radius: 0.125rem;
+    color: var(--accent);
+    text-decoration: none;
+    &:visited {
+      color: var(--accent);
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
+  /* -- Headlines -- */
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-gentle);
+    a.anchor * {
+      color: var(--text-gentle);
+    }
+    a.anchor:hover * {
+      color: var(--accent);
+    }
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--text-muted);
+  }
+  h3 {
+    font-size: 1.25rem;
+  }
+  h4 {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+}
+
+article.markdown-section {
+  max-width: 80ch;
+  margin: 0 auto;
+
+  > *:not(h1):not(h2) {
+    margin-left: 1.5rem;
+  }
+  > h1, > h2 {
+    margin-left: 0.5rem;
+  }
+  
+  /* -- Paragraph -- */
+
+  p {
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* -- Code -- */
+
+  > code {
+    font-family: "Fira Code", monospace;
+    font-weight: 400;
+  }
+  
+  :not(pre) > code {
+    background-color: var(--bg-base);
+    color: var(--text-code);
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  /* -- Lists -- */
+  
+  ul {
+    padding-left: 1.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  li {
+    &:not(:first-child) {
+      margin-top: 0.5rem;
+    }
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  /* -- Table -- */
+  
+  table {
+    td, th {
+      border: 1px solid var(--text-muted);
+    }
+    tr {
+      --bgl-base: transparent;
+      --bgl-layer: transparent;
+      background:
+        var(--bgl-base)
+        linear-gradient(0, var(--bgl-layer), var(--bgl-layer))!important;
+      
+      &:nth-of-type(2n) {
+        --bgl-base: var(--bg-base);
+      }
+      :not(thead) > &:hover {
+        --bgl-layer: var(--bg-hover);
+      }
+    }
+  }
+
+  /* -- Tabs -- */
+  .docsify-tabs {
+    > button {
+      position: relative;
+      border: none;
+      height: 2.5rem;
+      margin-right: 0.5rem;
+      padding: 0 0.75rem;
+      
+      border-radius: 0.25rem;
+      color: var(--text-gentle);
+      cursor: pointer;
+
+      --bgl-base: var(--bg-base);
+      --bgl-layer: transparent;
+      background:
+        var(--bgl-base)
+        linear-gradient(0, var(--bgl-layer), var(--bgl-layer))!important;
+      
+      &:hover {
+        --bgl-layer: var(--bg-hover);
+      }
+      &:active {
+        --bgl-layer: var(--bg-active);
+      }
+
+      &.docsify-tabs__tab--active {
+        color: var(--accent);
+        &::after {
+          content: "";
+          display: block;
+          position: absolute;
+          left: 0.25rem;
+          right: 0.25rem;
+          bottom: 0.125rem;
+          height: 0.125rem;
+          border-radius: 50vh;
+          background: var(--accent);
+        }
+      }
+    }
+    > div {
+      padding-top: 0.5rem;
+    }
+  }
+}

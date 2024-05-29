@@ -1,0 +1,48 @@
+:root {
+  /* colors */
+  --bg-page: hsl(240, 10%, 4%); /* 950 */
+  --bg-base: hsl(240, 6%, 10%); /* 900 */
+  --bg-hover: hsla(240, 4%, 46%, 10%);
+  --bg-active: hsla(240, 4%, 46%, 20%);
+  
+  --text-base: hsl(240, 0%, 98%);   /* 50 */
+  --text-gentle: hsl(240, 5%, 84%); /* 300 */
+  --text-muted: hsl(240, 4%, 46%);  /* 500 */
+  
+  --color-red: hsl(0, 94%, 82%);
+  --color-orange: hsl(31, 97%, 72%);
+  --color-yellow: hsl(50, 98%, 64%);
+  --color-green: hsl(142, 77%, 73%);
+  --color-cyan: hsl(172, 66%, 50%);
+  --color-blue: hsl(213, 94%, 68%);
+  --color-violet: hsl(255, 92%, 76%);
+  
+  --accent: hsl(0, 94%, 82%);
+  
+  /* docsify */
+  --theme-color: var(--accent);
+}
+
+.catppuccin {
+  --bg-page: hsl(240, 23%, 9%);
+  --bg-base: hsl(240, 21%, 12%);
+  --bg-hover: hsla(228, 24%, 72%, 10%);
+  --bg-active: hsla(228, 24%, 72%, 15%);
+  
+  --text-base: hsl(226, 64%, 88%);
+  --text-gentle: hsl(228, 24%, 72%);
+  --text-muted: hsl(231, 11%, 47%);
+  
+  --color-violet: hsl(267, 84%, 81%);
+  --color-blue: hsl(217, 92%, 76%);
+  --color-cyan: hsl(189, 71%, 73%);
+  --color-green: hsl(115, 54%, 76%);
+  --color-yellow: hsl(41, 86%, 83%);
+  --color-red: hsl(343, 81%, 75%);
+  
+  --accent: hsl(343, 81%, 75%);
+  --accent-2: hsl(350, 65%, 77%);
+  --accent-3: hsl(316, 72%, 86%);
+  --accent-4: hsl(0, 59%, 88%);
+  --accent-5: hsl(10, 56%, 91%);
+}

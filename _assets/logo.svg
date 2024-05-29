@@ -1,0 +1,32 @@
+<svg fill="none" color="#fca6a6" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  
+  <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <animateTransform
+      attributeName="transform"
+      type="rotate"
+      repeatCount="indefinite"
+      dur="50s"
+      from="0 12 12"
+      to="360 12 12"
+      begin="0"
+    />
+
+    <g transform="matrix(-0.5,-0.866025,0.866025,-0.5,7.61035,28.5468)">
+      <path d="M5.68,4.257C7.404,2.846 9.606,2 12.005,2C14.42,2 16.636,2.858 18.364,4.285" stroke-width="1"/>
+    </g>
+    <g transform="matrix(-0.5,0.866025,-0.866025,-0.5,28.3947,7.7098)">
+      <path d="M5.68,4.257C7.404,2.846 9.606,2 12.005,2C14.42,2 16.636,2.858 18.364,4.285" stroke-width="1"/>
+    </g>
+    <path d="M5.68,4.257C7.404,2.846 9.606,2 12.005,2C14.42,2 16.636,2.858 18.364,4.285" stroke-width="1"/>
+    <circle cx="11.889" cy="12" r="3.889" stroke-width="1.5"/>
+    <g transform="matrix(0.260121,0,0,0.260121,8.90746,18.8786)">
+      <circle cx="11.889" cy="12" r="3.889" fill="currentColor"/>
+    </g>
+    <g transform="matrix(0.26012,0.000419691,-0.000419691,0.26012,0.312534,3.88411)">
+      <circle cx="11.889" cy="12" r="3.889" fill="currentColor"/>
+    </g>
+    <g transform="matrix(0.260121,0.000206246,-0.000206246,0.260121,17.5099,3.86451)">
+      <circle cx="11.889" cy="12" r="3.889" fill="currentColor"/>
+    </g>
+  </g>
+</svg>

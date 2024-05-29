@@ -1,0 +1,86 @@
+button.sidebar-toggle {
+  width: 2.5rem!important;
+  height: 2.5rem!important;
+  padding: 0.5rem;
+  
+  cursor: pointer;
+  --bgl-layer: transparent;
+  background:
+    var(--bg-base)
+    linear-gradient(0, var(--bgl-layer), var(--bgl-layer))!important;
+  
+  border-radius: 0.25rem;
+  transition: left 0.25s ease-out!important;
+  
+  &:hover {
+    --bgl-layer: var(--bg-hover);
+    opacity: 1;
+    .sidebar-toggle-button {
+      opacity: 1;
+    }
+  }
+  &:active {
+    --bgl-layer: var(--bg-active);
+  }
+  
+  .sidebar-toggle-button {
+    position: relative;
+    span {
+      --stroke-width: 0.175rem;
+      height: var(--stroke-width);
+      width: 100%;
+      position: absolute;
+      margin: 0;
+
+      background-color: var(--accent);
+      transform-origin: center;
+      border-radius: 50vh;
+
+      transition: all 0.25s ease-out;
+
+      &:nth-child(1) {
+        transform: translate(0) rotate(0.125turn);
+      }
+      &:nth-child(2) {
+        transform: translate(0) rotate(0.125turn);
+        opacity: 0;
+      }
+      &:nth-child(3) {
+        transform: translate(0) rotate(-0.125turn);
+      }
+      
+      body.close & {
+        &:nth-child(1) {
+          transform: translate(0, -0.5rem) rotate(0);
+        }
+        &:nth-child(2) {
+          opacity: 1;
+          transform: translate(0) rotate(0);
+        }
+        &:nth-child(3) {
+          transform: translate(0, 0.5rem) rotate(0);
+        }
+      }
+    }
+  }
+}
+
+body .sidebar-toggle {
+  --toggle-offset: 0.5rem;
+  top: var(--toggle-offset);
+  left: calc(300px + var(--toggle-offset));
+}
+
+body.close .sidebar-toggle {
+  left: var(--toggle-offset);
+}
+
+@media screen and (max-width: 768px) {
+  body .sidebar-toggle {
+    left: var(--toggle-offset);
+  }
+
+  body.close .sidebar-toggle {
+    left: calc(300px + var(--toggle-offset));
+  }
+}
