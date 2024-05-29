@@ -69,21 +69,30 @@ body .sidebar-toggle {
   --toggle-offset: 0.5rem;
   top: var(--toggle-offset);
   left: calc(300px + var(--toggle-offset));
-}
-
-body.close .sidebar-toggle {
-  left: var(--toggle-offset);
+  body.close & {
+    left: var(--toggle-offset);
+  }
 }
 
 @media screen and (max-width: 768px) {
   body .sidebar-toggle {
     left: var(--toggle-offset);
-
     body.close & {
       left: calc(300px + var(--toggle-offset));
     }
   }
+}
 
+@media screen and (max-width: 400px) {
+  body .sidebar-toggle {
+    left: var(--toggle-offset);
+    body.close & {
+      left: var(--toggle-offset);
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
   button.sidebar-toggle > div.sidebar-toggle-button > span {
     &:nth-child(1) {
       transform: translate(0, -0.5rem) rotate(0);
