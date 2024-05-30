@@ -1,3 +1,5 @@
+import { EffectAtomCallback } from "../effects/createEffect"
+
 interface Config {
   /** Global name to make internal keys unique
    *  among UIs on the same domain.
@@ -6,6 +8,9 @@ interface Config {
    *  "{config-name}/{atom-name}")
    **/
   name?: string
+
+  /** Global effects to apply on all atoms. (e.g. reduxDevtools) */
+  globalEffects: EffectAtomCallback<any>[]
 }
 
 /** Global configuration object to change internal behavior of yaasl.
@@ -15,4 +20,5 @@ interface Config {
  **/
 export const CONFIG: Config = {
   name: undefined,
+  globalEffects: [],
 }

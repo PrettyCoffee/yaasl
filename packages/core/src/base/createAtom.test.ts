@@ -1,5 +1,6 @@
 import { sleep } from "@yaasl/utils"
 
+import { CONFIG } from "./config"
 import { createAtom } from "./createAtom"
 import { createEffect } from "../effects"
 
@@ -58,6 +59,27 @@ describe("Test atom", () => {
     testAtom.set(nextValue)
 
     expect(action).not.toHaveBeenCalled()
+  })
+
+  it("Uses global effects", () => {
+    const global = { init: vi.fn(), set: vi.fn() }
+    const local = { init: vi.fn(), set: vi.fn() }
+    CONFIG.globalEffects = [createEffect(global)()]
+
+    expect(global.init).not.toHaveBeenCalled()
+    expect(local.init).not.toHaveBeenCalled()
+    const testAtom = createAtom({
+      defaultValue,
+      effects: [createEffect(local)()],
+    })
+    expect(global.init).toHaveBeenCalledTimes(1)
+    expect(local.init).toHaveBeenCalledTimes(1)
+
+    expect(global.set).not.toHaveBeenCalled()
+    expect(local.set).not.toHaveBeenCalled()
+    testAtom.set(nextValue)
+    expect(global.set).toHaveBeenCalledTimes(1)
+    expect(local.set).toHaveBeenCalledTimes(1)
   })
 
   describe("synchronizes didInit status", () => {

@@ -1,5 +1,6 @@
 import { SetStateAction } from "@yaasl/utils"
 
+import { CONFIG } from "./config"
 import { Stateful } from "./Stateful"
 import { EffectAtomCallback } from "../effects/createEffect"
 import { EffectDispatcher } from "../effects/EffectDispatcher"
@@ -24,13 +25,15 @@ export class Atom<Value = unknown> extends Stateful<Value> {
   constructor({
     defaultValue,
     name = `atom-${++key}`,
-    effects,
+    effects: localEffects = [],
   }: AtomConfig<Value>) {
     super(defaultValue)
     this.name = name
     this.defaultValue = defaultValue
 
-    if (!effects || effects.length === 0) {
+    const effects = [...CONFIG.globalEffects, ...localEffects]
+
+    if (effects.length === 0) {
       this.didInit = true
       return
     }
