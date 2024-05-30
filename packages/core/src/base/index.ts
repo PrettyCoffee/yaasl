@@ -1,5 +1,7 @@
 export * from "./config"
+export * from "./createActions"
 export * from "./createAtom"
 export * from "./createDerived"
 export * from "./createSelector"
+export * from "./createSlice"
 export * from "./Stateful"
