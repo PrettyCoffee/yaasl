@@ -9,7 +9,7 @@
 </div>
 
 - 🚀 Redux like api
-- ⚡️️ Simple to use
+- ⚡️️ Focus on simplicity
 - 🌈 Middleware integrations
 - 🔥 React & Preact support
 - 🔮 Redux Devtools compatible
