@@ -2,7 +2,7 @@ import { Atom } from "../base"
 
 export type ActionType = "init" | "didInit" | "set"
 
-interface EffectPayload<Options, AtomValue> {
+export interface EffectPayload<Options = undefined, AtomValue = any> {
   value: AtomValue
   atom: Atom<AtomValue>
   options: Options

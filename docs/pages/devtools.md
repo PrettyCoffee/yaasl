@@ -1,5 +1,46 @@
 # Devtools
 
+Atom effects that can be used for debugging.
+
+## logger
+
+Effect to monitor atom activities and log them to the console.
+
+### API
+
+Parameters:
+
+- `options.disable`: Disables the middleware.
+
+Returns: The effect to be used on atoms.
+
+### Usage Examples
+
+<!-- tabs:start -->
+
+#### **Single atom**
+
+```ts
+const isProduction = import.meta.env.PROD;
+
+const atom = createAtom({
+  defaultValue: "my-value",
+  effects: [logger({ disable: isProduction })],
+});
+```
+
+#### **Globally**
+
+```ts
+import { CONFIG, logger } from "@yaasl/core";
+
+const isProduction = import.meta.env.PROD;
+
+CONFIG.globalEffects = [logger({ disable: isProduction })];
+```
+
+<!-- tabs:end -->
+
 ## reduxDevtools
 
 Middleware to make use of the [redux devtools](https://github.com/reduxjs/redux-devtools) browser extension.
@@ -30,7 +71,7 @@ const atomWithDevtools = createAtom({
 #### **Globally**
 
 ```ts
-import { CONFIG } from "@yaasl/core";
+import { CONFIG, reduxDevtools } from "@yaasl/core";
 
 const isProduction = import.meta.env.PROD;
 
