@@ -4,7 +4,7 @@ Atom effects that can be used for debugging.
 
 ## logger
 
-Effect that logs all atom activities to the console.
+Effect to monitor atom activities and log them to the console.
 
 ### API
 
