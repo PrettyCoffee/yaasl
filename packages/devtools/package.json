@@ -26,7 +26,7 @@
     "build": "run-s clean compile",
     "clean": "rimraf ./dist",
     "compile": "run-p compile:mjs compile:cjs compile:types",
-    "compile:mjs": "tsc -p ./tsconfig.node.json --outDir ./dist/mjs -m es2020 -t es2020",
+    "compile:mjs": "tsc -p ./tsconfig.node.json --outDir ./dist/mjs -m esnext -t esnext",
     "compile:cjs": "tsc -p ./tsconfig.node.json --outDir ./dist/cjs -m commonjs -t es2015",
     "compile:types": "tsc -p ./tsconfig.node.json --outDir ./dist/@types --declaration --emitDeclarationOnly",
     "test": "vitest run",
