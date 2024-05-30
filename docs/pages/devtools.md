@@ -14,15 +14,27 @@ Returns: The effect to be used on atoms.
 
 ### Usage Examples
 
-```ts
-const atomWithDevtools = createAtom({
-  defaultValue: "my-value",
-  effects: [reduxDevtools()],
-});
+<!-- tabs:start -->
 
+#### **Single atom**
+
+```ts
 const isProduction = import.meta.env.PROD;
+
 const atomWithDevtools = createAtom({
   defaultValue: "my-value",
   effects: [reduxDevtools({ disable: isProduction })],
 });
 ```
+
+#### **Globally**
+
+```ts
+import { CONFIG } from "@yaasl/core";
+
+const isProduction = import.meta.env.PROD;
+
+CONFIG.globalEffects = [reduxDevtools({ disable: isProduction })];
+```
+
+<!-- tabs:end -->
