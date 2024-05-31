@@ -18,3 +18,4 @@
 - Examples (WIP)
 
   - [**Theme mode**](/pages/examples/theme-mode.md)
+  - [**Toaster**](/pages/examples/toaster.md)
