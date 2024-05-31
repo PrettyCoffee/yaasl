@@ -16,7 +16,7 @@ The `getSystemMode` helper is used to read it.
 Furthermore, it is required to update the atom's value when the user changes their preference.
 We can do so by subscribing to a media matcher and set the state of our atom, when the subscriber is called.
 
-[useThemeMode.tsx](./useThemeMode.tsx ":include :type=code :fragment=systemMode")
+[theme-mode.tsx](./theme-mode.tsx ":include :type=code :fragment=systemMode")
 
 ### **Local mode**
 
@@ -24,7 +24,7 @@ Next, we create an atom that stores the mode the user wants to see in our UI loc
 
 To also persist this option for the future (after page reloads), we can use the localStorage effect.
 
-[useThemeMode.tsx](./useThemeMode.tsx ":include :type=code :fragment=localMode")
+[theme-mode.tsx](./theme-mode.tsx ":include :type=code :fragment=localMode")
 
 ### **Theme mode**
 
@@ -34,22 +34,22 @@ If the value of the `localMode` atom is `"system"`, we want to use the value of 
 
 Furthermore we will toggle a css class `"dark"` on the root html element based off this new state, to be able to use the theme mode in css.
 
-[useThemeMode.tsx](./useThemeMode.tsx ":include :type=code :fragment=themeMode")
+[theme-mode.tsx](./theme-mode.tsx ":include :type=code :fragment=themeMode")
 
 ### **useThemeMode**
 
 To use these atoms in react, a custom hook will be very useful.
 
-[useThemeMode.tsx](./useThemeMode.tsx ":include :type=code :fragment=useThemeMode")
+[theme-mode.tsx](./theme-mode.tsx ":include :type=code :fragment=useThemeMode")
 
-See this example on how to use this hook:
+See this example on how to use the hook:
 
-[useThemeMode.tsx](./useThemeMode.tsx ":include :type=code :fragment=usage")
+[theme-mode.tsx](./theme-mode.tsx ":include :type=code :fragment=usage")
 
 <!-- tabs:end -->
 
-## **Full code**
+## Full code
 
 Here is the full code we created in the previous steps.
 
-[useThemeMode.tsx](./useThemeMode.tsx ":include :type=code")
+[theme-mode.tsx](./theme-mode.tsx ":include :type=code")
