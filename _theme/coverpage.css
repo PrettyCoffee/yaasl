@@ -1,4 +1,5 @@
 body:has(main.hidden) {
+  height: max-content;
   
   --gradient-1: var(--bg-page);
   --gradient-2: hsl(240, 7.15%, 5.50%);
@@ -8,25 +9,25 @@ body:has(main.hidden) {
   --gradient-6: var(--bg-base);
   
   background:
-  linear-gradient(45deg,
-    var(--gradient-1) 0%,
-    var(--gradient-1) 15.99%,
-    
-    var(--gradient-2) 16%,
-    var(--gradient-2) 32.99%,
-    
-    var(--gradient-3) 33%,
-    var(--gradient-3) 49.99%,
-    
-    var(--gradient-4) 50%,
-    var(--gradient-4) 65.99%,
-    
-    var(--gradient-5) 66%,
-    var(--gradient-5) 82.99%,
-    
-    var(--gradient-6) 83%,
-    var(--gradient-6) 100%
-  );
+    linear-gradient(45deg,
+      var(--gradient-1) 0%,
+      var(--gradient-1) 15.99%,
+      
+      var(--gradient-2) 16%,
+      var(--gradient-2) 32.99%,
+      
+      var(--gradient-3) 33%,
+      var(--gradient-3) 49.99%,
+      
+      var(--gradient-4) 50%,
+      var(--gradient-4) 65.99%,
+      
+      var(--gradient-5) 66%,
+      var(--gradient-5) 82.99%,
+      
+      var(--gradient-6) 83%,
+      var(--gradient-6) 100%
+    );
 }
 
 section.cover {
