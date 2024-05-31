@@ -15,4 +15,6 @@
   - [**React**](/pages/react.md)
   - [**Preact**](/pages/preact.md)
 
-- Guides / Examples (TBD)
+- Examples (WIP)
+
+  - [**Theme mode**](/pages/examples/theme-mode.md)
