@@ -181,7 +181,12 @@ article.markdown-section {
       }
     }
     > div {
-      padding-top: 0.5rem;
+      margin-top: 0.25rem;
+      margin-left: 0.25rem;
+      padding-left: 0.75rem;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      border-left: 0.125rem solid var(--text-muted);
     }
   }
 }
