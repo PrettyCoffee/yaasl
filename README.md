@@ -14,7 +14,7 @@ This project is meant for personal use.
 I won't stop you from using it, but I would rather recommend to use a similar
 and more mature solution like [jotai](https://jotai.org/).
 
-See the [docs](https://prettycoffee.github.io/yaasl/)) for detailed documentation.
+See the [docs](https://prettycoffee.github.io/yaasl/) for detailed documentation.
 
 ## Packages
 
