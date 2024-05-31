@@ -16,23 +16,31 @@ and more mature solution like [jotai](https://jotai.org/).
 
 See the [docs](https://prettycoffee.github.io/yaasl/) for detailed documentation.
 
-## Packages
+## Installation
 
-| Name                                        | Description                           |
-| ------------------------------------------- | ------------------------------------- |
-| [@yaasl/core](./docs/pages/core.md)         | Core package for vanilla JS.          |
-| [@yaasl/devtools](./docs/pages/devtools.md) | Adapter to use redux browser devtools |
-| [@yaasl/react](./docs/pages/react.md)       | React bindings for `yaasl`.           |
-| [@yaasl/preact](./docs/pages/preact.md)     | Preact bindings for `yaasl`.          |
+You can install a yaasl package like you would do with any other:
+
+```sh
+npm i @yaasl/<package>
+```
+
+Available packages:
+
+| Name                                                             | Description                           |
+| ---------------------------------------------------------------- | ------------------------------------- |
+| [@yaasl/core](https://www.npmjs.com/package/@yaasl/core)         | Core package for vanilla JS.          |
+| [@yaasl/devtools](https://www.npmjs.com/package/@yaasl/devtools) | Adapter to use redux browser devtools |
+| [@yaasl/react](https://www.npmjs.com/package/@yaasl/react)       | React bindings for `yaasl`.           |
+| [@yaasl/preact](https://www.npmjs.com/package/@yaasl/preact)     | Preact bindings for `yaasl`.          |
 
 ## Quickstart
 
 1. Pick one of the main packages
 
 ```sh
-$ npm i @yaasl/core
-$ npm i @yaasl/react
-$ npm i @yaasl/preact
+npm i @yaasl/core
+npm i @yaasl/react
+npm i @yaasl/preact
 ```
 
 2. Create an atom
@@ -73,7 +81,7 @@ const counter = createAtom({
   effects: [localStorage()],
 });
 
-function setupCounter(element: HTMLButtonElement) {
+const setupCounter = (element: HTMLButtonElement) => {
   const updateCounterText = (value: number) =>
     (element.innerHTML = `count is ${value}`);
 
@@ -87,7 +95,7 @@ function setupCounter(element: HTMLButtonElement) {
 
   // Read the value of the atom in the store
   updateCounterText(counter.get());
-}
+};
 
 const counter = document.getElementById("counter");
 setupCounter(counter);
@@ -103,7 +111,7 @@ CONFIG.name = "demo-react";
 
 // Create a counter atom that is connected to the local storage
 const counter = createAtom({
-  name: "counter", // local storage key will be "demo-vanilla/counter"
+  name: "counter", // local storage key will be "demo-react/counter"
   defaultValue: 0,
   effects: [localStorage()],
 });

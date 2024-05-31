@@ -1,33 +1,57 @@
 # Quick start
 
-1. Pick one of the main packages
+<!-- prettier-ignore-start -->
+1. Install one of the main packages
 
-```sh
-$ npm i @yaasl/core
-$ npm i @yaasl/react
-$ npm i @yaasl/preact
-```
+  <!-- tabs:start -->
+
+  ### **@yaasl/core**
+
+  Core package for vanilla JS.
+
+  ```sh
+  npm i @yaasl/core
+  ```
+
+  ### **@yaasl/react**
+
+  React bindings for yaasl.
+
+  ```sh
+  npm i @yaasl/react
+  ```
+
+  ### **@yaasl/preact**
+
+  Preact bindings for yaasl.
+
+  ```sh
+  npm i @yaasl/preact
+  ```
+
+  <!-- tabs:end -->
 
 2. Create an atom
 
-```ts
-import { createAtom } from "@yaasl/core";
+  ```ts
+  import { createAtom } from "@yaasl/core"; // or "@yaasl/react" or "@yaasl/preact"
 
-const myAtom = createAtom({ defaultValue: 0 });
-```
+  const myAtom = createAtom({ defaultValue: 0 });
+  ```
 
 3. Use the atom
 
-```ts
-// Read
-const currentValue = myAtom.get(atom);
-// Write
-myAtom.set(nextValue);
-// Subscribe to changes
-myAtom.subscribe((value) => {
-  console.log(value);
-});
-```
+  ```ts
+  // Read
+  const currentValue = myAtom.get(atom);
+  // Write
+  myAtom.set(nextValue);
+  // Subscribe to changes
+  myAtom.subscribe((value) => {
+    console.log(value);
+  });
+  ```
+<!-- prettier-ignore-end -->
 
 ## Examples
 
@@ -48,7 +72,7 @@ const counter = createAtom({
   effects: [localStorage()],
 });
 
-function setupCounter(element: HTMLButtonElement) {
+const setupCounter = (element: HTMLButtonElement) => {
   const updateCounterText = (value: number) =>
     (element.innerHTML = `count is ${value}`);
 
@@ -62,7 +86,7 @@ function setupCounter(element: HTMLButtonElement) {
 
   // Read the value of the atom in the store
   updateCounterText(counter.get());
-}
+};
 
 const counter = document.getElementById("counter");
 setupCounter(counter);
@@ -78,7 +102,7 @@ CONFIG.name = "demo-react";
 
 // Create a counter atom that is connected to the local storage
 const counter = createAtom({
-  name: "counter", // local storage key will be "demo-vanilla/counter"
+  name: "counter", // local storage key will be "demo-react/counter"
   defaultValue: 0,
   effects: [localStorage()],
 });
