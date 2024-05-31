@@ -22,7 +22,7 @@
     "lint:fix": "npm run lint -- --fix",
     "validate": "npm run validate --workspaces",
     "docs:generate": "node ./scripts/generateDocs.js",
-    "docs:publish": "gh-pages --dist docs --dotfiles --message 'chore: Publish docs'",
+    "docs:publish": "gh-pages --dist docs --dotfiles --message \"chore: Publish docs\"",
     "docs": "docsify serve ./docs",
     "prepare": "cozy-git-hooks install -q",
     "release": "node ./scripts/release.js",
