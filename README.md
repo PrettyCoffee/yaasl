@@ -6,11 +6,19 @@ This project is meant for personal use.
 I won't stop you from using it, but I would rather recommend to use a similar
 and more mature solution like [jotai](https://jotai.org/).
 
-## Packages
+## Installation
 
-| Name                                   | Description                           |
-| -------------------------------------- | ------------------------------------- |
-| [@yaasl/core](./pages/core.md)         | Core package for vanilla JS.          |
-| [@yaasl/devtools](./pages/devtools.md) | Adapter to use redux browser devtools |
-| [@yaasl/react](./pages/react.md)       | React bindings for `yaasl`.           |
-| [@yaasl/preact](./pages/preact.md)     | Preact bindings for `yaasl`.          |
+You can install a yaasl package like you would do with any other:
+
+```sh
+npm i @yaasl/<package>
+```
+
+Available packages:
+
+| Name                                                             | Description                           |
+| ---------------------------------------------------------------- | ------------------------------------- |
+| [@yaasl/core](https://www.npmjs.com/package/@yaasl/core)         | Core package for vanilla JS.          |
+| [@yaasl/devtools](https://www.npmjs.com/package/@yaasl/devtools) | Adapter to use redux browser devtools |
+| [@yaasl/react](https://www.npmjs.com/package/@yaasl/react)       | React bindings for `yaasl`.           |
+| [@yaasl/preact](https://www.npmjs.com/package/@yaasl/preact)     | Preact bindings for `yaasl`.          |
