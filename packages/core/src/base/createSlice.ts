@@ -6,7 +6,6 @@ import {
   PathSelector,
   createSelector,
 } from "./createSelector"
-import { Stateful } from "./Stateful"
 
 const isEmpty = <T>(obj?: T | undefined): obj is undefined =>
   !obj || Object.keys(obj).length === 0
@@ -38,7 +37,7 @@ type GetSelector<
 > = S extends ObjPath<State>
   ? PathSelector<State, S>
   : S extends (state: State) => any
-  ? CombinerSelector<ReturnType<S>, [Stateful<State>]>
+  ? CombinerSelector<[Atom<State>], ReturnType<S>>
   : never
 
 type ConditionalSelectors<State, S> = keyof S extends never

@@ -77,7 +77,7 @@ export class CombinerSelector<
   }
 }
 
-// -- createSelector implmentation
+// -- createSelector implementation
 
 interface CreateSelectorOverloads {
   /** Creates a value, selected from one atom with an object value by using a key path.

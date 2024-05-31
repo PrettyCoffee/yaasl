@@ -86,7 +86,7 @@ describe("Test createSelector", () => {
     })
   })
 
-  describe("Function selector", () => {
+  describe("Combiner selector", () => {
     it("Uses a state from one atom", () => {
       const testAtom = createAtom({ defaultValue: 1 })
       const selected = createSelector([testAtom], state => String(state))
