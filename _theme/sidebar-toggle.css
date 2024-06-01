@@ -83,7 +83,7 @@ body .sidebar-toggle {
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 450px) {
   body .sidebar-toggle {
     inset: unset;
     bottom: var(--toggle-offset);

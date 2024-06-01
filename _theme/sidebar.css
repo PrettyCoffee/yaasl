@@ -1,4 +1,4 @@
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 450px) {
   :root:has(body.close), body.close .content {
     overflow: hidden;
   }
@@ -13,6 +13,7 @@
     }
     
     .search {
+      margin-top: auto;
       order: 99;
       
       .input-wrap {
@@ -52,7 +53,6 @@ aside.sidebar {
   .search {
     display: flex;
     flex-direction: column;
-    position: unset;
     z-index: 1;
     position: sticky;
     top: 0;
