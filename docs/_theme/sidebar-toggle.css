@@ -83,11 +83,15 @@ body .sidebar-toggle {
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 450px) {
   body .sidebar-toggle {
-    left: var(--toggle-offset);
+    inset: unset;
+    bottom: var(--toggle-offset);
+    right: var(--toggle-offset);
     body.close & {
-      left: var(--toggle-offset);
+      inset: unset;
+      bottom: var(--toggle-offset);
+      right: var(--toggle-offset);
     }
   }
 }
