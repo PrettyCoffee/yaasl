@@ -1,7 +1,7 @@
 button.sidebar-toggle {
-  width: 2.5rem!important;
-  height: 2.5rem!important;
-  padding: 0.5rem;
+  width: 3rem!important;
+  height: 3rem!important;
+  padding: 0.75rem;
   
   cursor: pointer;
   --bgl-layer: transparent;
