@@ -19,10 +19,13 @@
   outline-offset: 2px;
 }
 
-.github-corner{
+.github-corner {
   z-index: 9999;
    > svg {
     color: var(--bg-page);
+  }
+  body.close & {
+    display: block;
   }
 }
 

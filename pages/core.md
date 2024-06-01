@@ -344,7 +344,7 @@ Parameters:
 
 - `name`: Global name to make internal keys unique among UIs on the same domain.
   (e.g. local storage keys look like this if a name is set: "{config-name}/{atom-name}")
-- `effects`: Global effects to apply on all atoms. (e.g. reduxDevtools)
+- `globalEffects`: Global effects to apply on all atoms. (e.g. reduxDevtools)
 
 ### Usage Examples
 
