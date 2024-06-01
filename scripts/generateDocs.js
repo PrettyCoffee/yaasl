@@ -1,23 +1,9 @@
 const { execSync } = require("node:child_process")
-const { readdir, readFile, writeFile } = require("node:fs/promises")
 const { resolve } = require("node:path")
 
-const TOC_START = "<!-- >> TOC >> -->"
-const TOC_END = "<!-- << TOC << -->"
+const { replaceInFile } = require("./utils/replaceInFile")
 
 const rootDir = resolve(__dirname, "../")
-const docsDir = resolve(rootDir, "./docs")
-
-const getFile = path =>
-  readFile(path).then(buffer => ({ path, content: String(buffer) }))
-
-const getFiles = () =>
-  readdir(docsDir)
-    .then(list => [
-      resolve(rootDir, "README.md"),
-      //...list.map(file => resolve(docsDir, file)),
-    ])
-    .then(files => Promise.all(files.map(getFile)))
 
 const parseHeadline = headline => {
   const [level, text] = /(#+)\s*(.*)/g.exec(headline).slice(1, 3)
@@ -81,12 +67,6 @@ const createToc = text => {
   )
 }
 
-const replaceToc = (text, toc) =>
-  text.replace(
-    new RegExp(`${TOC_START}.*${TOC_END}`, "sm"),
-    `${TOC_START}\n${toc}${TOC_END}`
-  )
-
 const formatFiles = () => {
   execSync(
     "prettier **.md --arrow-parens=avoid --no-semi --single-quote=false --tab-width=2 --write",
@@ -94,14 +74,5 @@ const formatFiles = () => {
   )
 }
 
-getFiles()
-  .then(files =>
-    files.map(file => ({
-      ...file,
-      content: replaceToc(file.content, createToc(file.content)),
-    }))
-  )
-  .then(files =>
-    Promise.all(files.map(({ path, content }) => writeFile(path, content)))
-  )
-  .then(formatFiles)
+const readme = resolve(rootDir, "README.md")
+replaceInFile(readme, "TOC", createToc).then(formatFiles)

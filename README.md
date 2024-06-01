@@ -5,7 +5,7 @@
 <!-- >> TOC >> -->
 
 - [yaasl - yet another atomic store library](#yaasl---yet-another-atomic-store-library)
-  - [Packages](#packages)
+  - [Installation](#installation)
   - [Quickstart](#quickstart)
   - [Usage examples](#usage-examples) [ [Vanilla typescript](#vanilla-typescript), [React (or Preact)](#react-or-preact) ]
   <!-- << TOC << -->
