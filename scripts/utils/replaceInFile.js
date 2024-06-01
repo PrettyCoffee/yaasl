@@ -2,12 +2,25 @@ const { readFile, writeFile } = require("node:fs/promises")
 
 const getFileContent = path => readFile(path).then(buffer => String(buffer))
 
+const getIndentation = (file, lineText) => {
+  const lines = file.split("\n")
+  const target = lines.find(line => line.includes(lineText))
+  return target.match(/^(\s*)/)[0]
+}
+
 const replaceSection = (file, section, newContent) => {
   const sectionStart = `<!-- >> ${section} >> -->`
   const sectionEnd = `<!-- << ${section} << -->`
+
+  const indentation = getIndentation(file, sectionStart)
+  const content = `${sectionStart}\n${newContent}\n${sectionEnd}`.replace(
+    /\n/g,
+    `\n${indentation}`
+  )
+
   return file.replace(
     new RegExp(`${sectionStart}.*${sectionEnd}`, "sm"),
-    `${sectionStart}\n${newContent}${sectionEnd}`
+    content
   )
 }
 

@@ -1,4 +1,5 @@
 *.afdesign
+docs/_lib/
 docs/CHANGELOG.md
 dist
 
