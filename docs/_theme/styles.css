@@ -12,6 +12,9 @@
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 500;
+
+  scrollbar-color: var(--text-muted) transparent;
+  scrollbar-width: auto;
 }
 
 *:focus-visible {
