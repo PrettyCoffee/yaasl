@@ -18,7 +18,7 @@
 }
 
 *:focus-visible {
-  outline: 1px solid var(--accent);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -37,6 +37,7 @@ body, article.markdown-section {
   /* -- Anchor -- */
   
   a {
+    transition: none;
     border-radius: 0.125rem;
     color: var(--accent);
     text-decoration: none;
