@@ -1,4 +1,4 @@
-import { consoleMessage, SetStateAction, toVoid } from "@yaasl/utils"
+import { consoleMessage, Updater, toVoid, updater } from "@yaasl/utils"
 
 import { Atom } from "./createAtom"
 import { Stateful } from "./Stateful"
@@ -16,7 +16,7 @@ type GetterFn<Value> = (context: { get: <V>(dep: Stateful<V>) => V }) => Value
 
 type SetterFn<Value> = (context: {
   value: Value
-  set: <V>(dep: Atom<V> | SettableDerive<V>, next: SetStateAction<V>) => void
+  set: <V>(dep: Atom<V> | SettableDerive<V>, next: Updater<V>) => void
 }) => void
 
 export class Derive<Value> extends Stateful<Value> {
@@ -72,12 +72,12 @@ export class SettableDerive<Value = unknown> extends Derive<Value> {
    * @param next New value or function to create the
    * new value based off the previous value.
    */
-  public set(next: SetStateAction<Value>) {
-    const value = next instanceof Function ? next(this.get()) : next
+  public set(next: Updater<Value>) {
+    const value = updater(next, this.get())
     this.setter({
       value,
       set: (atom, next) => {
-        const value = next instanceof Function ? next(atom.get()) : next
+        const value = updater(next, atom.get())
         atom.set(value)
       },
     })

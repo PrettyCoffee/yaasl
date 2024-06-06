@@ -1,4 +1,4 @@
-import { SetStateAction } from "@yaasl/utils"
+import { Updater, updater } from "@yaasl/utils"
 
 import { CONFIG } from "./config"
 import { Stateful } from "./Stateful"
@@ -46,9 +46,8 @@ export class Atom<Value = unknown> extends Stateful<Value> {
    * @param next New value or function to create the
    * new value based off the previous value.
    */
-  public set(next: SetStateAction<Value>) {
-    const value = next instanceof Function ? next(this.get()) : next
-    super.update(value)
+  public set(next: Updater<Value>) {
+    super.update(updater(next, this.get()))
   }
 }
 

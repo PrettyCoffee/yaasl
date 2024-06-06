@@ -1,8 +1,8 @@
 import { Stateful } from "@yaasl/core"
-import { SetStateAction, consoleMessage } from "@yaasl/utils"
+import { Updater, consoleMessage } from "@yaasl/utils"
 import { useState, useEffect, useRef, useCallback } from "preact/hooks"
 
-export const useStatefulValue = <ValueType>(atom: Stateful<ValueType>) => {
+export const useStatefulValue = <State>(atom: Stateful<State>) => {
   const [state, setState] = useState(atom.get())
   const unsubscribe = useRef<() => boolean>(() => true)
 
@@ -16,9 +16,9 @@ export const useStatefulValue = <ValueType>(atom: Stateful<ValueType>) => {
   return state
 }
 
-export const useSetStateful = <ValueType>(stateful: Stateful<ValueType>) =>
+export const useSetStateful = <State>(stateful: Stateful<State>) =>
   useCallback(
-    (next: SetStateAction<ValueType>) => {
+    (next: Updater<State>) => {
       if (!("set" in stateful) || !(stateful.set instanceof Function)) {
         throw new Error(consoleMessage("Atom does not have a set method"))
       }

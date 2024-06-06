@@ -3,5 +3,3 @@ export type Prettify<T> = {
 } & {}
 
 export type Dispatch<T> = (value: T) => void
-
-export type SetStateAction<State> = State | ((prevState: State) => State)
