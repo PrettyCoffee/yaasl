@@ -118,6 +118,7 @@ aside.sidebar {
       }
       &:focus {
         box-shadow: none;
+        outline: 2px solid var(--accent);
       }
     }
 
@@ -164,7 +165,7 @@ aside.sidebar {
     li {
       --x-spacing: 0.5rem;
 
-      * {
+      *:not(ul):not(li) {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

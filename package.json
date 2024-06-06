@@ -5,6 +5,7 @@
   "scripts": {
     "start": "docsify serve ./",
     "publish": "gh-pages --dist ./ --dotfiles --message \"chore: Publish docs\"",
+    "build": "echo \"no build step\"",
     "postinstall": "node ../scripts/installDocsify.js"
   },
   "dependencies": {
