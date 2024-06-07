@@ -1,5 +1,112 @@
 # Effects
 
+## createEffect
+
+Create effects (e.g. middleware) to be used in combination with atoms.
+
+Effects can be used to interact with an atom by using the following lifecycle actions:
+
+- `init`: Action to be called when the atom is created.
+  May return a promise that can be awaited by using `atom.didInit`.
+- `didInit`: Action to be called after the init phase.
+  May return a promise that can be awaited by using `atom.didInit`.
+- `set`: Action to be called when the atom's value is set.
+
+### API
+
+Parameters:
+
+- `setup`: Effect actions or function to create effect actions. Effect actions are fired in the atom lifecycle, alongside to the subscriptions.
+
+Returns: An effect function to be used in atoms.
+
+Parameters of effect actions:
+
+- `options`: Options passed to the effect
+- `value`: Current value of the atom
+- `set`: Function to set the value of the atom
+- `atom`: The atom which the effect is applied on
+
+**Note:** Using `atom.set` within an effect may cause unintended behavior, such as recursive calls and inconsistencies. Use the provided `set` function instead.
+
+### Usage Examples
+
+<!-- tabs:start -->
+
+#### **Simple**
+
+```ts
+const logger = createEffect({
+  init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
+  didInit: ({ atom }) =>
+    console.log(`Did finish initialization of atom "${atom.name}"`),
+  set: ({ atom, value }) =>
+    console.log(`Value of atom "${atom.name}" was set to:`, value),
+});
+
+const myAtom = createAtom({
+  defaultValue: "my-value",
+  effects: [logger()],
+});
+```
+
+#### **With options**
+
+```ts
+interface Options {
+  disable?: boolean;
+}
+const loggerWithOptions = createEffect<Options>(({ options }) => {
+  if (options.disable) return {};
+
+  return {
+    init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
+    didInit: ({ atom }) =>
+      console.log(`Did finish initialization of atom "${atom.name}"`),
+    set: ({ atom, value }) =>
+      console.log(`Value of atom "${atom.name}" was set to:`, value),
+  };
+});
+
+const myAtom = createAtom({
+  defaultValue: "my-value",
+  effects: [loggerWithOptions({ disable: true })],
+});
+```
+
+#### **Set value in effect**
+
+```ts
+interface ClampOptions {
+  min?: number;
+  max?: number;
+}
+const clamp = createEffect<ClampOptions, number>(({ options }) => {
+  const { min = -Infinity, max = Infinity } = options;
+  const canClamp = (value: number) => {
+    const isNumber = typeof value === "number";
+    const isInRange = value >= min && value <= max;
+    return isNumber && !isInRange;
+  };
+  const clampValue = (value: number) => {
+    return Math.min(max, Math.max(value, min));
+  };
+
+  return {
+    init: ({ value, set }) => {
+      if (!canClamp(value)) return;
+      set(clampValue(value));
+    },
+    set: ({ value, set }) => {
+      if (!canClamp(value)) return;
+      set(clampValue(value));
+    },
+  };
+});
+```
+
+<!-- tabs:end -->
+
 ## localStorage
 
 Middleware to save and load atom values to the local storage.
