@@ -267,7 +267,7 @@ article.selectors.voteBalance.get() // -> 46 - 4 = 42
 
 ## createEffect
 
-Create effects to be used in combination with atoms.
+Create effects (e.g. middleware) to be used in combination with atoms.
 
 Effects can be used to interact with an atom by using the following lifecycle actions:
 
@@ -284,6 +284,13 @@ Parameters:
 - `setup`: Effect actions or function to create effect actions. Effect actions are fired in the atom lifecycle, alongside to the subscriptions.
 
 Returns: An effect function to be used in atoms.
+
+Parameters of effect actions:
+
+- `options`: Options passed to the effect
+- `value`: Current value of the atom
+- `set`: Function to set the value of the atom
+- `atom`: The atom which the effect is applied on
 
 **Note:** Using `atom.set` within an effect may cause unintended behavior, such as recursive calls and inconsistencies. Use the provided `set` function instead.
 

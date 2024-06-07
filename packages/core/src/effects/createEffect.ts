@@ -5,17 +5,25 @@ import { Atom } from "../base"
 export type ActionType = "init" | "didInit" | "set"
 
 export interface EffectPayload<Options = undefined, AtomValue = any> {
+  /** Current value of the atom */
   value: AtomValue
+  /** Function to set the value of the atom */
   set: Dispatch<Updater<AtomValue>>
+  /** The atom which the effect is applied on */
   atom: Atom<AtomValue>
+  /** Options passed to the effect */
   options: Options
 }
 
 export interface EffectActions<Options, AtomValue> {
+  /** Action to be called when the atom is created */
   init?: (payload: EffectPayload<Options, AtomValue>) => PromiseLike<any> | void
+
+  /** Action to be called after the init phase */
   didInit?: (
     payload: EffectPayload<Options, AtomValue>
   ) => PromiseLike<any> | void
+  /** Action to be called when the atom's value is set */
   set?: (payload: EffectPayload<Options, AtomValue>) => void
 }
 
