@@ -1,7 +1,7 @@
 import { sleep } from "@yaasl/utils"
 
 import { createEffect } from "./createEffect"
-import { Atom, createAtom } from "../base"
+import { createAtom } from "../base"
 
 const didInit = vi.fn()
 const init = vi.fn()
@@ -64,6 +64,22 @@ describe("Test createEffect", () => {
     expect(callArgs).toHaveProperty("options", undefined)
   })
 
+  it("Sets the value in the effect", () => {
+    const counter = createEffect<undefined, number>({
+      init: ({ set }) => set(0),
+      didInit: ({ set, value }) => set(value + 1),
+      set: ({ set, value }) => set(value + 1),
+    })
+    const atom = createAtom({
+      defaultValue: 50,
+      effects: [counter()],
+    })
+    expect(atom.get()).toBe(1) // 50 -> init effect 0 -> didInit effect 1
+    atom.set(count => count + 1) // 1 -> set 2 -> set effect 3
+    atom.set(count => count + 1) // 3 -> set 4 -> set effect 5
+    expect(atom.get()).toBe(5)
+  })
+
   it("Calls the set function", () => {
     const testAtom = createAtom({
       defaultValue,
@@ -87,9 +103,9 @@ describe("Test createEffect", () => {
         init: () => {
           actionOrder.push("init")
         },
-        didInit: ({ atom }) => {
+        didInit: ({ set }) => {
           actionOrder.push("didInit")
-          atom.set(nextValue)
+          set(nextValue)
         },
         set: () => {
           actionOrder.push("set")
@@ -102,9 +118,10 @@ describe("Test createEffect", () => {
       effects: [order()],
     })
 
-    expect(actionOrder).toEqual(["setup", "init", "didInit", "set"])
+    expect(actionOrder).toEqual(["setup", "init", "didInit"])
+    expect(testAtom.get()).toBe(nextValue)
     testAtom.set("next2")
-    expect(actionOrder).toEqual(["setup", "init", "didInit", "set", "set"])
+    expect(actionOrder).toEqual(["setup", "init", "didInit", "set"])
   })
 
   it("Sets didInit to true when no effect was asynchronous", () => {
@@ -127,22 +144,25 @@ describe("Test createEffect", () => {
     async ({ initType, didInitType }) => {
       const values: number[] = []
 
-      const perform = (atom: Atom<any>, value: any) => {
-        if (typeof value !== "number") return
+      const next = (value: number) => {
         values.push(value)
-        atom.set(value + 1)
+        return value + 1
       }
 
-      const counterEffect = createEffect({
-        init: ({ atom, value }) => {
-          return initType === "sync"
-            ? perform(atom, value)
-            : sleep(10).then(() => perform(atom, value))
+      const counterEffect = createEffect<undefined, number>({
+        init: ({ value, set }) => {
+          if (initType === "sync") {
+            set(next(value))
+            return
+          }
+          return sleep(10).then(() => set(next(value)))
         },
-        didInit: ({ atom, value }) => {
-          return didInitType === "sync"
-            ? perform(atom, value)
-            : sleep(10).then(() => perform(atom, value))
+        didInit: ({ value, set }) => {
+          if (didInitType === "sync") {
+            set(next(value))
+            return
+          }
+          return sleep(10).then(() => set(next(value)))
         },
       })
       const testAtom = createAtom({
@@ -236,19 +256,17 @@ describe("Test createEffect", () => {
 
     it("persists the value over multiple async effect actions", async () => {
       const values: number[] = []
-      const counterEffect = createEffect({
-        init: ({ atom, value }) => {
+      const counterEffect = createEffect<undefined, number>({
+        init: ({ value, set }) => {
           return sleep(10).then(() => {
-            if (typeof value !== "number") return
             values.push(value)
-            atom.set(value + 1)
+            set(value + 1)
           })
         },
-        didInit: ({ atom, value }) => {
+        didInit: ({ value, set }) => {
           return sleep(10).then(() => {
-            if (typeof value !== "number") return
             values.push(value)
-            atom.set(value + 1)
+            set(value + 1)
           })
         },
       })

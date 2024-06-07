@@ -1,4 +1,4 @@
-import { Updater, updater } from "@yaasl/utils"
+import { Updater, updater, Thenable, toVoid } from "@yaasl/utils"
 
 import { CONFIG } from "./config"
 import { Stateful } from "./Stateful"
@@ -11,7 +11,7 @@ export interface AtomConfig<Value> {
   /** Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}". */
   name?: string
   /** Effects that will be applied on the atom. */
-  effects?: EffectAtomCallback<any>[]
+  effects?: EffectAtomCallback<any, any>[]
 }
 
 let key = 0
@@ -22,6 +22,8 @@ export class Atom<Value = unknown> extends Stateful<Value> {
   /** Identifier of the atom. */
   public readonly name: string
 
+  private effects: EffectDispatcher<Value>
+
   constructor({
     defaultValue,
     name = `atom-${++key}`,
@@ -31,14 +33,35 @@ export class Atom<Value = unknown> extends Stateful<Value> {
     this.name = name
     this.defaultValue = defaultValue
 
-    const effects = [...CONFIG.globalEffects, ...localEffects]
+    const effects: EffectAtomCallback<any, any>[] = [
+      ...CONFIG.globalEffects,
+      ...localEffects,
+    ]
+    this.effects = new EffectDispatcher<Value>(this, effects)
 
     if (effects.length === 0) {
-      this.didInit = true
+      this.setDidInit(true)
       return
     }
-    const { didInit } = new EffectDispatcher({ atom: this, effects })
-    this.setDidInit(didInit)
+
+    const result = this.initEffects()
+    if (result instanceof Thenable) {
+      this.setDidInit(true)
+    } else {
+      this.setDidInit(result.then(toVoid))
+    }
+  }
+
+  private initEffects() {
+    const updateValue = (value: Value) => {
+      super.update(value)
+      return value
+    }
+    return new Thenable(this.defaultValue)
+      .then(value => this.effects.dispatch("init", value))
+      .then(updateValue)
+      .then(value => this.effects.dispatch("didInit", value))
+      .then(updateValue)
   }
 
   /** Set the value of the atom.
@@ -47,7 +70,10 @@ export class Atom<Value = unknown> extends Stateful<Value> {
    * new value based off the previous value.
    */
   public set(next: Updater<Value>) {
-    super.update(updater(next, this.get()))
+    const newState = updater(next, this.get())
+    void this.effects
+      .dispatch("set", newState)
+      .then(value => super.update(value))
   }
 }
 

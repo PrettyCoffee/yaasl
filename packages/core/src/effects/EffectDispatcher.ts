@@ -1,51 +1,67 @@
-import { isPromiseLike } from "@yaasl/utils"
+import { Updater, isPromiseLike, updater } from "@yaasl/utils"
 
-import { Effect, ActionType, EffectAtomCallback } from "./createEffect"
+import {
+  ActionType,
+  EffectAtomCallback,
+  EffectActions as EffectActionsType,
+} from "./createEffect"
 import { Atom } from "../base/createAtom"
-import { Scheduler } from "../utils/Scheduler"
+import { Queue } from "../utils/Queue"
 
-interface EffectDispatcherConstructor {
-  atom: Atom<any>
-  effects: EffectAtomCallback<any>[]
+const isTruthy = <T>(value: T): value is NonNullable<T> => !!value
+
+export class EffectActions<Value> {
+  private options: unknown
+  private actions: EffectActionsType<unknown, Value>
+
+  constructor(
+    private readonly atom: Atom<Value>,
+    effectCreator: EffectAtomCallback<unknown, Value>
+  ) {
+    const { actions, options } = effectCreator(atom)
+    this.options = options
+    this.actions = actions
+  }
+
+  public createAction(action: ActionType) {
+    const actionFn = this.actions[action]
+    if (!actionFn) return
+
+    return (prev: Value) => {
+      const nextValue = { current: prev }
+      const set = (next: Updater<Value>) =>
+        (nextValue.current = updater(next, nextValue.current))
+
+      const result = actionFn({
+        value: prev,
+        set,
+        atom: this.atom,
+        options: this.options,
+      })
+
+      return isPromiseLike(result)
+        ? result.then(() => nextValue.current)
+        : nextValue.current
+    }
+  }
 }
 
-export class EffectDispatcher {
-  public didInit: PromiseLike<void> | boolean = false
-  private effects: Effect[] = []
-  private scheduler = new Scheduler()
+export class EffectDispatcher<Value> {
+  private effects: EffectActions<Value>[] = []
+  private queue = new Queue<Value>()
 
-  constructor({ atom, effects }: EffectDispatcherConstructor) {
-    this.effects = effects.map(create => create(atom))
-
-    this.callEffectAction("init", atom)
-    this.subscribeSetters(atom)
-    this.callEffectAction("didInit", atom)
-
-    const { queue } = this.scheduler
-    if (!isPromiseLike(queue)) {
-      this.didInit = true
-      return
-    }
-    this.didInit = queue.then(() => {
-      this.didInit = true
-    })
-  }
-
-  private subscribeSetters(atom: Atom) {
-    atom.subscribe(value => this.callEffectAction("set", atom, () => value))
-  }
-
-  private callEffectAction(
-    action: ActionType,
-    atom: Atom,
-    /* Must be a function to make sure it is using the latest value when used in promise */
-    getValue = () => atom.get()
+  constructor(
+    atom: Atom<Value>,
+    effects: EffectAtomCallback<unknown, Value>[]
   ) {
-    const tasks = this.effects.map(({ actions, options }) => {
-      const actionFn = actions[action]
-      return () => actionFn?.({ value: getValue(), atom, options })
-    })
+    this.effects = effects.map(create => new EffectActions(atom, create))
+  }
 
-    void this.scheduler.run(tasks)
+  public dispatch(action: ActionType, startValue: Value) {
+    const tasks = this.effects
+      .map(effect => effect.createAction(action))
+      .filter(isTruthy)
+
+    return this.queue.push(...tasks).run(startValue)
   }
 }

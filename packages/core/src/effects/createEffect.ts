@@ -1,16 +1,21 @@
+import { Updater, Dispatch } from "@yaasl/utils"
+
 import { Atom } from "../base"
 
 export type ActionType = "init" | "didInit" | "set"
 
 export interface EffectPayload<Options = undefined, AtomValue = any> {
   value: AtomValue
+  set: Dispatch<Updater<AtomValue>>
   atom: Atom<AtomValue>
   options: Options
 }
 
-interface EffectActions<Options, AtomValue> {
-  init?: (payload: EffectPayload<Options, AtomValue>) => Promise<any> | void
-  didInit?: (payload: EffectPayload<Options, AtomValue>) => Promise<any> | void
+export interface EffectActions<Options, AtomValue> {
+  init?: (payload: EffectPayload<Options, AtomValue>) => PromiseLike<any> | void
+  didInit?: (
+    payload: EffectPayload<Options, AtomValue>
+  ) => PromiseLike<any> | void
   set?: (payload: EffectPayload<Options, AtomValue>) => void
 }
 
@@ -42,7 +47,7 @@ export interface Effect<Options = unknown, AtomValue = unknown> {
  *   May return a promise that can be awaited by using `atom.didInit`.
  * - `didInit`: Action to be called when the atom is created, but after subscribing to `set` events.
  *   May return a promise that can be awaited by using `atom.didInit`.
- * - `set`: Action to be called when the atom's `set` function is called.
+ * - `set`: Action to be called when the atom's value is set.
  *
  * @param setup Effect actions or function to create effect actions.
  *   Effect actions are fired in the atom lifecycle, alongside to the subscriptions.

@@ -34,16 +34,10 @@ const setup = (options: LocalStorageOptions = {}) => {
 describe("Test localStorage", () => {
   afterEach(() => window.localStorage.clear())
 
-  it("Uses the initial value", () => {
+  it("Is null initially", () => {
     const { testAtom, getStoreValue } = setup()
     expect(testAtom.get()).toStrictEqual(defaultValue)
-    expect(getStoreValue()).toStrictEqual(defaultValue)
-  })
-
-  it("Uses the passed key", () => {
-    const { testAtom, getStoreValue } = setup({ key: "test-key" })
-    expect(testAtom.get()).toStrictEqual(defaultValue)
-    expect(getStoreValue()).toStrictEqual(defaultValue)
+    expect(getStoreValue()).toStrictEqual(null)
   })
 
   it("Loads an existing value", () => {
@@ -54,6 +48,15 @@ describe("Test localStorage", () => {
 
   it("Changes the value", () => {
     const { testAtom, getStoreValue } = setup()
+
+    testAtom.set(nextValue)
+
+    expect(testAtom.get()).toStrictEqual(nextValue)
+    expect(getStoreValue()).toStrictEqual(nextValue)
+  })
+
+  it("Uses the passed key", () => {
+    const { testAtom, getStoreValue } = setup({ key: "test-key" })
 
     testAtom.set(nextValue)
 
@@ -91,14 +94,17 @@ describe("Test localStorage", () => {
     })
 
     it("Uses a custom stringifier", () => {
-      createAtom({
+      const testAtom = createAtom({
         name: "mapAtom",
-        defaultValue: new Map<string, string | number>([
-          ["string", "value"],
-          ["number", 42],
-        ]),
+        defaultValue: new Map<string, string | number>([]),
         effects: [localStorage({ parser: mapParser })],
       })
+      testAtom.set(
+        new Map<string, string | number>([
+          ["string", "value"],
+          ["number", 42],
+        ])
+      )
       expect(window.localStorage.getItem("mapAtom")).toBe(
         '[["string","value"],["number",42]]'
       )

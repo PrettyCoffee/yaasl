@@ -117,7 +117,7 @@ export interface MigrationOptions {
  *  @returns The effect to be used on atoms.
  **/
 export const migration = createEffect<MigrationOptions, unknown>({
-  didInit: ({ atom, options }) => {
+  didInit: ({ atom, options, set }) => {
     const steps = sortMigrations(options.steps)
     const currentVersion = getVersion(atom)
     const isLatestVersion = currentVersion === steps.at(-1)?.version
@@ -147,7 +147,7 @@ export const migration = createEffect<MigrationOptions, unknown>({
     if (version == null) return
 
     setVersion(atom, version)
-    atom.set(data)
+    set(data)
   },
 })
 

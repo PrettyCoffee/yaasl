@@ -19,21 +19,21 @@ export interface IndexedDbOptions {
  *
  * @returns The effect to be used on atoms.
  **/
-export const indexedDb = createEffect<IndexedDbOptions | undefined>(
+export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
   ({ atom, options }) => {
     const key = options?.key ?? atom.name
     return {
-      init: ({ atom }) => {
+      init: async ({ atom, set }) => {
         if (!atomDb) {
           atomDb = new Store(CONFIG.name ?? "yaasl")
         }
-        return atomDb.get(key).then(async value => {
-          if (value !== undefined) {
-            atom.set(value)
-          } else {
-            await atomDb?.set(key, atom.defaultValue)
-          }
-        })
+
+        const existing = await atomDb.get(key)
+        if (existing != null) {
+          set(existing)
+        } else {
+          await atomDb.set(key, atom.defaultValue)
+        }
       },
       set: ({ value }) => {
         void atomDb?.set(key, value)

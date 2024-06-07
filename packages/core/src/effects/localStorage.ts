@@ -31,28 +31,31 @@ export interface LocalStorageOptions {
  *
  * @returns The effect to be used on atoms.
  **/
-export const localStorage = createEffect<LocalStorageOptions | undefined>(
-  ({ atom, options = {} }) => {
-    const internalKey = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
-    const { key = internalKey, parser, noTabSync } = options
+export const localStorage = createEffect<
+  LocalStorageOptions | undefined,
+  unknown
+>(({ atom, options = {} }) => {
+  const internalKey = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
+  const { key = internalKey, parser, noTabSync } = options
 
-    const storage = new LocalStorage<unknown>(key, {
-      parser,
-      onTabSync: noTabSync ? undefined : value => atom.set(value),
-    })
+  const storage = new LocalStorage<unknown>(key, {
+    parser,
+    onTabSync: noTabSync ? undefined : value => atom.set(value),
+  })
 
-    return {
-      init: ({ atom }) => {
-        const existing = storage.get()
-        if (existing === null) {
-          storage.set(atom.defaultValue)
-        } else {
-          atom.set(existing)
-        }
-      },
-      set: ({ value }) => {
+  return {
+    init: ({ set }) => {
+      const existing = storage.get()
+      if (existing != null) {
+        set(existing)
+      }
+    },
+    set: ({ value, atom }) => {
+      if (value === atom.defaultValue) {
+        storage.remove()
+      } else {
         storage.set(value)
-      },
-    }
+      }
+    },
   }
-)
+})
