@@ -1,5 +1,5 @@
 export { createEffect } from "./createEffect"
-export type { Effect, EffectPayload, EffectAtomCallback } from "./createEffect"
+export type { Effect, EffectPayload } from "./createEffect"
 
 export { localStorage } from "./localStorage"
 export type { LocalStorageOptions, LocalStorageParser } from "./localStorage"
