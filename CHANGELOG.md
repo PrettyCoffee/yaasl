@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.1 (2024-06-15)
+
+### Bug Fixes
+
+- **preact:** Use correct initial value with useAtomValue
+
 ## 0.10.0 (2024-06-09)
 
 ### Breaking Changes
