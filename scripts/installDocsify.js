@@ -1,4 +1,4 @@
-const { cp, rmdir } = require("fs/promises")
+const { cp, rm } = require("fs/promises")
 const { basename, resolve } = require("path")
 
 const { replaceInFile } = require("./utils/replaceInFile")
@@ -39,7 +39,7 @@ const getName = path => {
 
 const indexHtml = resolve("../docs/index.html")
 
-const deleteLib = () => rmdir("../docs/_lib", { recursive: true })
+const deleteLib = () => rm("../docs/_lib", { recursive: true })
 
 const copyFiles = () =>
   Promise.all(
