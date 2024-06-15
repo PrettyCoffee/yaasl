@@ -1,20 +1,13 @@
 import { Stateful } from "@yaasl/core"
 import { Updater, consoleMessage } from "@yaasl/utils"
-import { useState, useEffect, useRef, useCallback } from "preact/hooks"
+import { useCallback } from "preact/hooks"
+import { useSyncExternalStore } from "preact/compat"
 
-export const useStatefulValue = <State>(atom: Stateful<State>) => {
-  const [state, setState] = useState(atom.get())
-  const unsubscribe = useRef<() => boolean>(() => true)
-
-  useEffect(() => {
-    unsubscribe.current()
-    unsubscribe.current = atom.subscribe(setState)
-
-    return () => unsubscribe.current()
-  }, [atom])
-
-  return state
-}
+export const useStatefulValue = <ValueType>(stateful: Stateful<ValueType>) =>
+  useSyncExternalStore(
+    set => stateful.subscribe(set),
+    () => stateful.get()
+  )
 
 export const useSetStateful = <State>(stateful: Stateful<State>) =>
   useCallback(
