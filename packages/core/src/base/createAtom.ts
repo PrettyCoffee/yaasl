@@ -70,7 +70,10 @@ export class Atom<Value = unknown> extends Stateful<Value> {
    * new value based off the previous value.
    */
   public set(next: Updater<Value>) {
-    const newState = updater(next, this.get())
+    const oldState = this.get()
+    const newState = updater(next, oldState)
+    if (oldState === newState) return
+
     void this.effects
       .dispatch("set", newState)
       .then(value => super.update(value))

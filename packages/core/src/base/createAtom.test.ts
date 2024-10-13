@@ -82,6 +82,25 @@ describe("Test atom", () => {
     expect(local.set).toHaveBeenCalledTimes(1)
   })
 
+  it("Only triggers effects and subscribers if value changes", () => {
+    const action = vi.fn()
+    const effect = { init: vi.fn(), set: vi.fn() }
+    const testAtom = createAtom({
+      defaultValue,
+      effects: [createEffect(effect)()],
+    })
+    testAtom.subscribe(action)
+
+    testAtom.set(defaultValue)
+
+    expect(effect.set).not.toHaveBeenCalled()
+    expect(action).not.toHaveBeenCalled()
+
+    testAtom.set(nextValue)
+    expect(effect.set).toHaveBeenCalled()
+    expect(action).toHaveBeenCalled()
+  })
+
   describe("synchronizes didInit status", () => {
     it("Sets true if no effect was passed", () => {
       const testAtom = createAtom({ defaultValue })

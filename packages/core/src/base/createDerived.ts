@@ -73,9 +73,12 @@ export class SettableDerive<Value = unknown> extends Derive<Value> {
    * new value based off the previous value.
    */
   public set(next: Updater<Value>) {
-    const value = updater(next, this.get())
+    const oldState = this.get()
+    const newState = updater(next, oldState)
+    if (oldState === newState) return
+
     this.setter({
-      value,
+      value: newState,
       set: (atom, next) => {
         const value = updater(next, atom.get())
         atom.set(value)
