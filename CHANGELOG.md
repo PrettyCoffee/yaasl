@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.2 (2024-10-13)
+
+### Bug Fixes
+
+- **createAtom:** Only call set if value changed
+- **createDerived:** Only call set if value changed
+
 ## 0.10.1 (2024-06-15)
 
 ### Bug Fixes
