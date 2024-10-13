@@ -17,5 +17,6 @@
 
 - Examples (WIP)
 
+  - [**Config setup**](/pages/examples/config-setup.md)
   - [**Theme mode**](/pages/examples/theme-mode.md)
   - [**Toaster**](/pages/examples/toaster.md)

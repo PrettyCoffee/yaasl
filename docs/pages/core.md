@@ -269,7 +269,8 @@ article.selectors.voteBalance.get() // -> 46 - 4 = 42
 
 Global configuration object to change internal behavior of yaasl.
 
-Values should be set once in your application entrypoint, before yaasl is being used.
+> Note: Values should be set once in your application entrypoint, before yaasl is being used.
+> Check out the [Config setup example](/pages/examples/config-setup) for more details on that!
 
 ### API
 
