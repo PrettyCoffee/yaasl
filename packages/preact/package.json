@@ -45,8 +45,8 @@
     "@yaasl/utils": "0.10.1"
   },
   "devDependencies": {
-    "@testing-library/preact": "^3.2.3",
-    "preact": "^10.21.0"
+    "@testing-library/preact": "^3.2.4",
+    "preact": "^10.24.2"
   },
   "eslintConfig": {
     "extends": [
