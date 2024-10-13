@@ -48,6 +48,20 @@ body, article.markdown-section {
       text-decoration: underline;
     }
   }
+
+  /* -- Quotes -- */
+
+  blockquote {
+    border-left: 2px solid var(--text-muted);
+    color: var(--text-gentle);
+    margin: 0;
+    padding: 0.5rem 1rem;
+    
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
   
   /* -- Headlines -- */
   

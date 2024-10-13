@@ -4,7 +4,7 @@ import {
   localStorage,
   createAtom,
   createActions,
-} from "../../../packages/react/src"
+} from "@yaasl/react"
 
 /// [systemMode]
 type ThemeMode = "dark" | "light"
