@@ -1,7 +1,7 @@
 import { Stateful } from "@yaasl/core"
 import { Updater, consoleMessage } from "@yaasl/utils"
-import { useCallback } from "preact/hooks"
 import { useSyncExternalStore } from "preact/compat"
+import { useCallback } from "preact/hooks"
 
 export const useStatefulValue = <ValueType>(stateful: Stateful<ValueType>) =>
   useSyncExternalStore(
