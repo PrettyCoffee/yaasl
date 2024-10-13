@@ -1,4 +1,4 @@
-import { createSlice, useAtomValue } from "../../../packages/react/src"
+import { createSlice, useAtomValue } from "@yaasl/react"
 
 /// [toastList]
 interface ToastProps {

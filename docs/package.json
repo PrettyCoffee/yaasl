@@ -9,6 +9,8 @@
     "postinstall": "node ../scripts/installDocsify.js"
   },
   "dependencies": {
+    "@yaasl/devtools": "../packages/devtools",
+    "@yaasl/react": "../packages/react",
     "docsify": "^4.13.1",
     "docsify-copy-code": "^3.0.0",
     "docsify-pagination": "^2.10.1",
