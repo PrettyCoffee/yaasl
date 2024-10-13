@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.10.2 (2024-10-13)
+
+### Bug Fixes
+
+- **createAtom:** Only call set if value changed
+- **createDerived:** Only call set if value changed
+
+## 0.10.1 (2024-06-15)
+
+### Bug Fixes
+
+- **preact:** Use correct initial value with useAtomValue
+
+## 0.10.0 (2024-06-09)
+
+### Breaking Changes
+
+- **createAtom:** Remove reducers property
+
+### Features
+
+- **CONFIG:** Add globalEffects for all atoms
+- **createSlice:** Allows creating atoms with actions and selectors
+- **devtools:** Add logger effect to monitor atom activities
+- **effects:** Rewrite effect dispatcher for more consistent data flow
+
+### Bug Fixes
+
+- **core:** Add missing exports
+
 ## 0.9.2 (2024-05-26)
 
 ### Misc
