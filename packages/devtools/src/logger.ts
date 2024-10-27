@@ -1,4 +1,5 @@
 import { createEffect, EffectPayload } from "@yaasl/core"
+import { consoleMessage } from "@yaasl/utils"
 
 export interface LoggerOptions {
   /** Disables the middleware. */
@@ -9,7 +10,7 @@ const createLogger =
   (text: string) =>
   ({ atom, value, options }: EffectPayload<LoggerOptions | undefined>) => {
     if (options?.disable) return
-    console.log(`[YAASL]["${atom.name}"]: ${text}`, value)
+    console.log(consoleMessage(text, { scope: atom.name }), value)
   }
 
 /** Effect to monitor atom activities and log them to the console.
