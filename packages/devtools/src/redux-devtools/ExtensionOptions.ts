@@ -1,4 +1,4 @@
-import { Action, ActionCreator } from "./Action"
+import type { Action, ActionCreator } from "./Action"
 
 export interface ExtensionOptions {
   /**

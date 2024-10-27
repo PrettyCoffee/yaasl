@@ -1,6 +1,6 @@
 import { useCallback, useSyncExternalStore, SetStateAction } from "react"
 
-import { Stateful } from "@yaasl/core"
+import type { Stateful } from "@yaasl/core"
 import { consoleMessage } from "@yaasl/utils"
 
 export const useStatefulValue = <ValueType>(stateful: Stateful<ValueType>) =>

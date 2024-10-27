@@ -1,11 +1,11 @@
 import { Updater, isPromiseLike, updater } from "@yaasl/utils"
 
-import {
+import type {
   ActionType,
   EffectAtomCallback,
   EffectActions as EffectActionsType,
 } from "./createEffect"
-import { Atom } from "../base/createAtom"
+import type { Atom } from "../base/createAtom"
 import { Queue } from "../utils/Queue"
 
 const isTruthy = <T>(value: T): value is NonNullable<T> => !!value

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import { Stateful } from "@yaasl/core"
+import type { Stateful } from "@yaasl/core"
 
 import { useSetStateful, useStatefulValue } from "./useStateful"
 

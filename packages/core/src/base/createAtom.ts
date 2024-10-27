@@ -2,7 +2,7 @@ import { Updater, updater, Thenable, toVoid } from "@yaasl/utils"
 
 import { CONFIG } from "./config"
 import { Stateful } from "./Stateful"
-import { EffectAtomCallback } from "../effects/createEffect"
+import type { EffectAtomCallback } from "../effects/createEffect"
 import { EffectDispatcher } from "../effects/EffectDispatcher"
 
 export interface AtomConfig<Value> {

@@ -1,6 +1,6 @@
-import { Action } from "./Action"
+import type { Action } from "./Action"
 import { getReduxExtension } from "./getReduxExtension"
-import { Message } from "./Message"
+import type { Message } from "./Message"
 
 export interface ConnectionResponse {
   /** Initiate the connection and add it to the extension connections.

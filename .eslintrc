@@ -3,6 +3,7 @@
     "@pretty-cozy/eslint-config/base-ts"
   ],
   "rules": {
+    "import/no-cycle": "error",
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-invalid-void-type": "off",

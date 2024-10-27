@@ -1,6 +1,6 @@
-import { Updater, Dispatch } from "@yaasl/utils"
+import type { Updater, Dispatch } from "@yaasl/utils"
 
-import { Atom } from "../base"
+import type { Atom } from "../base"
 
 export type ActionType = "init" | "didInit" | "set"
 

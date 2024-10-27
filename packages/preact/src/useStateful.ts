@@ -1,4 +1,4 @@
-import { Stateful } from "@yaasl/core"
+import type { Stateful } from "@yaasl/core"
 import { Updater, consoleMessage } from "@yaasl/utils"
 import { useSyncExternalStore } from "preact/compat"
 import { useCallback } from "preact/hooks"

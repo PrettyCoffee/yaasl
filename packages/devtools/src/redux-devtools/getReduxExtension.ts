@@ -1,7 +1,7 @@
 import { log } from "@yaasl/utils"
 
-import { ExtensionOptions } from "./ExtensionOptions"
-import { ConnectionResponse } from "./getReduxConnection"
+import type { ExtensionOptions } from "./ExtensionOptions"
+import type { ConnectionResponse } from "./getReduxConnection"
 
 interface Config extends ExtensionOptions {
   type?: string

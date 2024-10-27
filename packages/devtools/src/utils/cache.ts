@@ -1,4 +1,4 @@
-import { Atom } from "@yaasl/core"
+import type { Atom } from "@yaasl/core"
 
 let storeCache: Record<string, unknown | undefined> = {}
 
