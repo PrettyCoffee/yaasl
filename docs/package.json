@@ -6,6 +6,7 @@
     "start": "docsify serve ./",
     "publish": "rimraf ./node_modules/.cache && gh-pages --dist ./ --dotfiles --message \"chore: Publish docs\"",
     "build": "echo \"no build step\"",
+    "validate": "echo \"no validate step\"",
     "postinstall": "node ../scripts/installDocsify.js"
   },
   "dependencies": {
