@@ -68,6 +68,30 @@ describe("Test createSelector", () => {
       expect(onChange).not.toHaveBeenCalled()
     })
 
+    it("Can be destroyed", () => {
+      const action = vi.fn()
+      const testAtom = createAtom({ defaultValue })
+      const selected = createSelector(testAtom, "value")
+
+      selected.destroy()
+
+      expect(selected.isDestroyed).toBeTruthy()
+      expect(() => selected.get()).toThrow()
+      expect(() => selected.subscribe(action)).toThrow()
+    })
+
+    it("Will be destroyed if parent is destroyed", () => {
+      const action = vi.fn()
+      const testAtom = createAtom({ defaultValue })
+      const selected = createSelector(testAtom, "value")
+
+      testAtom.destroy()
+
+      expect(selected.isDestroyed).toBeTruthy()
+      expect(() => selected.get()).toThrow()
+      expect(() => selected.subscribe(action)).toThrow()
+    })
+
     describe("synchronizes didInit status", () => {
       it("Sets true if no effects were passed", () => {
         const testAtom = createAtom({ defaultValue })

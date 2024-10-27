@@ -1,12 +1,16 @@
-type Callback<Value> = (value: Value, previous: Value) => void
+import { Destroyable } from "./Destroyable"
 
-export class Stateful<Value = unknown> {
+export type Callback<Value> = (value: Value, previous: Value) => void
+
+export class Stateful<Value = unknown> extends Destroyable {
   /** Promise that resolves when the states initialization was finished. */
   public didInit: PromiseLike<void> | boolean = false
 
   private listeners = new Set<Callback<Value>>()
 
-  constructor(protected value: Value) {}
+  constructor(protected value: Value) {
+    super()
+  }
 
   /** Read the value of state.
    *
@@ -25,6 +29,14 @@ export class Stateful<Value = unknown> {
   public subscribe(callback: Callback<Value>) {
     this.listeners.add(callback)
     return () => this.listeners.delete(callback)
+  }
+
+  /** Make this atom unusable and remove all references
+   **/
+  public destroy() {
+    super.destroy()
+    this.value = null as Value
+    this.listeners = new Set()
   }
 
   private emit(value: Value, previous: Value) {

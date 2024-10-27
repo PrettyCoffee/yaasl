@@ -35,7 +35,7 @@ export class PathSelector<
 > extends Stateful<ObjPathValue<ParentValue, Path>> {
   constructor(atom: Stateful<ParentValue>, path: Path) {
     super(selectPath(atom.get(), path))
-    atom.subscribe(state => this.update(selectPath(state, path)))
+    this.subscribeTo(atom, state => this.update(selectPath(state, path)))
     this.setDidInit(atom.didInit)
   }
 }
@@ -72,7 +72,9 @@ export class CombinerSelector<
     }
 
     super(selectState())
-    atoms.forEach(atom => atom.subscribe(() => this.update(selectState())))
+    atoms.forEach(atom =>
+      this.subscribeTo(atom, () => this.update(selectState()))
+    )
     this.setDidInit(allDidInit(atoms))
   }
 }

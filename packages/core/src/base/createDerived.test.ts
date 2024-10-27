@@ -70,6 +70,40 @@ describe("Test derive", () => {
     expect(change).toHaveBeenCalledWith(next, a)
   })
 
+  it("Can be destroyed", () => {
+    const action = vi.fn()
+    const atom = createAtom({
+      defaultValue: 2,
+    })
+    const derived = createDerived(
+      ({ get }) => get(atom) * 2,
+      ({ set }) => set(atom, value => value / 2)
+    )
+
+    derived.destroy()
+    expect(derived.isDestroyed).toBeTruthy()
+
+    expect(() => derived.get()).toThrow()
+    expect(() => derived.set(2)).toThrow()
+    expect(() => derived.subscribe(action)).toThrow()
+  })
+
+  it("Will be destroyed if parent is destroyed", () => {
+    const action = vi.fn()
+    const atom = createAtom({
+      defaultValue: 2,
+    })
+    const derived = createDerived(({ get }) => get(atom) * 2)
+    const derived2 = createDerived(({ get }) => get(derived) * 2)
+
+    atom.destroy()
+
+    expect(derived.isDestroyed).toBeTruthy()
+    expect(derived2.isDestroyed).toBeTruthy()
+    expect(() => derived2.get()).toThrow()
+    expect(() => derived2.subscribe(action)).toThrow()
+  })
+
   describe("SettableDerive", () => {
     it("Elevates a new value", () => {
       const defaultValue = 1

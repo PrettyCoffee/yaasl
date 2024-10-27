@@ -31,7 +31,7 @@ export class Derive<Value> extends Stateful<Value> {
 
   private addGetDependency<V>(dependency: Stateful<V>) {
     if (!this.getterDependencies.has(dependency)) {
-      dependency.subscribe(() => this.deriveUpdate())
+      this.subscribeTo(dependency, () => this.deriveUpdate())
       this.getterDependencies.add(dependency)
     }
 
