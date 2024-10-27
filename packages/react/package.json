@@ -1,6 +1,6 @@
 {
   "name": "@yaasl/react",
-  "version": "0.10.2",
+  "version": "0.11.0-alpha.0",
   "description": "yet another atomic store library (react)",
   "author": "PrettyCoffee",
   "license": "MIT",
@@ -41,8 +41,8 @@
     "react": ">=17"
   },
   "dependencies": {
-    "@yaasl/core": "0.10.2",
-    "@yaasl/utils": "0.10.2"
+    "@yaasl/core": "0.11.0-alpha.0",
+    "@yaasl/utils": "0.11.0-alpha.0"
   },
   "devDependencies": {
     "@testing-library/react": "^14.3.1",
