@@ -27,5 +27,6 @@ node_modules/
 .env.production.local
 .env.local
 
-# Stores VSCode versions used for testing VSCode extensions
+# IDE files
 .vscode-test
+.idea
