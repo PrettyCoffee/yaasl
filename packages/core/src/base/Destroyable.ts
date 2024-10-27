@@ -7,6 +7,8 @@ export class Destroyable {
   private dependents = new Set<Destroyable>()
   private unsubscribers = new Set<() => void>()
 
+  /** Make this atom unusable and remove all references.
+   **/
   public destroy() {
     this.dependents.forEach(dependent => dependent.destroy())
     this.unsubscribers.forEach(unsubscribe => unsubscribe())

@@ -31,7 +31,7 @@ export class Stateful<Value = unknown> extends Destroyable {
     return () => this.listeners.delete(callback)
   }
 
-  /** Make this atom unusable and remove all references
+  /** Make this atom unusable and remove all references.
    **/
   public destroy() {
     super.destroy()
