@@ -17,11 +17,12 @@
   },
   "sideEffects": false,
   "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
   "types": "./dist/@types/index.d.ts",
   "exports": {
     "types": "./dist/@types/index.d.ts",
-    "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js"
+    "require": "./dist/cjs/index.js",
+    "default": "./dist/esm/index.js"
   },
   "scripts": {
     "build": "run-s clean compile",
