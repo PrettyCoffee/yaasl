@@ -23,6 +23,7 @@ export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
   ({ atom, options }) => {
     const key = options?.key ?? atom.name
     return {
+      sort: "pre",
       init: async ({ atom, set }) => {
         if (!atomDb) {
           atomDb = new Store(CONFIG.name ?? "yaasl")
