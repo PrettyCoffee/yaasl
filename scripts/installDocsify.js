@@ -1,4 +1,4 @@
-const { cp, rm } = require("fs/promises")
+const { cp, rm, access } = require("fs/promises")
 const { basename, resolve } = require("path")
 
 const { replaceInFile } = require("./utils/replaceInFile")
@@ -39,7 +39,13 @@ const getName = path => {
 
 const indexHtml = resolve("../docs/index.html")
 
-const deleteLib = () => rm("../docs/_lib", { recursive: true })
+const deleteLib = async () => {
+  const path = "../docs/_lib"
+  const exists = await access(path)
+    .then(() => true)
+    .catch(() => false)
+  return exists ? rm("../docs/_lib", { recursive: true }) : Promise.resolve()
+}
 
 const copyFiles = () =>
   Promise.all(
