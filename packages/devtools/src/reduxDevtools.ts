@@ -45,6 +45,14 @@ export const reduxDevtools = createEffect<ReduxDevtoolsOptions | undefined>(
 
     return {
       sort: "post",
+      init: ({ value }) => {
+        cache.setAtomValue(atom, value)
+        connection.send({ type: `INIT/${atom.name}` }, cache.getStore())
+      },
+      didInit: ({ value }) => {
+        cache.setAtomValue(atom, value)
+        connection.send({ type: `DID_INIT/${atom.name}` }, cache.getStore())
+      },
       set: ({ atom, value }) => {
         isInitPhase = false
         if (updates.isPaused()) return
