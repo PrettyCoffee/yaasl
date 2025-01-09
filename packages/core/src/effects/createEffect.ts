@@ -65,6 +65,8 @@ export interface Effect<Options = unknown, AtomValue = unknown> {
  *
  * @param setup Effect actions or function to create effect actions.
  *   Effect actions are fired in the atom lifecycle, alongside to the subscriptions.
+ *   Additionally, you can pass a `sort` option, which will enforce a position of the
+ *   effect in the execution order.
  *
  * @returns The effect to be used on atoms.
  **/

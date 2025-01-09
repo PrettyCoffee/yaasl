@@ -16,7 +16,10 @@ Effects can be used to interact with an atom by using the following lifecycle ac
 
 Parameters:
 
-- `setup`: Effect actions or function to create effect actions. Effect actions are fired in the atom lifecycle, alongside to the subscriptions.
+- `setup`: Effect actions or function to create effect actions.
+  Effect actions are fired in the atom lifecycle, alongside to the subscriptions.\
+  Additionally, you can pass a `sort` option, which will enforce a position of the
+  effect in the execution order.
 
 Returns: An effect function to be used in atoms.
 
