@@ -32,17 +32,23 @@ interface EffectSetupProps<Options, AtomValue> {
   options: Options
 }
 
+export interface EffectMeta {
+  /** Enforce a position of the effect in the execution order */
+  sort?: "pre" | "post"
+}
+
 export type EffectAtomCallback<Options = unknown, AtomValue = unknown> = (
   atom: Atom<AtomValue>
 ) => Effect<Options, AtomValue>
 
 type EffectSetup<Options, AtomValue> =
-  | EffectActions<Options, AtomValue>
+  | (EffectMeta & EffectActions<Options, AtomValue>)
   | ((
       props: EffectSetupProps<Options, AtomValue>
-    ) => EffectActions<Options, AtomValue>)
+    ) => EffectMeta & EffectActions<Options, AtomValue>)
 
 export interface Effect<Options = unknown, AtomValue = unknown> {
+  meta: EffectMeta
   options: Options
   actions: EffectActions<Options, AtomValue>
 }
@@ -71,9 +77,12 @@ export const createEffect =
   ): EffectAtomCallback<Options, AtomValue> =>
   (atom: Atom<AtomValue>): Effect<Options, AtomValue> => {
     const options = optionsArg as Options
-    const actions = setup instanceof Function ? setup({ options, atom }) : setup
+    const { sort, ...actions } =
+      setup instanceof Function ? setup({ options, atom }) : setup
+    const meta = { sort }
 
     return {
+      meta,
       options,
       actions,
     }

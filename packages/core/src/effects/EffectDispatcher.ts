@@ -4,6 +4,7 @@ import type {
   ActionType,
   EffectAtomCallback,
   EffectActions as EffectActionsType,
+  EffectMeta,
 } from "./createEffect"
 import type { Atom } from "../base/createAtom"
 import { Queue } from "../utils/Queue"
@@ -11,14 +12,17 @@ import { Queue } from "../utils/Queue"
 const isTruthy = <T>(value: T): value is NonNullable<T> => !!value
 
 export class EffectActions<Value> {
-  private options: unknown
-  private actions: EffectActionsType<unknown, Value>
+  public readonly meta?: EffectMeta
+
+  private readonly options: unknown
+  private readonly actions: EffectActionsType<unknown, Value>
 
   constructor(
     private readonly atom: Atom<Value>,
     effectCreator: EffectAtomCallback<unknown, Value>
   ) {
-    const { actions, options } = effectCreator(atom)
+    const { meta, actions, options } = effectCreator(atom)
+    this.meta = meta
     this.options = options
     this.actions = actions
   }
@@ -54,7 +58,15 @@ export class EffectDispatcher<Value> {
     atom: Atom<Value>,
     effects: EffectAtomCallback<unknown, Value>[]
   ) {
-    this.effects = effects.map(create => new EffectActions(atom, create))
+    this.effects = effects
+      .map(create => new EffectActions(atom, create))
+      .sort((a, b) =>
+        a.meta?.sort === "pre" || b.meta?.sort === "post"
+          ? -1
+          : a.meta?.sort === "post" || b.meta?.sort === "pre"
+          ? 1
+          : 0
+      )
   }
 
   public dispatch(action: ActionType, startValue: Value) {

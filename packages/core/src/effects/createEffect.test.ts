@@ -3,6 +3,29 @@ import { sleep } from "@yaasl/utils"
 import { createEffect } from "./createEffect"
 import { createAtom } from "../base"
 
+const callHistory = createEffect<{
+  sort?: "pre" | "post"
+  call: (item: string) => void
+  asyncInit?: boolean
+  asyncDidInit?: boolean
+}>(({ options }) => {
+  const { sort, call, asyncInit, asyncDidInit } = options
+  const addItem = (item: string) => {
+    call(item)
+  }
+
+  return {
+    sort,
+    init: () =>
+      !asyncInit ? addItem("init") : sleep(10).then(() => addItem("init")),
+    didInit: () =>
+      !asyncDidInit
+        ? addItem("didInit")
+        : sleep(10).then(() => addItem("didInit")),
+    set: () => addItem("set"),
+  }
+})
+
 const didInit = vi.fn()
 const init = vi.fn()
 const set = vi.fn()
@@ -96,32 +119,59 @@ describe("Test createEffect", () => {
 
   it("Calls the actions in the correct order", () => {
     const actionOrder: string[] = []
+    const order = callHistory({ call: item => actionOrder.push(item) })
+    const testAtom = createAtom({
+      defaultValue,
+      effects: [order],
+    })
 
-    const order = createEffect(() => {
-      actionOrder.push("setup")
-      return {
-        init: () => {
-          actionOrder.push("init")
-        },
-        didInit: ({ set }) => {
-          actionOrder.push("didInit")
-          set(nextValue)
-        },
-        set: () => {
-          actionOrder.push("set")
-        },
-      }
+    expect(actionOrder).toEqual(["init", "didInit"])
+    testAtom.set(nextValue)
+    expect(actionOrder).toEqual(["init", "didInit", "set"])
+  })
+
+  it("Applies effect pre sort", () => {
+    const actionOrder: string[] = []
+
+    const pre = callHistory({
+      sort: "pre",
+      call: item => actionOrder.push("pre-" + item),
+    })
+    const base = callHistory({
+      call: item => actionOrder.push("base-" + item),
     })
 
     const testAtom = createAtom({
       defaultValue,
-      effects: [order()],
+      effects: [base, pre],
     })
 
-    expect(actionOrder).toEqual(["setup", "init", "didInit"])
-    expect(testAtom.get()).toBe(nextValue)
-    testAtom.set("next2")
-    expect(actionOrder).toEqual(["setup", "init", "didInit", "set"])
+    const init = ["pre-init", "base-init", "pre-didInit", "base-didInit"]
+    expect(actionOrder).toStrictEqual(init)
+    testAtom.set(nextValue)
+    expect(actionOrder).toStrictEqual([...init, "pre-set", "base-set"])
+  })
+
+  it("Applies effect post sort", () => {
+    const actionOrder: string[] = []
+
+    const post = callHistory({
+      sort: "post",
+      call: item => actionOrder.push("post-" + item),
+    })
+    const base = callHistory({
+      call: item => actionOrder.push("base-" + item),
+    })
+
+    const testAtom = createAtom({
+      defaultValue,
+      effects: [post, base],
+    })
+
+    const init = ["base-init", "post-init", "base-didInit", "post-didInit"]
+    expect(actionOrder).toStrictEqual(init)
+    testAtom.set(nextValue)
+    expect(actionOrder).toStrictEqual([...init, "base-set", "post-set"])
   })
 
   it("Sets didInit to true when no effect was asynchronous", () => {
@@ -181,19 +231,14 @@ describe("Test createEffect", () => {
     it("allows async init", async () => {
       const actionOrder: string[] = []
 
-      const order = createEffect({
-        init: () =>
-          sleep(10).then(() => {
-            actionOrder.push("init")
-          }),
-        didInit: () => {
-          actionOrder.push("didInit")
-        },
+      const order = callHistory({
+        call: item => actionOrder.push(item),
+        asyncInit: true,
       })
 
       const testAtom = createAtom({
         defaultValue,
-        effects: [order()],
+        effects: [order],
       })
 
       expect(actionOrder).toEqual([])
@@ -205,19 +250,14 @@ describe("Test createEffect", () => {
     it("allows async didInit", async () => {
       const actionOrder: string[] = []
 
-      const order = createEffect({
-        init: () => {
-          actionOrder.push("init")
-        },
-        didInit: () =>
-          sleep(10).then(() => {
-            actionOrder.push("didInit")
-          }),
+      const order = callHistory({
+        call: item => actionOrder.push(item),
+        asyncDidInit: true,
       })
 
       const testAtom = createAtom({
         defaultValue,
-        effects: [order()],
+        effects: [order],
       })
 
       expect(actionOrder).toEqual(["init"])
@@ -229,28 +269,20 @@ describe("Test createEffect", () => {
     it("allows init and didInit to be async", async () => {
       const actionOrder: string[] = []
 
-      const order = createEffect(() => {
-        actionOrder.push("setup")
-        return {
-          init: () =>
-            sleep(10).then(() => {
-              actionOrder.push("init")
-            }),
-          didInit: () =>
-            sleep(5).then(() => {
-              actionOrder.push("didInit")
-            }),
-        }
+      const order = callHistory({
+        call: item => actionOrder.push(item),
+        asyncInit: true,
+        asyncDidInit: true,
       })
 
       const testAtom = createAtom({
         defaultValue,
-        effects: [order()],
+        effects: [order],
       })
 
-      expect(actionOrder).toEqual(["setup"])
+      expect(actionOrder).toEqual([])
       await testAtom.didInit
-      expect(actionOrder).toEqual(["setup", "init", "didInit"])
+      expect(actionOrder).toEqual(["init", "didInit"])
       expect(testAtom.didInit).toBe(true)
     })
 
