@@ -44,6 +44,7 @@ export const localStorage = createEffect<
   })
 
   return {
+    sort: "pre",
     init: ({ set }) => {
       const existing = storage.get()
       if (existing != null) {
