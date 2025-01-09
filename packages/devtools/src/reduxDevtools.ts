@@ -44,6 +44,7 @@ export const reduxDevtools = createEffect<ReduxDevtoolsOptions | undefined>(
     connectAtom(connection, atom)
 
     return {
+      sort: "post",
       set: ({ atom, value }) => {
         isInitPhase = false
         if (updates.isPaused()) return

@@ -20,6 +20,7 @@ const createLogger =
  *  @returns The effect to be used on atoms.
  **/
 export const logger = createEffect<LoggerOptions | undefined>({
+  sort: "post",
   init: createLogger("Initialize"),
   didInit: createLogger("Finished initialization"),
   set: createLogger("Set value"),
