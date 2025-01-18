@@ -1,3 +1,5 @@
+import { vi, it, describe, expect, beforeAll, afterAll } from "vitest"
+
 import { Expiration } from "./Expiration"
 
 const key = "test-key"

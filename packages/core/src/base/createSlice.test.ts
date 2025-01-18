@@ -1,3 +1,5 @@
+import { it, describe, expect } from "vitest"
+
 import { Atom } from "./createAtom"
 import { createSlice } from "./createSlice"
 import { Stateful } from "./Stateful"

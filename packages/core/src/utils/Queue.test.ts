@@ -1,4 +1,5 @@
 import { Thenable, isPromiseLike, sleep } from "@yaasl/utils"
+import { vi, it, describe, expect, afterEach } from "vitest"
 
 import { Queue } from "./Queue"
 

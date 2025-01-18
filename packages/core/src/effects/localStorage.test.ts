@@ -1,3 +1,5 @@
+import { it, describe, expect, afterEach } from "vitest"
+
 import {
   LocalStorageOptions,
   LocalStorageParser,

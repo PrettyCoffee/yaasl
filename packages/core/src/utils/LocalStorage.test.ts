@@ -1,3 +1,5 @@
+import { vi, it, describe, expect, beforeEach } from "vitest"
+
 import { LocalStorage } from "./LocalStorage"
 
 const key = "test-key"

@@ -1,5 +1,6 @@
 import { act, renderHook } from "@testing-library/react"
 import { createAtom, createDerived } from "@yaasl/core"
+import { it, describe, expect } from "vitest"
 
 import { useAtomValue, useSetAtom, useAtom } from "./useAtom"
 

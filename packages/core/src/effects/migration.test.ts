@@ -1,4 +1,5 @@
 import { mockConsole } from "@yaasl/utils"
+import { vi, it, describe, expect, beforeEach } from "vitest"
 
 import { localStorage } from "./localStorage"
 import { createMigrationStep, migration } from "./migration"

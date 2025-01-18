@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return -- doesn't matter for testing */
+import { vi, it, describe, expect } from "vitest"
+
 import { sleep } from "./sleep"
 import { Thenable } from "./Thenable"
 

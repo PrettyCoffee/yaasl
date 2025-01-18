@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return -- doesn't matter for tests */
 import { createAtom, Atom } from "@yaasl/core"
+import { vi, it, describe, expect, beforeEach } from "vitest"
 
 import { cache } from "./cache"
 import {
