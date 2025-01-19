@@ -1,6 +1,7 @@
+import { useEffect, useState } from "preact/hooks"
+
 import type { Stateful } from "@yaasl/core"
 import type { Updater } from "@yaasl/utils"
-import { useEffect, useState } from "preact/hooks"
 
 import { useStatefulValue, useSetStateful } from "./useStateful"
 

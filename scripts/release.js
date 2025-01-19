@@ -9,11 +9,11 @@ const {
 } = require("@pretty-cozy/release-tools")
 const { prompt } = require("enquirer")
 
+const { version: currentVersion } = require("../package.json")
 const { createChangelog } = require("./utils/createChangelog")
 const { log } = require("./utils/log")
 const { publishAll } = require("./utils/publishAll")
 const { setVersion } = require("./utils/setVersion")
-const { version: currentVersion } = require("../package.json")
 
 const args = process.argv.slice(2)
 

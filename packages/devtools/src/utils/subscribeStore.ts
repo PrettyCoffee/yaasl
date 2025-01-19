@@ -36,10 +36,10 @@ export const subscribeStore = (atom: Atom, connection: ConnectionResponse) => {
   didInit = true
 
   connection.subscribe(action => {
-    const { payload } = action
-    const nextState = !action.state
+    const { payload, state } = action
+    const nextState = !state
       ? null
-      : (JSON.parse(action.state) as Record<string, unknown>)
+      : (JSON.parse(state) as Record<string, unknown>)
 
     switch (payload?.type) {
       case "COMMIT":

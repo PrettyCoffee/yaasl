@@ -7,7 +7,7 @@ export interface MigrationStep<
   Version extends string = string,
   PreviousVersion extends string | null = string | null,
   OldData = any,
-  NewData = any
+  NewData = any,
 > {
   /** Previous version of the data, before performing the migration */
   previous: PreviousVersion
@@ -121,7 +121,7 @@ export const migration = createEffect<MigrationOptions, unknown>({
     const steps = sortMigrations(options.steps)
     const currentVersion = getVersion(atom)
     const isLatestVersion = currentVersion === steps.at(-1)?.version
-    if (steps.length < 1 || isLatestVersion) {
+    if (steps.length === 0 || isLatestVersion) {
       return
     }
 
@@ -161,7 +161,7 @@ export const createMigrationStep = <
   Version extends string,
   PreviousVersion extends string | null,
   OldData,
-  NewData
+  NewData,
 >(
   migration: MigrationStep<Version, PreviousVersion, OldData, NewData>
 ) => migration

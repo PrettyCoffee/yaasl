@@ -20,7 +20,6 @@ type SetterFn<Value> = (context: {
 }) => void
 
 export class Derive<Value> extends Stateful<Value> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected readonly getterDependencies = new Set<Stateful<any>>()
 
   constructor(private readonly getter: GetterFn<Value>) {
@@ -44,7 +43,6 @@ export class Derive<Value> extends Stateful<Value> {
 }
 
 export class SettableDerive<Value = unknown> extends Derive<Value> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected readonly setterDependencies = new Set<
     Atom<any> | SettableDerive<any>
   >()

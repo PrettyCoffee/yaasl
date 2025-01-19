@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-parameters */
+
 import type { Action, ActionCreator } from "./Action"
 
 export interface ExtensionOptions {

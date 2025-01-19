@@ -15,7 +15,7 @@ interface ImportedAction extends Action<"PERFORM_ACTION"> {
 type GenericMessage<
   Type extends string,
   State extends string | undefined,
-  Payload extends { type?: string } | undefined
+  Payload extends { type?: string } | undefined,
 > = Action<Type> & {
   state: State
   payload?: Payload

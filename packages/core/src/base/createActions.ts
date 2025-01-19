@@ -4,12 +4,8 @@ import type { SettableDerive } from "./createDerived"
 type Reducer<State> = (state: State, ...payloadArgs: any[]) => State
 export type Reducers<State> = Record<string, Reducer<State>>
 
-type Payload<R extends Reducer<any>> = Parameters<R> extends [
-  any,
-  ...infer PayloadArgs
-]
-  ? PayloadArgs
-  : []
+type Payload<R extends Reducer<any>> =
+  Parameters<R> extends [any, ...infer PayloadArgs] ? PayloadArgs : []
 
 export type Actions<State, R extends Reducers<State>> = {
   [K in keyof R]: (...payloadArgs: Payload<R[K]>) => void

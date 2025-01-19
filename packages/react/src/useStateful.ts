@@ -15,6 +15,7 @@ export const useSetStateful = <ValueType>(stateful: Stateful<ValueType>) =>
       if (!("set" in stateful) || !(stateful.set instanceof Function)) {
         throw new Error(consoleMessage("Atom does not have a set method"))
       }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       stateful.set(next)
     },
     [stateful]

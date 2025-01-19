@@ -42,11 +42,6 @@
   "dependencies": {
     "@yaasl/utils": "0.11.0-alpha.2"
   },
-  "eslintConfig": {
-    "extends": [
-      "../../.eslintrc"
-    ]
-  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "npm run lint:fix"

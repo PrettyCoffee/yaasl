@@ -1,4 +1,3 @@
-/* eslint-disable import/no-deprecated */
 import { render } from "preact"
 
 import { App } from "./App.tsx"

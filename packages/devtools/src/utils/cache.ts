@@ -1,6 +1,6 @@
 import type { Atom } from "@yaasl/core"
 
-let storeCache: Record<string, unknown | undefined> = {}
+let storeCache: Record<string, unknown> = {}
 
 const setAtomValue = (atom: Atom, value: unknown) =>
   (storeCache[atom.name] = value)

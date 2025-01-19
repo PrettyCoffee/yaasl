@@ -64,8 +64,8 @@ export class EffectDispatcher<Value> {
         a.meta?.sort === "pre" || b.meta?.sort === "post"
           ? -1
           : a.meta?.sort === "post" || b.meta?.sort === "pre"
-          ? 1
-          : 0
+            ? 1
+            : 0
       )
   }
 

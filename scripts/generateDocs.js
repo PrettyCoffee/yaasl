@@ -22,7 +22,7 @@ const getHeadlines = text =>
 
 const getHeadlineLink = (text, link) =>
   `[${text}](#${link
-    .replace(/[()]+/gi, "")
+    .replaceAll(/[()]+/gi, "")
     .replaceAll(" ", "-")
     .toLowerCase()})`
 

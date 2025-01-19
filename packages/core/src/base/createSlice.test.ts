@@ -20,19 +20,16 @@ describe("Test createSlice", () => {
     ${"a selector"}      | ${undefined}     | ${{ double }}
     ${"both props"}      | ${{ increment }} | ${{ double }}
   `("Has correct attributes with > $case", ({ reducers, selectors }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const slice = createSlice({ defaultValue: 0, reducers, selectors })
 
     expect(slice).toHaveProperty("defaultValue", 0)
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     if (isNotEmpty(reducers)) {
       expect(slice).toHaveProperty("actions")
     } else {
       expect(slice).not.toHaveProperty("actions")
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     if (isNotEmpty(selectors)) {
       expect(slice).toHaveProperty("selectors")
     } else {

@@ -7,7 +7,7 @@ import {
   createSelector,
 } from "./createSelector"
 
-const isEmpty = <T>(obj?: T | undefined): obj is undefined =>
+const isEmpty = (obj?: unknown): obj is undefined =>
   !obj || Object.keys(obj).length === 0
 
 interface ReducersProp<State, R extends Reducers<State> | undefined> {
@@ -20,36 +20,34 @@ type Selectors<State> = Record<string, ObjPath<State> | ((state: State) => any)>
 type ConditionalActions<State, R> = keyof R extends never
   ? {}
   : R extends Reducers<State>
-  ? {
-      /** Actions that can be used to set the atom's value. */
-      actions: Actions<State, R>
-    }
-  : {}
+    ? {
+        /** Actions that can be used to set the atom's value. */
+        actions: Actions<State, R>
+      }
+    : {}
 
 interface SelectorsProp<State, S extends Selectors<State> | undefined> {
   /** Selectors to create values from the atom. */
   selectors?: S
 }
 
-type GetSelector<
-  State,
-  S extends ObjPath<State> | ((state: State) => any)
-> = S extends ObjPath<State>
-  ? PathSelector<State, S>
-  : S extends (state: State) => any
-  ? CombinerSelector<[Atom<State>], ReturnType<S>>
-  : never
+type GetSelector<State, S extends ObjPath<State> | ((state: State) => any)> =
+  S extends ObjPath<State>
+    ? PathSelector<State, S>
+    : S extends (state: State) => any
+      ? CombinerSelector<[Atom<State>], ReturnType<S>>
+      : never
 
 type ConditionalSelectors<State, S> = keyof S extends never
   ? {}
   : S extends Selectors<State>
-  ? {
-      /** Selectors to create new values based on the atom's value. */
-      selectors: {
-        [K in keyof S]: GetSelector<State, S[K]>
+    ? {
+        /** Selectors to create new values based on the atom's value. */
+        selectors: {
+          [K in keyof S]: GetSelector<State, S[K]>
+        }
       }
-    }
-  : {}
+    : {}
 
 const createSelectors = <State, S extends Selectors<State>>(
   atom: Atom<State>,
@@ -77,7 +75,7 @@ const createSelectors = <State, S extends Selectors<State>>(
 export const createSlice = <
   State,
   R extends Reducers<State> | undefined,
-  S extends Selectors<State> | undefined
+  S extends Selectors<State> | undefined,
 >(
   config: AtomConfig<State> & ReducersProp<State, R> & SelectorsProp<State, S>
 ) => {

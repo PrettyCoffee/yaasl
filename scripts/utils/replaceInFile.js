@@ -13,8 +13,8 @@ const replaceSection = (file, section, newContent) => {
   const sectionEnd = `<!-- << ${section} << -->`
 
   const indentation = getIndentation(file, sectionStart)
-  const content = `${sectionStart}\n${newContent}\n${sectionEnd}`.replace(
-    /\n/g,
+  const content = `${sectionStart}\n${newContent}\n${sectionEnd}`.replaceAll(
+    "\n",
     `\n${indentation}`
   )
 

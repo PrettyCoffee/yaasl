@@ -6,11 +6,12 @@ import { Stateful } from "./Stateful"
 
 type PathableValue = Record<string | number, unknown>
 
-export type ObjPath<Obj> = Prettify<Obj> extends PathableValue
-  ? {
-      [K in keyof Obj]: `${Exclude<K, symbol>}${"" | `.${ObjPath<Obj[K]>}`}`
-    }[keyof Obj]
-  : never
+export type ObjPath<Obj> =
+  Prettify<Obj> extends PathableValue
+    ? {
+        [K in keyof Obj]: `${Exclude<K, symbol>}${"" | `.${ObjPath<Obj[K]>}`}`
+      }[keyof Obj]
+    : never
 
 type ObjPathValue<State, Path> = State extends PathableValue
   ? Path extends `${infer Current}.${infer Next}`
@@ -31,7 +32,7 @@ const selectPath = <ParentValue, Path extends ObjPath<ParentValue>>(
 
 export class PathSelector<
   ParentValue,
-  Path extends ObjPath<ParentValue>
+  Path extends ObjPath<ParentValue>,
 > extends Stateful<ObjPathValue<ParentValue, Path>> {
   constructor(atom: Stateful<ParentValue>, path: Path) {
     super(selectPath(atom.get(), path))
@@ -53,14 +54,14 @@ const allDidInit = (atoms: Stateful[]) => {
 
 type InferValuesFromAtoms<
   ParentAtoms extends readonly unknown[],
-  ParentValues extends unknown[] = []
+  ParentValues extends unknown[] = [],
 > = ParentAtoms extends [Stateful<infer Value>, ...infer Rest]
   ? InferValuesFromAtoms<Rest, [...ParentValues, Value]>
   : ParentValues
 
 export class CombinerSelector<
   ParentAtoms extends [Stateful<any>, ...Stateful<any>[]],
-  CombinedValue
+  CombinedValue,
 > extends Stateful<CombinedValue> {
   constructor(
     atoms: ParentAtoms,

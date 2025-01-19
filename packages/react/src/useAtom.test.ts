@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { act, renderHook } from "@testing-library/react"
 import { createAtom, createDerived } from "@yaasl/core"
 import { it, describe, expect } from "vitest"

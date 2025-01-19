@@ -50,12 +50,6 @@
     "@testing-library/preact": "^3.2.4",
     "preact": "^10.25.4"
   },
-  "eslintConfig": {
-    "extends": [
-      "../../.eslintrc",
-      "@pretty-cozy/eslint-config/react"
-    ]
-  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "npm run lint:fix"

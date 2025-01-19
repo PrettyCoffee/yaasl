@@ -2,9 +2,9 @@ const { git } = require("@pretty-cozy/release-tools")
 
 const commitRegex = /^([a-z]+)(?:\((.+)\))?(!)?:\s*(.+)/
 
-const types = ["fix", "feat"]
+const types = new Set(["fix", "feat"])
 
-const isChangeCommit = commit => types.includes(commit.type)
+const isChangeCommit = commit => types.has(commit.type)
 const isNotInternal = commit => commit.scope !== "internal"
 
 /** @param {string} commit */
@@ -51,17 +51,17 @@ const printChangelog = (version, commits) => {
     { breaking: [], feat: [], fix: [] }
   )
 
-  if (breaking.length) {
+  if (breaking.length > 0) {
     result += "\n### Breaking Changes\n\n"
     breaking.forEach(commit => (result += printCommit(commit)))
   }
 
-  if (feat.length) {
+  if (feat.length > 0) {
     result += "\n### Features\n\n"
     feat.forEach(commit => (result += printCommit(commit)))
   }
 
-  if (fix.length) {
+  if (fix.length > 0) {
     result += "\n### Bug Fixes\n\n"
     fix.forEach(commit => (result += printCommit(commit)))
   }

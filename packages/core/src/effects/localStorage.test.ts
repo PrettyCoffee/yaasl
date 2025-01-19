@@ -19,7 +19,7 @@ const setup = (options: LocalStorageOptions = {}) => {
     name: "atom",
     effects: [localStorage(options)],
   })
-  const storeKey = options.key ? options.key : `atom`
+  const storeKey = options.key ?? `atom`
 
   const getStoreValue = (): unknown => {
     const value = window.localStorage.getItem(storeKey)
