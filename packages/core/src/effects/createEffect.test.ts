@@ -68,8 +68,8 @@ describe("Test createEffect", () => {
       effects: [testEffect()],
     })
     expect(init).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const callArgs = init.mock.calls[0][0]
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const callArgs = init.mock.calls[0]?.[0]
     expect(callArgs).toHaveProperty("atom", testAtom)
     expect(callArgs).toHaveProperty("value", defaultValue)
     expect(callArgs).toHaveProperty("options", undefined)
@@ -81,8 +81,8 @@ describe("Test createEffect", () => {
       effects: [testEffect()],
     })
     expect(didInit).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const callArgs = didInit.mock.calls[0][0]
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const callArgs = didInit.mock.calls[0]?.[0]
     expect(callArgs).toHaveProperty("atom", testAtom)
     expect(callArgs).toHaveProperty("value", defaultValue)
     expect(callArgs).toHaveProperty("options", undefined)
@@ -111,8 +111,8 @@ describe("Test createEffect", () => {
     })
     testAtom.set(nextValue)
     expect(set).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const callArgs = set.mock.calls[0][0]
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const callArgs = set.mock.calls[0]?.[0]
     expect(callArgs).toHaveProperty("atom", testAtom)
     expect(callArgs).toHaveProperty("value", nextValue)
     expect(callArgs).toHaveProperty("options", undefined)
