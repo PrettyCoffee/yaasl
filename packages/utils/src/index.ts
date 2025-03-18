@@ -1,3 +1,4 @@
+export * from "./getWindow"
 export * from "./isPromiseLike"
 export * from "./log"
 export * from "./sleep"
