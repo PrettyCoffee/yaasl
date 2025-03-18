@@ -8,6 +8,8 @@ scripts
 .eslintrc
 .gitattributes
 jest.config.json
+tsconfig.json
+tsconfig.node.json
 
 # patterns
 *.test.*
