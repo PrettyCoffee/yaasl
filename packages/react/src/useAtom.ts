@@ -4,16 +4,19 @@ import type { Stateful } from "@yaasl/core"
 
 import { useSetStateful, useStatefulValue } from "./useStateful"
 
-/** Use an atom's value in the react lifecycle.
+/** Use an atom's value in the React lifecycle.
  *
  * @param atom Atom to be used.
+ * @param getServerSnapshot Function to retrieve a value that should be used for SSR.
  *
  * @returns The atom's value.
  **/
-export const useAtomValue = <ValueType>(atom: Stateful<ValueType>) =>
-  useStatefulValue(atom)
+export const useAtomValue = <ValueType>(
+  atom: Stateful<ValueType>,
+  getServerSnapshot?: () => ValueType
+) => useStatefulValue(atom, getServerSnapshot)
 
-/** Set an atom's value in the react lifecycle.
+/** Set an atom's value in the React lifecycle.
  *
  * @param atom Atom to be used.
  *
@@ -22,7 +25,7 @@ export const useAtomValue = <ValueType>(atom: Stateful<ValueType>) =>
 export const useSetAtom = <ValueType>(atom: Stateful<ValueType>) =>
   useSetStateful(atom)
 
-/** Use an atom's initialization state in the react lifecycle.
+/** Use an atom's initialization state in the React lifecycle.
  *
  *  @param atom Atom to be used.
  *
@@ -39,14 +42,18 @@ export const useAtomDidInit = <ValueType>(atom: Stateful<ValueType>) => {
   return didInit
 }
 
-/** Use an atom's value and setter in the react lifecycle.
+/** Use an atom's value and setter in the React lifecycle.
  *
  * @param atom Atom to be used.
+ * @param getServerSnapshot Function to retrieve a value that should be used for SSR.
  *
  * @returns [value, setValue, didInit]
  **/
-export const useAtom = <ValueType>(atom: Stateful<ValueType>) => {
-  const state = useAtomValue(atom)
+export const useAtom = <ValueType>(
+  atom: Stateful<ValueType>,
+  getServerSnapshot?: () => ValueType
+) => {
+  const state = useAtomValue(atom, getServerSnapshot)
   const setState = useSetAtom(atom)
   const didInit = useAtomDidInit(atom)
 

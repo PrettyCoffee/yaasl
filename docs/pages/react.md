@@ -1,16 +1,17 @@
 # React
 
-Hooks to use all kinds of atoms in an react environment.
+Hooks to use all kinds of atoms in an React environment.
 
 ## useAtomValue
 
-Use an atom's value in the react lifecycle.
+Use an atom's value in the React lifecycle.
 
 ### API
 
 Parameters:
 
 - `atom`: Atom to be used.
+- `getServerSnapshot`: Function to retrieve a value that should be used for SSR.
 
 Returns: The atom's value.
 
@@ -43,10 +44,10 @@ const MyComponent = () => {
 
 ```tsx
 const mySlice = createSlice({
-  defaultValue: { count: 0 }
+  defaultValue: { count: 0 },
   selectors: {
-    count: "count"
-  }
+    count: "count",
+  },
 });
 const MyComponent = () => {
   const slice = useAtomValue(mySlice);
@@ -60,7 +61,7 @@ const MyComponent = () => {
 
 ## useSetAtom
 
-Set an atom's value in the react lifecycle.
+Set an atom's value in the React lifecycle.
 
 ### API
 
@@ -85,7 +86,7 @@ const MyComponent = () => {
 
 ## useAtomDidInit
 
-Use an atom's initialization state in the react lifecycle.
+Use an atom's initialization state in the React lifecycle.
 
 ### API
 
@@ -107,13 +108,14 @@ const MyComponent = () => {
 
 ## useAtom
 
-Use an atom's value and setter in the react lifecycle.
+Use an atom's value and setter in the React lifecycle.
 
 ### API
 
 Parameters:
 
 - `atom`: Atom to be used.
+- `getServerSnapshot`: Function to retrieve a value that should be used for SSR.
 
 Returns: A state value and state setter for the atom.
 
@@ -144,7 +146,7 @@ const MyComponent = () => {
 const myAtom = createAtom({ defaultValue: 2 });
 const double = createDerived(
   ({ get }) => get(myAtom) * 2,
-  ({ value, set }) => set(myAtom, value / 2)
+  ({ value, set }) => set(myAtom, value / 2),
 );
 
 const MyComponent = () => {

@@ -1,12 +1,16 @@
 import { useCallback, useSyncExternalStore, SetStateAction } from "react"
 
-import type { Stateful } from "@yaasl/core"
+import { Stateful } from "@yaasl/core"
 import { consoleMessage } from "@yaasl/utils"
 
-export const useStatefulValue = <ValueType>(stateful: Stateful<ValueType>) =>
+export const useStatefulValue = <ValueType>(
+  stateful: Stateful<ValueType>,
+  getServerSnapshot = () => stateful.get()
+) =>
   useSyncExternalStore(
     set => stateful.subscribe(set),
-    () => stateful.get()
+    () => stateful.get(),
+    getServerSnapshot
   )
 
 export const useSetStateful = <ValueType>(stateful: Stateful<ValueType>) =>
