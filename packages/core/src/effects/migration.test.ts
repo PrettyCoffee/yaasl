@@ -1,9 +1,18 @@
-import { mockConsole } from "@yaasl/utils"
 import { vi, it, describe, expect, beforeEach } from "vitest"
 
 import { localStorage } from "./localStorage"
 import { createMigrationStep, migration } from "./migration"
 import { createAtom } from "../base"
+
+const mockConsole = () => {
+  const oldConsole = global.console
+  const error = vi.fn<unknown[], unknown>()
+  const warn = vi.fn<unknown[], unknown>()
+
+  global.console = { ...global.console, error, warn }
+
+  return { error, warn, resetConsole: () => (global.console = oldConsole) }
+}
 
 const migrateV1 = vi.fn()
 const migrateV2 = vi.fn()
