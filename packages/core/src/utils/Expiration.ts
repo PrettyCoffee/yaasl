@@ -1,4 +1,10 @@
-const STORAGE = window.localStorage
+import { toVoid, getWindow } from "@yaasl/utils"
+
+const STORAGE = getWindow()?.localStorage ?? {
+  getItem: () => null,
+  setItem: toVoid,
+  removeItem: toVoid,
+}
 
 export interface ExpirationOptions {
   /** Local storage key to persist the expiration */

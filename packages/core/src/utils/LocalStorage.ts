@@ -1,6 +1,10 @@
-import { consoleMessage, log, Dispatch } from "@yaasl/utils"
+import { consoleMessage, log, Dispatch, toVoid, getWindow } from "@yaasl/utils"
 
-const STORAGE = window.localStorage
+const STORAGE = getWindow()?.localStorage ?? {
+  getItem: () => null,
+  setItem: toVoid,
+  removeItem: toVoid,
+}
 
 export interface LocalStorageParser<T = any> {
   parse: (value: string) => T
@@ -16,7 +20,7 @@ const syncOverBrowserTabs = (
   observingKey: string,
   onTabSync: (value: string | null) => void
 ) =>
-  window.addEventListener("storage", ({ key, newValue }) => {
+  getWindow()?.addEventListener("storage", ({ key, newValue }) => {
     if (observingKey !== key) return
     onTabSync(newValue)
   })

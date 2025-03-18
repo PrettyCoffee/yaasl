@@ -1,4 +1,4 @@
-import { log } from "@yaasl/utils"
+import { getWindow, log } from "@yaasl/utils"
 
 import { createEffect } from "./createEffect"
 import { Atom, CONFIG } from "../base"
@@ -43,12 +43,12 @@ const sortMigrations = (migrations: MigrationStep[]) => {
 
 const getVersion = (atom: Atom) => {
   const key = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
-  return localStorage.getItem(`${key}-version`)
+  return getWindow()?.localStorage.getItem(`${key}-version`) ?? null
 }
 
 const setVersion = (atom: Atom, version: string) => {
   const key = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
-  localStorage.setItem(`${key}-version`, version)
+  getWindow()?.localStorage.setItem(`${key}-version`, version)
 }
 
 interface Result {

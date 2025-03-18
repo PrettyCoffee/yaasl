@@ -1,14 +1,20 @@
+import { toVoid, getWindow } from "@yaasl/utils"
+
 import { createEffect } from "./createEffect"
 import { CONFIG } from "../base"
 import { Expiration } from "../utils/Expiration"
 
-const STORAGE = window.localStorage
+const STORAGE = getWindow()?.localStorage ?? {
+  getItem: () => null,
+  setItem: toVoid,
+  removeItem: toVoid,
+}
 
 const syncOverBrowserTabs = (
   observingKey: string,
   onChange: (value: string | null) => void
 ) =>
-  window.addEventListener("storage", ({ key, newValue }) => {
+  getWindow()?.addEventListener("storage", ({ key, newValue }) => {
     if (observingKey !== key) return
     const currentValue = STORAGE.getItem(observingKey)
     if (currentValue === newValue) return

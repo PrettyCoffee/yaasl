@@ -1,4 +1,4 @@
-import { log } from "@yaasl/utils"
+import { getWindow, log } from "@yaasl/utils"
 
 import type { ExtensionOptions } from "./ExtensionOptions"
 import type { ConnectionResponse } from "./getReduxConnection"
@@ -38,6 +38,8 @@ let didWarn = false
 
 /** Returns the global redux extension object if available */
 export const getReduxExtension = () => {
+  const window = getWindow()
+  if (!window) return null
   const reduxExtension = window.__REDUX_DEVTOOLS_EXTENSION__
   if (!reduxExtension) {
     if (!didWarn) {
