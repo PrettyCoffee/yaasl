@@ -1,6 +1,17 @@
 import prettyCozy from "@pretty-cozy/eslint-config"
 import ts from "typescript-eslint"
 
+const forbiddenGlobals = [
+  "window",
+  "document",
+  "localStorage",
+  "sessionStorage",
+  "indexedDb",
+  "location",
+  "navigator",
+  "history",
+]
+
 export default ts.config(
   {
     files: ["**/*.js", "**/*.mjs"],
@@ -20,6 +31,19 @@ export default ts.config(
   },
   {
     ignores: ["docs/**", "**/node_modules/**", "**/dist/**"],
+  },
+  {
+    ignores: ["**/*.test.*", "demo/**"],
+    rules: {
+      "no-restricted-globals": [
+        "error",
+        ...forbiddenGlobals.map(globalVar => ({
+          name: globalVar,
+          message:
+            "Don't access globals directly, they might not be defined in some environments. Use getWindow() instead.",
+        })),
+      ],
+    },
   },
   {
     files: ["scripts/**"],
