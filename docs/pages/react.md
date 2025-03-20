@@ -11,7 +11,6 @@ Use an atom's value in the React lifecycle.
 Parameters:
 
 - `atom`: Atom to be used.
-- `getServerSnapshot`: Function to retrieve a value that should be used for SSR.
 
 Returns: The atom's value.
 
@@ -115,7 +114,6 @@ Use an atom's value and setter in the React lifecycle.
 Parameters:
 
 - `atom`: Atom to be used.
-- `getServerSnapshot`: Function to retrieve a value that should be used for SSR.
 
 Returns: A state value and state setter for the atom.
 
