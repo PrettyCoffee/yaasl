@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.11.0 (2025-03-20)
+
+### Features
+
+- **core:** Add method to destroy atoms
+- **devtools:** Add init and didInit events to reduxDevtools
+- **effects:** Add sort option to adjust effects execution order
+- **react:** Allow usage in SSR context
+
+### Bug Fixes
+
+- **core:** Only access window and other globals when available
+- **devtools:** Only access window and other globals when available
+- **devtools:** Always make sure to log values as last effect
+- **indexedDb:** Always make sure to load values as first effect
+- **localStorage:** Always make sure to load values as first effect
+
 ## 0.10.2 (2024-10-13)
 
 ### Bug Fixes
