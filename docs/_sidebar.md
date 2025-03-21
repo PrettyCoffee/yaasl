@@ -2,6 +2,7 @@
 
   - [**Introduction**](/README)
   - [**Quick start**](/pages/quick-start.md)
+  - [**Motivation**](/pages/motivation.md)
   - [**Changelog**](/CHANGELOG.md)
 
 - Reference

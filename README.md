@@ -16,6 +16,14 @@ and more mature solution like [jotai](https://jotai.org/).
 
 See the [docs](https://prettycoffee.github.io/yaasl/) for detailed documentation.
 
+## Motivation
+
+TL;DR - It's fun and I dislike the jotai API.
+
+> Note: Jotai is really cool and I love the work of dai-shi generally!
+
+See [this page](https://prettycoffee.github.io/yaasl/#/pages/motivation) for a full explanation.
+
 ## Installation
 
 You can install a yaasl package like you would do with any other:
