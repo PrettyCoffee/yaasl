@@ -72,6 +72,11 @@ const insertScripts = () => {
   return replaceInFile(indexHtml, "lib-scripts", () => scriptsHtml)
 }
 
+const copyChangelog = () =>
+  cp("../CHANGELOG.md", "../docs/CHANGELOG.md", {
+    force: true,
+  })
+
 ;(async () => {
   await deleteLib()
   await copyFiles()
@@ -80,4 +85,6 @@ const insertScripts = () => {
   console.log("✅ Added styles to index.html")
   await insertScripts()
   console.log("✅ Added scripts to index.html")
+  await copyChangelog()
+  console.log("✅ Copied CHANGELOG.md")
 })()
