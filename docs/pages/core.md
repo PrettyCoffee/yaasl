@@ -98,7 +98,7 @@ const atom2 = createAtom({ defaultValue: 40 });
 // Create a combiner selector
 const selected = createSelector(
   [atom1, atom2],
-  (value1, value2) => value1 + value2
+  (value1, value2) => value1 + value2,
 );
 
 // Use a selector
@@ -157,7 +157,7 @@ const post = createAtom({
 // Create a derive atom
 const views = createDerived(
   ({ get }) => get(video).views,
-  ({ value, set }) => set(video, { ...video.get(), views: value })
+  ({ value, set }) => set(video, { ...video.get(), views: value }),
 );
 // Set value of the derive atom
 views.set(42);

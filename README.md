@@ -5,10 +5,12 @@
 <!-- >> TOC >> -->
 
 - [yaasl - yet another atomic store library](#yaasl---yet-another-atomic-store-library)
+  - [Motivation](#motivation)
   - [Installation](#installation)
   - [Quickstart](#quickstart)
   - [Usage examples](#usage-examples) [ [Vanilla typescript](#vanilla-typescript), [React (or Preact)](#react-or-preact) ]
-  <!-- << TOC << -->
+
+<!-- << TOC << -->
 
 This project is meant for personal use.
 I won't stop you from using it, but I would rather recommend to use a similar
