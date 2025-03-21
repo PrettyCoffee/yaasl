@@ -1,6 +1,6 @@
 # yaasl - yet another atomic store library
 
-[![license](https://badgen.net/npm/license/@yaasl/core)](./LICENSE) [![NPM Version](https://badgen.net/npm/v/@yaasl/core)](https://www.npmjs.com/package/@yaasl/core) ![NPM Downloads](https://badgen.net/npm/dw/@yaasl/core) [![minzipped size](https://badgen.net/bundlephobia/minzip/@yaasl/core)](https://bundlephobia.com/package/@yaasl/core)
+[![license](https://badgen.net/npm/license/@yaasl/core)](https://github.com/PrettyCoffee/yaasl/blob/main/LICENSE) [![NPM Version](https://badgen.net/npm/v/@yaasl/core)](https://www.npmjs.com/package/@yaasl/core) ![NPM Downloads](https://badgen.net/npm/dw/@yaasl/core) [![minzipped size](https://badgen.net/bundlephobia/minzip/@yaasl/core)](https://bundlephobia.com/package/@yaasl/core)
 
 <!-- >> TOC >> -->
 
@@ -20,7 +20,7 @@ See the [docs](https://prettycoffee.github.io/yaasl/) for detailed documentation
 
 TL;DR - It's fun and I dislike the jotai API.
 
-> Note: Jotai is really cool and I love the work of dai-shi generally!
+> Note: Jotai is really cool, and I love the work of dai-shi generally.
 
 See [this page](https://prettycoffee.github.io/yaasl/#/pages/motivation) for a full explanation.
 

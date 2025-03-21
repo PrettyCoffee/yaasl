@@ -1,6 +1,6 @@
 # yaasl - yet another atomic store library
 
-[![license](https://badgen.net/npm/license/@yaasl/core)](./LICENSE) [![NPM Version](https://badgen.net/npm/v/@yaasl/core)](https://www.npmjs.com/package/@yaasl/core) ![NPM Downloads](https://badgen.net/npm/dw/@yaasl/core) [![minzipped size](https://badgen.net/bundlephobia/minzip/@yaasl/core)](https://bundlephobia.com/package/@yaasl/core)
+[![license](https://badgen.net/npm/license/@yaasl/core)](https://github.com/PrettyCoffee/yaasl/blob/main/LICENSE) [![NPM Version](https://badgen.net/npm/v/@yaasl/core)](https://www.npmjs.com/package/@yaasl/core) ![NPM Downloads](https://badgen.net/npm/dw/@yaasl/core) [![minzipped size](https://badgen.net/bundlephobia/minzip/@yaasl/core)](https://bundlephobia.com/package/@yaasl/core)
 
 This project is meant for personal use.
 I won't stop you from using it, but I would rather recommend to use a similar
