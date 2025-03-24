@@ -25,14 +25,14 @@
     "docs": "npm run -w docs start",
     "docs:generate": "node ./scripts/generateDocs.js",
     "prepare": "cozy-git-hooks install -q",
-    "release": "node ./scripts/release.js",
+    "publish": "node ./scripts/publish.js",
     "upgrade": "ncu --deep -u -t minor -f !@yaasl/*",
     "upgrade:latest": "npm run upgrade -- -t latest"
   },
   "devDependencies": {
     "@pretty-cozy/eslint-config": "^0.6.0",
     "@pretty-cozy/git-hooks": "^0.6.0",
-    "@pretty-cozy/release-tools": "^0.6.0",
+    "@pretty-cozy/release-tools": "^0.7.0-alpha.1",
     "@vitest/coverage-v8": "^3.0.9",
     "enquirer": "^2.4.1",
     "eslint-import-resolver-exports": "^1.0.0-beta.5",

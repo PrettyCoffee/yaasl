@@ -58,5 +58,13 @@ export default ts.config(
       "@typescript-eslint/no-unsafe-argument": "off",
     },
   },
+
+  {
+    name: "migration",
+    rules: {
+      "checkFile/filename-naming-convention": "off",
+    },
+  },
+
   prettyCozy.prettier
 )
