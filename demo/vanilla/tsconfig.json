@@ -1,6 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src"],
   "compilerOptions": {
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -12,5 +11,6 @@
     "isolatedModules": true,
     "noEmit": true
   },
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -12,7 +12,7 @@ const {
 } = require("@pretty-cozy/release-tools")
 const { prompt } = require("enquirer")
 
-const { createChangelog } = require("./utils/createChangelog")
+const { createChangelog } = require("./utils/create-changelog")
 const { log } = require("./utils/log")
 
 const promptOk = async text => {

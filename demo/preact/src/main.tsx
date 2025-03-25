@@ -1,6 +1,6 @@
 import { render } from "preact"
 
-import { App } from "./App.tsx"
+import { App } from "./app"
 import "./index.css"
 
 const root = document.getElementById("root")

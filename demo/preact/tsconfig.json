@@ -1,6 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src"],
   "compilerOptions": {
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -14,5 +13,6 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
   },
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

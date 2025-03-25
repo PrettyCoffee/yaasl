@@ -1,6 +1,6 @@
 import { getWindow, log } from "@yaasl/utils"
 
-import { createEffect } from "./createEffect"
+import { createEffect } from "./create-effect"
 import { Atom, CONFIG } from "../base"
 
 export interface MigrationStep<

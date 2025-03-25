@@ -1,5 +1,5 @@
 import "./style.css"
-import { setupCounter } from "./counter.ts"
+import { setupCounter } from "./counter"
 
 const root = document.getElementById("root")
 if (!root) throw new Error('Could not find element with id "root"')

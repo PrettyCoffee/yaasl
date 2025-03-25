@@ -1,8 +1,8 @@
 import { toVoid, getWindow } from "@yaasl/utils"
 
-import { createEffect } from "./createEffect"
+import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
-import { Expiration } from "../utils/Expiration"
+import { Expiration } from "../utils/expiration"
 
 const STORAGE = getWindow()?.localStorage ?? {
   getItem: () => null,

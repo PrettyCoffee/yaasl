@@ -1,6 +1,6 @@
 import { vi, it, describe, expect, beforeEach } from "vitest"
 
-import { localStorage } from "./localStorage"
+import { localStorage } from "./local-storage"
 import { createMigrationStep, migration } from "./migration"
 import { createAtom } from "../base"
 

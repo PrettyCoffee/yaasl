@@ -1,7 +1,7 @@
 import { vi, it, describe, expect, beforeEach, afterEach } from "vitest"
 
 import { expiration } from "./expiration"
-import { localStorage } from "./localStorage"
+import { localStorage } from "./local-storage"
 import { createAtom } from "../base"
 
 const defaultValue = { a: "A", b: "B" }

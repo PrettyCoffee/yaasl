@@ -1,11 +1,11 @@
-export { createEffect } from "./createEffect"
-export type { Effect, EffectPayload, EffectAtomCallback } from "./createEffect"
+export { createEffect } from "./create-effect"
+export type { Effect, EffectPayload, EffectAtomCallback } from "./create-effect"
 
-export { localStorage } from "./localStorage"
-export type { LocalStorageOptions, LocalStorageParser } from "./localStorage"
+export { localStorage } from "./local-storage"
+export type { LocalStorageOptions, LocalStorageParser } from "./local-storage"
 
-export { indexedDb } from "./indexedDb"
-export type { IndexedDbOptions } from "./indexedDb"
+export { indexedDb } from "./indexed-db"
+export type { IndexedDbOptions } from "./indexed-db"
 
 export { expiration } from "./expiration"
 export type { ExpirationOptions } from "./expiration"

@@ -1,4 +1,4 @@
-import type { EffectAtomCallback } from "../effects/createEffect"
+import type { EffectAtomCallback } from "../effects/create-effect"
 
 interface Config {
   /** Global name to make internal keys unique

@@ -57,12 +57,5 @@ export default defineConfig([
     },
   },
 
-  {
-    name: "migration",
-    rules: {
-      "checkFile/filename-naming-convention": "off",
-    },
-  },
-
   prettyCozy.prettier,
 ])
