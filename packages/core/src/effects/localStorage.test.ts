@@ -67,6 +67,7 @@ describe("Test localStorage", () => {
   })
 
   describe("handles custom parsers", () => {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
     const isMapEntry = (value: unknown): value is [unknown, unknown] =>
       Array.isArray(value) && value.length === 2
 
@@ -78,7 +79,7 @@ describe("Test localStorage", () => {
 
         return new Map(value)
       },
-      stringify: value => JSON.stringify(Array.from(value.entries())),
+      stringify: value => JSON.stringify([...value.entries()]),
     }
 
     it("Uses a custom parser", () => {

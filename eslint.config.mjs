@@ -1,5 +1,5 @@
 import prettyCozy from "@pretty-cozy/eslint-config"
-import ts from "typescript-eslint"
+import { defineConfig, globalIgnores } from "eslint/config"
 
 const forbiddenGlobals = [
   "window",
@@ -12,7 +12,7 @@ const forbiddenGlobals = [
   "history",
 ]
 
-export default ts.config(
+export default defineConfig([
   {
     files: ["**/*.js", "**/*.mjs"],
     extends: [prettyCozy.baseJs],
@@ -29,9 +29,7 @@ export default ts.config(
     files: ["packages/preact/src/**"],
     extends: [prettyCozy.preact],
   },
-  {
-    ignores: ["docs/**", "**/node_modules/**", "**/dist/**"],
-  },
+  globalIgnores(["docs/**", "**/node_modules/**", "**/dist/**"]),
   {
     ignores: ["**/*.test.*", "demo/**"],
     rules: {
@@ -66,5 +64,5 @@ export default ts.config(
     },
   },
 
-  prettyCozy.prettier
-)
+  prettyCozy.prettier,
+])

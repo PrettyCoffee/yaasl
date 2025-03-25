@@ -16,6 +16,7 @@ export class Destroyable {
     this.unsubscribers.clear()
     this.isDestroyed = true
 
+    // eslint-disable-next-line unicorn/consistent-function-scoping
     const throwOnCall = () => {
       const name = "name" in this ? (this.name as string) : undefined
       throw new Error(

@@ -53,6 +53,7 @@ export class Atom<Value = unknown> extends Stateful<Value> {
   }
 
   private initEffects() {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
     const updateValue = (value: Value) => {
       super.update(value)
       return value

@@ -25,7 +25,7 @@ export class Derive<Value> extends Stateful<Value> {
   constructor(private readonly getter: GetterFn<Value>) {
     super(undefined as Value)
     this.value = getter({ get: dep => this.addGetDependency(dep) })
-    this.setDidInit(allDidInit(Array.from(this.getterDependencies)))
+    this.setDidInit(allDidInit([...this.getterDependencies]))
   }
 
   private addGetDependency<V>(dependency: Stateful<V>) {
@@ -96,7 +96,7 @@ export class SettableDerive<Value = unknown> extends Derive<Value> {
       return false
     }
 
-    return Array.from(setterDependencies).every(dependency =>
+    return [...setterDependencies].every(dependency =>
       getterDependencies.has(dependency)
     )
   }

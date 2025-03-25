@@ -8,7 +8,7 @@ let observedAtoms = new Set<Atom>()
 
 const synchronize = (state: Record<string, unknown>) => {
   updates.pause()
-  Array.from(observedAtoms).forEach(atom => {
+  ;[...observedAtoms].forEach(atom => {
     const atomName = atom.name
     if (!(atomName in state)) return
 
@@ -23,7 +23,7 @@ const synchronize = (state: Record<string, unknown>) => {
 }
 
 const getDefaultState = () =>
-  Array.from(observedAtoms).reduce<Record<string, unknown>>((result, atom) => {
+  [...observedAtoms].reduce<Record<string, unknown>>((result, atom) => {
     result[atom.name] = atom.defaultValue
     return result
   }, {})

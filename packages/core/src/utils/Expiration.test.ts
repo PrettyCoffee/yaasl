@@ -15,7 +15,7 @@ describe("Test Expiration", () => {
     vi.useFakeTimers()
   })
   afterAll(() => {
-    vi.useRealTimers
+    vi.useRealTimers()
   })
 
   it("Loads existing expiration", () => {

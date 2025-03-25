@@ -81,6 +81,7 @@ describe("Test Thenable", () => {
     })
 
     it("unwraps nested Promises", async () => {
+      // eslint-disable-next-line unicorn/no-useless-promise-resolve-reject
       const result = new Thenable(1).then(value => Promise.resolve(value + 1))
       expect(result).toBeInstanceOf(Promise)
       expect(await result).toBe(2)

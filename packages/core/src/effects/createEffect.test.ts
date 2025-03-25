@@ -68,7 +68,7 @@ describe("Test createEffect", () => {
       effects: [testEffect()],
     })
     expect(init).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
     const callArgs = init.mock.calls[0]?.[0]
     expect(callArgs).toHaveProperty("atom", testAtom)
     expect(callArgs).toHaveProperty("value", defaultValue)
@@ -81,7 +81,7 @@ describe("Test createEffect", () => {
       effects: [testEffect()],
     })
     expect(didInit).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
     const callArgs = didInit.mock.calls[0]?.[0]
     expect(callArgs).toHaveProperty("atom", testAtom)
     expect(callArgs).toHaveProperty("value", defaultValue)
@@ -111,7 +111,7 @@ describe("Test createEffect", () => {
     })
     testAtom.set(nextValue)
     expect(set).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
     const callArgs = set.mock.calls[0]?.[0]
     expect(callArgs).toHaveProperty("atom", testAtom)
     expect(callArgs).toHaveProperty("value", nextValue)
@@ -290,18 +290,16 @@ describe("Test createEffect", () => {
     it("persists the value over multiple async effect actions", async () => {
       const values: number[] = []
       const counterEffect = createEffect<undefined, number>({
-        init: ({ value, set }) => {
-          return sleep(10).then(() => {
+        init: ({ value, set }) =>
+          sleep(10).then(() => {
             values.push(value)
             set(value + 1)
-          })
-        },
-        didInit: ({ value, set }) => {
-          return sleep(10).then(() => {
+          }),
+        didInit: ({ value, set }) =>
+          sleep(10).then(() => {
             values.push(value)
             set(value + 1)
-          })
-        },
+          }),
       })
       const testAtom = createAtom({
         defaultValue: 0,
