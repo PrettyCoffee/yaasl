@@ -43,19 +43,6 @@ export default defineConfig([
       ],
     },
   },
-  {
-    files: ["scripts/**"],
-    rules: {
-      "import/no-extraneous-dependencies": "off",
-    },
-  },
-  {
-    files: ["**/*.test.*"],
-    rules: {
-      "@typescript-eslint/no-unsafe-call": "off",
-      "@typescript-eslint/no-unsafe-argument": "off",
-    },
-  },
 
   prettyCozy.prettier,
 ])
