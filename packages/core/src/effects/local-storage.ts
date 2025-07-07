@@ -4,6 +4,15 @@ import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
 import { StringStorage, StringStorageParser } from "../utils/string-storage"
 
+const syncOverBrowserTabs = (
+  observingKey: string,
+  onTabSync: (value: string | null) => void
+) =>
+  getWindow()?.addEventListener("storage", ({ key, newValue }) => {
+    if (observingKey !== key) return
+    onTabSync(newValue)
+  })
+
 export interface LocalStorageOptions {
   /** Use your own key for the local storage.
    *  Will be "{config-name}/{atom-name}" by default.
@@ -39,8 +48,11 @@ export const localStorage = createEffect<
     key,
     store: getWindow()?.localStorage,
     parser,
-    onTabSync: noTabSync ? undefined : value => atom.set(value),
   })
+
+  if (!noTabSync) {
+    syncOverBrowserTabs(key, () => atom.set(storage.get() ?? atom.defaultValue))
+  }
 
   return {
     sort: "pre",

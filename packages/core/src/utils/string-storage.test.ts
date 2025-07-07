@@ -60,27 +60,4 @@ describe("Test LocalStorage", () => {
       expect(parser.parse).toHaveBeenCalledWith(JSON.stringify(value))
     })
   })
-
-  describe("handleTabSync", () => {
-    it("should add event listener if onTabSync is passed", () => {
-      const addEventListener = vi.fn()
-      vi.spyOn(window, "addEventListener").mockImplementation(addEventListener)
-
-      new StringStorage({ key, store: localStorage, onTabSync: vi.fn() })
-
-      expect(addEventListener).toHaveBeenCalledWith(
-        "storage",
-        expect.any(Function)
-      )
-    })
-
-    it("should not add event listener if onTabSync is not passed", () => {
-      const addEventListener = vi.fn()
-      vi.spyOn(window, "addEventListener").mockImplementation(addEventListener)
-
-      new StringStorage({ key, store: localStorage })
-
-      expect(addEventListener).not.toHaveBeenCalled()
-    })
-  })
 })

@@ -1,4 +1,4 @@
-import { consoleMessage, log, Dispatch, getWindow } from "@yaasl/utils"
+import { consoleMessage, log } from "@yaasl/utils"
 
 interface StringStore {
   getItem: (key: string) => string | null
@@ -20,20 +20,10 @@ export interface StringStorageParser<T = any> {
   stringify: (value: T) => string
 }
 
-const syncOverBrowserTabs = (
-  observingKey: string,
-  onTabSync: (value: string | null) => void
-) =>
-  getWindow()?.addEventListener("storage", ({ key, newValue }) => {
-    if (observingKey !== key) return
-    onTabSync(newValue)
-  })
-
 export interface StringStorageConstructorOptions<T> {
   key: string
   store?: StringStore
   parser?: StringStorageParser<T>
-  onTabSync?: Dispatch<T | null>
 }
 
 export class StringStorage<T = unknown> {
@@ -45,22 +35,10 @@ export class StringStorage<T = unknown> {
     key,
     store = createMemoryStore(),
     parser = JSON,
-    onTabSync,
   }: StringStorageConstructorOptions<T>) {
     this.key = key
     this.store = store
     this.parser = parser
-
-    if (!onTabSync) return
-    syncOverBrowserTabs(key, value => {
-      const newValue = value === null ? null : this.parser.parse(value)
-      if (newValue === null) {
-        this.remove()
-      } else {
-        this.set(newValue)
-      }
-      onTabSync(newValue)
-    })
   }
 
   public get(): T | null {
