@@ -38,7 +38,7 @@
     "validate": "run-s lint test build"
   },
   "dependencies": {
-    "@yaasl/core": "0.11.0",
+    "@yaasl/core": "0.12.0",
     "@yaasl/utils": "0.11.0"
   },
   "lint-staged": {

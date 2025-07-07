@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.0 (2025-07-07)
+
+### Features
+
+- **sessionStorage:** Add effect to persist atoms in sessionStorage
+
 ## 0.11.0 (2025-03-20)
 
 ### Features
