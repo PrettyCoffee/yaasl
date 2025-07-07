@@ -105,7 +105,7 @@ const run = async () => {
   if (version.includes("alpha")) {
     await promptOk(`Do you want to release version ${version}?`)
   } else {
-    await updateChangelog()
+    await updateChangelog(version)
     await promptOk(
       `Do you want to release the above changes with version ${version}?\n  You can edit the changelog before continuing.\n `
     )
