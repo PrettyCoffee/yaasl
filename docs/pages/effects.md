@@ -167,6 +167,33 @@ const mapAtom = createAtom({
 
 <!-- tabs:end -->
 
+## sessionStorage
+
+Middleware to save and load atom values to the session storage.
+
+### API
+
+Parameters:
+
+- `options.key`: Use your own key for the session storage. Will be "{config-name}/{atom-name}" by default.
+- `options.parser`: Custom functions to stringify and parse values. Defaults to JSON.stringify and JSON.parse. Use this when handling complex datatypes like Maps or Sets.
+
+Returns: The effect to be used on atoms.
+
+### Usage Examples
+
+```ts
+const atomWithStorage = createAtom({
+  defaultValue: "my-value",
+  effects: [sessionStorage()],
+});
+
+const atomWithStorage = createAtom({
+  defaultValue: "my-value",
+  effects: [sessionStorage({ key: "my-key" })],
+});
+```
+
 ## indexedDb
 
 Middleware to save and load atom values to an indexedDb.
