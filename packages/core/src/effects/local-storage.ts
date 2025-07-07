@@ -1,6 +1,8 @@
+import { getWindow } from "@yaasl/utils"
+
 import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
-import { LocalStorage } from "../utils/local-storage"
+import { StringStorage } from "../utils/string-storage"
 
 export interface LocalStorageParser<T = any> {
   parse: (value: string) => T
@@ -38,7 +40,9 @@ export const localStorage = createEffect<
   const internalKey = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
   const { key = internalKey, parser, noTabSync } = options
 
-  const storage = new LocalStorage<unknown>(key, {
+  const storage = new StringStorage<unknown>({
+    key,
+    store: getWindow()?.localStorage,
     parser,
     onTabSync: noTabSync ? undefined : value => atom.set(value),
   })
