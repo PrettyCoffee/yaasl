@@ -6,7 +6,7 @@ const promisifyRequest = <T>(request: IDBRequest<T>): Promise<T> =>
     request.onerror = () => reject(request.error)
   })
 
-export class Store<T> {
+export class IdbStore<T> {
   private database?: Promise<IDBDatabase>
 
   constructor(private name: string) {

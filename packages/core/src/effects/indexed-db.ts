@@ -1,8 +1,8 @@
 import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
-import { Store } from "../utils/store"
+import { IdbStore } from "../utils/idb-store"
 
-let atomDb: Store<unknown> | null = null
+let atomDb: IdbStore<unknown> | null = null
 
 export interface IndexedDbOptions {
   /** Use your own store key. Will be `atom.name` by default. */
@@ -26,7 +26,7 @@ export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
       sort: "pre",
       init: async ({ atom, set }) => {
         if (!atomDb) {
-          atomDb = new Store(CONFIG.name ?? "yaasl")
+          atomDb = new IdbStore(CONFIG.name ?? "yaasl")
         }
 
         const existing = await atomDb.get(key)
