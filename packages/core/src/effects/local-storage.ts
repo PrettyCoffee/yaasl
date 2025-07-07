@@ -2,12 +2,7 @@ import { getWindow } from "@yaasl/utils"
 
 import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
-import { StringStorage } from "../utils/string-storage"
-
-export interface LocalStorageParser<T = any> {
-  parse: (value: string) => T
-  stringify: (value: T) => string
-}
+import { StringStorage, StringStorageParser } from "../utils/string-storage"
 
 export interface LocalStorageOptions {
   /** Use your own key for the local storage.
@@ -20,7 +15,7 @@ export interface LocalStorageOptions {
    *  Defaults to JSON.stringify and JSON.parse.
    *  Use this when handling complex datatypes like Maps or Sets.
    */
-  parser?: LocalStorageParser
+  parser?: StringStorageParser
 }
 
 /** Middleware to save and load atom values to the local storage.

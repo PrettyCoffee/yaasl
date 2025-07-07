@@ -1,11 +1,8 @@
 import { it, describe, expect, afterEach } from "vitest"
 
-import {
-  LocalStorageOptions,
-  LocalStorageParser,
-  localStorage,
-} from "./local-storage"
+import { LocalStorageOptions, localStorage } from "./local-storage"
 import { createAtom } from "../base"
+import { StringStorageParser } from "../utils/string-storage"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {
@@ -71,7 +68,7 @@ describe("Test localStorage", () => {
     const isMapEntry = (value: unknown): value is [unknown, unknown] =>
       Array.isArray(value) && value.length === 2
 
-    const mapParser: LocalStorageParser<Map<unknown, unknown>> = {
+    const mapParser: StringStorageParser<Map<unknown, unknown>> = {
       parse: text => {
         const value: unknown = JSON.parse(text)
         if (!Array.isArray(value) || !value.every(isMapEntry))

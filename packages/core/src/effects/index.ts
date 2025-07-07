@@ -2,7 +2,7 @@ export { createEffect } from "./create-effect"
 export type { Effect, EffectPayload, EffectAtomCallback } from "./create-effect"
 
 export { localStorage } from "./local-storage"
-export type { LocalStorageOptions, LocalStorageParser } from "./local-storage"
+export type { LocalStorageOptions } from "./local-storage"
 
 export { indexedDb } from "./indexed-db"
 export type { IndexedDbOptions } from "./indexed-db"
