@@ -69,7 +69,7 @@ const prepareRelease = async ({ root, workspaces, version }) => {
   await npm.run("build")
   spinner.step(`Package builds were completed`)
 
-  await updateVersions({ root, workspaces, version })
+  await updateVersions({ root, workspaces, version, modifier: "^" })
   await npm.install()
   spinner.step(`Package versions were updated`)
 
