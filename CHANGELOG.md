@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.1 (2025-07-08)
+
+### Bug Fixes
+
+- Make internal @yaasl dependency versions more flexible
+
 ## 0.12.0 (2025-07-07)
 
 ### Features
