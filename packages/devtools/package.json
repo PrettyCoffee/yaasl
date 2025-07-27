@@ -38,11 +38,11 @@
     "validate": "run-s lint test build"
   },
   "peerDependencies": {
-    "@yaasl/core": "^0.13.0-alpha.1",
+    "@yaasl/core": "^0.13.0-alpha.2",
     "@yaasl/utils": "^0.12.1"
   },
   "devDependencies": {
-    "@yaasl/core": "^0.13.0-alpha.1",
+    "@yaasl/core": "^0.13.0-alpha.2",
     "@yaasl/utils": "^0.12.1"
   },
   "lint-staged": {

@@ -40,13 +40,13 @@
     "validate": "run-s lint test build"
   },
   "peerDependencies": {
-    "@yaasl/core": "^0.13.0-alpha.1",
+    "@yaasl/core": "^0.13.0-alpha.2",
     "@yaasl/utils": "^0.12.1",
     "preact": ">=10"
   },
   "devDependencies": {
     "@testing-library/preact": "^3.2.4",
-    "@yaasl/core": "^0.13.0-alpha.1",
+    "@yaasl/core": "^0.13.0-alpha.2",
     "@yaasl/utils": "^0.12.1",
     "preact": "^10.26.9"
   },
