@@ -23,8 +23,9 @@ export interface EffectActions<Options, AtomValue> {
   didInit?: (
     payload: EffectPayload<Options, AtomValue>
   ) => PromiseLike<any> | void
+
   /** Action to be called when the atom's value is set */
-  set?: (payload: EffectPayload<Options, AtomValue>) => void
+  set?: (payload: EffectPayload<Options, AtomValue>) => PromiseLike<any> | void
 }
 
 interface EffectSetupProps<Options, AtomValue> {
