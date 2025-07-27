@@ -1,7 +1,7 @@
 import { getWindow } from "@yaasl/utils"
 
 import { createEffect } from "./create-effect"
-import { CONFIG } from "../base"
+import { getScopedKey } from "../utils/get-scoped-key"
 import { StringStorage, StringStorageParser } from "../utils/string-storage"
 
 export interface SessionStorageOptions {
@@ -30,8 +30,7 @@ export const sessionStorage = createEffect<
   SessionStorageOptions | undefined,
   unknown
 >(({ atom, options = {} }) => {
-  const internalKey = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
-  const { key = internalKey, parser } = options
+  const { key = getScopedKey(atom.name), parser } = options
 
   const storage = new StringStorage<unknown>({
     key,

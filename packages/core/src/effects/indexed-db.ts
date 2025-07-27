@@ -2,12 +2,13 @@ import { getWindow } from "@yaasl/utils"
 
 import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
+import { getScopedKey } from "../utils/get-scoped-key"
 import { IdbStore } from "../utils/idb-store"
 
 let atomDb: IdbStore<unknown> | null = null
 
 const createSync = (storeKey: string, onTabSync: () => void) => {
-  const observingKey = storeKey + "/last-change"
+  const observingKey = getScopedKey(storeKey) + "/last-change"
 
   let changeTrigger: "sync" | "push" | null = null
   getWindow()?.addEventListener("storage", ({ key }) => {

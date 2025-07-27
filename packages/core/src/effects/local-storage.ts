@@ -1,7 +1,7 @@
 import { getWindow } from "@yaasl/utils"
 
 import { createEffect } from "./create-effect"
-import { CONFIG } from "../base"
+import { getScopedKey } from "../utils/get-scoped-key"
 import { StringStorage, StringStorageParser } from "../utils/string-storage"
 
 const syncOverBrowserTabs = (
@@ -41,8 +41,7 @@ export const localStorage = createEffect<
   LocalStorageOptions | undefined,
   unknown
 >(({ atom, options = {} }) => {
-  const internalKey = CONFIG.name ? `${CONFIG.name}/${atom.name}` : atom.name
-  const { key = internalKey, parser, noTabSync } = options
+  const { key = getScopedKey(atom.name), parser, noTabSync } = options
 
   const storage = new StringStorage<unknown>({
     key,
