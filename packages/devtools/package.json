@@ -37,7 +37,11 @@
     "lint:fix": "eslint ./src --fix",
     "validate": "run-s lint test build"
   },
-  "dependencies": {
+  "peerDependencies": {
+    "@yaasl/core": "^0.12.1",
+    "@yaasl/utils": "^0.12.1"
+  },
+  "devDependencies": {
     "@yaasl/core": "^0.12.1",
     "@yaasl/utils": "^0.12.1"
   },

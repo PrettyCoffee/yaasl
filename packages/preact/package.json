@@ -40,14 +40,14 @@
     "validate": "run-s lint test build"
   },
   "peerDependencies": {
-    "preact": ">=10"
-  },
-  "dependencies": {
     "@yaasl/core": "^0.12.1",
-    "@yaasl/utils": "^0.12.1"
+    "@yaasl/utils": "^0.12.1",
+    "preact": ">=10"
   },
   "devDependencies": {
     "@testing-library/preact": "^3.2.4",
+    "@yaasl/core": "^0.12.1",
+    "@yaasl/utils": "^0.12.1",
     "preact": "^10.26.9"
   },
   "lint-staged": {
