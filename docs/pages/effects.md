@@ -205,6 +205,7 @@ Will use one database and store for all atoms with your `CONFIG.name` as name or
 Parameters:
 
 - `options.key`: Use your own store key. Will be `atom.name` by default.
+- `options.noTabSync`: Disable the synchronization of values over browser tabs.
 
 Returns: The effect to be used on atoms.
 

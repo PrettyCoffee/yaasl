@@ -1,12 +1,42 @@
+import { getWindow } from "@yaasl/utils"
+
 import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
 import { IdbStore } from "../utils/idb-store"
 
 let atomDb: IdbStore<unknown> | null = null
 
+const createSync = (storeKey: string, onTabSync: () => void) => {
+  const observingKey = storeKey + "/last-change"
+
+  let changeTrigger: "sync" | "push" | null = null
+  getWindow()?.addEventListener("storage", ({ key }) => {
+    if (observingKey !== key) return
+    if (changeTrigger === "push") {
+      changeTrigger = null
+      return
+    }
+    changeTrigger = "sync"
+    onTabSync()
+  })
+
+  return {
+    pushSync: () => {
+      if (changeTrigger === "sync") {
+        changeTrigger = null
+        return
+      }
+      changeTrigger = "push"
+      getWindow()?.localStorage.setItem(observingKey, Date.now().toString())
+    },
+  }
+}
+
 export interface IndexedDbOptions {
   /** Use your own store key. Will be `atom.name` by default. */
   key?: string
+  /** Disable the synchronization of values over browser tabs */
+  noTabSync?: boolean
 }
 
 /** Middleware to save and load atom values to an indexedDb.
@@ -22,6 +52,16 @@ export interface IndexedDbOptions {
 export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
   ({ atom, options }) => {
     const key = options?.key ?? atom.name
+
+    const { pushSync } = options?.noTabSync
+      ? {}
+      : createSync(key, () => {
+          void atomDb?.get(key).then(value => {
+            if (!value) return
+            atom.set(value)
+          })
+        })
+
     return {
       sort: "pre",
       init: async ({ atom, set }) => {
@@ -36,8 +76,9 @@ export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
           await atomDb.set(key, atom.defaultValue)
         }
       },
-      set: ({ value }) => {
-        void atomDb?.set(key, value)
+      set: async ({ value }) => {
+        await atomDb?.set(key, value)
+        pushSync?.()
       },
     }
   }
