@@ -12,7 +12,7 @@
     "@yaasl/devtools": "../packages/devtools",
     "@yaasl/react": "../packages/react",
     "docsify": "^4.13.1",
-    "docsify-copy-code": "^3.0.0",
+    "docsify-copy-code": "^3.0.2",
     "docsify-pagination": "^2.10.1",
     "docsify-tabs": "^1.6.3",
     "prismjs": "^1.30.0"
