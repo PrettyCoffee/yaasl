@@ -77,9 +77,9 @@ export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
           await atomDb.set(key, atom.defaultValue)
         }
       },
-      set: async ({ value }) => {
-        await atomDb?.set(key, value)
-        pushSync?.()
+      set: ({ value }) => {
+        // don't wait to set the atom value,directly pass it into the atom
+        void atomDb?.set(key, value).then(pushSync)
       },
     }
   }
