@@ -1,6 +1,6 @@
 {
   "name": "@yaasl/core",
-  "version": "0.13.0-alpha.2",
+  "version": "0.13.0-alpha.3",
   "description": "yet another atomic store library (vanilla-js)",
   "author": "PrettyCoffee",
   "license": "MIT",
