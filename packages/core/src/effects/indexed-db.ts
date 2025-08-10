@@ -1,5 +1,3 @@
-import { getWindow } from "@yaasl/utils"
-
 import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
 import { getScopedKey } from "../utils/get-scoped-key"
@@ -8,28 +6,12 @@ import { IdbStore } from "../utils/idb-store"
 let atomDb: IdbStore<unknown> | null = null
 
 const createSync = (storeKey: string, onTabSync: () => void) => {
-  const observingKey = getScopedKey(storeKey) + "/last-change"
-
-  let changeTrigger: "sync" | "push" | null = null
-  getWindow()?.addEventListener("storage", ({ key }) => {
-    if (observingKey !== key) return
-    if (changeTrigger === "push") {
-      changeTrigger = null
-      return
-    }
-    changeTrigger = "sync"
-    onTabSync()
-  })
+  const key = getScopedKey(storeKey)
+  const channel = new BroadcastChannel(key)
+  channel.onmessage = () => onTabSync()
 
   return {
-    pushSync: () => {
-      if (changeTrigger === "sync") {
-        changeTrigger = null
-        return
-      }
-      changeTrigger = "push"
-      getWindow()?.localStorage.setItem(observingKey, Date.now().toString())
-    },
+    pushSync: () => channel.postMessage("sync"),
   }
 }
 
