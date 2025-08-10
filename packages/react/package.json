@@ -40,14 +40,14 @@
     "validate": "run-s lint test build"
   },
   "peerDependencies": {
-    "@yaasl/core": "^0.13.0-alpha.3",
+    "@yaasl/core": "^0.13.0-alpha.4",
     "@yaasl/utils": "^0.12.1",
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.0",
     "@types/react": "^18.3.23",
-    "@yaasl/core": "^0.13.0-alpha.3",
+    "@yaasl/core": "^0.13.0-alpha.4",
     "@yaasl/utils": "^0.12.1",
     "react-dom": "^18.3.1",
     "react": "^18.3.1"
