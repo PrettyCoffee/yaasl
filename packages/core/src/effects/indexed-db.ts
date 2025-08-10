@@ -8,10 +8,28 @@ let atomDb: IdbStore<unknown> | null = null
 const createSync = (storeKey: string, onTabSync: () => void) => {
   const key = getScopedKey(storeKey)
   const channel = new BroadcastChannel(key)
-  channel.onmessage = () => onTabSync()
+
+  let changeTrigger: "self" | "sync" | null = null
+  channel.onmessage = () => {
+    console.log(changeTrigger)
+    if (changeTrigger === "self") {
+      changeTrigger = null
+      return
+    }
+    changeTrigger = "sync"
+    onTabSync()
+  }
 
   return {
-    pushSync: () => channel.postMessage("sync"),
+    pushSync: () => {
+      console.log(changeTrigger)
+      if (changeTrigger === "sync") {
+        changeTrigger = null
+        return
+      }
+      changeTrigger = "self"
+      channel.postMessage("sync")
+    },
   }
 }
 
