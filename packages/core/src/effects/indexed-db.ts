@@ -11,7 +11,6 @@ const createSync = (storeKey: string, onTabSync: () => void) => {
 
   let changeTrigger: "self" | "sync" | null = null
   channel.onmessage = () => {
-    console.log(changeTrigger)
     if (changeTrigger === "self") {
       changeTrigger = null
       return
@@ -22,7 +21,6 @@ const createSync = (storeKey: string, onTabSync: () => void) => {
 
   return {
     pushSync: () => {
-      console.log(changeTrigger)
       if (changeTrigger === "sync") {
         changeTrigger = null
         return
@@ -77,9 +75,14 @@ export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
           await atomDb.set(key, atom.defaultValue)
         }
       },
-      set: ({ value }) => {
-        // don't wait to set the atom value,directly pass it into the atom
-        void atomDb?.set(key, value).then(pushSync)
+      set: ({ value, atom }) => {
+        const action =
+          value === atom.defaultValue
+            ? atomDb?.delete(key)
+            : atomDb?.set(key, value)
+
+        // don't wait to set the atom value, directly pass it into the atom
+        void action?.then(pushSync)
       },
     }
   }
