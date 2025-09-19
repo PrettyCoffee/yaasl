@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.13.0 (2025-09-19)
+
+### Features
+
+- **autoSort:** Add effect to sort atom values
+- **createEffect:** Allow returning promises in set action
+- **indexedDb:** Synchronize values over browser tabs
+
+### Bug Fixes
+
+- **indexedDb:** Prepend localStorage sync key with global app name
+- **indexedDb:** Prevent infinite loops when syncing over tabs
+- **indexedDb:** Remove items from database when setting atom.defaultValue
+- **indexedDb:** Set atom value without waiting for change in indexedDb
+
 ## 0.12.1 (2025-07-08)
 
 ### Bug Fixes
