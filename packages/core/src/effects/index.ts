@@ -1,6 +1,9 @@
 export { createEffect } from "./create-effect"
 export type { Effect, EffectPayload, EffectAtomCallback } from "./create-effect"
 
+export { autoSort } from "./auto-sort"
+export type { AutoSortOptions } from "./auto-sort"
+
 export { localStorage } from "./local-storage"
 export type { LocalStorageOptions } from "./local-storage"
 

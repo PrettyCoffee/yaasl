@@ -110,6 +110,36 @@ const clamp = createEffect<ClampOptions, number>(({ options }) => {
 
 <!-- tabs:end -->
 
+## autoSort
+
+Middleware to automatically sort the atom value.
+Only supports arrays and nullish values.
+
+### API
+
+Parameters:
+
+- `options.sortFn`: Function to sort the atom value.
+
+Returns: The effect to be used on atoms.
+
+### Usage Examples
+
+```ts
+const sortFn = (a: string, b: string) => a.localeCompare(b);
+
+const sortedAtom = createAtom({
+  defaultValue: ["c", "d", "b"],
+  effects: [autoSort({ sortFn })],
+});
+
+// sortedAtom.get() -> ["b", "c", "d"]
+
+sortedAtom.set((state) => [...state, "a"]);
+
+// sortedAtom.get() -> ["a", "b", "c", "d"]
+```
+
 ## localStorage
 
 Middleware to save and load atom values to the local storage.
