@@ -48,7 +48,7 @@
     "@testing-library/preact": "^3.2.4",
     "@yaasl/core": "^0.13.0",
     "@yaasl/utils": "^0.13.0",
-    "preact": "^10.26.9"
+    "preact": "^10.27.2"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
