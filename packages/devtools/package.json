@@ -1,6 +1,6 @@
 {
   "name": "@yaasl/devtools",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "yaasl debugging tools (e.g. redux-devtools-extension middleware)",
   "author": "PrettyCoffee",
   "license": "MIT",
@@ -38,12 +38,12 @@
     "validate": "run-s lint test build"
   },
   "peerDependencies": {
-    "@yaasl/core": "^0.13.0",
-    "@yaasl/utils": "^0.13.0"
+    "@yaasl/core": "^0.13.1",
+    "@yaasl/utils": "^0.13.1"
   },
   "devDependencies": {
-    "@yaasl/core": "^0.13.0",
-    "@yaasl/utils": "^0.13.0"
+    "@yaasl/core": "^0.13.1",
+    "@yaasl/utils": "^0.13.1"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

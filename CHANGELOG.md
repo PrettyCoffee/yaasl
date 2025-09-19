@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.1 (2025-09-19)
+
+- Update dependencies
+
 ## 0.13.0 (2025-09-19)
 
 ### Features
