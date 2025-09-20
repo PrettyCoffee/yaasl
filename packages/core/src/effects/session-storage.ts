@@ -21,7 +21,6 @@ export interface SessionStorageOptions {
  * @param {SessionStorageOptions | undefined} options
  * @param options.key Use your own key for the session storage.
  *   Will be "{config-name}/{atom-name}" by default.
- * @param options.noTabSync Disable the synchronization of values over browser tabs.
  * @param options.parser Custom functions to stringify and parse values. Defaults to JSON.stringify and JSON.parse. Use this when handling complex datatypes like Maps or Sets.
  *
  * @returns The effect to be used on atoms.

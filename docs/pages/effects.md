@@ -230,12 +230,13 @@ Middleware to save and load atom values to an indexedDb.
 
 Will use one database and store for all atoms with your `CONFIG.name` as name or `yaasl` if not set.
 
+Should be used in combination with the `sync` effect, to ensure value integrity.
+
 ### API
 
 Parameters:
 
 - `options.key`: Use your own store key. Will be `atom.name` by default.
-- `options.noTabSync`: Disable the synchronization of values over browser tabs.
 
 Returns: The effect to be used on atoms.
 
