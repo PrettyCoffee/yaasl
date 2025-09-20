@@ -18,3 +18,5 @@ export type { ExpirationOptions } from "./expiration"
 
 export { migration, createMigrationStep } from "./migration"
 export type { MigrationOptions, MigrationStep } from "./migration"
+
+export { sync } from "./sync"

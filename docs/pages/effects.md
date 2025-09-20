@@ -253,6 +253,25 @@ const atomWithDb = createAtom({
 });
 ```
 
+## sync
+
+Effect to synchronize the atoms value over tabs.
+
+### API
+
+Parameters: None
+
+Returns: The effect to be used on atoms.
+
+### Usage Examples
+
+```ts
+const syncedAtom = createAtom({
+  defaultValue: 42,
+  effects: [sync()],
+});
+```
+
 ## expiration
 
 Effect to make an atom value expirable and reset to its defaulValue.

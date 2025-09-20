@@ -5,6 +5,7 @@ import {
   expiration,
   indexedDb,
   useAtomValue,
+  sync,
 } from "@yaasl/preact"
 
 CONFIG.name = "demo-preact"
@@ -16,6 +17,7 @@ const counter = createAtom({
     // localStorage(),
     indexedDb(),
     expiration({ expiresIn: 5000 }),
+    sync(),
     reduxDevtools(),
   ],
 })

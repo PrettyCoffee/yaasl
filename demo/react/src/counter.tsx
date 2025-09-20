@@ -1,11 +1,5 @@
 import { reduxDevtools } from "@yaasl/devtools"
-import {
-  createAtom,
-  CONFIG,
-  indexedDb,
-  expiration,
-  useAtomValue,
-} from "@yaasl/react"
+import { createAtom, CONFIG, indexedDb, useAtomValue, sync } from "@yaasl/react"
 
 CONFIG.name = "demo-react"
 
@@ -15,7 +9,8 @@ const counter = createAtom({
   effects: [
     // localStorage(),
     indexedDb(),
-    expiration({ expiresIn: 5000 }),
+    //expiration({ expiresIn: 5000 }),
+    sync(),
     reduxDevtools(),
   ],
 })

@@ -1,4 +1,4 @@
-import { createAtom, CONFIG, indexedDb, expiration } from "@yaasl/core"
+import { createAtom, CONFIG, indexedDb, expiration, sync } from "@yaasl/core"
 import { reduxDevtools } from "@yaasl/devtools"
 
 CONFIG.name = "demo-vanilla"
@@ -10,6 +10,7 @@ const counter = createAtom({
     // localStorage(),
     indexedDb(),
     expiration({ expiresIn: 5000 }),
+    sync(),
     reduxDevtools(),
   ],
 })
