@@ -19,7 +19,9 @@ export class Queue<T = void> {
     )
 
     this.queue = []
-    this.last = result.then(value => {
+    this.last = result
+
+    result.then(value => {
       if (this.last === result) {
         this.last = null
       }
