@@ -1,4 +1,10 @@
-import { Updater, updater, Thenable, toVoid } from "@yaasl/utils"
+import {
+  Updater,
+  updater,
+  Thenable,
+  toVoid,
+  consoleMessage,
+} from "@yaasl/utils"
 
 import { CONFIG } from "./config"
 import { Stateful } from "./stateful"
@@ -71,6 +77,16 @@ export class Atom<Value = unknown> extends Stateful<Value> {
    * new value based off the previous value.
    */
   public set(next: Updater<Value>) {
+    if (this.didInit !== true) {
+      throw new Error(
+        consoleMessage(
+          "Tried to set a value during initialization. " +
+            "You are probably using an async effect. " +
+            "Use `await atom.didInit` to wait for the initialization process to be finished.",
+          { scope: this.name }
+        )
+      )
+    }
     const oldState = this.get()
     const newState = updater(next, oldState)
     if (oldState === newState) return

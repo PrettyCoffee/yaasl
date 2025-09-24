@@ -40,6 +40,7 @@ export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
         }
       },
       set: ({ value, atom }) => {
+        // Don't wait for promises since this would cause lag
         if (value === atom.defaultValue) {
           void atomDb?.delete(key)
         } else {

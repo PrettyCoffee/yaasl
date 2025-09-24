@@ -287,6 +287,23 @@ describe("Test createEffect", () => {
       expect(testAtom.didInit).toBe(true)
     })
 
+    it("throws when trying to set value while initializing", async () => {
+      const effect = createEffect<undefined, number>({
+        init: ({ value, set }) => sleep(10).then(() => set(value + 1)),
+      })
+
+      const testAtom = createAtom({
+        defaultValue,
+        effects: [effect()],
+      })
+
+      expect(() => testAtom.set("throw")).toThrow(
+        "Tried to set a value during initialization."
+      )
+      await testAtom.didInit
+      expect(() => testAtom.set("no throw")).not.toThrow()
+    })
+
     it("persists the value over multiple async effect actions", async () => {
       const values: number[] = []
       const counterEffect = createEffect<undefined, number>({
