@@ -6,7 +6,7 @@ const promisifyRequest = <T>(request: IDBRequest<T>): Promise<T> =>
     request.onerror = () => reject(request.error)
   })
 
-export class IdbStore<T> {
+export class IdbStore<T = unknown> {
   private database?: Promise<IDBDatabase>
 
   constructor(private name: string) {
@@ -27,6 +27,14 @@ export class IdbStore<T> {
   private async getStore(mode: IDBTransactionMode) {
     const database = await this.database
     return database?.transaction(this.name, mode).objectStore(this.name)
+  }
+
+  public getAllKeys() {
+    return this.getStore("readonly").then(store =>
+      !store
+        ? []
+        : promisifyRequest(store.getAllKeys()).then(keys => keys.map(String))
+    )
   }
 
   public async get(key: string): Promise<T | undefined> {

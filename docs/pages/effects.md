@@ -240,6 +240,8 @@ Parameters:
 
 Returns: The effect to be used on atoms.
 
+> Note: The `indexedDb` effect has a helper `indexedDb.getAllKeys()` attached, to retreive all keys that are currently used inside the indexedDb store.
+
 ### Usage Examples
 
 ```ts

@@ -2,7 +2,14 @@ import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
 import { IdbStore } from "../utils/idb-store"
 
-let atomDb: IdbStore<unknown> | null = null
+let atomDb: IdbStore | null = null
+
+const getAtomDb = () => {
+  if (!atomDb) {
+    atomDb = new IdbStore(CONFIG.name ?? "yaasl")
+  }
+  return atomDb
+}
 
 export interface IndexedDbOptions {
   /** Use your own store key. Will be `atom.name` by default. */
@@ -21,16 +28,14 @@ export interface IndexedDbOptions {
  *
  * @returns The effect to be used on atoms.
  **/
-export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
-  ({ atom, options }) => {
+export const indexedDb = Object.assign(
+  createEffect<IndexedDbOptions | undefined, unknown>(({ atom, options }) => {
     const key = options?.key ?? atom.name
 
     return {
       sort: "pre",
       init: async ({ atom, set }) => {
-        if (!atomDb) {
-          atomDb = new IdbStore(CONFIG.name ?? "yaasl")
-        }
+        const atomDb = getAtomDb()
 
         const existing = await atomDb.get(key)
         if (existing != null) {
@@ -48,5 +53,8 @@ export const indexedDb = createEffect<IndexedDbOptions | undefined, unknown>(
         }
       },
     }
+  }),
+  {
+    getAllKeys: () => getAtomDb().getAllKeys(),
   }
 )
