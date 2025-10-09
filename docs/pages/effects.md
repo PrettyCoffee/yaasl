@@ -30,7 +30,7 @@ Parameters of effect actions:
 - `set`: Function to set the value of the atom
 - `atom`: The atom which the effect is applied on
 
-**Note:** Using `atom.set` within an effect may cause unintended behavior, such as recursive calls and inconsistencies. Use the provided `set` function instead.
+?> Using `atom.set` within an effect may cause unintended behavior, such as recursive calls and inconsistencies. Use the provided `set` function instead.
 
 ### Usage Examples
 
@@ -307,13 +307,11 @@ const syncedAtom = createAtom({
 
 Effect to make an atom value expirable and reset to its defaulValue.
 
-**Note:** When using `expiresAt`, a function returning the date should be prefered since using a static date might end in an infinite loop.
-
 ### API
 
 Parameters:
 
-- `options.expiresAt`: Date at which the value expires
+- `options.expiresAt`: Date at which the value expires. Using a function returning the date should be prefered here, since using a static date might end in an infinite loop.
 - `options.expiresIn`: Milliseconds in which the value expires. Will be ignored if expiresAt is set.
 
 Returns: The effect to be used on atoms.
@@ -363,7 +361,7 @@ Parameters:
 
 - `options.steps`: An array of migration steps to perform for outdated values.
 
-  **Note:** One step must have a `previous` version set to null as entry point.
+  !> One step must have a `previous` version set to null as entry point.
 
 Returns: The effect to be used on atoms.
 

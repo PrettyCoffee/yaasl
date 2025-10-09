@@ -30,10 +30,8 @@ export interface ExpirationOptions {
 
 /** Effect to make an atom value expirable and reset to its defaulValue.
  *
- * __Note:__ When using `expiresAt`, a function returning the date should be prefered since using a static date might end in an infinite loop.
- *
  * @param {ExpirationOptions | undefined} options
- * @param options.expiresAt Date at which the value expires
+ * @param options.expiresAt Date at which the value expires. Using a function returning the date should be prefered here, since using a static date might end in an infinite loop.
  * @param options.expiresIn Milliseconds in which the value expires. Will be ignored if expiresAt is set.
  *
  * @returns The effect to be used on atoms.
