@@ -240,21 +240,49 @@ Parameters:
 
 Returns: The effect to be used on atoms.
 
-!> The `indexedDb` effect has a helper `indexedDb.getAllKeys()` attached, to retreive all keys that are currently used inside the indexedDb store.
+### Store API
+
+The `indexedDb` effect also exposes multiple helpers to interact with the created indexedDb store bindings:
+
+- `indexedDb.getAllKeys()`: Retreive all keys currently in use
+- `indexedDb.get(key)`: Retrieve a stored value
+- `indexedDb.delete(key)`: Delete a stored value
+- `indexedDb.set(key, value)`: Store a value
+
+?> Avoid using these if possible, as they will not trigger changes inside related atoms! Only use the helpers when needing granular control over the store, e.g. when creating a custom effect.
 
 ### Usage Examples
 
+<!-- tabs:start -->
+
+#### **Effect API**
+
 ```ts
 const atomWithDb = createAtom({
+  name: "demo-atom",
   defaultValue: "my-value",
   effects: [indexedDb()],
 });
 
 const atomWithDb = createAtom({
+  name: "demo-atom",
   defaultValue: "my-value",
   effects: [indexedDb({ key: "my-key" })],
 });
 ```
+
+#### **Store API**
+
+```ts
+const demo = async () => {
+  const keys = await indexedDb.getAllKeys();
+  const value = await indexedDb.get("demo-atom");
+  await indexedDb.delete("demo-atom");
+  await indexedDb.set("demo-atom", value);
+};
+```
+
+<!-- tabs:end -->
 
 ## sync
 

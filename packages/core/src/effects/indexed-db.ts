@@ -55,6 +55,9 @@ export const indexedDb = Object.assign(
     }
   }),
   {
+    get: (key: string) => getAtomDb().get(key),
     getAllKeys: () => getAtomDb().getAllKeys(),
+    set: (key: string, value: unknown) => getAtomDb().set(key, value),
+    delete: (key: string) => getAtomDb().delete(key),
   }
 )
