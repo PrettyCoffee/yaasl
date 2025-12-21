@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.14.0 (2025-12-21)
+
+### Breaking Changes
+
+- **indexedDb:** Remove auto tab sync feature in favor of sync effect
+
+### Features
+
+- **createAtom:** Throw error when using set() during initialization
+- **indexedDb:** Add helper to retrieve used store keys
+- **indexedDb:** Add helpers for direct store access
+- **sync:** Add effect to sync atom values over browser tabs
+
+### Bug Fixes
+
+- Don't run synchronous effects as promises
+
 ## 0.13.1 (2025-09-19)
 
 - Update dependencies
