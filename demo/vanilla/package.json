@@ -16,7 +16,7 @@
     "@yaasl/devtools": "file:../../packages/devtools"
   },
   "devDependencies": {
-    "vite": "^7.1.9"
+    "vite": "^7.3.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

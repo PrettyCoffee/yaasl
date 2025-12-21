@@ -45,10 +45,9 @@
     "preact": ">=10"
   },
   "devDependencies": {
-    "@testing-library/preact": "^3.2.4",
     "@yaasl/core": "^0.14.0-alpha.2",
     "@yaasl/utils": "^0.13.1",
-    "preact": "^10.27.2"
+    "preact": "^10.28.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
