@@ -4,7 +4,7 @@ import {
   CONFIG,
   expiration,
   indexedDb,
-  useAtomValue,
+  useAtom,
   sync,
 } from "@yaasl/preact"
 
@@ -25,7 +25,7 @@ const counter = createAtom({
 counter.subscribe(value => console.log("counter", value))
 
 export const Counter = () => {
-  const { value } = useAtomValue(counter)
+  const { value } = useAtom(counter)
 
   const onClick = () => counter.set(({ value }) => ({ value: value + 1 }))
 

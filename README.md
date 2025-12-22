@@ -128,7 +128,7 @@ const counter = createAtom({
 
 export const Counter = () => {
   // Use the atom like you would use a state
-  const value = useAtomValue(counter);
+  const value = useAtom(counter);
 
   const onClick = () => counter.set((previous) => previous + 1);
 

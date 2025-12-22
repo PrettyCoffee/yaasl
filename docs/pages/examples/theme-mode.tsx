@@ -1,6 +1,6 @@
 import {
   createSelector,
-  useAtomValue,
+  useAtom,
   localStorage,
   createAtom,
   createActions,
@@ -54,8 +54,8 @@ themeMode.subscribe(theme =>
 
 /// [useThemeMode]
 export const useThemeMode = () => {
-  const theme = useAtomValue(themeMode)
-  const mode = useAtomValue(localMode)
+  const theme = useAtom(themeMode)
+  const mode = useAtom(localMode)
   return { mode, theme, nextMode: modeActions.next }
 }
 /// [useThemeMode]

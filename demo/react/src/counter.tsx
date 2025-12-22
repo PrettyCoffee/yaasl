@@ -3,7 +3,7 @@ import {
   createAtom,
   CONFIG,
   indexedDb,
-  useAtomValue,
+  useAtom,
   sync,
   expiration,
 } from "@yaasl/react"
@@ -25,7 +25,7 @@ const counter = createAtom({
 counter.subscribe(value => console.log("counter", value))
 
 export const Counter = () => {
-  const { value } = useAtomValue(counter)
+  const { value } = useAtom(counter)
 
   const onClick = () => counter.set(({ value }) => ({ value: value + 1 }))
 

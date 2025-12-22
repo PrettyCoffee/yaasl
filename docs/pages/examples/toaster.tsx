@@ -1,4 +1,4 @@
-import { createSlice, useAtomValue } from "@yaasl/react"
+import { createSlice, useAtom } from "@yaasl/react"
 
 /// [toastList]
 interface ToastProps {
@@ -47,7 +47,7 @@ fetch("https://some-api.com")
 
 /// [useToasts]
 export const useToasts = () => {
-  const toasts = useAtomValue(toastList)
+  const toasts = useAtom(toastList)
   return { toasts, close: toastList.actions.close }
 }
 /// [useToasts]

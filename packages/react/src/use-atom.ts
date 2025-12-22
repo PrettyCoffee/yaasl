@@ -8,7 +8,7 @@ import type { Stateful } from "@yaasl/core"
  *
  * @returns The atom's value.
  **/
-export const useAtomValue = <ValueType>(atom: Stateful<ValueType>) =>
+export const useAtom = <ValueType>(atom: Stateful<ValueType>) =>
   useSyncExternalStore(
     set => atom.subscribe(set),
     () => atom.get(),

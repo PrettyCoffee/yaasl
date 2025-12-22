@@ -2,7 +2,7 @@
 
 Hooks to use all kinds of atoms in an React environment.
 
-## useAtomValue
+## useAtom
 
 Use an atom's value in the React lifecycle.
 
@@ -23,7 +23,7 @@ Returns: The atom's value.
 ```tsx
 const myAtom = createAtom({ defaultValue: 0 });
 const MyComponent = () => {
-  const value = useAtomValue(myAtom);
+  const value = useAtom(myAtom);
   return <span>value is {value}</span>;
 };
 ```
@@ -34,7 +34,7 @@ const MyComponent = () => {
 const myAtom = createAtom({ defaultValue: { count: 0 } });
 const count = createSelector(myAtom, "count");
 const MyComponent = () => {
-  const value = useAtomValue(count);
+  const value = useAtom(count);
   return <span>value is {value}</span>;
 };
 ```
@@ -49,8 +49,8 @@ const mySlice = createSlice({
   },
 });
 const MyComponent = () => {
-  const slice = useAtomValue(mySlice);
-  const count = useAtomValue(mySlice.selectors.count);
+  const slice = useAtom(mySlice);
+  const count = useAtom(mySlice.selectors.count);
 
   return <span>count is {count}</span>;
 };
