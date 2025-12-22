@@ -2,78 +2,47 @@ import { act, renderHook } from "@testing-library/react"
 import { createAtom, createDerived } from "@yaasl/core"
 import { it, describe, expect } from "vitest"
 
-import { useAtomValue, useSetAtom, useAtom } from "./use-atom"
+import { useAtomValue } from "./use-atom"
 
 const defaultValue = "test"
 const nextValue = "test 2"
 
-describe("Test useAtom", () => {
+describe("Test useAtomValue", () => {
   it("Returns value with useAtomValue", () => {
     const testAtom = createAtom({ defaultValue })
     const { result } = renderHook(useAtomValue, { initialProps: testAtom })
     expect(result.current).toBe(defaultValue)
   })
 
-  it("Returns setter with useSetAtom", () => {
+  it("Updates value with useAtomValue", () => {
     const testAtom = createAtom({ defaultValue })
-    const { result } = renderHook(useSetAtom, { initialProps: testAtom })
+    const { result } = renderHook(useAtomValue, { initialProps: testAtom })
+    expect(result.current).toBe(defaultValue)
+
     act(() => {
-      result.current(nextValue)
+      testAtom.set(nextValue)
     })
+    expect(result.current).toBe(nextValue)
     expect(testAtom.get()).toBe(nextValue)
-  })
-
-  it("Returns pair of value and setter with useAtom", () => {
-    const testAtom = createAtom({ defaultValue })
-    const { result } = renderHook(useAtom, { initialProps: testAtom })
-
-    expect(result.current[0]).toBe(defaultValue)
-    act(() => {
-      result.current[1](nextValue)
-    })
-    expect(result.current[0]).toBe(nextValue)
-    expect(testAtom.get()).toBe(nextValue)
-  })
-
-  it("Allows passing a function into the setter", () => {
-    const numberAtom = createAtom({ defaultValue: 0 })
-    const { result } = renderHook(useAtom, { initialProps: numberAtom })
-
-    act(() => {
-      result.current[1](prev => prev + 1)
-    })
-    expect(result.current[0]).toBe(1)
-    expect(numberAtom.get()).toBe(1)
   })
 })
 
-describe("Test useAtom with derived values", () => {
+describe("Test useAtomValue with derived values", () => {
   it("Returns the derive value", () => {
     const testAtom = createAtom({ defaultValue: 1 })
     const testDerive = createDerived(({ get }) => get(testAtom) * 2)
-    const { result } = renderHook(useAtom, { initialProps: testDerive })
-    expect(result.current[0]).toBe(2)
+    const { result } = renderHook(useAtomValue, { initialProps: testDerive })
+    expect(result.current).toBe(2)
   })
 
-  it("Throws an error if setter is used if derive is not settable", () => {
+  it("Updates the derive value", () => {
     const testAtom = createAtom({ defaultValue: 1 })
     const testDerive = createDerived(({ get }) => get(testAtom) * 2)
-    const { result } = renderHook(useAtom, { initialProps: testDerive })
-    expect(() => result.current[1](2)).toThrow()
-  })
+    const { result } = renderHook(useAtomValue, { initialProps: testDerive })
 
-  it("Uses settable derive atoms", () => {
-    const testAtom = createAtom({ defaultValue: 1 })
-    const testDerive = createDerived(
-      ({ get }) => get(testAtom) * 2,
-      ({ value, set }) => set(testAtom, value / 2)
-    )
-    const { result } = renderHook(useAtom, { initialProps: testDerive })
-    expect(result.current[0]).toBe(2)
     act(() => {
-      result.current[1](4)
+      testAtom.set(2)
     })
-    expect(testAtom.get()).toBe(2)
-    expect(result.current[0]).toBe(4)
+    expect(result.current).toBe(4)
   })
 })

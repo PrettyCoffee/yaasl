@@ -58,31 +58,6 @@ const MyComponent = () => {
 
 <!-- tabs:end -->
 
-## useSetAtom
-
-Set an atom's value in the React lifecycle.
-
-### API
-
-Parameters:
-
-- `atom`: Atom to be used.
-
-Returns: A setter function for the atom.
-
-### Usage Examples
-
-```tsx
-const myAtom = createAtom({ defaultValue: 0 });
-const MyComponent = () => {
-  const setValue = useSetAtom(myAtom);
-
-  const onClick = () => setValue((previous) => previous + 1);
-
-  return <button onClick={onClick}>Increment value</button>;
-};
-```
-
 ## useAtomDidInit
 
 Use an atom's initialization state in the React lifecycle.
@@ -104,61 +79,3 @@ const MyComponent = () => {
   return <span>{didInit ? "Initialization finished" : "Initializing..."}</span>;
 };
 ```
-
-## useAtom
-
-Use an atom's value and setter in the React lifecycle.
-
-### API
-
-Parameters:
-
-- `atom`: Atom to be used.
-
-Returns: A state value and state setter for the atom.
-
-- `[0]`: Stateful value of the atom.
-- `[1]`: Setter function for the atom. Will throw an error if the atom is not settable (e.g. selectors).
-- `[2]`: Boolean that indicates if the atom did finish initializing.
-
-### Usage Examples
-
-<!-- tabs:start -->
-
-#### **atom**
-
-```tsx
-const myAtom = createAtom({ defaultValue: 0 });
-const MyComponent = () => {
-  const [value, setValue] = useAtom(myAtom);
-
-  const onClick = () => setValue((previous) => previous + 1);
-
-  return <button onClick={onClick}>value is {value}</button>;
-};
-```
-
-#### **derived**
-
-```tsx
-const myAtom = createAtom({ defaultValue: 2 });
-const double = createDerived(
-  ({ get }) => get(myAtom) * 2,
-  ({ value, set }) => set(myAtom, value / 2),
-);
-
-const MyComponent = () => {
-  const value = useAtomValue(myAtom);
-  const [doubleValue, setDoubleValue] = useAtom(double);
-
-  const onClick = () => setDoubleValue(doubleValue + 2);
-
-  return (
-    <button onClick={onClick}>
-      {value} * 2 = {doubleValue}
-    </button>
-  );
-};
-```
-
-<!-- tabs:end -->
