@@ -1,6 +1,7 @@
 export * from "./get-window"
 export * from "./is-promise-like"
 export * from "./log"
+export * from "./memoize-function"
 export * from "./sleep"
 export * from "./thenable"
 export * from "./to-void"

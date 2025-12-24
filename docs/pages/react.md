@@ -79,3 +79,55 @@ const MyComponent = () => {
   return <span>{didInit ? "Initialization finished" : "Initializing..."}</span>;
 };
 ```
+
+## useSelector
+
+Compute a new value based on the state of an atom.
+
+### API
+
+Parameters:
+
+- `atom`: Atom to be used.
+- `selector`: Function to retrieve the new value.
+- `compare`: Function to compare the previous with a newer value. Defaults to a custom equality function.
+
+Returns: The computed value.
+
+### Usage Examples
+
+<!-- tabs:start -->
+
+#### **Nested value**
+
+```tsx
+const myAtom = createAtom({ defaultValue: { value: 1 } });
+const MyComponent = () => {
+  const value = useSelector(myAtom, (state) => state.value);
+  return <span>value is {value}</span>;
+};
+```
+
+#### **Computed value**
+
+```tsx
+const myAtom = createAtom({ defaultValue: { value: 1 } });
+const MyComponent = () => {
+  const doubled = useSelector(myAtom, (state) => state.value * 2);
+  return <span>value * 2 is {doubled}</span>;
+};
+```
+
+#### **Custom compare function**
+
+```tsx
+import { isEqual } from "lodash";
+
+const myAtom = createAtom({ defaultValue: { value: 1 } });
+const MyComponent = () => {
+  const value = useSelector(myAtom, (state) => state.value, isEqual);
+  return <span>value is {value}</span>;
+};
+```
+
+<!-- tabs:end -->
