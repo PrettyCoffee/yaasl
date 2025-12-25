@@ -74,26 +74,6 @@ describe("Test createSlice", () => {
     expect(slice.get()).toBe(16)
   })
 
-  it("Creates a slice with path selectors", () => {
-    const slice = createSlice({
-      defaultValue: { count: 0, deeper: { value: 0 } },
-      selectors: {
-        count: "count",
-        deeper: "deeper.value",
-      },
-    })
-
-    expect(slice).not.toHaveProperty("actions")
-    expect(slice).toHaveProperty("selectors")
-
-    expect(slice.selectors.count.get()).toBe(0)
-    expect(slice.selectors.deeper.get()).toBe(0)
-
-    slice.set({ count: 1, deeper: { value: 2 } })
-    expect(slice.selectors.count.get()).toBe(1)
-    expect(slice.selectors.deeper.get()).toBe(2)
-  })
-
   it("Creates a slice with combiner selectors", () => {
     const slice = createSlice({
       defaultValue: 0,

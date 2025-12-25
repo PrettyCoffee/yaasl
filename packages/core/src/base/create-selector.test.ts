@@ -30,188 +30,105 @@ beforeEach(() => {
 })
 
 describe("Test createSelector", () => {
-  describe("Path selector", () => {
-    it("Selects a value", () => {
-      const testAtom = createAtom({ defaultValue })
-      const selected = createSelector(testAtom, "value")
-      expect(selected.get()).toBe(defaultValue.value)
-    })
-
-    it("Selects a deep value", () => {
-      const testAtom = createAtom({ defaultValue })
-      const selected = createSelector(testAtom, "deep.deeper.value")
-      expect(selected.get()).toBe(defaultValue.deep.deeper.value)
-    })
-
-    it("Subscribes to selected value", () => {
-      const testAtom = createAtom({ defaultValue })
-      const selected = createSelector(testAtom, "value")
-
-      const onChange = vi.fn()
-      selected.subscribe(onChange)
-
-      expect(onChange).not.toHaveBeenCalled()
-
-      testAtom.set(prev => ({ ...prev, value: "next" }))
-      expect(selected.get()).toBe("next")
-      expect(onChange).toHaveBeenCalledTimes(1)
-    })
-
-    it("Only calls subscribers if selected value changes", () => {
-      const testAtom = createAtom({ defaultValue })
-      const selected = createSelector(testAtom, "value")
-
-      const onChange = vi.fn()
-      selected.subscribe(onChange)
-      expect(onChange).not.toHaveBeenCalled()
-
-      testAtom.set(prev => ({ ...prev, otherValue: "next" }))
-      expect(onChange).not.toHaveBeenCalled()
-    })
-
-    it("Can be destroyed", () => {
-      const action = vi.fn()
-      const testAtom = createAtom({ defaultValue })
-      const selected = createSelector(testAtom, "value")
-
-      selected.destroy()
-
-      expect(selected.isDestroyed).toBeTruthy()
-      expect(() => selected.get()).toThrow()
-      expect(() => selected.subscribe(action)).toThrow()
-    })
-
-    it("Will be destroyed if parent is destroyed", () => {
-      const action = vi.fn()
-      const testAtom = createAtom({ defaultValue })
-      const selected = createSelector(testAtom, "value")
-
-      testAtom.destroy()
-
-      expect(selected.isDestroyed).toBeTruthy()
-      expect(() => selected.get()).toThrow()
-      expect(() => selected.subscribe(action)).toThrow()
-    })
-
-    describe("synchronizes didInit status", () => {
-      it("Sets true if no effects were passed", () => {
-        const testAtom = createAtom({ defaultValue })
-        const selected = createSelector(testAtom, "value")
-        expect(selected.didInit).toBe(true)
-      })
-
-      it("Updates if effects are asynchronous", async () => {
-        const testAtom = createAtom({ defaultValue, effects: [initSleep()] })
-        const selected = createSelector(testAtom, "value")
-
-        expect(selected.didInit).toBeInstanceOf(Promise)
-        await selected.didInit
-        expect(selected.didInit).toBe(true)
-      })
-    })
+  it("Uses a state from one atom", () => {
+    const testAtom = createAtom({ defaultValue: 1 })
+    const selected = createSelector([testAtom], state => String(state))
+    expect(selected.get()).toBe("1")
   })
 
-  describe("Combiner selector", () => {
-    it("Uses a state from one atom", () => {
-      const testAtom = createAtom({ defaultValue: 1 })
-      const selected = createSelector([testAtom], state => String(state))
-      expect(selected.get()).toBe("1")
-    })
+  it("Uses a state from multiple atoms", () => {
+    const atom1 = createAtom({ defaultValue: 1 })
+    const atom2 = createAtom({ defaultValue: 2 })
+    const selected = createSelector(
+      [atom1, atom2],
+      (state1, state2) => state1 + state2
+    )
+    expect(selected.get()).toBe(3)
+  })
 
-    it("Uses a state from multiple atoms", () => {
+  it("Updates the state if an atom changes", () => {
+    const atom1 = createAtom({ defaultValue: 1 })
+    const atom2 = createAtom({ defaultValue: 2 })
+    const selected = createSelector(
+      [atom1, atom2],
+      (state1, state2) => state1 + state2
+    )
+
+    atom1.set(2)
+    expect(selected.get()).toBe(4)
+  })
+
+  it("Subscribes to selected value", () => {
+    const testAtom = createAtom({ defaultValue: 1 })
+    const selected = createSelector([testAtom], state => String(state))
+
+    const onChange = vi.fn()
+    selected.subscribe(onChange)
+
+    expect(onChange).not.toHaveBeenCalled()
+
+    testAtom.set(2)
+    expect(selected.get()).toBe("2")
+    expect(onChange).toHaveBeenCalledTimes(1)
+  })
+
+  it("Only calls subscribers if selected state changes", () => {
+    const testAtom = createAtom({ defaultValue })
+    const selected = createSelector([testAtom], state => state.value)
+
+    const onChange = vi.fn()
+    selected.subscribe(onChange)
+    expect(onChange).not.toHaveBeenCalled()
+
+    testAtom.set(prev => ({ ...prev, otherValue: "next" }))
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
+  describe("synchronizes didInit status", () => {
+    it("Sets true if no effects were passed", () => {
       const atom1 = createAtom({ defaultValue: 1 })
       const atom2 = createAtom({ defaultValue: 2 })
       const selected = createSelector(
         [atom1, atom2],
         (state1, state2) => state1 + state2
       )
-      expect(selected.get()).toBe(3)
+      expect(selected.didInit).toBe(true)
     })
 
-    it("Updates the state if an atom changes", () => {
+    it("Updates if effects are asynchronous", async () => {
       const atom1 = createAtom({ defaultValue: 1 })
-      const atom2 = createAtom({ defaultValue: 2 })
+      const atom2 = createAtom({ defaultValue: 2, effects: [initSleep()] })
       const selected = createSelector(
         [atom1, atom2],
         (state1, state2) => state1 + state2
       )
 
-      atom1.set(2)
-      expect(selected.get()).toBe(4)
+      expect(selected.didInit).toBeInstanceOf(Promise)
+      await selected.didInit
+      expect(selected.didInit).toBe(true)
     })
 
-    it("Subscribes to selected value", () => {
-      const testAtom = createAtom({ defaultValue: 1 })
-      const selected = createSelector([testAtom], state => String(state))
-
-      const onChange = vi.fn()
-      selected.subscribe(onChange)
-
-      expect(onChange).not.toHaveBeenCalled()
-
-      testAtom.set(2)
-      expect(selected.get()).toBe("2")
-      expect(onChange).toHaveBeenCalledTimes(1)
-    })
-
-    it("Only calls subscribers if selected state changes", () => {
-      const testAtom = createAtom({ defaultValue })
-      const selected = createSelector([testAtom], state => state.value)
-
-      const onChange = vi.fn()
-      selected.subscribe(onChange)
-      expect(onChange).not.toHaveBeenCalled()
-
-      testAtom.set(prev => ({ ...prev, otherValue: "next" }))
-      expect(onChange).not.toHaveBeenCalled()
-    })
-
-    describe("synchronizes didInit status", () => {
-      it("Sets true if no effects were passed", () => {
-        const atom1 = createAtom({ defaultValue: 1 })
-        const atom2 = createAtom({ defaultValue: 2 })
-        const selected = createSelector(
-          [atom1, atom2],
-          (state1, state2) => state1 + state2
-        )
-        expect(selected.didInit).toBe(true)
+    it("Updates if multiple effects are asynchronous", async () => {
+      const atom1 = createAtom({ defaultValue: 1, effects: [initSleep()] })
+      const atom2 = createAtom({
+        defaultValue: 2,
+        effects: [initSleep({ duration: 10 })],
       })
+      const selected = createSelector(
+        [atom1, atom2],
+        (state1, state2) => state1 + state2
+      )
 
-      it("Updates if effects are asynchronous", async () => {
-        const atom1 = createAtom({ defaultValue: 1 })
-        const atom2 = createAtom({ defaultValue: 2, effects: [initSleep()] })
-        const selected = createSelector(
-          [atom1, atom2],
-          (state1, state2) => state1 + state2
-        )
+      expect(selected.didInit).toBeInstanceOf(Promise)
 
-        expect(selected.didInit).toBeInstanceOf(Promise)
-        await selected.didInit
-        expect(selected.didInit).toBe(true)
-      })
+      await atom1.didInit
+      expect(atom1.didInit).toBe(true)
+      expect(atom2.didInit).toBeInstanceOf(Promise)
+      expect(selected.didInit).toBeInstanceOf(Promise)
 
-      it("Updates if multiple effects are asynchronous", async () => {
-        const atom1 = createAtom({ defaultValue: 1, effects: [initSleep()] })
-        const atom2 = createAtom({
-          defaultValue: 2,
-          effects: [initSleep({ duration: 10 })],
-        })
-        const selected = createSelector(
-          [atom1, atom2],
-          (state1, state2) => state1 + state2
-        )
-
-        expect(selected.didInit).toBeInstanceOf(Promise)
-
-        await atom1.didInit
-        expect(atom1.didInit).toBe(true)
-        expect(atom2.didInit).toBeInstanceOf(Promise)
-        expect(selected.didInit).toBeInstanceOf(Promise)
-
-        await atom2.didInit
-        await sleep(5) // Will need a short amount of time to set the state
-        expect(selected.didInit).toBe(true)
-      })
+      await atom2.didInit
+      await sleep(5) // Will need a short amount of time to set the state
+      expect(selected.didInit).toBe(true)
     })
   })
 })

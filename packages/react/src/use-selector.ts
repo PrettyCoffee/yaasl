@@ -13,7 +13,7 @@ type InferValuesFromAtoms<TAtoms, TValues extends unknown[] = []> =
 /** Compute a new value based on the state of an atom.
  *
  * @param atom Atom to be used.
- * @param selector Function to retrieve the new value.
+ * @param combiner Function to retrieve the new value.
  * @param compare Function to compare the previous with a newer result. Defaults to a custom equality function.
  *
  * @returns The computed value.
@@ -23,14 +23,14 @@ export const useSelector = <
   TResult,
 >(
   atoms: TAtoms,
-  selector: (...states: InferValuesFromAtoms<TAtoms>) => TResult,
+  combiner: (...states: InferValuesFromAtoms<TAtoms>) => TResult,
   compare?: (before: TResult, after: TResult) => boolean
 ) => {
-  const memoizedSelector = useRef(memoizeFunction(selector, compare))
+  const memoizedCombiner = useRef(memoizeFunction(combiner, compare))
 
   useEffect(() => {
-    memoizedSelector.current.resultFn = selector
-    memoizedSelector.current.compareResult = compare
+    memoizedCombiner.current.resultFn = combiner
+    memoizedCombiner.current.compareResult = compare
   })
 
   const subscribe = (onStoreChange: () => void) => {
@@ -45,7 +45,7 @@ export const useSelector = <
       atom.get()
     ) as InferValuesFromAtoms<TAtoms>
 
-    return memoizedSelector.current(...args)
+    return memoizedCombiner.current(...args)
   }
 
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot)

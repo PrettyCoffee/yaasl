@@ -40,47 +40,16 @@ const currentValue = myAtom.get();
 myAtom.subscribe((value) => console.log(value));
 ```
 
-## createSelector (key path)
+## createSelector
 
-Creates a value, selected from one atom with an object value by using a key path.
-
-### API
-
-Parameters:
-
-- `atom` The atom to select a value from. The internal state must be an object.
-- `path` The path to the value you want to select.
-
-Returns: A PathSelector instance.
-
-- `result.get`: Read the value of state.
-- `result.subscribe`: Subscribe to value changes.
-- `result.didInit`: State of the atom's effects initialization processes.
-  Will be a promise if the initialization is pending and `true` if finished.
-- `result.destroy`: Make this atom unusable and remove all references.
-
-### Usage Examples
-
-```ts
-const myAtom = createAtom({ defaultValue: { nested: { value: 42 } } });
-// Create a path selector
-const selected = createSelector(myAtom, "nested.value");
-
-// Use a selector
-const currentValue = selected.get();
-selected.subscribe((value) => console.log(value));
-```
-
-## createSelector (combiner)
-
-Creates a value, selected from multiple atoms by using a combiner function.
+Creates a value, selected from one or more atoms by using a combiner function.
 
 ### API
 
 Parameters:
 
-- `atoms` Atoms you need to combine to receive the new value.
-- `combiner` Combiner function to use the atom values and create a new value.
+- `atoms`: One or more atoms you need to combine to receive the new value.
+- `combiner`: Combiner function to use the atom values and create a new value.
 
 Returns: A CombinerSelector instance.
 

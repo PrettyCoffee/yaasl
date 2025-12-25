@@ -1,11 +1,7 @@
 import { Actions, Reducers, createActions } from "./create-actions"
 import { Atom, AtomConfig } from "./create-atom"
-import {
-  CombinerSelector,
-  ObjPath,
-  PathSelector,
-  createSelector,
-} from "./create-selector"
+import { CombinerSelector, createSelector } from "./create-selector"
+import { Stateful } from "./stateful"
 
 const isEmpty = (obj?: unknown): obj is undefined =>
   !obj || Object.keys(obj).length === 0
@@ -15,7 +11,7 @@ interface ReducersProp<State, R extends Reducers<State> | undefined> {
   reducers?: R
 }
 
-type Selectors<State> = Record<string, ObjPath<State> | ((state: State) => any)>
+type Selectors<State> = Record<string, (state: State) => any>
 
 type ConditionalActions<State, R> = keyof R extends never
   ? {}
@@ -31,20 +27,13 @@ interface SelectorsProp<State, S extends Selectors<State> | undefined> {
   selectors?: S
 }
 
-type GetSelector<State, S extends ObjPath<State> | ((state: State) => any)> =
-  S extends ObjPath<State>
-    ? PathSelector<State, S>
-    : S extends (state: State) => any
-      ? CombinerSelector<[Atom<State>], ReturnType<S>>
-      : never
-
 type ConditionalSelectors<State, S> = keyof S extends never
   ? {}
   : S extends Selectors<State>
     ? {
         /** Selectors to create new values based on the atom's value. */
         selectors: {
-          [K in keyof S]: GetSelector<State, S[K]>
+          [K in keyof S]: CombinerSelector<Stateful<State>, ReturnType<S[K]>>
         }
       }
     : {}
@@ -56,11 +45,9 @@ const createSelectors = <State, S extends Selectors<State>>(
   Object.fromEntries(
     Object.entries(selectors).map(([key, selector]) => [
       key,
-      typeof selector === "string"
-        ? createSelector(atom, selector)
-        : createSelector([atom], selector),
+      createSelector(atom, selector),
     ])
-  ) as { [K in keyof S]: GetSelector<State, S[K]> }
+  ) as { [K in keyof S]: CombinerSelector<Stateful<State>, ReturnType<S[K]>> }
 
 /** Creates a slice with actions and selectors.
  *
@@ -68,7 +55,7 @@ const createSelectors = <State, S extends Selectors<State>>(
  * @param config.name Name of the atom.
  * @param config.effects Effects that will be applied on the atom.
  * @param config.reducers Reducers for custom actions to set the atom's value.
- * @param config.selectors Path or combiner selectors to use the atom's values to create new ones.
+ * @param config.selectors Combiner selectors to use the atom's values to create new ones.
  *
  * @returns An atom instance with actions and selectors.
  **/

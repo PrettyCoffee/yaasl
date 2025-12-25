@@ -32,7 +32,7 @@ const MyComponent = () => {
 
 ```tsx
 const myAtom = createAtom({ defaultValue: { count: 0 } });
-const count = createSelector(myAtom, "count");
+const count = createSelector(myAtom, (state) => state.count);
 const MyComponent = () => {
   const value = useAtom(count);
   return <span>value is {value}</span>;
