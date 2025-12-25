@@ -58,4 +58,66 @@ describe("Test memoizeFunction", () => {
     select(next, 2)
     expect(calls).toBe(3)
   })
+
+  it("Uses updated resultFn function", () => {
+    const initialState = { a: "value a", b: "value b" }
+
+    let calls = 0
+    const selectorA = (state: typeof initialState) => {
+      calls += 1
+      return state.a
+    }
+    const selectorB = (state: typeof initialState) => {
+      calls += 1
+      return state.b
+    }
+
+    const select = memoizeFunction(selectorA)
+
+    expect(select(initialState)).toBe("value a")
+    expect(calls).toBe(1)
+    expect(select(initialState)).toBe("value a")
+    expect(calls).toBe(1)
+
+    select.resultFn = selectorB
+
+    expect(select(initialState)).toBe("value b")
+    expect(calls).toBe(2)
+    expect(select(initialState)).toBe("value b")
+    expect(calls).toBe(2)
+  })
+
+  it("Uses updated compareResult function", () => {
+    const select = memoizeFunction((state: typeof initialState) => ({
+      ...state.a.b,
+    }))
+
+    const results = [] as ReturnType<typeof select>[]
+
+    results.unshift(select({ a: { b: { c: 1 } } }))
+    results.unshift(select({ a: { b: { c: 1 } } }))
+    expect(results[0]).toBe(results[1])
+
+    select.compareResult = () => false
+
+    results.unshift(select({ a: { b: { c: 1 } } }))
+    expect(results[0]).not.toBe(results[1])
+    results.unshift(select({ a: { b: { c: 2 } } }))
+    expect(results[0]).not.toBe(results[1])
+
+    select.compareResult = () => true
+
+    results.unshift(select({ a: { b: { c: 1 } } }))
+    expect(results[0]).toBe(results[1])
+    results.unshift(select({ a: { b: { c: 2 } } }))
+    expect(results[0]).toBe(results[1])
+
+    // Goes back to deep equal if undefined
+    select.compareResult = undefined
+
+    results.unshift(select({ a: { b: { c: 2 } } }))
+    expect(results[0]).toBe(results[1])
+    results.unshift(select({ a: { b: { c: 2 } } }))
+    expect(results[0]).toBe(results[1])
+  })
 })

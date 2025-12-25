@@ -1,27 +1,37 @@
 import { deepCompare } from "./deep-compare"
 
-const compareArgs = (a: unknown[], b: unknown[]) =>
+const compareDeps = (a: unknown[], b: unknown[]) =>
   a.length === b.length && a.every((arg, index) => arg === b[index])
 
 export const memoizeFunction = <TArgs extends unknown[], TResult>(
   resultFn: (...args: TArgs) => TResult,
-  compare: (before: TResult, after: TResult) => boolean = deepCompare
+  compareResult?: (before: TResult, after: TResult) => boolean
 ) => {
-  let memoizedArgs = [] as unknown as TArgs
-  let memoizedValue = undefined as TResult
+  let lastDeps = [resultFn, compareResult, ...([] as unknown as TArgs)]
+  let lastResult = undefined as TResult
 
-  return (...args: TArgs) => {
-    if (compareArgs(memoizedArgs, args)) {
-      return memoizedValue
+  const memo = Object.assign(
+    (...args: TArgs) => {
+      const newDeps = [memo.resultFn, memo.compareResult, ...args]
+      if (compareDeps(lastDeps, newDeps)) {
+        return lastResult
+      } else {
+        lastDeps = newDeps
+      }
+
+      const value = memo.resultFn(...args)
+      if ((memo.compareResult ?? deepCompare)(lastResult, value)) {
+        return lastResult
+      } else {
+        lastResult = value
+        return value
+      }
+    },
+    {
+      resultFn,
+      compareResult,
     }
+  )
 
-    memoizedArgs = args
-    const value = resultFn(...args)
-    if (compare(memoizedValue, value)) {
-      return memoizedValue
-    }
-
-    memoizedValue = value
-    return value
-  }
+  return memo
 }

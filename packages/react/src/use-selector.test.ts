@@ -42,4 +42,24 @@ describe("Test useSelector", () => {
     expect(result.current).not.toBe(nextValue.nested)
     expect(result.current).toStrictEqual(nextValue.nested)
   })
+
+  it("Uses latest version of selector function", () => {
+    const defaultValue = { a: "value a", b: "value b" }
+    const testAtom = createAtom({ defaultValue })
+
+    const selectorA = (state: typeof defaultValue) => state.a
+    const selectorB = (state: typeof defaultValue) => state.b
+
+    const { result, rerender } = renderHook(
+      (selector: (state: typeof defaultValue) => string) =>
+        useSelector(testAtom, selector),
+      { initialProps: selectorA }
+    )
+
+    expect(result.current).toBe("value a")
+    act(() => {
+      rerender(selectorB)
+    })
+    expect(result.current).toBe("value b")
+  })
 })
