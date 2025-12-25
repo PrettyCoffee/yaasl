@@ -1,6 +1,7 @@
 import { useState, useEffect, useSyncExternalStore } from "react"
 
 import type { Stateful } from "@yaasl/core"
+import type { Subscribable } from "@yaasl/utils"
 
 /** Use an atom's value in the React lifecycle.
  *
@@ -8,7 +9,7 @@ import type { Stateful } from "@yaasl/core"
  *
  * @returns The atom's value.
  **/
-export const useAtom = <ValueType>(atom: Stateful<ValueType>) =>
+export const useAtom = <ValueType>(atom: Subscribable<ValueType>) =>
   useSyncExternalStore(
     set => atom.subscribe(set),
     () => atom.get(),

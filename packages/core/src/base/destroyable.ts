@@ -1,6 +1,6 @@
-import { consoleMessage } from "@yaasl/utils"
+import { consoleMessage, type SubscriberCallback } from "@yaasl/utils"
 
-import type { Callback, Stateful } from "./stateful"
+import type { Stateful } from "./stateful"
 
 export class Destroyable {
   public isDestroyed = false
@@ -34,7 +34,10 @@ export class Destroyable {
   }
 
   /** Subscribe to another atom and automatically destroy the atom instance, if the parent is destroyed */
-  protected subscribeTo<T>(parent: Stateful<T>, callback: Callback<T>) {
+  protected subscribeTo<T>(
+    parent: Stateful<T>,
+    callback: SubscriberCallback<T>
+  ) {
     parent.addDependent(this)
     const unsubscribe = parent.subscribe(callback)
 

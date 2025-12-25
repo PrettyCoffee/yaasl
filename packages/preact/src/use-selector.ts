@@ -1,15 +1,12 @@
 import { useSyncExternalStore } from "preact/compat"
 import { useRef, useEffect } from "preact/hooks"
 
-import { Stateful } from "@yaasl/core"
-import { memoizeFunction, toArray } from "@yaasl/utils"
-
-type InferValuesFromAtoms<TAtoms, TValues extends unknown[] = []> =
-  TAtoms extends Stateful<infer TValue>
-    ? [...TValues, TValue]
-    : TAtoms extends [Stateful<infer Value>, ...infer Rest]
-      ? InferValuesFromAtoms<Rest, [...TValues, Value]>
-      : TValues
+import {
+  memoizeFunction,
+  toArray,
+  type Subscribable,
+  type InferValues,
+} from "@yaasl/utils"
 
 /** Compute a new value based on the state of an atom.
  *
@@ -20,11 +17,11 @@ type InferValuesFromAtoms<TAtoms, TValues extends unknown[] = []> =
  * @returns The computed value.
  **/
 export const useSelector = <
-  TAtoms extends Stateful | [Stateful, ...Stateful[]],
+  TAtoms extends Subscribable | [Subscribable, ...Subscribable[]],
   TResult,
 >(
   atoms: TAtoms,
-  combiner: (...states: InferValuesFromAtoms<TAtoms>) => TResult,
+  combiner: (...states: InferValues<TAtoms>) => TResult,
   compare?: (before: TResult, after: TResult) => boolean
 ) => {
   const memoizedCombiner = useRef(memoizeFunction(combiner, compare))
@@ -43,9 +40,7 @@ export const useSelector = <
   }
 
   const getSnapshot = () => {
-    const args = toArray(atoms).map(atom =>
-      atom.get()
-    ) as InferValuesFromAtoms<TAtoms>
+    const args = toArray(atoms).map(atom => atom.get()) as InferValues<TAtoms>
 
     return memoizedCombiner.current(...args)
   }

@@ -1,4 +1,4 @@
-import { toArray, toVoid } from "@yaasl/utils"
+import { InferValues, toArray, toVoid } from "@yaasl/utils"
 
 import { Stateful } from "./stateful"
 
@@ -11,26 +11,19 @@ const allDidInit = (atoms: Stateful[]) => {
   return inits.length === 0 ? true : Promise.all(inits).then(toVoid)
 }
 
-type InferValuesFromAtoms<TAtoms, TValues extends unknown[] = []> =
-  TAtoms extends Stateful<infer TValue>
-    ? [...TValues, TValue]
-    : TAtoms extends [Stateful<infer Value>, ...infer Rest]
-      ? InferValuesFromAtoms<Rest, [...TValues, Value]>
-      : TValues
-
 export class CombinerSelector<
   ParentAtoms extends Stateful<any> | [Stateful<any>, ...Stateful<any>[]],
   CombinedValue,
 > extends Stateful<CombinedValue> {
   constructor(
     atoms: ParentAtoms,
-    combiner: (...states: InferValuesFromAtoms<ParentAtoms>) => CombinedValue
+    combiner: (...states: InferValues<ParentAtoms>) => CombinedValue
   ) {
     const atomArray = toArray(atoms)
 
     const selectState = () => {
       const values = atomArray.map<unknown>(atom => atom.get())
-      return combiner(...(values as InferValuesFromAtoms<ParentAtoms>))
+      return combiner(...(values as InferValues<ParentAtoms>))
     }
 
     super(selectState())
@@ -53,6 +46,6 @@ export const createSelector = <
   CombinedValue,
 >(
   atoms: ParentAtoms,
-  combiner: (...states: InferValuesFromAtoms<ParentAtoms>) => CombinedValue
+  combiner: (...states: InferValues<ParentAtoms>) => CombinedValue
 ): CombinerSelector<ParentAtoms, CombinedValue> =>
   new CombinerSelector(atoms, combiner)
