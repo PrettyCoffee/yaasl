@@ -1,6 +1,6 @@
 {
   "name": "@yaasl/core",
-  "version": "0.14.0",
+  "version": "0.15.0-alpha.0",
   "description": "yet another atomic store library (vanilla-js)",
   "author": "PrettyCoffee",
   "license": "MIT",
@@ -40,10 +40,10 @@
     "validate": "run-s lint test build"
   },
   "peerDependencies": {
-    "@yaasl/utils": "^0.14.0"
+    "@yaasl/utils": "^0.15.0-alpha.0"
   },
   "devDependencies": {
-    "@yaasl/utils": "^0.14.0"
+    "@yaasl/utils": "^0.15.0-alpha.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
