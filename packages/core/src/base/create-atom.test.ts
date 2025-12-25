@@ -102,21 +102,6 @@ describe("Test atom", () => {
     expect(action).toHaveBeenCalled()
   })
 
-  it("Can be destroyed", () => {
-    const action = vi.fn()
-    const testAtom = createAtom({
-      defaultValue,
-    })
-    testAtom.subscribe(action)
-
-    testAtom.destroy()
-
-    expect(testAtom.isDestroyed).toBeTruthy()
-    expect(() => testAtom.set(nextValue)).toThrow()
-    expect(() => testAtom.get()).toThrow()
-    expect(() => testAtom.subscribe(action)).toThrow()
-  })
-
   describe("synchronizes didInit status", () => {
     it("Sets true if no effect was passed", () => {
       const testAtom = createAtom({ defaultValue })

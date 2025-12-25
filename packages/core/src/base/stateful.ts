@@ -1,19 +1,12 @@
 import { type Subscribable, type SubscriberCallback } from "@yaasl/utils"
 
-import { Destroyable } from "./destroyable"
-
-export class Stateful<Value = unknown>
-  extends Destroyable
-  implements Subscribable<Value>
-{
+export class Stateful<Value = unknown> implements Subscribable<Value> {
   /** Promise that resolves when the states initialization was finished. */
   public didInit: PromiseLike<void> | boolean = false
 
   private listeners = new Set<SubscriberCallback<Value>>()
 
-  constructor(protected value: Value) {
-    super()
-  }
+  constructor(protected value: Value) {}
 
   /** Read the value of state.
    *
@@ -32,14 +25,6 @@ export class Stateful<Value = unknown>
   public subscribe(callback: SubscriberCallback<Value>) {
     this.listeners.add(callback)
     return () => this.listeners.delete(callback)
-  }
-
-  /** Make this atom unusable and remove all references.
-   **/
-  public destroy() {
-    super.destroy()
-    this.value = null as Value
-    this.listeners = new Set()
   }
 
   private emit(value: Value, previous: Value) {

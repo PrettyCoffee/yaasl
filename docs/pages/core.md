@@ -19,7 +19,6 @@ Returns: An atom instance.
 - `result.set`: Set the value of the atom.
 - `result.didInit`: State of the atom's effects initialization process.
   Will be a promise if the initialization is pending and `true` if finished.
-- `result.destroy`: Make this atom unusable and remove all references.
 
 ### Usage Examples
 
@@ -57,7 +56,6 @@ Returns: A CombinerSelector instance.
 - `result.subscribe`: Subscribe to value changes.
 - `result.didInit`: State of the atoms effects initialization processes.
   Will be a promise if the initialization is pending and `true` if finished.
-- `result.destroy`: Make this atom unusable and remove all references.
 
 ### Usage Examples
 
@@ -93,7 +91,6 @@ Returns: A derived instance.
 - `result.subscribe`: Subscribe to value changes.
 - `result.didInit`: State of the dependents effects initialization processes.
   Will be a promise if the initialization is pending and `true` if finished.
-- `result.destroy`: Make this atom unusable and remove all references.
 
 ### Usage Examples
 

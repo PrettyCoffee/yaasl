@@ -27,9 +27,7 @@ export class CombinerSelector<
     }
 
     super(selectState())
-    atomArray.forEach(atom =>
-      this.subscribeTo(atom, () => this.update(selectState()))
-    )
+    atomArray.forEach(atom => atom.subscribe(() => this.update(selectState())))
     this.setDidInit(allDidInit(atomArray))
   }
 }
