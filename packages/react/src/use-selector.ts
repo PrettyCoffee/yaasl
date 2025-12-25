@@ -1,7 +1,7 @@
 import { useEffect, useRef, useSyncExternalStore } from "react"
 
 import { Stateful } from "@yaasl/core"
-import { memoizeFunction } from "@yaasl/utils"
+import { memoizeFunction, toArray } from "@yaasl/utils"
 
 type InferValuesFromAtoms<TAtoms, TValues extends unknown[] = []> =
   TAtoms extends Stateful<infer TValue>
@@ -34,14 +34,14 @@ export const useSelector = <
   })
 
   const subscribe = (onStoreChange: () => void) => {
-    const atomArray = [atoms].flat()
-    const unsubscribers = atomArray.map(atom => atom.subscribe(onStoreChange))
+    const unsubscribers = toArray(atoms).map(atom =>
+      atom.subscribe(onStoreChange)
+    )
     return () => unsubscribers.forEach(fn => fn())
   }
 
   const getSnapshot = () => {
-    const atomArray = [atoms].flat()
-    const args = atomArray.map(atom =>
+    const args = toArray(atoms).map(atom =>
       atom.get()
     ) as InferValuesFromAtoms<TAtoms>
 
