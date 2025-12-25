@@ -19,6 +19,25 @@ describe("Test useSelector", () => {
     expect(result.current).toBe("next-value")
   })
 
+  it("Accepts multiple atoms", () => {
+    const value = createAtom({ defaultValue: 1 })
+    const factor = createAtom({ defaultValue: 1 })
+
+    const { result } = renderHook(() =>
+      useSelector(
+        [value, factor],
+        (value: number, factor: number) => factor * value
+      )
+    )
+    expect(result.current).toBe(1)
+
+    act(() => value.set(21))
+    expect(result.current).toBe(21)
+
+    act(() => factor.set(2))
+    expect(result.current).toBe(42)
+  })
+
   it("Uses a stable value for objects", () => {
     const testAtom = createAtom({ defaultValue })
     const { result, rerender } = renderHook(() =>

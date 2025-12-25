@@ -4,6 +4,13 @@ import { useRef, useEffect } from "preact/hooks"
 import { Stateful } from "@yaasl/core"
 import { memoizeFunction } from "@yaasl/utils"
 
+type InferValuesFromAtoms<TAtoms, TValues extends unknown[] = []> =
+  TAtoms extends Stateful<infer TValue>
+    ? [...TValues, TValue]
+    : TAtoms extends [Stateful<infer Value>, ...infer Rest]
+      ? InferValuesFromAtoms<Rest, [...TValues, Value]>
+      : TValues
+
 /** Compute a new value based on the state of an atom.
  *
  * @param atom Atom to be used.
@@ -12,9 +19,12 @@ import { memoizeFunction } from "@yaasl/utils"
  *
  * @returns The computed value.
  **/
-export const useSelector = <TState, TResult>(
-  atom: Stateful<TState>,
-  selector: (state: TState) => TResult,
+export const useSelector = <
+  TAtoms extends Stateful | [Stateful, ...Stateful[]],
+  TResult,
+>(
+  atoms: TAtoms,
+  selector: (...states: InferValuesFromAtoms<TAtoms>) => TResult,
   compare?: (before: TResult, after: TResult) => boolean
 ) => {
   const memoizedSelector = useRef(memoizeFunction(selector, compare))
@@ -25,8 +35,20 @@ export const useSelector = <TState, TResult>(
     memoizedSelector.current.compareResult = compare
   })
 
-  return useSyncExternalStore(
-    onStoreChange => atom.subscribe(onStoreChange),
-    () => memoizedSelector.current(atom.get())
-  )
+  const subscribe = (onStoreChange: () => void) => {
+    const atomArray = [atoms].flat()
+    const unsubscribers = atomArray.map(atom => atom.subscribe(onStoreChange))
+    return () => unsubscribers.forEach(fn => fn())
+  }
+
+  const getSnapshot = () => {
+    const atomArray = [atoms].flat()
+    const args = atomArray.map(atom =>
+      atom.get()
+    ) as InferValuesFromAtoms<TAtoms>
+
+    return memoizedSelector.current(...args)
+  }
+
+  return useSyncExternalStore(subscribe, getSnapshot)
 }
