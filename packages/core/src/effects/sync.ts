@@ -14,24 +14,21 @@ const getChannelName = (key: string) =>
   ["yaasl", "sync-channel", CONFIG.name, key].filter(Boolean).join("/")
 
 class SyncChannel<TData = undefined> {
-  static id = getId()
-  private channel: BroadcastChannel
-  private listeners = new Set<(data: TData) => void>()
+  private readonly id = getId()
+  private readonly channel: BroadcastChannel
+  private readonly listeners = new Set<(data: TData) => void>()
 
   constructor(key: string) {
     this.channel = new BroadcastChannel(getChannelName(key))
-    this.channel.onmessage = event => {
+    this.channel.addEventListener("message", event => {
       const { id, data } = event.data as Payload<TData>
-      if (id === SyncChannel.id) return
+      if (id === this.id) return
       this.listeners.forEach(listener => listener(data))
-    }
+    })
   }
 
   public push(data: TData) {
-    this.channel.postMessage({
-      id: SyncChannel.id,
-      data,
-    } satisfies Payload<TData>)
+    this.channel.postMessage({ id: this.id, data } satisfies Payload<TData>)
   }
 
   public subscribe(listener: (data: TData) => void) {
@@ -47,11 +44,12 @@ class SyncChannel<TData = undefined> {
 export const sync = createEffect(({ atom }) => {
   const channel = new SyncChannel<unknown>(atom.name)
   let skip = false
+
   return {
     didInit: () => {
-      channel.subscribe(data => {
-        atom.set(data)
+      channel.subscribe(value => {
         skip = true
+        atom.set(value)
       })
     },
     set: ({ value }) => {
