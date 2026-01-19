@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.1",
-    "@types/react": "^19.2.7",
+    "@types/react": "^19.2.8",
     "@yaasl/core": "^0.15.0-alpha.0",
     "@yaasl/utils": "^0.15.0-alpha.0",
     "react": "^19.2.3",
