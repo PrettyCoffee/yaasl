@@ -36,9 +36,9 @@
     "@pretty-cozy/release-tools": "0.9.0-alpha.4",
     "@vitest/coverage-v8": "4.0.17",
     "enquirer": "2.4.1",
-    "happy-dom": "20.0.11",
+    "happy-dom": "20.3.4",
     "npm-check-updates": "19.3.1",
-    "npm-run-all2": "5.0.0",
+    "npm-run-all2": "5.0.2",
     "rimraf": "6.1.2",
     "typescript": "5.9.3",
     "vitest": "4.0.17"
