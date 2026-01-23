@@ -18,6 +18,6 @@
     "prismjs": "^1.30.0"
   },
   "devDependencies": {
-    "docsify-cli": "^4.4.4"
+    "docsify-cli": "4.4.4"
   }
 }
