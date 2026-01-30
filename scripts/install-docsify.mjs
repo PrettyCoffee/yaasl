@@ -1,11 +1,33 @@
-const { cp, rm, access } = require("fs/promises")
-const { basename, resolve } = require("path")
+import { cp, rm, access } from "fs/promises"
+import { basename, resolve } from "path"
 
-const { replaceInFile } = require("./utils/replace-in-file")
+import { replaceInFile } from "./utils/replace-in-file.mjs"
 
-const styles = ["docsify/lib/themes/pure.css"]
+const fileInfo = path => {
+  const file = basename(path)
+  const baseDir = path.split("/")[0]
+  const ext = file.match(/\.[0-9a-z]+$/i)[0]
+  const min = file.includes(".min") ? ".min" : ""
+  const name = file.replace(min + ext, "")
+  return { name, baseDir, ext, min }
+}
 
-const scripts = [
+const extend = paths =>
+  Promise.all(
+    paths.map(async path => {
+      const file = fileInfo(path)
+      const { default: pkg } = await import(
+        `../node_modules/${file.baseDir}/package.json`,
+        { with: { type: "json" } }
+      )
+      const name = `${file.name}@${pkg.version}${file.min}${file.ext}`
+      return { path, name }
+    })
+  )
+
+const styles = await extend(["docsify/lib/themes/pure.css"])
+
+const scripts = await extend([
   //Docsify
   "docsify/lib/docsify.min.js",
   "docsify/lib/plugins/search.min.js",
@@ -20,22 +42,7 @@ const scripts = [
   "prismjs/components/prism-jsx.min.js",
   "prismjs/components/prism-tsx.min.js",
   "prismjs/components/prism-bash.min.js",
-]
-
-const fileInfo = path => {
-  const file = basename(path)
-  const baseDir = path.split("/")[0]
-  const ext = file.match(/\.[0-9a-z]+$/i)[0]
-  const min = file.includes(".min") ? ".min" : ""
-  const name = file.replace(min + ext, "")
-  return { name, baseDir, ext, min }
-}
-
-const getName = path => {
-  const { name, baseDir, min, ext } = fileInfo(path)
-  const { version } = require(`../node_modules/${baseDir}/package.json`)
-  return `${name}@${version}${min}${ext}`
-}
+])
 
 const indexHtml = resolve("../docs/index.html")
 
@@ -49,8 +56,8 @@ const deleteLib = async () => {
 
 const copyFiles = () =>
   Promise.all(
-    [...styles, ...scripts].map(script =>
-      cp(`../node_modules/${script}`, `../docs/_lib/${getName(script)}`, {
+    [...styles, ...scripts].map(({ path, name }) =>
+      cp(`../node_modules/${path}`, `../docs/_lib/${name}`, {
         force: true,
       })
     )
@@ -58,7 +65,7 @@ const copyFiles = () =>
 
 const insertStyles = () => {
   const stylesHtml = styles
-    .map(script => `<link rel="stylesheet" href="./_lib/${getName(script)}" />`)
+    .map(({ name }) => `<link rel="stylesheet" href="./_lib/${name}" />`)
     .join("\n")
 
   return replaceInFile(indexHtml, "lib-styles", () => stylesHtml)
@@ -66,7 +73,7 @@ const insertStyles = () => {
 
 const insertScripts = () => {
   const scriptsHtml = scripts
-    .map(script => `<script src="./_lib/${getName(script)}"></script>`)
+    .map(({ name }) => `<script src="./_lib/${name}"></script>`)
     .join("\n")
 
   return replaceInFile(indexHtml, "lib-scripts", () => scriptsHtml)

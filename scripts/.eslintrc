@@ -1,7 +1,0 @@
-{
-  "root": true,
-  "extends": ["@pretty-cozy/eslint-config/base"],
-  "rules": {
-    "import/no-extraneous-dependencies": "off"
-  }
-}

@@ -6,7 +6,7 @@
     "start": "docsify serve ./",
     "build": "echo \"no build step\"",
     "validate": "echo \"no validate step\"",
-    "postinstall": "node ../scripts/install-docsify.js"
+    "postinstall": "node ../scripts/install-docsify.mjs"
   },
   "dependencies": {
     "@yaasl/devtools": "../packages/devtools",

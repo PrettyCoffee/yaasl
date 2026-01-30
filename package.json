@@ -24,9 +24,9 @@
     "lint:fix": "npm run lint -- --fix",
     "validate": "npm run validate --workspaces",
     "docs": "npm run -w docs start",
-    "docs:generate": "node scripts/generate-docs.js",
+    "docs:generate": "node scripts/generate-docs.mjs",
     "prepare": "cozy-git-hooks install -q",
-    "publish": "node ./scripts/publish.js",
+    "publish": "node ./scripts/publish.mjs",
     "upgrade": "ncu --deep -u -t minor -f !@yaasl/*",
     "upgrade:latest": "npm run upgrade -- -t latest"
   },

@@ -1,7 +1,7 @@
-const { execSync } = require("node:child_process")
-const { resolve } = require("node:path")
+import { execSync } from "node:child_process"
+import { resolve } from "node:path"
 
-const { replaceInFile } = require("./utils/replace-in-file")
+import { replaceInFile } from "./utils/replace-in-file.mjs"
 
 const rootDir = resolve(__dirname, "../")
 

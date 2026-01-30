@@ -1,22 +1,20 @@
-#!/usr/bin/env node
+import { readFile, writeFile } from "node:fs/promises"
 
-const { readFile, writeFile } = require("node:fs/promises")
-
-const {
+import {
   npm,
   git,
   promptWorkspaces,
   promptVersion,
   createSpinner,
   updateVersions,
-} = require("@pretty-cozy/release-tools")
-const { prompt } = require("enquirer")
+} from "@pretty-cozy/release-tools"
+import enquirer from "enquirer"
 
-const { createChangelog } = require("./utils/create-changelog")
-const { log } = require("./utils/log")
+import { createChangelog } from "./utils/create-changelog.mjs"
+import { log } from "./utils/log.mjs"
 
 const promptOk = async text => {
-  const { ok } = await prompt({
+  const { ok } = await enquirer.prompt({
     type: "toggle",
     name: "ok",
     message: text,

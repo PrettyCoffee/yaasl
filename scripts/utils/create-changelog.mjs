@@ -1,4 +1,4 @@
-const { git } = require("@pretty-cozy/release-tools")
+import { git } from "@pretty-cozy/release-tools"
 
 const commitRegex = /^([a-z]+)(?:\((.+)\))?(!)?:\s*(.+)/
 
@@ -69,7 +69,7 @@ const printChangelog = (version, commits) => {
   return result
 }
 
-const createChangelog = async version =>
+export const createChangelog = async version =>
   git
     .getCommits()
     .then(commits =>
@@ -80,5 +80,3 @@ const createChangelog = async version =>
         .sort(sortCommits)
     )
     .then(commits => printChangelog(version, commits))
-
-module.exports = { createChangelog }
