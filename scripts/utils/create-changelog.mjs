@@ -1,38 +1,27 @@
-import { git } from "@pretty-cozy/release-tools"
+import { git, Version } from "@pretty-cozy/release-tools"
 
-const commitRegex = /^([a-z]+)(?:\((.+)\))?(!)?:\s*(.+)/
+const types = new Set(["feat", "fix"])
 
-const types = new Set(["fix", "feat"])
+const isChangeCommit = commit => types.has(commit.parsed.type)
 
-const isChangeCommit = commit => types.has(commit.type)
-const isNotInternal = commit => commit.scope !== "internal"
-
-/** @param {string} commit */
-const parseCommit = commit => {
-  const [, type, scope, breaking, message] = commitRegex.exec(commit) ?? []
-  return { type, scope, breaking: !!breaking, message, full: commit }
-}
-
-const sortCommits = (a, b) => {
-  const scopeDiff = (a.scope ?? "").localeCompare(b.scope ?? "")
-  if (scopeDiff !== 0) {
-    return a.scope == null ? -1 : b.scope == null ? 1 : scopeDiff
-  }
-
-  return a.message.localeCompare(b.message)
+const sortCommits = ({ parsed: a }, { parsed: b }) => {
+  if (a.scope === b.scope) return a.message.localeCompare(b.message)
+  if (!b.scope) return 1
+  if (!a.scope) return -1
+  return a.scope.localeCompare(b.scope)
 }
 
 const printCommit = commit => {
-  const content = commit.scope
-    ? `**${commit.scope}:** ${commit.message}`
-    : `${commit.message}`
+  const content = commit.parsed.scope
+    ? `**${commit.parsed.scope}:** ${commit.parsed.message}`
+    : `${commit.parsed.message}`
   return `- ${content}\n`
 }
 
 const getToday = () => new Date().toISOString().split("T")[0]
 
-const printChangelog = (version, commits) => {
-  let result = `## ${version} (${getToday()})\n`
+const printChangelog = ({ name, version, commits }) => {
+  let result = `## ${name ? `${name}@` : ""}${version} (${getToday()})\n`
 
   if (commits.length === 0) {
     result += "\nNo changes\n"
@@ -41,10 +30,10 @@ const printChangelog = (version, commits) => {
 
   const { breaking, feat, fix } = commits.reduce(
     (acc, commit) => {
-      if (commit.breaking) {
+      if (commit.parsed.breaking) {
         acc.breaking.push(commit)
       } else {
-        acc[commit.type]?.push(commit)
+        acc[commit.parsed.type]?.push(commit)
       }
       return acc
     },
@@ -69,14 +58,22 @@ const printChangelog = (version, commits) => {
   return result
 }
 
-export const createChangelog = async version =>
-  git
-    .getCommits()
-    .then(commits =>
-      commits
-        .map(parseCommit)
-        .filter(isChangeCommit)
-        .filter(isNotInternal)
-        .sort(sortCommits)
-    )
-    .then(commits => printChangelog(version, commits))
+const getCommitsSinceLastRelease = async name => {
+  const tags = await git.allTags()
+  const releases = tags.filter(tag => {
+    if (name && tag.startsWith("@") && !tag.startsWith(name)) return false
+    const tagVersion = tag.split("@").at(-1)
+    return !new Version(tagVersion).current.extension
+  })
+  const lastVersion = releases.at(-1)
+  return git.getCommits(lastVersion)
+}
+
+export const createChangelog = async ({ name, version }) => {
+  const commits = await getCommitsSinceLastRelease(name)
+  const changes = commits
+    .filter(commit => isChangeCommit(commit))
+    .sort(sortCommits)
+
+  return printChangelog({ name, version, commits: changes })
+}

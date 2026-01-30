@@ -4,29 +4,14 @@ import {
   npm,
   git,
   promptWorkspaces,
-  promptVersion,
+  promptVersions,
   createSpinner,
-  updateVersions,
+  promptOk,
+  updateVersion,
 } from "@pretty-cozy/release-tools"
-import enquirer from "enquirer"
 
 import { createChangelog } from "./utils/create-changelog.mjs"
 import { log } from "./utils/log.mjs"
-
-const promptOk = async text => {
-  const { ok } = await enquirer.prompt({
-    type: "toggle",
-    name: "ok",
-    message: text,
-    initial: true,
-  })
-
-  if (!ok) {
-    throw new Error("❌ Cancelled by user")
-  }
-
-  return true
-}
 
 const spinner = createSpinner()
 const newLine = () => log.info("")
@@ -45,20 +30,9 @@ const appendChangelog = async changes => {
 }
 
 const updateChangelog = async version => {
-  const changelog = await createChangelog(version)
+  const changelog = await createChangelog({ version })
   await appendChangelog(changelog)
   log.muted(`\n# Changelog\n\n${changelog}`)
-}
-
-const npmAuth = async () => {
-  spinner.start("Checking npm login")
-  let user = await npm.whoAmI()
-  if (!user) {
-    await npm.login({ scope: "@yaasl" })
-    user = await npm.whoAmI()
-  }
-  spinner.step(`Logged in as ${user}`)
-  spinner.success("Authentication completed")
 }
 
 const prepareRelease = async ({ root, workspaces, version }) => {
@@ -67,57 +41,78 @@ const prepareRelease = async ({ root, workspaces, version }) => {
   await npm.run("build")
   spinner.step(`Package builds were completed`)
 
-  await updateVersions({ root, workspaces, version, modifier: "^" })
+  for (const ws of [root, ...workspaces]) {
+    if (ws.ignore) continue
+    await updateVersion({
+      name: ws.name,
+      version,
+      root,
+      workspaces,
+    })
+  }
   await npm.install()
   spinner.step(`Package versions were updated`)
 
   await git.commit({ message: `chore: Release ${version}` })
   spinner.step(`Committed all changes`)
 
-  await git.tag({ version: version, message: `Release ${version}` })
+  await git.tag({ version, message: `Release ${version}` })
   spinner.step(`Created git tag ${version}`)
 
   spinner.success(`Preparation was completed`)
 }
 
-const publishVersion = async ({ workspaces, version }) => {
+const releaseChanges = async () => {
   spinner.start("Pushing changes to github")
+
   await git.push()
-  spinner.step(`Pushed changes`)
+  spinner.step(`Pushed commits`)
+
+  await git.push({ tags: true })
+  spinner.step(`Pushed tags`)
+
   spinner.success("Successfully pushed commits and tags")
-
   newLine()
-
-  spinner.start(`Publishing selected packages to npm`)
-  await npm.publish({
-    workspace: workspaces.filter(ws => !ws.ignore).map(ws => ws.name),
-    access: "public",
-  })
-  spinner.success(`Successfully published ${version}`)
 }
 
 const run = async () => {
-  const version = await promptVersion()
-  const { root, workspaces } = await promptWorkspaces()
+  const { root, workspaces } = await promptWorkspaces({
+    enforceRootSelected: true,
+  })
+  if (root.ignore) {
+    log.error("❌ Root package must be selected")
+    process.exit(1)
+  }
+  const { [root.name]: version } = await promptVersions({
+    root,
+    workspaces: [],
+  })
 
+  let ok = false
   if (version.includes("alpha")) {
-    await promptOk(`Do you want to release version ${version}?`)
+    ok = await promptOk(`Do you want to release version ${version}?`)
   } else {
     await updateChangelog(version)
-    await promptOk(
+    ok = await promptOk(
       `Do you want to release the above changes with version ${version}?\n  You can edit the changelog before continuing.\n `
     )
   }
+  if (!ok) {
+    log.error("❌ Cancelled by user")
+    process.exit(1)
+  }
 
-  newLine()
-  await npmAuth()
   newLine()
   await prepareRelease({ root, workspaces, version })
   newLine()
 
-  await promptOk(`Do you want to push and publish the applied changes?`)
+  ok = await promptOk(`Do you want to push and publish the applied changes?`)
+  if (!ok) {
+    log.error("❌ Cancelled by user")
+    process.exit(1)
+  }
   newLine()
-  await publishVersion({ workspaces, version })
+  releaseChanges({ version, workspaces })
   newLine()
 }
 

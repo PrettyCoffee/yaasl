@@ -33,7 +33,7 @@
   "devDependencies": {
     "@pretty-cozy/eslint-config": "0.9.0-alpha.3",
     "@pretty-cozy/git-hooks": "0.6.0",
-    "@pretty-cozy/release-tools": "0.9.0-alpha.4",
+    "@pretty-cozy/release-tools": "0.9.0-alpha.7",
     "@vitest/coverage-v8": "4.0.18",
     "enquirer": "2.4.1",
     "happy-dom": "20.3.7",
