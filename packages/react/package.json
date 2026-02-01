@@ -46,11 +46,11 @@
   },
   "devDependencies": {
     "@testing-library/react": "16.3.2",
-    "@types/react": "19.2.9",
+    "@types/react": "19.2.10",
     "@yaasl/core": "^0.15.0-alpha.1",
     "@yaasl/utils": "^0.15.0-alpha.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
