@@ -32,13 +32,13 @@
   },
   "devDependencies": {
     "@pretty-cozy/eslint-config": "0.9.0-alpha.3",
-    "@pretty-cozy/git-hooks": "0.6.0",
-    "@pretty-cozy/release-tools": "0.9.0-alpha.7",
+    "@pretty-cozy/git-hooks": "0.6.1",
+    "@pretty-cozy/release-tools": "0.9.0",
     "@vitest/coverage-v8": "4.0.18",
     "enquirer": "2.4.1",
     "happy-dom": "20.3.7",
-    "npm-check-updates": "19.3.1",
-    "npm-run-all2": "5.0.2",
+    "npm-check-updates": "19.3.2",
+    "npm-run-all2": "8.0.4",
     "rimraf": "6.1.2",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
