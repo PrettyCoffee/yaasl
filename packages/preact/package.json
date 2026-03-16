@@ -47,7 +47,7 @@
   "devDependencies": {
     "@yaasl/core": "^0.15.0-alpha.1",
     "@yaasl/utils": "^0.15.0-alpha.1",
-    "preact": "10.28.3"
+    "preact": "10.29.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
