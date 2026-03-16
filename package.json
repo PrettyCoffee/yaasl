@@ -31,17 +31,17 @@
     "upgrade:latest": "npm run upgrade -- -t latest"
   },
   "devDependencies": {
-    "@pretty-cozy/eslint-config": "0.9.0-alpha.3",
+    "@pretty-cozy/eslint-config": "0.9.0-alpha.5",
     "@pretty-cozy/git-hooks": "0.6.1",
     "@pretty-cozy/release-tools": "0.9.0",
-    "@vitest/coverage-v8": "4.0.18",
+    "@vitest/coverage-v8": "4.1.0",
     "enquirer": "2.4.1",
-    "happy-dom": "20.3.7",
-    "npm-check-updates": "19.3.2",
+    "happy-dom": "20.8.4",
+    "npm-check-updates": "19.6.3",
     "npm-run-all2": "8.0.4",
-    "rimraf": "6.1.2",
+    "rimraf": "6.1.3",
     "typescript": "5.9.3",
-    "vitest": "4.0.18"
+    "vitest": "4.1.0"
   },
   "lint-staged": {
     "*.{json,md,html}": [
