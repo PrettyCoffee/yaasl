@@ -19,7 +19,7 @@ export class Expiration {
   private readonly key: string
   private readonly getExpiration: (() => Date) | null
 
-  private timeout: NodeJS.Timeout | null = null
+  private timeout: number | null = null
 
   constructor({ key, expiresAt, expiresIn }: ExpirationOptions) {
     this.timeout = null
@@ -41,13 +41,13 @@ export class Expiration {
   public remove() {
     STORAGE.removeItem(this.key)
     if (this.timeout != null) {
-      clearTimeout(this.timeout)
+      globalThis.clearTimeout(this.timeout)
       this.timeout = null
     }
   }
 
   private dispatchExpiration = (expiresIn: number, onExpire: () => void) => {
-    this.timeout = setTimeout(() => {
+    this.timeout = globalThis.setTimeout(() => {
       onExpire()
       this.remove()
     }, expiresIn)

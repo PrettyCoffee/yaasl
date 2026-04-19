@@ -9,7 +9,7 @@
 
     /* Modules */
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
 
     /* JavaScript Support */
@@ -38,6 +38,5 @@
 
     /* Completeness */
     "skipLibCheck": true
-  },
-  "include": ["**/*.ts", "**/*.tsx"]
+  }
 }

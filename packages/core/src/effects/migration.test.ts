@@ -5,13 +5,13 @@ import { createMigrationStep, migration } from "./migration"
 import { createAtom } from "../base"
 
 const mockConsole = () => {
-  const oldConsole = global.console
-  const error = vi.fn<unknown[], unknown>()
-  const warn = vi.fn<unknown[], unknown>()
+  const oldConsole = globalThis.console
+  const error = vi.fn()
+  const warn = vi.fn()
 
-  global.console = { ...global.console, error, warn }
+  globalThis.console = { ...globalThis.console, error, warn }
 
-  return { error, warn, resetConsole: () => (global.console = oldConsole) }
+  return { error, warn, resetConsole: () => (globalThis.console = oldConsole) }
 }
 
 const migrateV1 = vi.fn()

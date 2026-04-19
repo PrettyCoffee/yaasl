@@ -41,7 +41,7 @@
     "husky": "9.1.7",
     "npm-check-updates": "21.0.2",
     "npm-run-all2": "8.0.4",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "vitest": "4.1.4"
   }
 }

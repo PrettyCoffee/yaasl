@@ -29,7 +29,7 @@ export const showToast = (toast: Omit<ToastProps, "id">) => {
   const id = createId()
   toastList.actions.add({ ...toast, id })
   if (toast.duration) {
-    setTimeout(() => toastList.actions.close(id), toast.duration)
+    globalThis.setTimeout(() => toastList.actions.close(id), toast.duration)
   }
 }
 /// [showToast]
