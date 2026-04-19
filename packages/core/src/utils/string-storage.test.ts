@@ -25,7 +25,7 @@ describe("Test LocalStorage", () => {
   it("throws an error if value cannot be parsed", () => {
     localStorage.setItem(key, "invalid-json")
     const storage = new StringStorage({ key, store: localStorage })
-    expect(() => storage.get()).toThrowError()
+    expect(() => storage.get()).toThrow()
   })
 
   it("sets a value", () => {
