@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build": "run-s clean compile",
-    "clean": "rimraf ./dist",
+    "clean": "node -e \"require('node:fs').rmSync('./dist', { force: true, recursive: true })\"",
     "compile": "run-p compile:esm compile:cjs compile:types",
     "compile:esm": "tsc -p ./tsconfig.node.json --outDir ./dist/esm -m esnext -t esnext",
     "compile:cjs": "tsc -p ./tsconfig.node.json --outDir ./dist/cjs -m commonjs -t es2015",

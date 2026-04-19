@@ -41,7 +41,6 @@
     "husky": "9.1.7",
     "npm-check-updates": "19.3.2",
     "npm-run-all2": "8.0.4",
-    "rimraf": "6.1.2",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
   }
