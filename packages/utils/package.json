@@ -33,10 +33,5 @@
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "validate": "run-s lint test build"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "npm run lint:fix"
-    ]
   }
 }

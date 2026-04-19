@@ -25,27 +25,24 @@
     "validate": "npm run validate --workspaces",
     "docs": "npm run -w docs start",
     "docs:generate": "node scripts/generate-docs.mjs",
-    "prepare": "cozy-git-hooks install -q",
     "publish": "node ./scripts/publish.mjs",
     "upgrade": "ncu --deep -u -t minor -f !@yaasl/*",
-    "upgrade:latest": "npm run upgrade -- -t latest"
+    "upgrade:latest": "npm run upgrade -- -t latest",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "@pretty-cozy/eslint-config": "0.9.0-alpha.3",
-    "@pretty-cozy/git-hooks": "0.6.1",
+    "@commitlint/cli": "20.5.0",
+    "@commitlint/config-conventional": "20.5.0",
+    "@pretty-cozy/eslint-config": "0.9.0",
     "@pretty-cozy/release-tools": "0.9.0",
     "@vitest/coverage-v8": "4.0.18",
     "enquirer": "2.4.1",
     "happy-dom": "20.8.9",
+    "husky": "9.1.7",
     "npm-check-updates": "19.3.2",
     "npm-run-all2": "8.0.4",
     "rimraf": "6.1.2",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
-  },
-  "lint-staged": {
-    "*.{json,md,html}": [
-      "prettier --write"
-    ]
   }
 }

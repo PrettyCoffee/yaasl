@@ -27,7 +27,7 @@ export const useSelector = <
   const memoizedCombiner = useRef(memoizeFunction(combiner, compare))
 
   useEffect(() => {
-    // eslint-disable-next-line react-compiler/react-compiler
+    // eslint-disable-next-line react-hooks/immutability
     memoizedCombiner.current.resultFn = combiner
     memoizedCombiner.current.compareResult = compare
   })

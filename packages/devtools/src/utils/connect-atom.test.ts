@@ -10,6 +10,8 @@ import {
 } from "../get-redux-connection"
 import { connectAtom, disconnectAllConnections } from "../redux-devtools"
 
+const noop = () => undefined
+
 const update = (
   connection: ConnectionResponse,
   atom: Atom<any>,
@@ -24,8 +26,8 @@ const mockExtension = () => {
   const subscription = { current: initial }
   const connection: ConnectionResponse = {
     subscribe: vi.fn(sub => {
-      subscription.current = vi.fn(sub)
-      return () => null
+      subscription.current = vi.fn(sub as typeof initial)
+      return noop
     }),
     send: vi.fn(),
     init: vi.fn(),
@@ -33,7 +35,7 @@ const mockExtension = () => {
 
   const extension: ReduxDevtoolsExtension = {
     connect: vi.fn(() => connection),
-    disconnect: () => null,
+    disconnect: noop,
   }
 
   window.__REDUX_DEVTOOLS_EXTENSION__ =

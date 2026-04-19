@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+./node_modules/.bin/commitlint --edit $1 ||
+(
+    echo ""
+    echo "❌ Your commit message does not apply the conventional commits standard!"
+    echo "📖 Visit https://www.conventionalcommits.org/ for details."
+    echo "🧾 TL;DR:"
+    echo "  - Pattern: <type>[OptionalScope]: <Description>"
+    echo "  - Examples:"
+    echo "      feat(TextInput): Create component"
+    echo "      chore: Update dependencies"
+    echo "  - Available types:"
+    echo "      feat:      Feature addition"
+    echo "      fix:       Bug fix"
+    echo "      docs:      Documentation only changes"
+    echo "      refactor:  Code cleanup, neither feat nor fix"
+    echo "      revert:    Revert a change"
+    echo "      perf:      Performance improvements"
+    echo "      chore:     Change to tooling, build process, dependencies etc"
+    echo ""
+    echo "💡 Hint: To change a commit message, have a look at \"git commit --amend\" and \"git rebase -i\"."
+    echo ""
+    false
+)

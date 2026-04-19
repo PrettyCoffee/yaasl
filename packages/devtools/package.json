@@ -44,10 +44,5 @@
   "devDependencies": {
     "@yaasl/core": "^0.15.0-alpha.1",
     "@yaasl/utils": "^0.15.0-alpha.1"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "npm run lint:fix"
-    ]
   }
 }
