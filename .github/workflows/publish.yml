@@ -15,18 +15,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org
+          version: 10
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+          
       - name: Install dependencies
-        run: npm ci
+        run: pnpm i --frozen-lockfile
 
       - name: Build project
-        run: npm run -ws --if-present build
+        run: pnpm run --filter='./packages/**' build
 
       - name: Publish packages
         run: |
@@ -46,10 +53,10 @@ jobs:
 
               if [[ "$VERSION" == *-* ]]; then
                 echo "Publishing prerelease $NAME@$VERSION"
-                npm publish --tag next
+                pnpm publish --tag next
               else
                 echo "Publishing release $NAME@$VERSION"
-                npm publish
+                pnpm publish
               fi
             )
           done

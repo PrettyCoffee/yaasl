@@ -12,8 +12,8 @@
     "validate": "run-s lint build"
   },
   "dependencies": {
-    "@yaasl/devtools": "file:../../packages/devtools",
-    "@yaasl/preact": "file:../../packages/preact",
+    "@yaasl/devtools": "workspace:*",
+    "@yaasl/preact": "workspace:*",
     "preact": "^10.29.1"
   },
   "devDependencies": {

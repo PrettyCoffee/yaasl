@@ -1,5 +1,5 @@
-import { cp, rm, access } from "fs/promises"
-import { basename, resolve } from "path"
+import { cp, rm, access } from "node:fs/promises"
+import { basename, resolve } from "node:path"
 
 import { replaceInFile } from "./utils/replace-in-file.mjs"
 
@@ -17,7 +17,7 @@ const extend = paths =>
     paths.map(async path => {
       const file = fileInfo(path)
       const { default: pkg } = await import(
-        `../node_modules/${file.baseDir}/package.json`,
+        `../docs/node_modules/${file.baseDir}/package.json`,
         { with: { type: "json" } }
       )
       const name = `${file.name}@${pkg.version}${file.min}${file.ext}`
@@ -57,7 +57,7 @@ const deleteLib = async () => {
 const copyFiles = () =>
   Promise.all(
     [...styles, ...scripts].map(({ path, name }) =>
-      cp(`../node_modules/${path}`, `../docs/_lib/${name}`, {
+      cp(`../docs/node_modules/${path}`, `../docs/_lib/${name}`, {
         force: true,
       })
     )

@@ -14,8 +14,8 @@
   "dependencies": {
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "@yaasl/devtools": "file:../../packages/devtools",
-    "@yaasl/react": "file:../../packages/react"
+    "@yaasl/devtools": "workspace:*",
+    "@yaasl/react": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "19.2.14",

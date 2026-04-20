@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises"
 
 import {
-  npm,
+  pnpm,
   git,
   promptWorkspaces,
   promptVersions,
@@ -38,7 +38,7 @@ const updateChangelog = async version => {
 const prepareRelease = async ({ root, workspaces, version }) => {
   spinner.start("Preparing for release")
 
-  await npm.run("build")
+  await pnpm.run("build")
   spinner.step(`Package builds were completed`)
 
   for (const ws of [root, ...workspaces]) {
@@ -50,7 +50,7 @@ const prepareRelease = async ({ root, workspaces, version }) => {
       workspaces,
     })
   }
-  await npm.install()
+  await pnpm.install()
   spinner.step(`Package versions were updated`)
 
   await git.commit({ message: `chore: Release ${version}` })

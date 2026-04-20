@@ -12,8 +12,8 @@
     "validate": "run-s lint build"
   },
   "dependencies": {
-    "@yaasl/core": "file:../../packages/core",
-    "@yaasl/devtools": "file:../../packages/devtools"
+    "@yaasl/core": "workspace:*",
+    "@yaasl/devtools": "workspace:*"
   },
   "devDependencies": {
     "vite": "8.0.8"

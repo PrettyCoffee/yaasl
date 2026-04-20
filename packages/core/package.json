@@ -40,9 +40,9 @@
     "validate": "run-s lint test build"
   },
   "peerDependencies": {
-    "@yaasl/utils": "^0.15.0-alpha.1"
+    "@yaasl/utils": "workspace:^"
   },
   "devDependencies": {
-    "@yaasl/utils": "^0.15.0-alpha.1"
+    "@yaasl/utils": "workspace:*"
   }
 }
