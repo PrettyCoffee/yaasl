@@ -47,6 +47,6 @@
   "devDependencies": {
     "@yaasl/core": "workspace:*",
     "@yaasl/utils": "workspace:*",
-    "preact": "10.29.1"
+    "preact": "10.29.7"
   }
 }

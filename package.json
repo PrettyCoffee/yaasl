@@ -31,18 +31,18 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.5.0",
-    "@commitlint/config-conventional": "20.5.0",
+    "@commitlint/cli": "20.5.3",
+    "@commitlint/config-conventional": "20.5.3",
     "@pretty-cozy/eslint-config": "0.9.0",
     "@pretty-cozy/release-tools": "0.9.0",
-    "@vitest/coverage-v8": "4.1.4",
+    "@vitest/coverage-v8": "4.1.10",
     "enquirer": "2.4.1",
     "eslint": "9.39.4",
-    "happy-dom": "20.9.0",
+    "happy-dom": "20.10.6",
     "husky": "9.1.7",
-    "npm-check-updates": "21.0.2",
+    "npm-check-updates": "21.0.3",
     "npm-run-all2": "8.0.4",
     "typescript": "6.0.3",
-    "vitest": "4.1.4"
+    "vitest": "4.1.10"
   }
 }
