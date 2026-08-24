@@ -74,15 +74,15 @@ describe("Test deepCompare", () => {
     ${"class object (with .valueOf)"}  | ${new ClassWithValue(1)}            | ${new ClassWithValue(1)}            | ${new ClassWithValue(2)}
     ${"class object (with .toString)"} | ${new ClassWithString("a")}         | ${new ClassWithString("a")}         | ${new ClassWithString("b")}
   `("handles $type values", ({ value, match, diff }) => {
-    expect(deepCompare(value, match)).toBe(true)
-    expect(deepCompare(value, diff)).toBe(false)
+    expect(deepCompare(value, match)).toBeTruthy()
+    expect(deepCompare(value, diff)).toBeFalsy()
   })
 
   it.each`
     name              | create
     ${"custom class"} | ${() => new ClassA()}
   `("cannot handle $name instances", ({ create }) => {
-    expect(deepCompare(create(), create())).toBe(false)
+    expect(deepCompare(create(), create())).toBeFalsy()
   })
 
   it("handles cyclic objects", () => {
@@ -95,25 +95,25 @@ describe("Test deepCompare", () => {
     const objectB = { value: "b" }
     Object.assign(objectB, { cycle: { deep: objectB } })
 
-    expect(deepCompare(objectA, objectA2)).toBe(true)
-    expect(deepCompare(objectA, objectB)).toBe(false)
+    expect(deepCompare(objectA, objectA2)).toBeTruthy()
+    expect(deepCompare(objectA, objectB)).toBeFalsy()
   })
 
   it("handles a positive smoke test", () => {
-    expect(deepCompare(createBigObject(), createBigObject())).toBe(true)
+    expect(deepCompare(createBigObject(), createBigObject())).toBeTruthy()
   })
 
   it("handles a negative smoke test", () => {
     const objectA = createBigObject()
     objectA.primitives.string = "other string"
-    expect(deepCompare(objectA, createBigObject())).toBe(false)
+    expect(deepCompare(objectA, createBigObject())).toBeFalsy()
 
     const objectB = createBigObject()
     objectB.iterable.set = new Set([1, 2, 3])
-    expect(deepCompare(objectB, createBigObject())).toBe(false)
+    expect(deepCompare(objectB, createBigObject())).toBeFalsy()
 
     const objectC = createBigObject()
     objectC.nested.deeper = objectB
-    expect(deepCompare(objectC, createBigObject())).toBe(false)
+    expect(deepCompare(objectC, createBigObject())).toBeFalsy()
   })
 })

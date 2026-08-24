@@ -41,11 +41,11 @@ const nextValue = "next"
 
 const testAtom = createAtom({ defaultValue })
 
-beforeEach(() => {
-  vi.resetAllMocks()
-})
-
 describe("Test createEffect", () => {
+  beforeEach(() => {
+    vi.resetAllMocks()
+  })
+
   it("Creates an effect", () => {
     const e = testEffect()(testAtom)
     expect(e.actions).toHaveProperty("set")
@@ -72,7 +72,7 @@ describe("Test createEffect", () => {
     const callArgs = init.mock.calls[0]?.[0]
     expect(callArgs).toHaveProperty("atom", testAtom)
     expect(callArgs).toHaveProperty("value", defaultValue)
-    expect(callArgs).toHaveProperty("options", undefined)
+    expect(callArgs).toHaveProperty("options")
   })
 
   it("Calls the didInit function", () => {
@@ -85,7 +85,7 @@ describe("Test createEffect", () => {
     const callArgs = didInit.mock.calls[0]?.[0]
     expect(callArgs).toHaveProperty("atom", testAtom)
     expect(callArgs).toHaveProperty("value", defaultValue)
-    expect(callArgs).toHaveProperty("options", undefined)
+    expect(callArgs).toHaveProperty("options")
   })
 
   it("Sets the value in the effect", () => {
@@ -115,7 +115,7 @@ describe("Test createEffect", () => {
     const callArgs = set.mock.calls[0]?.[0]
     expect(callArgs).toHaveProperty("atom", testAtom)
     expect(callArgs).toHaveProperty("value", nextValue)
-    expect(callArgs).toHaveProperty("options", undefined)
+    expect(callArgs).toHaveProperty("options")
   })
 
   it("Calls the actions in the correct order", () => {
@@ -126,9 +126,9 @@ describe("Test createEffect", () => {
       effects: [order],
     })
 
-    expect(actionOrder).toEqual(["init", "didInit"])
+    expect(actionOrder).toStrictEqual(["init", "didInit"])
     testAtom.set(nextValue)
-    expect(actionOrder).toEqual(["init", "didInit", "set"])
+    expect(actionOrder).toStrictEqual(["init", "didInit", "set"])
   })
 
   it("Applies effect pre sort", () => {
@@ -181,7 +181,7 @@ describe("Test createEffect", () => {
       effects: [testEffect()],
     })
 
-    expect(testAtom.didInit).toBe(true)
+    expect(testAtom.didInit).toBeTruthy()
   })
 
   it.each`
@@ -195,7 +195,7 @@ describe("Test createEffect", () => {
     async ({ initType, didInitType }) => {
       const values: number[] = []
 
-      const next = (value: number) => {
+      const nextCall = (value: number) => {
         values.push(value)
         return value + 1
       }
@@ -203,17 +203,17 @@ describe("Test createEffect", () => {
       const counterEffect = createEffect<undefined, number>({
         init: ({ value, set }) => {
           if (initType === "sync") {
-            set(next(value))
+            set(nextCall(value))
             return
           }
-          return sleep(10).then(() => set(next(value)))
+          return sleep(10).then(() => set(nextCall(value)))
         },
         didInit: ({ value, set }) => {
           if (didInitType === "sync") {
-            set(next(value))
+            set(nextCall(value))
             return
           }
-          return sleep(10).then(() => set(next(value)))
+          return sleep(10).then(() => set(nextCall(value)))
         },
       })
       const testAtom = createAtom({
@@ -224,7 +224,7 @@ describe("Test createEffect", () => {
       await testAtom.didInit
       expect(values).toStrictEqual([0, 1])
       expect(testAtom.get()).toBe(2)
-      expect(testAtom.didInit).toBe(true)
+      expect(testAtom.didInit).toBeTruthy()
     },
   )
 
@@ -242,10 +242,10 @@ describe("Test createEffect", () => {
         effects: [order],
       })
 
-      expect(actionOrder).toEqual([])
+      expect(actionOrder).toStrictEqual([])
       await testAtom.didInit
-      expect(actionOrder).toEqual(["init", "didInit"])
-      expect(testAtom.didInit).toBe(true)
+      expect(actionOrder).toStrictEqual(["init", "didInit"])
+      expect(testAtom.didInit).toBeTruthy()
     })
 
     it("allows async didInit", async () => {
@@ -261,10 +261,10 @@ describe("Test createEffect", () => {
         effects: [order],
       })
 
-      expect(actionOrder).toEqual(["init"])
+      expect(actionOrder).toStrictEqual(["init"])
       await testAtom.didInit
-      expect(actionOrder).toEqual(["init", "didInit"])
-      expect(testAtom.didInit).toBe(true)
+      expect(actionOrder).toStrictEqual(["init", "didInit"])
+      expect(testAtom.didInit).toBeTruthy()
     })
 
     it("allows init and didInit to be async", async () => {
@@ -281,10 +281,10 @@ describe("Test createEffect", () => {
         effects: [order],
       })
 
-      expect(actionOrder).toEqual([])
+      expect(actionOrder).toStrictEqual([])
       await testAtom.didInit
-      expect(actionOrder).toEqual(["init", "didInit"])
-      expect(testAtom.didInit).toBe(true)
+      expect(actionOrder).toStrictEqual(["init", "didInit"])
+      expect(testAtom.didInit).toBeTruthy()
     })
 
     it("throws when trying to set value while initializing", async () => {

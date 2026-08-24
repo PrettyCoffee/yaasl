@@ -25,7 +25,6 @@ export class Expiration {
   private timeout: number | null = null
 
   constructor({ key, expiresAt, expiresIn }: ExpirationOptions) {
-    this.timeout = null
     this.key = key
 
     if (expiresAt) {

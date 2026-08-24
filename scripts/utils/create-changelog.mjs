@@ -73,7 +73,7 @@ export const createChangelog = async ({ name, version }) => {
   const commits = await getCommitsSinceLastRelease(name)
   const changes = commits
     .filter(commit => isChangeCommit(commit))
-    .sort(sortCommits)
+    .toSorted(sortCommits)
 
   return printChangelog({ name, version, commits: changes })
 }

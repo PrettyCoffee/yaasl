@@ -1,6 +1,9 @@
-import { Atom, CONFIG, createEffect } from "@yaasl/core"
+import { type Atom, CONFIG, createEffect } from "@yaasl/core"
 
-import { ConnectionResponse, getReduxConnection } from "./get-redux-connection"
+import {
+  type ConnectionResponse,
+  getReduxConnection,
+} from "./get-redux-connection"
 import { cache } from "./utils/cache"
 import { resetSubscriptions, subscribeStore } from "./utils/subscribe-store"
 import { updates } from "./utils/updates"

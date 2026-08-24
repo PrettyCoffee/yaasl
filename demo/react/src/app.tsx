@@ -1,6 +1,7 @@
 import reactLogo from "./assets/react.svg"
 import viteLogo from "./assets/vite.svg"
 import { Counter } from "./counter"
+// oxlint-disable-next-line import/no-unassigned-import
 import "./app.css"
 
 export const App = () => (

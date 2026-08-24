@@ -1,4 +1,4 @@
-import { InferValues, toArray, toVoid } from "@yaasl/utils"
+import { type InferValues, toArray, toVoid } from "@yaasl/utils"
 
 import { Stateful } from "./stateful"
 

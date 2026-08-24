@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return -- doesn't matter for tests */
-import { createAtom, Atom } from "@yaasl/core"
+import { createAtom, type Atom } from "@yaasl/core"
 import { vi, it, describe, expect, beforeEach } from "vitest"
 
 import {
-  ConnectionResponse,
-  ReduxDevtoolsExtension,
-  Message,
+  type ConnectionResponse,
+  type ReduxDevtoolsExtension,
+  type Message,
 } from "../get-redux-connection"
 import { connectAtom, disconnectAllConnections } from "../redux-devtools"
 import { cache } from "./cache"
 
-const noop = () => undefined
+// oxlint-disable-next-line no-empty-function
+const noop = () => {}
 
 const update = (
   connection: ConnectionResponse,
@@ -38,8 +39,7 @@ const mockExtension = () => {
     disconnect: noop,
   }
 
-  window.__REDUX_DEVTOOLS_EXTENSION__ =
-    extension as typeof window.__REDUX_DEVTOOLS_EXTENSION__
+  window.__REDUX_DEVTOOLS_EXTENSION__ = extension
 
   return {
     subscription,
@@ -53,7 +53,7 @@ const nextValue = "test 2"
 const atomName = "atomName"
 
 describe("Test connectAtom", () => {
-  let testAtom = createAtom({ defaultValue: value, name: atomName })
+  let testAtom: Atom<string>
   beforeEach(() => {
     testAtom = createAtom({ defaultValue: value, name: atomName })
     disconnectAllConnections()
@@ -119,7 +119,7 @@ describe("Test connectAtom", () => {
       connectAtom(connection, testAtom)
 
       expect(connection.subscribe).toHaveBeenCalled()
-      expect(subscription.current).not.toBeUndefined()
+      expect(subscription.current).toBeDefined()
     })
 
     it("Jumps to a state", () => {

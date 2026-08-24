@@ -36,12 +36,12 @@ describe("Test autoSort", () => {
   it("Throws with incompatible values", () => {
     expect(() =>
       createAtom({ defaultValue: "string", effects: [autoSort({ sortFn })] }),
-    ).toThrow()
+    ).toThrow(/value type is not compatile/i)
 
     const testAtom = createAtom<string | null>({
       defaultValue: null,
       effects: [autoSort({ sortFn })],
     })
-    expect(() => testAtom.set("abc")).toThrow()
+    expect(() => testAtom.set("abc")).toThrow(/value type is not compatile/i)
   })
 })

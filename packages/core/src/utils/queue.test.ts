@@ -25,7 +25,7 @@ describe("Test Queue", () => {
     const promise = queue.push(plus1).run("i")
 
     expect(isPromiseLike(promise)).toBeTruthy()
-    expect(await promise).toBe("i1")
+    await expect(promise).resolves.toBe("i1")
     expect(plus1).toHaveBeenCalledWith("i")
     expect(plus1).toHaveBeenCalledTimes(1)
   })
@@ -35,7 +35,7 @@ describe("Test Queue", () => {
     const promise = queue.push(plus1, plus2).run("i")
 
     expect(isPromiseLike(promise)).toBeTruthy()
-    expect(await promise).toBe("i12")
+    await expect(promise).resolves.toBe("i12")
 
     expect(plus1).toHaveBeenCalledWith("i")
     expect(plus1).toHaveBeenCalledTimes(1)
@@ -46,12 +46,11 @@ describe("Test Queue", () => {
 
   it("allows to push tasks multiple times", async () => {
     const queue = new Queue<string>()
-    queue.push(plus1)
-    queue.push(plus2)
+    queue.push(plus1, plus2)
     const promise = queue.run("i")
 
     expect(isPromiseLike(promise)).toBeTruthy()
-    expect(await promise).toBe("i12")
+    await expect(promise).resolves.toBe("i12")
 
     expect(plus1).toHaveBeenCalledWith("i")
     expect(plus1).toHaveBeenCalledTimes(1)
@@ -65,7 +64,7 @@ describe("Test Queue", () => {
     const promise = queue.push(plus1, plus2).run("i")
 
     expect(promise).toBeInstanceOf(Thenable)
-    expect(await promise).toBe("i12")
+    await expect(promise).resolves.toBe("i12")
   })
 
   it("Returns a Promise with synchronous tasks", async () => {
@@ -73,7 +72,7 @@ describe("Test Queue", () => {
     const promise = queue.push(asyncPlus3, asyncPlus4).run("i")
 
     expect(promise).toBeInstanceOf(Promise)
-    expect(await promise).toBe("i34")
+    await expect(promise).resolves.toBe("i34")
   })
 
   it("Returns a Promise with mixed sync and async tasks", async () => {
@@ -81,7 +80,7 @@ describe("Test Queue", () => {
     const promise = queue.push(asyncPlus3, plus1, asyncPlus4, plus2).run("i")
 
     expect(promise).toBeInstanceOf(Promise)
-    expect(await promise).toBe("i3142")
+    await expect(promise).resolves.toBe("i3142")
 
     expect(asyncPlus3).toHaveBeenCalledWith("i")
     expect(plus1).toHaveBeenCalledWith("i3")

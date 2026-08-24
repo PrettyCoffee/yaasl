@@ -1,8 +1,8 @@
 import { it, describe, expect, afterEach } from "vitest"
 
 import { createAtom } from "../base"
-import { StringStorageParser } from "../utils/string-storage"
-import { SessionStorageOptions, sessionStorage } from "./session-storage"
+import { type StringStorageParser } from "../utils/string-storage"
+import { type SessionStorageOptions, sessionStorage } from "./session-storage"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {
@@ -36,7 +36,7 @@ describe("Test sessionStorage", () => {
   it("Is null initially", () => {
     const { testAtom, getStoreValue } = setup()
     expect(testAtom.get()).toStrictEqual(defaultValue)
-    expect(getStoreValue()).toStrictEqual(null)
+    expect(getStoreValue()).toBeNull()
   })
 
   it("Loads an existing value", () => {
@@ -64,7 +64,6 @@ describe("Test sessionStorage", () => {
   })
 
   describe("handles custom parsers", () => {
-    // eslint-disable-next-line unicorn/consistent-function-scoping
     const isMapEntry = (value: unknown): value is [unknown, unknown] =>
       Array.isArray(value) && value.length === 2
 

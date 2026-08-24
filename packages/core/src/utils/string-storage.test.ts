@@ -19,13 +19,13 @@ describe("Test LocalStorage", () => {
   it("gets a parsed value", () => {
     localStorage.setItem(key, JSON.stringify(value))
     const storage = new StringStorage({ key, store: localStorage })
-    expect(storage.get()).toEqual(value)
+    expect(storage.get()).toStrictEqual(value)
   })
 
   it("throws an error if value cannot be parsed", () => {
     localStorage.setItem(key, "invalid-json")
     const storage = new StringStorage({ key, store: localStorage })
-    expect(() => storage.get()).toThrow()
+    expect(() => storage.get()).toThrow(/could not be parsed/i)
   })
 
   it("sets a value", () => {
@@ -56,7 +56,7 @@ describe("Test LocalStorage", () => {
     it("parse function when getting a value", () => {
       localStorage.setItem(key, JSON.stringify(value))
       const storage = new StringStorage({ key, store: localStorage, parser })
-      expect(storage.get()).toEqual(value)
+      expect(storage.get()).toStrictEqual(value)
       expect(parser.parse).toHaveBeenCalledWith(JSON.stringify(value))
     })
   })

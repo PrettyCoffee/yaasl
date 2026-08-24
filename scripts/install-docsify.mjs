@@ -6,7 +6,7 @@ import { replaceInFile } from "./utils/replace-in-file.mjs"
 const fileInfo = path => {
   const file = basename(path)
   const baseDir = path.split("/")[0]
-  const ext = file.match(/\.[0-9a-z]+$/i)[0]
+  const ext = /\.[0-9a-z]+$/i.exec(file)[0]
   const min = file.includes(".min") ? ".min" : ""
   const name = file.replace(min + ext, "")
   return { name, baseDir, ext, min }

@@ -24,6 +24,7 @@ describe("Test createSlice", () => {
 
     expect(slice).toHaveProperty("defaultValue", 0)
 
+    // oxlint-disable vitest/no-conditional-expect
     if (isNotEmpty(reducers)) {
       expect(slice).toHaveProperty("actions")
     } else {
@@ -35,6 +36,7 @@ describe("Test createSlice", () => {
     } else {
       expect(slice).not.toHaveProperty("selectors")
     }
+    // oxlint-enable vitest/no-conditional-expect
   })
 
   it("Creates a slice with default value", () => {

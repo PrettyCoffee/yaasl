@@ -89,7 +89,6 @@ export const deepCompare = (
   a: unknown,
   b: unknown,
   seen = new WeakMap<object, WeakSet<object>>(),
-  // eslint-disable-next-line complexity
 ): boolean => {
   if (a === b) return true
 

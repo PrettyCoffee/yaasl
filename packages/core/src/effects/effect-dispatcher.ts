@@ -1,4 +1,4 @@
-import { Updater, isPromiseLike, updater } from "@yaasl/utils"
+import { type Updater, isPromiseLike, updater } from "@yaasl/utils"
 
 import type { Atom } from "../base/create-atom"
 import { Queue } from "../utils/queue"
@@ -60,7 +60,7 @@ export class EffectDispatcher<Value> {
   ) {
     this.effects = effects
       .map(create => new EffectActions(atom, create))
-      .sort((a, b) =>
+      .toSorted((a, b) =>
         a.meta?.sort === "pre" || b.meta?.sort === "post"
           ? -1
           : a.meta?.sort === "post" || b.meta?.sort === "pre"

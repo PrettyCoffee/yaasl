@@ -1,4 +1,4 @@
-import { consoleMessage, Updater, toVoid, updater } from "@yaasl/utils"
+import { consoleMessage, type Updater, toVoid, updater } from "@yaasl/utils"
 
 import type { Atom } from "./create-atom"
 import { Stateful } from "./stateful"
@@ -127,9 +127,5 @@ export function createDerived<Value>(
   getter: GetterFn<Value>,
   setter?: SetterFn<Value>,
 ) {
-  if (setter) {
-    return new SettableDerive(getter, setter)
-  } else {
-    return new Derive(getter)
-  }
+  return setter ? new SettableDerive(getter, setter) : new Derive(getter)
 }

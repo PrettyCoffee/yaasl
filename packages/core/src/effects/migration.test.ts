@@ -65,7 +65,7 @@ describe("Test migration", () => {
 
     expect(migrateV1).toHaveBeenCalledWith(0)
     expect(migrateV2).toHaveBeenCalledWith("0")
-    expect(testAtom.get()).toEqual({ value: "0" })
+    expect(testAtom.get()).toStrictEqual({ value: "0" })
     expect(window.localStorage.getItem(`${testName}-version`)).toBe(v2.version)
   })
 
@@ -80,7 +80,7 @@ describe("Test migration", () => {
 
     expect(migrateV1).not.toHaveBeenCalled()
     expect(migrateV2).toHaveBeenCalledWith("0")
-    expect(testAtom.get()).toEqual({ value: "0" })
+    expect(testAtom.get()).toStrictEqual({ value: "0" })
     expect(window.localStorage.getItem(`${testName}-version`)).toBe(v2.version)
   })
 
@@ -101,7 +101,7 @@ describe("Test migration", () => {
       effects: [localStorage(), migration({ steps: [v1, throwingV2] })],
     })
     expect(testAtom.get()).toBe(0)
-    expect(window.localStorage.getItem(`${testName}-version`)).toBe(null)
+    expect(window.localStorage.getItem(`${testName}-version`)).toBeNull()
     expect(error).toHaveBeenCalledTimes(1)
 
     resetConsole()
@@ -117,8 +117,8 @@ describe("Test migration", () => {
       effects: [localStorage(), migration({ steps: [v1, v2] })],
     })
 
-    expect(testAtom.get()).toEqual("0")
-    expect(window.localStorage.getItem(`${testName}-version`)).toBe(null)
+    expect(testAtom.get()).toBe("0")
+    expect(window.localStorage.getItem(`${testName}-version`)).toBeNull()
     expect(error).toHaveBeenCalledTimes(1)
 
     resetConsole()

@@ -1,4 +1,4 @@
-import { createEffect, EffectPayload } from "@yaasl/core"
+import { createEffect, type EffectPayload } from "@yaasl/core"
 import { consoleMessage } from "@yaasl/utils"
 
 export interface LoggerOptions {

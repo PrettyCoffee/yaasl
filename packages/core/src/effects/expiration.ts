@@ -44,7 +44,7 @@ export interface ExpirationOptions {
  * @returns The effect to be used on atoms.
  */
 export const expiration = createEffect<ExpirationOptions>(
-  ({ atom, options = {} }) => {
+  ({ atom, options }) => {
     const hasExpiration = Boolean(options.expiresAt ?? options.expiresIn)
     if (!hasExpiration) return {}
 

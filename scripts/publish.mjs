@@ -75,6 +75,7 @@ const releaseChanges = async () => {
   newLine()
 }
 
+// oxlint-disable-next-line max-statements
 const run = async () => {
   const { root, workspaces } = await promptWorkspaces({
     enforceRootSelected: true,

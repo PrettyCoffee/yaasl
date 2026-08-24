@@ -28,6 +28,7 @@ class SyncChannel<TData = undefined> {
   }
 
   public push(data: TData) {
+    // oxlint-disable-next-line unicorn/require-post-message-target-origin -- this is a BroadcastChannel, not window.postMessage
     this.channel.postMessage({ id: this.id, data } satisfies Payload<TData>)
   }
 

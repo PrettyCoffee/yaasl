@@ -21,17 +21,17 @@ describe("Test memoizeFunction", () => {
     const second = select({ a: { b: { c: 1 } } }, 1)
     expect(second).toBe(first) // doesn't change the object reference
     expect(second.value).toBe(1)
-    expect(second.match).toBe(true)
+    expect(second.match).toBeTruthy()
 
     const third = select({ a: { b: { c: 2 } } }, 1)
     expect(third).not.toBe(first)
     expect(third.value).toBe(2)
-    expect(third.match).toBe(false)
+    expect(third.match).toBeFalsy()
 
     const fourth = select({ a: { b: { c: 2 } } }, 2)
     expect(fourth).not.toBe(first)
     expect(fourth.value).toBe(2)
-    expect(fourth.match).toBe(true)
+    expect(fourth.match).toBeTruthy()
   })
 
   it("Memoizes args", () => {
@@ -94,8 +94,10 @@ describe("Test memoizeFunction", () => {
 
     const results = [] as ReturnType<typeof select>[]
 
-    results.unshift(select({ a: { b: { c: 1 } } }))
-    results.unshift(select({ a: { b: { c: 1 } } }))
+    results.unshift(
+      select({ a: { b: { c: 1 } } }),
+      select({ a: { b: { c: 1 } } }),
+    )
     expect(results[0]).toBe(results[1])
 
     select.compareResult = () => false

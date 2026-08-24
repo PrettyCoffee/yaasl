@@ -8,11 +8,11 @@ import { createDerived } from "./create-derived"
 const defaultValue = "default"
 const nextValue = "next"
 
-beforeEach(() => {
-  vi.resetAllMocks()
-})
-
 describe("Test derive", () => {
+  beforeEach(() => {
+    vi.resetAllMocks()
+  })
+
   it("Derives a value", () => {
     const atom1 = createAtom({ defaultValue })
     const atom2 = createAtom({ defaultValue })
@@ -101,10 +101,10 @@ describe("Test derive", () => {
         },
       )
 
-      expect(testDerive.get()).toEqual({ value1: 1, value2: 1 })
+      expect(testDerive.get()).toStrictEqual({ value1: 1, value2: 1 })
 
       atom1.set(4)
-      expect(testDerive.get()).toEqual({ value1: 4, value2: 1 })
+      expect(testDerive.get()).toStrictEqual({ value1: 4, value2: 1 })
 
       testDerive.set({ value1: 2, value2: 2 })
       expect(atom1.get()).toBe(2)
@@ -134,7 +134,7 @@ describe("Test derive", () => {
           ({ get }) => get(atom1),
           ({ value, set }) => set(atom2, value),
         ),
-      ).toThrow()
+      ).toThrow(/set and get dependencies of a derived atom do not match/i)
     })
   })
 
@@ -142,7 +142,7 @@ describe("Test derive", () => {
     it("Sets true if no effects were passed", () => {
       const testAtom = createAtom({ defaultValue: 1 })
       const testDerive = createDerived(({ get }) => get(testAtom) * 2)
-      expect(testDerive.didInit).toBe(true)
+      expect(testDerive.didInit).toBeTruthy()
     })
 
     it("Updates if effects are asynchronous", async () => {
@@ -155,7 +155,7 @@ describe("Test derive", () => {
 
       expect(testDerive.didInit).toBeInstanceOf(Promise)
       await testDerive.didInit
-      expect(testDerive.didInit).toBe(true)
+      expect(testDerive.didInit).toBeTruthy()
     })
   })
 })

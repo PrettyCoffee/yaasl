@@ -1,5 +1,6 @@
-import "./style.css"
 import { setupCounter } from "./counter"
+// oxlint-disable-next-line import/no-unassigned-import
+import "./style.css"
 
 const root = document.getElementById("root")
 if (!root) throw new Error('Could not find element with id "root"')

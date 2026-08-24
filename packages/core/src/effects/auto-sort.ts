@@ -1,6 +1,6 @@
 import { consoleMessage } from "@yaasl/utils"
 
-import { Atom } from "../base"
+import { type Atom } from "../base"
 import { createEffect } from "./create-effect"
 
 const forceArray = (value: unknown, atom: Atom<any>): unknown[] => {

@@ -12,12 +12,12 @@ describe("Test Thenable", () => {
 
   it("Can be awaited", async () => {
     const thenable = new Thenable("test")
-    expect(await thenable).toMatch("test")
+    await expect(thenable).resolves.toMatch("test")
   })
 
   it("Can be awaited after calling .then", async () => {
     const thenable = new Thenable(0).then(value => value + 1)
-    expect(await thenable).toBe(1)
+    await expect(thenable).resolves.toBe(1)
   })
 
   describe(".then method", () => {
@@ -44,7 +44,7 @@ describe("Test Thenable", () => {
         .then(value => value + 1)
 
       expect(result).not.toBeInstanceOf(Promise)
-      expect(await result).toBe(2)
+      await expect(result).resolves.toBe(2)
     })
 
     it("is chainable with async calls", async () => {
@@ -53,7 +53,7 @@ describe("Test Thenable", () => {
         .then(value => sleep(5).then(() => value + 1))
 
       expect(result).toBeInstanceOf(Promise)
-      expect(await result).toBe(2)
+      await expect(result).resolves.toBe(2)
     })
 
     it("is chainable with sync and async mix", async () => {
@@ -62,14 +62,14 @@ describe("Test Thenable", () => {
         .then(value => value + 1)
 
       expect(syncEnd).toBeInstanceOf(Promise)
-      expect(await syncEnd).toBe(2)
+      await expect(syncEnd).resolves.toBe(2)
 
       const asyncEnd = new Thenable(0)
         .then(value => value + 1)
         .then(value => sleep(5).then(() => value + 1))
 
       expect(asyncEnd).toBeInstanceOf(Promise)
-      expect(await asyncEnd).toBe(2)
+      await expect(asyncEnd).resolves.toBe(2)
     })
   })
 
@@ -77,14 +77,14 @@ describe("Test Thenable", () => {
     it("unwraps nested Thenables", async () => {
       const result = new Thenable(1).then(value => new Thenable(value + 1))
       expect(result).toBeInstanceOf(Thenable)
-      expect(await result).toBe(2)
+      await expect(result).resolves.toBe(2)
     })
 
     it("unwraps nested Promises", async () => {
       // eslint-disable-next-line unicorn/no-useless-promise-resolve-reject
       const result = new Thenable(1).then(value => Promise.resolve(value + 1))
       expect(result).toBeInstanceOf(Promise)
-      expect(await result).toBe(2)
+      await expect(result).resolves.toBe(2)
     })
 
     it("unwraps deep shit", async () => {
@@ -96,7 +96,7 @@ describe("Test Thenable", () => {
         ),
       )
       expect(result).toBeInstanceOf(Promise)
-      expect(await result).toBe(5)
+      await expect(result).resolves.toBe(5)
     })
   })
 
@@ -115,7 +115,7 @@ describe("Test Thenable", () => {
     it("combines thenables", async () => {
       const result = Thenable.all([new Thenable(1), new Thenable(2)])
       expect(result).toBeInstanceOf(Thenable)
-      expect(await result).toEqual([1, 2])
+      await expect(result).resolves.toStrictEqual([1, 2])
     })
 
     it("combines promises", async () => {
@@ -124,7 +124,7 @@ describe("Test Thenable", () => {
         sleep(3).then(() => 2),
       ])
       expect(result).toBeInstanceOf(Promise)
-      expect(await result).toEqual([1, 2])
+      await expect(result).resolves.toStrictEqual([1, 2])
     })
 
     it("combines thenables and promises", async () => {
@@ -134,7 +134,7 @@ describe("Test Thenable", () => {
         new Thenable(3),
       ])
       expect(result).toBeInstanceOf(Promise)
-      expect(await result).toEqual([1, 2, 3])
+      await expect(result).resolves.toStrictEqual([1, 2, 3])
     })
   })
 })

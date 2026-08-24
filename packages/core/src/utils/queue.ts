@@ -14,7 +14,7 @@ export class Queue<T = void> {
   public run(prev: T): PromiseLike<T> {
     const init = this.last ? this.last.then(() => prev) : new Thenable(prev)
     const result = this.queue.reduce<PromiseLike<T>>(
-      (result, next) => result.then(prev => next(prev)),
+      (result, nextTask) => result.then(prev => nextTask(prev)),
       init,
     )
 

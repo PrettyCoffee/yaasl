@@ -8,11 +8,11 @@ import { createAtom } from "./create-atom"
 const defaultValue = "default"
 const nextValue = "next"
 
-beforeEach(() => {
-  vi.resetAllMocks()
-})
-
 describe("Test atom", () => {
+  beforeEach(() => {
+    vi.resetAllMocks()
+  })
+
   it("Creates an atom with default value", () => {
     expect(createAtom({ defaultValue })).toHaveProperty(
       "defaultValue",
@@ -105,7 +105,7 @@ describe("Test atom", () => {
   describe("synchronizes didInit status", () => {
     it("Sets true if no effect was passed", () => {
       const testAtom = createAtom({ defaultValue })
-      expect(testAtom.didInit).toBe(true)
+      expect(testAtom.didInit).toBeTruthy()
     })
 
     it("Sets true if effects are synchronous", () => {
@@ -114,7 +114,7 @@ describe("Test atom", () => {
 
       const e = createEffect({ init, didInit })
       const testAtom = createAtom({ defaultValue, effects: [e()] })
-      expect(testAtom.didInit).toBe(true)
+      expect(testAtom.didInit).toBeTruthy()
     })
 
     it("Updates if effects are asynchronous", async () => {
@@ -126,7 +126,7 @@ describe("Test atom", () => {
 
       expect(testAtom.didInit).toBeInstanceOf(Promise)
       await testAtom.didInit
-      expect(testAtom.didInit).toBe(true)
+      expect(testAtom.didInit).toBeTruthy()
     })
   })
 })

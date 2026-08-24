@@ -1,7 +1,10 @@
 import { getWindow } from "@yaasl/utils"
 
 import { getScopedKey } from "../utils/get-scoped-key"
-import { StringStorage, StringStorageParser } from "../utils/string-storage"
+import {
+  StringStorage,
+  type StringStorageParser,
+} from "../utils/string-storage"
 import { createEffect } from "./create-effect"
 
 const syncOverBrowserTabs = (

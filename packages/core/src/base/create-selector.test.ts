@@ -25,11 +25,11 @@ const initSleep = createEffect<{ duration?: number } | undefined>(
   },
 )
 
-beforeEach(() => {
-  vi.resetAllMocks()
-})
-
 describe("Test createSelector", () => {
+  beforeEach(() => {
+    vi.resetAllMocks()
+  })
+
   it("Uses a state from one atom", () => {
     const testAtom = createAtom({ defaultValue: 1 })
     const selected = createSelector([testAtom], state => String(state))
@@ -92,7 +92,7 @@ describe("Test createSelector", () => {
         [atom1, atom2],
         (state1, state2) => state1 + state2,
       )
-      expect(selected.didInit).toBe(true)
+      expect(selected.didInit).toBeTruthy()
     })
 
     it("Updates if effects are asynchronous", async () => {
@@ -105,7 +105,7 @@ describe("Test createSelector", () => {
 
       expect(selected.didInit).toBeInstanceOf(Promise)
       await selected.didInit
-      expect(selected.didInit).toBe(true)
+      expect(selected.didInit).toBeTruthy()
     })
 
     it("Updates if multiple effects are asynchronous", async () => {
@@ -122,13 +122,13 @@ describe("Test createSelector", () => {
       expect(selected.didInit).toBeInstanceOf(Promise)
 
       await atom1.didInit
-      expect(atom1.didInit).toBe(true)
+      expect(atom1.didInit).toBeTruthy()
       expect(atom2.didInit).toBeInstanceOf(Promise)
       expect(selected.didInit).toBeInstanceOf(Promise)
 
       await atom2.didInit
       await sleep(5) // Will need a short amount of time to set the state
-      expect(selected.didInit).toBe(true)
+      expect(selected.didInit).toBeTruthy()
     })
   })
 })

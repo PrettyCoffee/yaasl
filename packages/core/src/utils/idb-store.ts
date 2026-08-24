@@ -2,8 +2,9 @@ import { getWindow } from "@yaasl/utils"
 
 const promisifyRequest = <T>(request: IDBRequest<T>): Promise<T> =>
   new Promise<T>((resolve, reject) => {
-    request.onsuccess = () => resolve(request.result)
-    request.onerror = () => reject(request.error)
+    request.addEventListener("success", () => resolve(request.result))
+    // oxlint-disable-next-line typescript/prefer-promise-reject-errors
+    request.addEventListener("error", () => reject(request.error))
   })
 
 export class IdbStore<T = unknown> {
@@ -37,14 +38,14 @@ export class IdbStore<T = unknown> {
     )
   }
 
-  public async get(key: string): Promise<T | undefined> {
+  public get(key: string): Promise<T | undefined> {
     return this.getStore("readonly").then(store =>
       !store ? undefined : promisifyRequest<T>(store.get(key) as IDBRequest<T>),
     )
   }
 
   public set(key: string, value: T) {
-    return this.getStore("readwrite").then(async store =>
+    return this.getStore("readwrite").then(store =>
       !store ? undefined : promisifyRequest(store.put(value, key)),
     )
   }

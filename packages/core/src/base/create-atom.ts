@@ -1,5 +1,5 @@
 import {
-  Updater,
+  type Updater,
   updater,
   Thenable,
   toVoid,

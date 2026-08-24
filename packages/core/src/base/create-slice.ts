@@ -1,7 +1,7 @@
-import { Actions, Reducers, createActions } from "./create-actions"
-import { Atom, AtomConfig } from "./create-atom"
-import { CombinerSelector, createSelector } from "./create-selector"
-import { Stateful } from "./stateful"
+import { type Actions, type Reducers, createActions } from "./create-actions"
+import { Atom, type AtomConfig } from "./create-atom"
+import { type CombinerSelector, createSelector } from "./create-selector"
+import { type Stateful } from "./stateful"
 
 const isEmpty = (obj?: unknown): obj is undefined =>
   !obj || Object.keys(obj).length === 0

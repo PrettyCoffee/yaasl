@@ -14,6 +14,7 @@ describe("Test Expiration", () => {
   beforeAll(() => {
     vi.useFakeTimers()
   })
+
   afterAll(() => {
     vi.useRealTimers()
   })
