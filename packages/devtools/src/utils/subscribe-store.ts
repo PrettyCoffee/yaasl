@@ -1,8 +1,7 @@
-import type { Atom } from "@yaasl/core"
-
+import type { ConnectionResponse } from "../get-redux-connection"
 import { cache } from "./cache"
 import { updates } from "./updates"
-import type { ConnectionResponse } from "../get-redux-connection"
+import type { Atom } from "@yaasl/core"
 
 let observedAtoms = new Set<Atom>()
 

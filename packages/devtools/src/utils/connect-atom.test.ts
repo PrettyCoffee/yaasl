@@ -2,20 +2,20 @@
 import { createAtom, Atom } from "@yaasl/core"
 import { vi, it, describe, expect, beforeEach } from "vitest"
 
-import { cache } from "./cache"
 import {
   ConnectionResponse,
   ReduxDevtoolsExtension,
   Message,
 } from "../get-redux-connection"
 import { connectAtom, disconnectAllConnections } from "../redux-devtools"
+import { cache } from "./cache"
 
 const noop = () => undefined
 
 const update = (
   connection: ConnectionResponse,
   atom: Atom<any>,
-  value: unknown
+  value: unknown,
 ) => {
   cache.setAtomValue(atom, value)
   connection.send({ type: `SET/${atom.name}` }, cache.getStore())
@@ -76,7 +76,7 @@ describe("Test connectAtom", () => {
     expect(connection.send).toHaveBeenCalledTimes(1)
     expect(connection.send).toHaveBeenCalledWith(
       { type: `SET/${atomName}` },
-      { [atomName]: nextValue }
+      { [atomName]: nextValue },
     )
   })
 
@@ -101,7 +101,7 @@ describe("Test connectAtom", () => {
     update(connection, atom1, nextValue)
     expect(connection.send).toHaveBeenCalledWith(
       { type: `SET/${atomName1}` },
-      { [atomName1]: nextValue, [atomName2]: value }
+      { [atomName1]: nextValue, [atomName2]: value },
     )
 
     update(connection, atom2, nextValue)
@@ -109,7 +109,7 @@ describe("Test connectAtom", () => {
     expect(connection.send).toHaveBeenCalledTimes(2)
     expect(connection.send).toHaveBeenLastCalledWith(
       { type: `SET/${atomName2}` },
-      { [atomName1]: nextValue, [atomName2]: nextValue }
+      { [atomName1]: nextValue, [atomName2]: nextValue },
     )
   })
 

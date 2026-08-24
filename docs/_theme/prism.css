@@ -2,20 +2,19 @@ pre {
   position: relative;
   background-color: var(--bg-base);
   border-radius: 0.25rem;
-  
+
   font-family: "Fira Code", monospace;
   font-size: 1rem;
   font-weight: 400;
-  
+
   code {
     padding: 1rem;
     overflow: auto;
     width: 100%;
     display: block;
-    max-height: min(600px,90vh);
+    max-height: min(600px, 90vh);
   }
-  
-  
+
   .docsify-copy-code-button {
     border-radius: 0.25rem;
     top: 0.5rem;
@@ -23,9 +22,8 @@ pre {
     height: 2.5rem;
 
     --bgl-layer: transparent;
-    background:
-      var(--bg-page)
-      linear-gradient(0, var(--bgl-layer), var(--bgl-layer))!important;
+    background: var(--bg-page)
+      linear-gradient(0, var(--bgl-layer), var(--bgl-layer)) !important;
 
     &:active {
       --bgl-layer: var(--bg-active);

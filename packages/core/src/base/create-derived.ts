@@ -7,7 +7,7 @@ const allDidInit = (atoms: Stateful[]) => {
   const inits = atoms
     .map(atom => atom.didInit)
     .filter(
-      (didInit): didInit is PromiseLike<void> => typeof didInit !== "boolean"
+      (didInit): didInit is PromiseLike<void> => typeof didInit !== "boolean",
     )
   return inits.length === 0 ? true : Promise.all(inits).then(toVoid)
 }
@@ -49,7 +49,7 @@ export class SettableDerive<Value = unknown> extends Derive<Value> {
 
   constructor(
     getter: GetterFn<Value>,
-    private readonly setter: SetterFn<Value>
+    private readonly setter: SetterFn<Value>,
   ) {
     super(getter)
     setter({
@@ -59,16 +59,17 @@ export class SettableDerive<Value = unknown> extends Derive<Value> {
     if (!this.compareDependencies()) {
       throw new Error(
         consoleMessage(
-          "The set and get dependencies of a derived atom do not match."
-        )
+          "The set and get dependencies of a derived atom do not match.",
+        ),
       )
     }
   }
 
-  /** Set the value of the derived atom.
+  /**
+   * Set the value of the derived atom.
    *
-   * @param next New value or function to create the
-   * new value based off the previous value.
+   * @param next New value or function to create the new value based off the
+   *   previous value.
    */
   public set(next: Updater<Value>) {
     const oldState = this.get()
@@ -97,32 +98,34 @@ export class SettableDerive<Value = unknown> extends Derive<Value> {
     }
 
     return [...setterDependencies].every(dependency =>
-      getterDependencies.has(dependency)
+      getterDependencies.has(dependency),
     )
   }
 }
 
-/** A derive atom that allows deriving and elevating values from and
- *  to one or multiple other stateful elements.
+/**
+ * A derive atom that allows deriving and elevating values from and to one or
+ * multiple other stateful elements.
  *
- *  **Note:**
- *    - `getter` and `setter` should not have any side effects
- *    - `getter` and `setter` must use the same atoms
+ * **Note:**
  *
- *  @param getter Function to derive a new value from other stateful elements.
- *  @param setter Function to elevate a new value to it's stateful dependents.
+ * - `getter` and `setter` should not have any side effects
+ * - `getter` and `setter` must use the same atoms
  *
- *  @returns A derive instance.
- **/
+ * @param getter Function to derive a new value from other stateful elements.
+ * @param setter Function to elevate a new value to it's stateful dependents.
+ *
+ * @returns A derive instance.
+ */
 export function createDerived<Value>(getter: GetterFn<Value>): Derive<Value>
 export function createDerived<Value>(
   getter: GetterFn<Value>,
-  setter: SetterFn<Value>
+  setter: SetterFn<Value>,
 ): SettableDerive<Value>
 
 export function createDerived<Value>(
   getter: GetterFn<Value>,
-  setter?: SetterFn<Value>
+  setter?: SetterFn<Value>,
 ) {
   if (setter) {
     return new SettableDerive(getter, setter)

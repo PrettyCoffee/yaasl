@@ -6,7 +6,7 @@ export type Dispatch<T> = (value: T) => void
 
 export type SubscriberCallback<TValue = unknown> = (
   value: TValue,
-  previous: TValue
+  previous: TValue,
 ) => void
 
 export interface Subscribable<TValue = unknown> {

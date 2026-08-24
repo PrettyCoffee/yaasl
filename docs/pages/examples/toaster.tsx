@@ -41,7 +41,7 @@ fetch("https://some-api.com")
     showToast({
       kind: "error",
       message: "Failed to load data",
-    })
+    }),
   )
 /// [showToastUsage]
 

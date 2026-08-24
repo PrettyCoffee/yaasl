@@ -19,7 +19,7 @@ const systemMode = createAtom<ThemeMode>({
 window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", ({ matches }) =>
-    systemMode.set(matches ? "dark" : "light")
+    systemMode.set(matches ? "dark" : "light"),
   )
 /// [systemMode]
 
@@ -44,11 +44,11 @@ const modeActions = createActions(localMode, {
 /// [themeMode]
 const themeMode = createSelector(
   [localMode, systemMode],
-  (mode, system): ThemeMode => (mode === "system" ? system : mode)
+  (mode, system): ThemeMode => (mode === "system" ? system : mode),
 )
 
 themeMode.subscribe(theme =>
-  document.documentElement.classList.toggle("dark", theme === "dark")
+  document.documentElement.classList.toggle("dark", theme === "dark"),
 )
 /// [themeMode]
 

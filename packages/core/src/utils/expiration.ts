@@ -7,11 +7,14 @@ const STORAGE = getWindow()?.localStorage ?? {
 }
 
 export interface ExpirationOptions {
-  /** Local storage key to persist the expiration */
+  /** Local storage key to persist the expiration. */
   key: string
-  /** Date at which the value expires */
+  /** Date at which the value expires. */
   expiresAt?: Date | (() => Date)
-  /** Milliseconds in which the value expires. Will be ignored if expiresAt is set. */
+  /**
+   * Milliseconds in which the value expires. Will be ignored if expiresAt is
+   * set.
+   */
   expiresIn?: number | (() => number)
 }
 

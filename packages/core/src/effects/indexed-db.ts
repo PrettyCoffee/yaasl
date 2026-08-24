@@ -1,6 +1,6 @@
-import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
 import { IdbStore } from "../utils/idb-store"
+import { createEffect } from "./create-effect"
 
 let atomDb: IdbStore | null = null
 
@@ -16,18 +16,20 @@ export interface IndexedDbOptions {
   key?: string
 }
 
-/** Middleware to save and load atom values to an indexedDb.
+/**
+ * Middleware to save and load atom values to an indexedDb.
  *
- *  Will use one database and store for all atoms with your `CONFIG.name`
- *  as name or `yaasl` if not set.
+ * Will use one database and store for all atoms with your `CONFIG.name` as name
+ * or `yaasl` if not set.
  *
- *  Should be used in combination with the `sync` effect, to ensure value integrity.
+ * Should be used in combination with the `sync` effect, to ensure value
+ * integrity.
  *
  * @param {IndexedDbOptions | undefined} options
  * @param options.key Use your own store key. Will be `atom.name` by default.
  *
  * @returns The effect to be used on atoms.
- **/
+ */
 export const indexedDb = Object.assign(
   createEffect<IndexedDbOptions | undefined, unknown>(({ atom, options }) => {
     const key = options?.key ?? atom.name
@@ -59,5 +61,5 @@ export const indexedDb = Object.assign(
     getAllKeys: () => getAtomDb().getAllKeys(),
     set: (key: string, value: unknown) => getAtomDb().set(key, value),
     delete: (key: string) => getAtomDb().delete(key),
-  }
+  },
 )

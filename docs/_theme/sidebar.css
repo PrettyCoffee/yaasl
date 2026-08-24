@@ -1,5 +1,6 @@
 @media screen and (max-width: 450px) {
-  :root:has(body.close), body.close .content {
+  :root:has(body.close),
+  body.close .content {
     overflow: hidden;
   }
 
@@ -11,11 +12,11 @@
     h1.app-name {
       margin-top: 2rem;
     }
-    
+
     .search {
       margin-top: auto;
       order: 99;
-      
+
       .input-wrap {
         position: sticky;
         padding-left: 0.5rem;
@@ -29,7 +30,7 @@
       }
     }
   }
-  
+
   body.close {
     .github-corner {
       transform: translateX(100vw);
@@ -40,7 +41,7 @@
     aside.sidebar {
       transform: translateX(100vw);
     }
-  } 
+  }
 }
 
 aside.sidebar {
@@ -49,8 +50,8 @@ aside.sidebar {
   background-color: var(--bg-base);
 
   ul {
-    padding: 0!important;
-    margin-left: 1rem!important;
+    padding: 0 !important;
+    margin-left: 1rem !important;
   }
 
   .search {
@@ -64,7 +65,7 @@ aside.sidebar {
     margin: 0;
     padding: 0;
     border: none;
-    
+
     .input-wrap {
       position: sticky;
       top: 0;
@@ -112,7 +113,7 @@ aside.sidebar {
       border: 1px solid var(--text-muted);
       border-radius: 0.25rem;
       color: var(--text-base);
-      
+
       &::placeholder {
         color: var(--text-gentle);
       }
@@ -161,7 +162,7 @@ aside.sidebar {
   .sidebar-nav {
     padding-right: 1rem;
     padding-bottom: 2rem;
-  
+
     li {
       --x-spacing: 0.5rem;
 
@@ -170,7 +171,7 @@ aside.sidebar {
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      
+
       & > p:not(:has(a)) {
         margin: 1rem var(--x-spacing) 0.5rem var(--x-spacing);
         line-height: 1.5;
@@ -178,7 +179,7 @@ aside.sidebar {
         color: var(--text-muted);
         border-bottom: 1px solid var(--text-muted);
       }
-      
+
       a {
         display: block;
         padding: 0 var(--x-spacing);
@@ -188,17 +189,18 @@ aside.sidebar {
           color: var(--text-gentle);
         }
         border-radius: 0.25rem;
-        &:hover, &:focus-visible {
+        &:hover,
+        &:focus-visible {
           background-color: var(--bg-hover);
         }
         &:active {
           background-color: var(--bg-active);
         }
       }
-
     }
 
-    li.active, p.active {
+    li.active,
+    p.active {
       > a {
         color: var(--accent);
         position: relative;

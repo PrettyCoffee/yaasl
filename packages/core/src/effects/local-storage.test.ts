@@ -1,8 +1,8 @@
 import { it, describe, expect, afterEach } from "vitest"
 
-import { LocalStorageOptions, localStorage } from "./local-storage"
 import { createAtom } from "../base"
 import { StringStorageParser } from "../utils/string-storage"
+import { LocalStorageOptions, localStorage } from "./local-storage"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {
@@ -82,7 +82,7 @@ describe("Test localStorage", () => {
     it("Uses a custom parser", () => {
       window.localStorage.setItem(
         "mapAtom",
-        '[["string","value"],["number",42]]'
+        '[["string","value"],["number",42]]',
       )
       const mapAtom = createAtom({
         name: "mapAtom",
@@ -103,10 +103,10 @@ describe("Test localStorage", () => {
         new Map<string, string | number>([
           ["string", "value"],
           ["number", 42],
-        ])
+        ]),
       )
       expect(window.localStorage.getItem("mapAtom")).toBe(
-        '[["string","value"],["number",42]]'
+        '[["string","value"],["number",42]]',
       )
     })
   })

@@ -1,6 +1,5 @@
-import type { Prettify } from "@yaasl/utils"
-
 import type { Action } from "./action"
+import type { Prettify } from "@yaasl/utils"
 
 /* Currently not required
 

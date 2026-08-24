@@ -1,9 +1,9 @@
 import { sleep } from "@yaasl/utils"
 import { vi, it, describe, expect, beforeEach } from "vitest"
 
+import { createEffect } from "../effects"
 import { CONFIG } from "./config"
 import { createAtom } from "./create-atom"
-import { createEffect } from "../effects"
 
 const defaultValue = "default"
 const nextValue = "next"
@@ -16,7 +16,7 @@ describe("Test atom", () => {
   it("Creates an atom with default value", () => {
     expect(createAtom({ defaultValue })).toHaveProperty(
       "defaultValue",
-      defaultValue
+      defaultValue,
     )
   })
 

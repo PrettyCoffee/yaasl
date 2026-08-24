@@ -1,38 +1,38 @@
 body:has(main.hidden) {
   height: max-content;
-  
+
   --gradient-1: var(--bg-page);
-  --gradient-2: hsl(240, 7.15%, 5.50%);
-  --gradient-3: hsl(240, 8.00%, 6.50%);
+  --gradient-2: hsl(240, 7.15%, 5.5%);
+  --gradient-3: hsl(240, 8%, 6.5%);
   --gradient-4: hsl(240, 7.75%, 7.75%);
-  --gradient-5: hsl(240, 4.50%, 9.00%);
+  --gradient-5: hsl(240, 4.5%, 9%);
   --gradient-6: var(--bg-base);
-  
-  background:
-    linear-gradient(45deg,
-      var(--gradient-1) 0%,
-      var(--gradient-1) 15.99%,
-      
-      var(--gradient-2) 16%,
-      var(--gradient-2) 32.99%,
-      
-      var(--gradient-3) 33%,
-      var(--gradient-3) 49.99%,
-      
-      var(--gradient-4) 50%,
-      var(--gradient-4) 65.99%,
-      
-      var(--gradient-5) 66%,
-      var(--gradient-5) 82.99%,
-      
-      var(--gradient-6) 83%,
-      var(--gradient-6) 100%
-    );
+
+  background: linear-gradient(
+    45deg,
+    var(--gradient-1) 0%,
+    var(--gradient-1) 15.99%,
+
+    var(--gradient-2) 16%,
+    var(--gradient-2) 32.99%,
+
+    var(--gradient-3) 33%,
+    var(--gradient-3) 49.99%,
+
+    var(--gradient-4) 50%,
+    var(--gradient-4) 65.99%,
+
+    var(--gradient-5) 66%,
+    var(--gradient-5) 82.99%,
+
+    var(--gradient-6) 83%,
+    var(--gradient-6) 100%
+  );
 }
 
 section.cover {
   padding: 3rem 1rem;
-  
+
   > .cover-main {
     text-align: start;
     max-width: 60ch;
@@ -42,14 +42,13 @@ section.cover {
     align-items: center;
     justify-content: center;
     gap: 3rem;
-  
+
     .hero {
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-  
-      
+
       .logo {
         position: relative;
         img {
@@ -61,9 +60,10 @@ section.cover {
           object-fit: cover;
           object-position: top;
         }
-        
+
         --shadow-color: 240deg 10% 4%;
-        &::before, &::after {
+        &::before,
+        &::after {
           content: "";
           display: block;
           position: absolute;
@@ -76,28 +76,36 @@ section.cover {
         &::before {
           z-index: 1;
           height: 2rem;
-          background: linear-gradient(0deg, hsl(var(--shadow-color)) 0%, transparent 100%);
+          background: linear-gradient(
+            0deg,
+            hsl(var(--shadow-color)) 0%,
+            transparent 100%
+          );
         }
-        
+
         &::after {
           z-index: 3;
           height: 1rem;
-          background: linear-gradient(0deg, hsl(var(--shadow-color)) 0%, rgba(0, 0, 0, 0) 100%);
-          box-shadow: 
+          background: linear-gradient(
+            0deg,
+            hsl(var(--shadow-color)) 0%,
+            rgba(0, 0, 0, 0) 100%
+          );
+          box-shadow:
             0px 1px 1.1px hsl(var(--shadow-color) / 0.4),
             0px 3.3px 3.7px -0.8px hsl(var(--shadow-color) / 0.4),
             0px 8.2px 9.2px -1.7px hsl(var(--shadow-color) / 0.4),
             0px 20px 22.5px -2.5px hsl(var(--shadow-color) / 0.4);
         }
       }
-  
+
       h1 {
         margin: 0;
         color: var(--accent);
         font-size: 5rem;
         font-weight: 500;
         line-height: 1.5;
-  
+
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -109,11 +117,11 @@ section.cover {
         color: var(--text-muted);
       }
     }
-  
+
     p {
       margin: 0;
     }
-  
+
     ul {
       max-width: max-content;
       margin: 0;
@@ -121,44 +129,42 @@ section.cover {
       grid-template-columns: 1fr 1fr;
       justify-items: start;
       column-gap: 2rem;
-      
+
       li {
         font-size: 1.25rem;
         white-space: nowrap;
       }
     }
-  
+
     div.buttons {
       display: inline-flex;
       gap: 1rem;
       a {
         --bgl-base: transparent;
         --bgl-layer: transparent;
-        background:
-          var(--bgl-base)
-          linear-gradient(0, var(--bgl-layer), var(--bgl-layer))!important;
-        
+        background: var(--bgl-base)
+          linear-gradient(0, var(--bgl-layer), var(--bgl-layer)) !important;
+
         display: inline-block;
         height: 2.5rem;
         border-radius: 0.25rem;
         padding: 0 0.75rem;
-  
+
         display: inline-grid;
         place-items: center;
-  
       }
-      
+
       a:first-of-type {
         --bgl-base: var(--accent);
         color: var(--bg-page);
         &:hover {
-          --bgl-layer: rgba(0,0,0,0.1);
+          --bgl-layer: rgba(0, 0, 0, 0.1);
         }
         &:active {
-          --bgl-layer: rgba(0,0,0,0.2);
+          --bgl-layer: rgba(0, 0, 0, 0.2);
         }
       }
-      
+
       a:last-of-type {
         border: 1px solid var(--accent);
         &:hover {
@@ -174,7 +180,7 @@ section.cover {
 
 @media screen and (max-width: 768px) {
   section.cover {
-    > .cover-main { 
+    > .cover-main {
       ul {
         grid-template-columns: auto;
         margin-left: auto;

@@ -1,8 +1,8 @@
 import { toVoid, getWindow } from "@yaasl/utils"
 
-import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
 import { Expiration } from "../utils/expiration"
+import { createEffect } from "./create-effect"
 
 const STORAGE = getWindow()?.localStorage ?? {
   getItem: () => null,
@@ -12,7 +12,7 @@ const STORAGE = getWindow()?.localStorage ?? {
 
 const syncOverBrowserTabs = (
   observingKey: string,
-  onChange: (value: string | null) => void
+  onChange: (value: string | null) => void,
 ) =>
   getWindow()?.addEventListener("storage", ({ key, newValue }) => {
     if (observingKey !== key) return
@@ -22,20 +22,27 @@ const syncOverBrowserTabs = (
   })
 
 export interface ExpirationOptions {
-  /** Date at which the value expires */
+  /** Date at which the value expires. */
   expiresAt?: Date | (() => Date)
-  /** Milliseconds in which the value expires. Will be ignored if expiresAt is set. */
+  /**
+   * Milliseconds in which the value expires. Will be ignored if expiresAt is
+   * set.
+   */
   expiresIn?: number | (() => number)
 }
 
-/** Effect to make an atom value expirable and reset to its defaulValue.
+/**
+ * Effect to make an atom value expirable and reset to its defaulValue.
  *
  * @param {ExpirationOptions | undefined} options
- * @param options.expiresAt Date at which the value expires. Using a function returning the date should be prefered here, since using a static date might end in an infinite loop.
- * @param options.expiresIn Milliseconds in which the value expires. Will be ignored if expiresAt is set.
+ * @param options.expiresAt Date at which the value expires. Using a function
+ *   returning the date should be prefered here, since using a static date might
+ *   end in an infinite loop.
+ * @param options.expiresIn Milliseconds in which the value expires. Will be
+ *   ignored if expiresAt is set.
  *
  * @returns The effect to be used on atoms.
- **/
+ */
 export const expiration = createEffect<ExpirationOptions>(
   ({ atom, options = {} }) => {
     const hasExpiration = Boolean(options.expiresAt ?? options.expiresIn)
@@ -63,5 +70,5 @@ export const expiration = createEffect<ExpirationOptions>(
         expiration.set(reset)
       },
     }
-  }
+  },
 )

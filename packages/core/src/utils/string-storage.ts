@@ -48,8 +48,8 @@ export class StringStorage<T = unknown> {
     } catch {
       throw new Error(
         consoleMessage(
-          `Value of local storage key "${this.key}" could not be parsed.`
-        )
+          `Value of local storage key "${this.key}" could not be parsed.`,
+        ),
       )
     }
   }
@@ -64,7 +64,7 @@ export class StringStorage<T = unknown> {
     } catch {
       log.error(
         `Value of atom with local storage key "${this.key}" could not be set.`,
-        { value }
+        { value },
       )
     }
   }

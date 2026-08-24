@@ -50,7 +50,7 @@ const createBigObject = () => {
       array: structuredClone(iterable),
       set: new Set(structuredClone(iterable)),
       map: new Map(
-        structuredClone(iterable).map(item => [item, item] as const)
+        structuredClone(iterable).map(item => [item, item] as const),
       ),
     },
   }

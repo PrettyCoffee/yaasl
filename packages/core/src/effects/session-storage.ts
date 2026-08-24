@@ -1,30 +1,35 @@
 import { getWindow } from "@yaasl/utils"
 
-import { createEffect } from "./create-effect"
 import { getScopedKey } from "../utils/get-scoped-key"
 import { StringStorage, StringStorageParser } from "../utils/string-storage"
+import { createEffect } from "./create-effect"
 
 export interface SessionStorageOptions {
-  /** Use your own key for the session storage.
-   *  Will be "{config-name}/{atom-name}" by default.
+  /**
+   * Use your own key for the session storage. Will be
+   * "{config-name}/{atom-name}" by default.
    */
   key?: string
-  /** Custom functions to stringify and parse values.
-   *  Defaults to JSON.stringify and JSON.parse.
-   *  Use this when handling complex datatypes like Maps or Sets.
+  /**
+   * Custom functions to stringify and parse values. Defaults to JSON.stringify
+   * and JSON.parse. Use this when handling complex datatypes like Maps or
+   * Sets.
    */
   parser?: StringStorageParser
 }
 
-/** Middleware to save and load atom values to the session storage.
+/**
+ * Middleware to save and load atom values to the session storage.
  *
  * @param {SessionStorageOptions | undefined} options
- * @param options.key Use your own key for the session storage.
- *   Will be "{config-name}/{atom-name}" by default.
- * @param options.parser Custom functions to stringify and parse values. Defaults to JSON.stringify and JSON.parse. Use this when handling complex datatypes like Maps or Sets.
+ * @param options.key Use your own key for the session storage. Will be
+ *   "{config-name}/{atom-name}" by default.
+ * @param options.parser Custom functions to stringify and parse values.
+ *   Defaults to JSON.stringify and JSON.parse. Use this when handling complex
+ *   datatypes like Maps or Sets.
  *
  * @returns The effect to be used on atoms.
- **/
+ */
 export const sessionStorage = createEffect<
   SessionStorageOptions | undefined,
   unknown

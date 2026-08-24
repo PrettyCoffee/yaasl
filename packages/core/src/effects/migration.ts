@@ -1,7 +1,7 @@
 import { getWindow, log } from "@yaasl/utils"
 
-import { createEffect } from "./create-effect"
 import { Atom, CONFIG } from "../base"
+import { createEffect } from "./create-effect"
 
 export interface MigrationStep<
   Version extends string = string,
@@ -9,13 +9,13 @@ export interface MigrationStep<
   OldData = any,
   NewData = any,
 > {
-  /** Previous version of the data, before performing the migration */
+  /** Previous version of the data, before performing the migration. */
   previous: PreviousVersion
-  /** Version of the data after the migration */
+  /** Version of the data after the migration. */
   version: Version
-  /** Function to migrate the data */
+  /** Function to migrate the data. */
   migrate: (data: OldData) => NewData
-  /** Function to validate the data before migrating */
+  /** Function to validate the data before migrating. */
   validate?: (data: unknown) => data is OldData
 }
 
@@ -30,14 +30,14 @@ const sortMigrations = (migrations: MigrationStep[]) => {
     sorted => {
       const last = sorted.at(-1)
       const next = migrations.find(
-        migration => migration.previous === last?.version
+        migration => migration.previous === last?.version,
       )
       if (next) {
         sorted.push(next)
       }
       return sorted
     },
-    [first]
+    [first],
   )
 }
 
@@ -59,7 +59,7 @@ interface Result {
 const migrateVersion = (
   atom: Atom,
   data: unknown,
-  migration: MigrationStep
+  migration: MigrationStep,
 ): Result => {
   if (migration.validate && !migration.validate(data)) {
     return {
@@ -82,7 +82,7 @@ const migrateVersion = (
 const performMigration = (
   atom: Atom,
   version: string | null,
-  migrations: MigrationStep[]
+  migrations: MigrationStep[],
 ) => {
   const currentState: Result = {
     version,
@@ -99,23 +99,28 @@ const performMigration = (
 }
 
 export interface MigrationOptions {
-  /** An array of migration steps to perform for outdated values.
+  /**
+   * An array of migration steps to perform for outdated values.
    *
-   *  __Note:__ One step must have a `previous` version set to null as entry point.
-   **/
+   * **Note:** One step must have a `previous` version set to null as entry
+   * point.
+   */
   steps: MigrationStep[]
 }
 
-/** Effect to migrate the persisted value of an atom to a newer version.
- *  You can use the `createMigrationStep` helper to create migration steps.
+/**
+ * Effect to migrate the persisted value of an atom to a newer version. You can
+ * use the `createMigrationStep` helper to create migration steps.
  *
- *  @param {MigrationOptions} options
- *  @param options.steps An array of migration steps to perform for outdated values.
+ * @param {MigrationOptions} options
+ * @param options.steps An array of migration steps to perform for outdated
+ *   values.
  *
- * __Note:__ One step must have a `previous` version set to null as entry point.
+ *   **Note:** One step must have a `previous` version set to null as entry
+ *   point.
  *
- *  @returns The effect to be used on atoms.
- **/
+ * @returns The effect to be used on atoms.
+ */
 export const migration = createEffect<MigrationOptions, unknown>({
   didInit: ({ atom, options, set }) => {
     const steps = sortMigrations(options.steps)
@@ -134,7 +139,7 @@ export const migration = createEffect<MigrationOptions, unknown>({
     const { data, version, error } = performMigration(
       atom,
       currentVersion,
-      steps
+      steps,
     )
 
     if (error) {
@@ -151,17 +156,18 @@ export const migration = createEffect<MigrationOptions, unknown>({
   },
 })
 
-/** Helper to create a step for the migration effect.
+/**
+ * Helper to create a step for the migration effect.
  *
- *  @param migration Migration step to create.
+ * @param migration Migration step to create.
  *
- *  @returns The migration step.
- **/
+ * @returns The migration step.
+ */
 export const createMigrationStep = <
   Version extends string,
   PreviousVersion extends string | null,
   OldData,
   NewData,
 >(
-  migration: MigrationStep<Version, PreviousVersion, OldData, NewData>
+  migration: MigrationStep<Version, PreviousVersion, OldData, NewData>,
 ) => migration

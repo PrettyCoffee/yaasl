@@ -5,7 +5,8 @@
 @import url("./sidebar-toggle.css");
 @import url("./prism.css");
 
-:root, body {
+:root,
+body {
   font-family: Quicksand, sans-serif;
   background-color: var(--bg-page);
   color: var(--text-base);
@@ -24,7 +25,7 @@
 
 .github-corner {
   z-index: 9999;
-   > svg {
+  > svg {
     color: var(--bg-page);
   }
   body.close & {
@@ -32,10 +33,10 @@
   }
 }
 
-body, article.markdown-section {
-  
+body,
+article.markdown-section {
   /* -- Anchor -- */
-  
+
   a {
     transition: none;
     border-radius: 0.125rem;
@@ -56,7 +57,7 @@ body, article.markdown-section {
     color: var(--text-gentle);
     margin: 0;
     padding: 0.5rem 1rem;
-    
+
     p {
       margin: 0;
       padding: 0;
@@ -64,8 +65,13 @@ body, article.markdown-section {
   }
 
   /* -- Headlines -- */
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: var(--text-gentle);
     a.anchor * {
       color: var(--text-gentle);
@@ -74,7 +80,7 @@ body, article.markdown-section {
       color: var(--accent);
     }
   }
-  
+
   h1 {
     font-size: 2.5rem;
   }
@@ -89,13 +95,12 @@ body, article.markdown-section {
     font-size: 1rem;
     font-weight: bold;
   }
-
 }
 
 article.markdown-section {
   max-width: 80ch;
   margin: 0 auto;
-  
+
   /* -- Paragraph -- */
 
   p {
@@ -105,7 +110,8 @@ article.markdown-section {
 
   /* -- Tip / Warn blocks (!> and ?>) --*/
 
-  p.tip, p.warn {
+  p.tip,
+  p.warn {
     position: relative;
     background: var(--bg-base);
     border-radius: 0.25rem;
@@ -125,7 +131,7 @@ article.markdown-section {
     > code {
       background-color: var(--bg-active);
     }
-    
+
     &:before {
       font-family: "Fira Code", monospace;
       position: absolute;
@@ -134,7 +140,7 @@ article.markdown-section {
       translate: calc(-1 * 50% - 1px) 0;
       height: 1.25rem;
       width: 1.25rem;
-      
+
       text-align: center;
       line-height: 1.25rem;
       border-radius: 100%;
@@ -164,22 +170,22 @@ article.markdown-section {
     font-family: "Fira Code", monospace;
     font-weight: 400;
   }
-  
+
   :not(pre) > code {
     background-color: var(--bg-base);
     color: var(--text-code);
     border-radius: 0.25rem;
     padding: 0.25rem 0.5rem;
   }
-  
+
   /* -- Lists -- */
-  
+
   ul {
     padding-left: 1.5rem;
     margin-top: 0.25rem;
     margin-bottom: 0.5rem;
   }
-  
+
   li {
     &:not(:first-child) {
       margin-top: 0.5rem;
@@ -188,20 +194,20 @@ article.markdown-section {
       margin-bottom: 0.5rem;
     }
   }
-  
+
   /* -- Table -- */
-  
+
   table {
-    td, th {
+    td,
+    th {
       border: 1px solid var(--text-muted);
     }
     tr {
       --bgl-base: transparent;
       --bgl-layer: transparent;
-      background:
-        var(--bgl-base)
-        linear-gradient(0, var(--bgl-layer), var(--bgl-layer))!important;
-      
+      background: var(--bgl-base)
+        linear-gradient(0, var(--bgl-layer), var(--bgl-layer)) !important;
+
       &:nth-of-type(2n) {
         --bgl-base: var(--bg-base);
       }
@@ -213,7 +219,7 @@ article.markdown-section {
 
   /* -- Tabs -- */
   .docsify-tabs {
-    gap:0.5rem;
+    gap: 0.5rem;
 
     > button {
       position: relative;
@@ -224,17 +230,16 @@ article.markdown-section {
       &:first-of-type {
         margin-left: 0;
       }
-      
+
       border-radius: 0.25rem;
       color: var(--text-gentle);
       cursor: pointer;
 
       --bgl-base: var(--bg-base);
       --bgl-layer: transparent;
-      background:
-        var(--bgl-base)
-        linear-gradient(0, var(--bgl-layer), var(--bgl-layer))!important;
-      
+      background: var(--bgl-base)
+        linear-gradient(0, var(--bgl-layer), var(--bgl-layer)) !important;
+
       &:hover {
         --bgl-layer: var(--bg-hover);
       }

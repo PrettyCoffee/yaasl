@@ -8,23 +8,28 @@ interface Config extends ExtensionOptions {
 }
 
 export interface ReduxDevtoolsExtension {
-  /** Create a connection to the extension.
-   *  This will connect a store (like an atom) to the extension and
-   *  display it within the extension tab.
+  /**
+   * Create a connection to the extension. This will connect a store (like an
+   * atom) to the extension and display it within the extension tab.
    *
-   *  @param options https://github.com/reduxjs/redux-devtools/blob/main/extension/docs/API/Arguments.md
-   *  @returns https://github.com/reduxjs/redux-devtools/blob/main/extension/docs/API/Methods.md#connectoptions
+   * @param options
+   *   https://github.com/reduxjs/redux-devtools/blob/main/extension/docs/API/Arguments.md.
+   *
+   * @returns
+   *   https://github.com/reduxjs/redux-devtools/blob/main/extension/docs/API/Methods.md#connectoptions.
    */
   connect: (config: Config) => ConnectionResponse
 
-  /** Disconnects all existing connections to the redux extension.
-   *  Only use this when you are sure that no other connection exists
-   *  or you want to remove all existing connections.
+  /**
+   * Disconnects all existing connections to the redux extension. Only use this
+   * when you are sure that no other connection exists or you want to remove all
+   * existing connections.
    */
   disconnect?: () => void
 
-  /** Have a look at the documentation for more methods:
-   *  https://github.com/reduxjs/redux-devtools/blob/main/extension/docs/API/Methods.md
+  /**
+   * Have a look at the documentation for more methods:
+   * https://github.com/reduxjs/redux-devtools/blob/main/extension/docs/API/Methods.md.
    */
 }
 
@@ -36,7 +41,7 @@ declare global {
 
 let didWarn = false
 
-/** Returns the global redux extension object if available */
+/** Returns the global redux extension object if available. */
 export const getReduxExtension = () => {
   const window = getWindow()
   if (!window) return null

@@ -22,7 +22,7 @@ const extend = paths =>
       )
       const name = `${file.name}@${pkg.version}${file.min}${file.ext}`
       return { path, name }
-    })
+    }),
   )
 
 const styles = await extend(["docsify/lib/themes/pure.css"])
@@ -59,8 +59,8 @@ const copyFiles = () =>
     [...styles, ...scripts].map(({ path, name }) =>
       cp(`../docs/node_modules/${path}`, `../docs/_lib/${name}`, {
         force: true,
-      })
-    )
+      }),
+    ),
   )
 
 const insertStyles = () => {

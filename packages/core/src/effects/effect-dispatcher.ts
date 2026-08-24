@@ -1,13 +1,13 @@
 import { Updater, isPromiseLike, updater } from "@yaasl/utils"
 
+import type { Atom } from "../base/create-atom"
+import { Queue } from "../utils/queue"
 import type {
   ActionType,
   EffectAtomCallback,
   EffectActions as EffectActionsType,
   EffectMeta,
 } from "./create-effect"
-import type { Atom } from "../base/create-atom"
-import { Queue } from "../utils/queue"
 
 const isTruthy = <T>(value: T): value is NonNullable<T> => !!value
 
@@ -19,7 +19,7 @@ export class EffectActions<Value> {
 
   constructor(
     private readonly atom: Atom<Value>,
-    effectCreator: EffectAtomCallback<unknown, Value>
+    effectCreator: EffectAtomCallback<unknown, Value>,
   ) {
     const { meta, actions, options } = effectCreator(atom)
     this.meta = meta
@@ -56,7 +56,7 @@ export class EffectDispatcher<Value> {
 
   constructor(
     atom: Atom<Value>,
-    effects: EffectAtomCallback<unknown, Value>[]
+    effects: EffectAtomCallback<unknown, Value>[],
   ) {
     this.effects = effects
       .map(create => new EffectActions(atom, create))
@@ -65,7 +65,7 @@ export class EffectDispatcher<Value> {
           ? -1
           : a.meta?.sort === "post" || b.meta?.sort === "pre"
             ? 1
-            : 0
+            : 0,
       )
   }
 

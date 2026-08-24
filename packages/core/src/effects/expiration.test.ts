@@ -1,8 +1,8 @@
 import { vi, it, describe, expect, beforeEach, afterEach } from "vitest"
 
+import { createAtom } from "../base"
 import { expiration } from "./expiration"
 import { localStorage } from "./local-storage"
-import { createAtom } from "../base"
 
 const defaultValue = { a: "A", b: "B" }
 const nextValue = {
@@ -51,7 +51,7 @@ describe("Test expiration", () => {
 
     expect(testAtom.get()).toStrictEqual(nextValue)
     expect(window.localStorage.getItem(storeKey)).toBe(
-      String(expirationDate.valueOf())
+      String(expirationDate.valueOf()),
     )
 
     vi.advanceTimersByTime(300)

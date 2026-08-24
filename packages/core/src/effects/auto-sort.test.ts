@@ -26,16 +26,16 @@ describe("Test autoSort", () => {
 
   it("Doesn't throw with nullish values", () => {
     expect(() =>
-      createAtom({ defaultValue: null, effects: [autoSort({ sortFn })] })
+      createAtom({ defaultValue: null, effects: [autoSort({ sortFn })] }),
     ).not.toThrow()
     expect(() =>
-      createAtom({ defaultValue: undefined, effects: [autoSort({ sortFn })] })
+      createAtom({ defaultValue: undefined, effects: [autoSort({ sortFn })] }),
     ).not.toThrow()
   })
 
   it("Throws with incompatible values", () => {
     expect(() =>
-      createAtom({ defaultValue: "string", effects: [autoSort({ sortFn })] })
+      createAtom({ defaultValue: "string", effects: [autoSort({ sortFn })] }),
     ).toThrow()
 
     const testAtom = createAtom<string | null>({

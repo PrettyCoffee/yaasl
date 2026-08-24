@@ -1,9 +1,9 @@
 import { sleep } from "@yaasl/utils"
 import { vi, it, describe, expect, beforeEach } from "vitest"
 
+import { createEffect } from "../effects"
 import { createAtom } from "./create-atom"
 import { createSelector } from "./create-selector"
-import { createEffect } from "../effects"
 
 const defaultValue = {
   value: "test",
@@ -22,7 +22,7 @@ const initSleep = createEffect<{ duration?: number } | undefined>(
       init: () => sleep(duration),
       didInit: () => sleep(duration),
     }
-  }
+  },
 )
 
 beforeEach(() => {
@@ -41,7 +41,7 @@ describe("Test createSelector", () => {
     const atom2 = createAtom({ defaultValue: 2 })
     const selected = createSelector(
       [atom1, atom2],
-      (state1, state2) => state1 + state2
+      (state1, state2) => state1 + state2,
     )
     expect(selected.get()).toBe(3)
   })
@@ -51,7 +51,7 @@ describe("Test createSelector", () => {
     const atom2 = createAtom({ defaultValue: 2 })
     const selected = createSelector(
       [atom1, atom2],
-      (state1, state2) => state1 + state2
+      (state1, state2) => state1 + state2,
     )
 
     atom1.set(2)
@@ -90,7 +90,7 @@ describe("Test createSelector", () => {
       const atom2 = createAtom({ defaultValue: 2 })
       const selected = createSelector(
         [atom1, atom2],
-        (state1, state2) => state1 + state2
+        (state1, state2) => state1 + state2,
       )
       expect(selected.didInit).toBe(true)
     })
@@ -100,7 +100,7 @@ describe("Test createSelector", () => {
       const atom2 = createAtom({ defaultValue: 2, effects: [initSleep()] })
       const selected = createSelector(
         [atom1, atom2],
-        (state1, state2) => state1 + state2
+        (state1, state2) => state1 + state2,
       )
 
       expect(selected.didInit).toBeInstanceOf(Promise)
@@ -116,7 +116,7 @@ describe("Test createSelector", () => {
       })
       const selected = createSelector(
         [atom1, atom2],
-        (state1, state2) => state1 + state2
+        (state1, state2) => state1 + state2,
       )
 
       expect(selected.didInit).toBeInstanceOf(Promise)

@@ -21,7 +21,7 @@ const getType = (value: unknown) => {
 const comparePureObject = (
   a: object,
   b: object,
-  compareValue: (a: unknown, b: unknown) => boolean
+  compareValue: (a: unknown, b: unknown) => boolean,
 ) => {
   const keysA = Object.keys(a)
   const keysB = Object.keys(b)
@@ -30,14 +30,14 @@ const comparePureObject = (
   return keysA.every(
     key =>
       key in b &&
-      compareValue(a[key as keyof typeof a], b[key as keyof typeof b])
+      compareValue(a[key as keyof typeof a], b[key as keyof typeof b]),
   )
 }
 
 const compareIterable = (
   a: unknown,
   b: unknown,
-  compareValue: (a: unknown, b: unknown) => boolean
+  compareValue: (a: unknown, b: unknown) => boolean,
 ): boolean => {
   try {
     const arrA = [...(a as unknown[])]
@@ -72,7 +72,7 @@ const compareClass = (a: object, b: object): boolean => {
 const hasBeenSeen = (
   a: unknown,
   b: unknown,
-  seen: WeakMap<object, WeakSet<object>>
+  seen: WeakMap<object, WeakSet<object>>,
 ) => {
   if (typeof a !== "object" || typeof b !== "object" || a == null || b == null)
     return false
@@ -88,7 +88,7 @@ const hasBeenSeen = (
 export const deepCompare = (
   a: unknown,
   b: unknown,
-  seen = new WeakMap<object, WeakSet<object>>()
+  seen = new WeakMap<object, WeakSet<object>>(),
   // eslint-disable-next-line complexity
 ): boolean => {
   if (a === b) return true

@@ -1,7 +1,7 @@
 import { getWindow } from "@yaasl/utils"
 
-import { createEffect } from "./create-effect"
 import { CONFIG } from "../base"
+import { createEffect } from "./create-effect"
 
 interface Payload<TData> {
   id: string
@@ -37,10 +37,11 @@ class SyncChannel<TData = undefined> {
   }
 }
 
-/** Effect to synchronize the atoms value over tabs.
+/**
+ * Effect to synchronize the atoms value over tabs.
  *
  * @returns The effect to be used on atoms.
- **/
+ */
 export const sync = createEffect(({ atom }) => {
   const channel = new SyncChannel<unknown>(atom.name)
   let skip = false

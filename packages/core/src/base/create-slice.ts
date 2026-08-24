@@ -40,31 +40,33 @@ type ConditionalSelectors<State, S> = keyof S extends never
 
 const createSelectors = <State, S extends Selectors<State>>(
   atom: Atom<State>,
-  selectors: S
+  selectors: S,
 ) =>
   Object.fromEntries(
     Object.entries(selectors).map(([key, selector]) => [
       key,
       createSelector(atom, selector),
-    ])
+    ]),
   ) as { [K in keyof S]: CombinerSelector<Stateful<State>, ReturnType<S[K]>> }
 
-/** Creates a slice with actions and selectors.
+/**
+ * Creates a slice with actions and selectors.
  *
  * @param config.defaultValue Value that will be used initially.
  * @param config.name Name of the atom.
  * @param config.effects Effects that will be applied on the atom.
  * @param config.reducers Reducers for custom actions to set the atom's value.
- * @param config.selectors Combiner selectors to use the atom's values to create new ones.
+ * @param config.selectors Combiner selectors to use the atom's values to create
+ *   new ones.
  *
  * @returns An atom instance with actions and selectors.
- **/
+ */
 export const createSlice = <
   State,
   R extends Reducers<State> | undefined,
   S extends Selectors<State> | undefined,
 >(
-  config: AtomConfig<State> & ReducersProp<State, R> & SelectorsProp<State, S>
+  config: AtomConfig<State> & ReducersProp<State, R> & SelectorsProp<State, S>,
 ) => {
   const atom = new Atom(config)
 
@@ -83,6 +85,6 @@ export const createSlice = <
   return Object.assign(
     atom,
     actionsProp as ConditionalActions<State, R>,
-    selectorsProp as ConditionalSelectors<State, S>
+    selectorsProp as ConditionalSelectors<State, S>,
   )
 }

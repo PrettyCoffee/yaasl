@@ -31,7 +31,7 @@ describe("Test Thenable", () => {
     it("returns a Promise", async () => {
       const testFn = vi.fn()
       const result = new Thenable("test").then(value =>
-        sleep(5).then(() => testFn(value))
+        sleep(5).then(() => testFn(value)),
       )
       expect(result).toBeInstanceOf(Promise)
       await result
@@ -91,9 +91,9 @@ describe("Test Thenable", () => {
       const result = new Thenable(1).then(value =>
         Promise.resolve(value + 1).then(value =>
           new Thenable(value + 1).then(value =>
-            Promise.resolve(value + 1).then(value => new Thenable(value + 1))
-          )
-        )
+            Promise.resolve(value + 1).then(value => new Thenable(value + 1)),
+          ),
+        ),
       )
       expect(result).toBeInstanceOf(Promise)
       expect(await result).toBe(5)

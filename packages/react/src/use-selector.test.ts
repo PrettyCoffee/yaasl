@@ -11,7 +11,7 @@ describe("Test useSelector", () => {
   it("Returns value with useAtom", () => {
     const testAtom = createAtom({ defaultValue })
     const { result } = renderHook(() =>
-      useSelector(testAtom, state => state.nested.value)
+      useSelector(testAtom, state => state.nested.value),
     )
     expect(result.current).toBe("default-value")
 
@@ -26,8 +26,8 @@ describe("Test useSelector", () => {
     const { result } = renderHook(() =>
       useSelector(
         [value, factor],
-        (value: number, factor: number) => factor * value
-      )
+        (value: number, factor: number) => factor * value,
+      ),
     )
     expect(result.current).toBe(1)
 
@@ -43,8 +43,8 @@ describe("Test useSelector", () => {
     const { result, rerender } = renderHook(() =>
       useSelector(testAtom, state =>
         // create new object reference on each rerender
-        ({ ...state.nested })
-      )
+        ({ ...state.nested }),
+      ),
     )
     expect(result.current).not.toBe(defaultValue.nested)
     expect(result.current).toStrictEqual(defaultValue.nested)
@@ -72,7 +72,7 @@ describe("Test useSelector", () => {
     const { result, rerender } = renderHook(
       (selector: (state: typeof defaultValue) => string) =>
         useSelector(testAtom, selector),
-      { initialProps: selectorA }
+      { initialProps: selectorA },
     )
 
     expect(result.current).toBe("value a")

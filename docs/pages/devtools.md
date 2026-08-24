@@ -21,22 +21,22 @@ Returns: The effect to be used on atoms.
 #### **Single atom**
 
 ```ts
-const isProduction = import.meta.env.PROD;
+const isProduction = import.meta.env.PROD
 
 const atom = createAtom({
   defaultValue: "my-value",
   effects: [logger({ disable: isProduction })],
-});
+})
 ```
 
 #### **Globally**
 
 ```ts
-import { CONFIG, logger } from "@yaasl/core";
+import { CONFIG, logger } from "@yaasl/core"
 
-const isProduction = import.meta.env.PROD;
+const isProduction = import.meta.env.PROD
 
-CONFIG.globalEffects = [logger({ disable: isProduction })];
+CONFIG.globalEffects = [logger({ disable: isProduction })]
 ```
 
 <!-- tabs:end -->
@@ -60,22 +60,22 @@ Returns: The effect to be used on atoms.
 #### **Single atom**
 
 ```ts
-const isProduction = import.meta.env.PROD;
+const isProduction = import.meta.env.PROD
 
 const atomWithDevtools = createAtom({
   defaultValue: "my-value",
   effects: [reduxDevtools({ disable: isProduction })],
-});
+})
 ```
 
 #### **Globally**
 
 ```ts
-import { CONFIG, reduxDevtools } from "@yaasl/core";
+import { CONFIG, reduxDevtools } from "@yaasl/core"
 
-const isProduction = import.meta.env.PROD;
+const isProduction = import.meta.env.PROD
 
-CONFIG.globalEffects = [reduxDevtools({ disable: isProduction })];
+CONFIG.globalEffects = [reduxDevtools({ disable: isProduction })]
 ```
 
 <!-- tabs:end -->

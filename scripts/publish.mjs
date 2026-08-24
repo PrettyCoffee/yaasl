@@ -20,7 +20,7 @@ const appendChangelog = async changes => {
   const changelog = await readFile("CHANGELOG.md", "utf-8")
   const newChangelog = changelog.replace(
     "# Changelog\n\n",
-    "# Changelog\n\n" + changes + "\n"
+    "# Changelog\n\n" + changes + "\n",
   )
   if (newChangelog !== changelog) {
     await writeFile("CHANGELOG.md", newChangelog)
@@ -94,7 +94,7 @@ const run = async () => {
   } else {
     await updateChangelog(version)
     ok = await promptOk(
-      `Do you want to release the above changes with version ${version}?\n  You can edit the changelog before continuing.\n `
+      `Do you want to release the above changes with version ${version}?\n  You can edit the changelog before continuing.\n `,
     )
   }
   if (!ok) {

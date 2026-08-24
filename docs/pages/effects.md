@@ -45,22 +45,22 @@ const logger = createEffect({
     console.log(`Did finish initialization of atom "${atom.name}"`),
   set: ({ atom, value }) =>
     console.log(`Value of atom "${atom.name}" was set to:`, value),
-});
+})
 
 const myAtom = createAtom({
   defaultValue: "my-value",
   effects: [logger()],
-});
+})
 ```
 
 #### **With options**
 
 ```ts
 interface Options {
-  disable?: boolean;
+  disable?: boolean
 }
 const loggerWithOptions = createEffect<Options>(({ options }) => {
-  if (options.disable) return {};
+  if (options.disable) return {}
 
   return {
     init: ({ atom }) => console.log(`Initiated atom "${atom.name}"`),
@@ -68,44 +68,44 @@ const loggerWithOptions = createEffect<Options>(({ options }) => {
       console.log(`Did finish initialization of atom "${atom.name}"`),
     set: ({ atom, value }) =>
       console.log(`Value of atom "${atom.name}" was set to:`, value),
-  };
-});
+  }
+})
 
 const myAtom = createAtom({
   defaultValue: "my-value",
   effects: [loggerWithOptions({ disable: true })],
-});
+})
 ```
 
 #### **Set value in effect**
 
 ```ts
 interface ClampOptions {
-  min?: number;
-  max?: number;
+  min?: number
+  max?: number
 }
 const clamp = createEffect<ClampOptions, number>(({ options }) => {
-  const { min = -Infinity, max = Infinity } = options;
+  const { min = -Infinity, max = Infinity } = options
   const canClamp = (value: number) => {
-    const isNumber = typeof value === "number";
-    const isInRange = value >= min && value <= max;
-    return isNumber && !isInRange;
-  };
+    const isNumber = typeof value === "number"
+    const isInRange = value >= min && value <= max
+    return isNumber && !isInRange
+  }
   const clampValue = (value: number) => {
-    return Math.min(max, Math.max(value, min));
-  };
+    return Math.min(max, Math.max(value, min))
+  }
 
   return {
     init: ({ value, set }) => {
-      if (!canClamp(value)) return;
-      set(clampValue(value));
+      if (!canClamp(value)) return
+      set(clampValue(value))
     },
     set: ({ value, set }) => {
-      if (!canClamp(value)) return;
-      set(clampValue(value));
+      if (!canClamp(value)) return
+      set(clampValue(value))
     },
-  };
-});
+  }
+})
 ```
 
 <!-- tabs:end -->
@@ -126,16 +126,16 @@ Returns: The effect to be used on atoms.
 ### Usage Examples
 
 ```ts
-const sortFn = (a: string, b: string) => a.localeCompare(b);
+const sortFn = (a: string, b: string) => a.localeCompare(b)
 
 const sortedAtom = createAtom({
   defaultValue: ["c", "d", "b"],
   effects: [autoSort({ sortFn })],
-});
+})
 
 // sortedAtom.get() -> ["b", "c", "d"]
 
-sortedAtom.set((state) => [...state, "a"]);
+sortedAtom.set(state => [...state, "a"])
 
 // sortedAtom.get() -> ["a", "b", "c", "d"]
 ```
@@ -164,12 +164,12 @@ Returns: The effect to be used on atoms.
 const atomWithStorage = createAtom({
   defaultValue: "my-value",
   effects: [localStorage()],
-});
+})
 
 const atomWithStorage = createAtom({
   defaultValue: "my-value",
   effects: [localStorage({ key: "my-key" })],
-});
+})
 ```
 
 #### **Custom parser**
@@ -216,12 +216,12 @@ Returns: The effect to be used on atoms.
 const atomWithStorage = createAtom({
   defaultValue: "my-value",
   effects: [sessionStorage()],
-});
+})
 
 const atomWithStorage = createAtom({
   defaultValue: "my-value",
   effects: [sessionStorage({ key: "my-key" })],
-});
+})
 ```
 
 ## indexedDb
@@ -262,24 +262,24 @@ const atomWithDb = createAtom({
   name: "demo-atom",
   defaultValue: "my-value",
   effects: [indexedDb()],
-});
+})
 
 const atomWithDb = createAtom({
   name: "demo-atom",
   defaultValue: "my-value",
   effects: [indexedDb({ key: "my-key" })],
-});
+})
 ```
 
 #### **Store API**
 
 ```ts
 const demo = async () => {
-  const keys = await indexedDb.getAllKeys();
-  const value = await indexedDb.get("demo-atom");
-  await indexedDb.delete("demo-atom");
-  await indexedDb.set("demo-atom", value);
-};
+  const keys = await indexedDb.getAllKeys()
+  const value = await indexedDb.get("demo-atom")
+  await indexedDb.delete("demo-atom")
+  await indexedDb.set("demo-atom", value)
+}
 ```
 
 <!-- tabs:end -->
@@ -300,7 +300,7 @@ Returns: The effect to be used on atoms.
 const syncedAtom = createAtom({
   defaultValue: 42,
   effects: [sync()],
-});
+})
 ```
 
 ## expiration
@@ -326,26 +326,26 @@ Returns: The effect to be used on atoms.
 const expiringAtom = createAtom({
   defaultValue: "my-value",
   effects: [expiration({ expiresIn: 5000 })],
-});
+})
 ```
 
 #### **Epires at**
 
 ```ts
 const tomorrow = () => {
-  const date = new Date();
-  date.setDate(date.getDate() + 1);
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setSeconds(0);
-  date.setMilliseconds(0);
-  return date;
-};
+  const date = new Date()
+  date.setDate(date.getDate() + 1)
+  date.setHours(0)
+  date.setMinutes(0)
+  date.setSeconds(0)
+  date.setMilliseconds(0)
+  return date
+}
 
 const expiringAtom = createAtom({
   defaultValue: "my-value",
   effects: [expiration({ expiresAt: tomorrow })],
-});
+})
 ```
 
 <!-- tabs:end -->
@@ -379,8 +379,8 @@ You would now like to convert the localStorage data of users to the new array.
 ```ts
 /** The old datatype */
 interface NamesV1 {
-  name1: string;
-  name2: string;
+  name1: string
+  name2: string
 }
 
 /** Migration step from the old data type to a string array */
@@ -393,13 +393,13 @@ const v1 = createMigrationStep({
     typeof data === "object" &&
     "name1" in data &&
     "name2" in data,
-});
+})
 
 /** Using the migration effect with the created step */
 const nameAtom = createAtom<string[]>({
   defaultValue: [],
   effects: [localStorage(), migration({ steps: [v1] })],
-});
+})
 ```
 
 #### **Multiple steps**
@@ -409,8 +409,8 @@ For that, you may need to adapt the data structure of the array items like this:
 
 ```ts
 interface ColoredName {
-  name: string;
-  color?: string;
+  name: string
+  color?: string
 }
 ```
 

@@ -24,19 +24,19 @@ Returns: An atom instance.
 
 ```ts
 // Create an atom
-const myAtom = createAtom({ defaultValue: "my-value" });
-const myAtom = createAtom<string | null>({ defaultValue: null });
+const myAtom = createAtom({ defaultValue: "my-value" })
+const myAtom = createAtom<string | null>({ defaultValue: null })
 const myAtom = createAtom({
   defaultValue: "my-value",
   name: "custom-name",
   effects: [localStorage(), reduxDevtools()],
-});
+})
 
 // Use an atom
-myAtom.set("next-value");
-myAtom.set((previous) => previous + "next");
-const currentValue = myAtom.get();
-myAtom.subscribe((value) => console.log(value));
+myAtom.set("next-value")
+myAtom.set(previous => previous + "next")
+const currentValue = myAtom.get()
+myAtom.subscribe(value => console.log(value))
 ```
 
 ## createSelector
@@ -60,17 +60,17 @@ Returns: A CombinerSelector instance.
 ### Usage Examples
 
 ```ts
-const atom1 = createAtom({ defaultValue: 2 });
-const atom2 = createAtom({ defaultValue: 40 });
+const atom1 = createAtom({ defaultValue: 2 })
+const atom2 = createAtom({ defaultValue: 40 })
 // Create a combiner selector
 const selected = createSelector(
   [atom1, atom2],
   (value1, value2) => value1 + value2,
-);
+)
 
 // Use a selector
-const currentValue = selected.get(); // -> 42
-selected.subscribe((value) => console.log(value));
+const currentValue = selected.get() // -> 42
+selected.subscribe(value => console.log(value))
 ```
 
 ## createDerived
@@ -99,15 +99,15 @@ Returns: A derived instance.
 #### **Getter only**
 
 ```ts
-const atom1 = createAtom({ defaultValue: 2 });
-const atom2 = createAtom({ defaultValue: 20 });
+const atom1 = createAtom({ defaultValue: 2 })
+const atom2 = createAtom({ defaultValue: 20 })
 // Create a derivation
-const twice = createDerived(({ get }) => get(atom2) * 2);
-const added = createDerived(({ get }) => get(atom1) + get(twice));
+const twice = createDerived(({ get }) => get(atom2) * 2)
+const added = createDerived(({ get }) => get(atom1) + get(twice))
 
 // Use a derivation
-const currentValue = added.get(); // -> 2 + (20 * 2) = 42
-multiplier.subscribe((value) => console.log(value));
+const currentValue = added.get() // -> 2 + (20 * 2) = 42
+multiplier.subscribe(value => console.log(value))
 ```
 
 #### **Getter + setter**
@@ -119,14 +119,14 @@ const post = createAtom({
     content: "They are pretty cute, don't you think?",
     views: 41,
   },
-});
+})
 // Create a derive atom
 const views = createDerived(
   ({ get }) => get(video).views,
   ({ value, set }) => set(video, { ...video.get(), views: value }),
-);
+)
 // Set value of the derive atom
-views.set(42);
+views.set(42)
 // -> post.get().views will be 42
 ```
 
@@ -148,15 +148,15 @@ Returns: Actions to change the state of the atom.
 ### Usage Examples
 
 ```ts
-const counter = createAtom({ defaultValue: 0 });
+const counter = createAtom({ defaultValue: 0 })
 const actions = createActions(counter, {
-  increment: (state) => state + 1,
-  decrement: (state) => state - 1,
+  increment: state => state + 1,
+  decrement: state => state - 1,
   add: (state, value: number) => state + value,
   subtract: (state, value: number) => state - value,
-});
-actions.increment();
-actions.add(5);
+})
+actions.increment()
+actions.add(5)
 ```
 
 ## createSlice
@@ -182,19 +182,19 @@ Returns: An atom instance with actions and selectors.
 const counter = createSlice({
   defaultValue: 0,
   reducers: {
-    increment: (state) => state + 1,
+    increment: state => state + 1,
     add: (state, ...values: number[]) => values.reduce((a, b) => a + b, state),
   },
   selectors: {
-    double: (state) => state * 2,
+    double: state => state * 2,
   },
-});
+})
 
-counter.actions.increment();
-counter.get(); // -> 0 + 1 = 1
-counter.actions.add(10, 10);
-counter.get(); // -> 1 + 10 + 10 = 21
-counter.selectors.double.get(); // -> 21 * 2 = 42
+counter.actions.increment()
+counter.get() // -> 0 + 1 = 1
+counter.actions.add(10, 10)
+counter.get() // -> 1 + 10 + 10 = 21
+counter.selectors.double.get() // -> 21 * 2 = 42
 ```
 
 #### **Object value**
@@ -253,6 +253,6 @@ Parameters:
 ### Usage Examples
 
 ```ts
-CONFIG.name = "my-app-name";
-CONFIG.globalEffects = [reduxDevtools({ disable: !import.meta.env.DEV })];
+CONFIG.name = "my-app-name"
+CONFIG.globalEffects = [reduxDevtools({ disable: !import.meta.env.DEV })]
 ```

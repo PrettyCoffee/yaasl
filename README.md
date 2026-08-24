@@ -56,22 +56,22 @@ npm i @yaasl/preact
 2. Create an atom
 
 ```ts
-import { createAtom } from "@yaasl/core";
+import { createAtom } from "@yaasl/core"
 
-const myAtom = createAtom({ defaultValue: 0 });
+const myAtom = createAtom({ defaultValue: 0 })
 ```
 
 3. Use the atom
 
 ```ts
 // Read
-const currentValue = myAtom.get(atom);
+const currentValue = myAtom.get(atom)
 // Write
-myAtom.set(nextValue);
+myAtom.set(nextValue)
 // Subscribe to changes
-myAtom.subscribe((value) => {
-  console.log(value);
-});
+myAtom.subscribe(value => {
+  console.log(value)
+})
 ```
 
 ## Usage examples
@@ -79,59 +79,59 @@ myAtom.subscribe((value) => {
 ### Vanilla typescript
 
 ```ts
-import { createAtom, CONFIG, localStorage } from "@yaasl/core";
+import { createAtom, CONFIG, localStorage } from "@yaasl/core"
 
 // Provide an app name to yaasl
-CONFIG.name = "demo-vanilla";
+CONFIG.name = "demo-vanilla"
 
 // Create a counter atom that is connected to the local storage
 const counter = createAtom({
   name: "counter", // local storage key will be "demo-vanilla/counter"
   defaultValue: 0,
   effects: [localStorage()],
-});
+})
 
 const setupCounter = (element: HTMLButtonElement) => {
   const updateCounterText = (value: number) =>
-    (element.innerHTML = `count is ${value}`);
+    (element.innerHTML = `count is ${value}`)
 
   element.addEventListener("click", () => {
     // Set the value of the atom
-    counter.set((previous) => previous + 1);
-  });
+    counter.set(previous => previous + 1)
+  })
 
   // Subscribe to value changes
-  counter.subscribe((value) => updateCounterText(value));
+  counter.subscribe(value => updateCounterText(value))
 
   // Read the value of the atom in the store
-  updateCounterText(counter.get());
-};
+  updateCounterText(counter.get())
+}
 
-const counter = document.getElementById("counter");
-setupCounter(counter);
+const counter = document.getElementById("counter")
+setupCounter(counter)
 ```
 
 ### React (or Preact)
 
 ```tsx
-import { createAtom, CONFIG, localStorage, useAtom } from "@yaasl/react"; // or "@yaasl/preact"
+import { createAtom, CONFIG, localStorage, useAtom } from "@yaasl/react" // or "@yaasl/preact"
 
 // Provide an app name to yaasl
-CONFIG.name = "demo-react";
+CONFIG.name = "demo-react"
 
 // Create a counter atom that is connected to the local storage
 const counter = createAtom({
   name: "counter", // local storage key will be "demo-react/counter"
   defaultValue: 0,
   effects: [localStorage()],
-});
+})
 
 export const Counter = () => {
   // Use the atom like you would use a state
-  const value = useAtom(counter);
+  const value = useAtom(counter)
 
-  const onClick = () => counter.set((previous) => previous + 1);
+  const onClick = () => counter.set(previous => previous + 1)
 
-  return <button onClick={onClick}>count is {value}</button>;
-};
+  return <button onClick={onClick}>count is {value}</button>
+}
 ```

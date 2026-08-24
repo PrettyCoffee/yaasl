@@ -3,7 +3,7 @@ name: Publish
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 # Related npm documentation: https://docs.npmjs.com/trusted-publishers#github-actions-configuration
 permissions:
@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: "24"
           cache: "pnpm"
-          
+
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 

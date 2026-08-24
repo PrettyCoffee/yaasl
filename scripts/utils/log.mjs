@@ -2,8 +2,11 @@ import { color } from "@pretty-cozy/release-tools"
 
 /**
  * @param {string} message
- * @param {{ color: keyof Omit<typeof colors, "reset">, type: "error" | "info" | "warn" }} options
- * */
+ * @param {{
+ *   color: keyof Omit<typeof colors, "reset">
+ *   type: "error" | "info" | "warn"
+ * }} options
+ */
 const logFn = (message, { color: colorArg, type = "info" }) =>
   console[type](color[colorArg](message))
 

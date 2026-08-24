@@ -1,22 +1,21 @@
 button.sidebar-toggle {
-  width: 3rem!important;
-  height: 3rem!important;
+  width: 3rem !important;
+  height: 3rem !important;
   padding: 0.75rem;
-  
+
   cursor: pointer;
   border-radius: 0.25rem;
-  transition: left 0.25s ease-out!important;
+  transition: left 0.25s ease-out !important;
   box-shadow:
-    0 0 1px 0px rgba(0,0,0,0.25),
-    0 0 2px 1px rgba(0,0,0,0.25),
-    0 0 6px 4px rgba(0,0,0,0.25),
-    0 0 10px 8px rgba(0,0,0,0.10);
-  
+    0 0 1px 0px rgba(0, 0, 0, 0.25),
+    0 0 2px 1px rgba(0, 0, 0, 0.25),
+    0 0 6px 4px rgba(0, 0, 0, 0.25),
+    0 0 10px 8px rgba(0, 0, 0, 0.1);
+
   --bgl-layer: transparent;
-  background:
-    var(--bg-base)
-    linear-gradient(0, var(--bgl-layer), var(--bgl-layer))!important;
-  
+  background: var(--bg-base)
+    linear-gradient(0, var(--bgl-layer), var(--bgl-layer)) !important;
+
   &:hover {
     --bgl-layer: var(--bg-hover);
     opacity: 1;
@@ -27,7 +26,7 @@ button.sidebar-toggle {
   &:active {
     --bgl-layer: var(--bg-active);
   }
-  
+
   .sidebar-toggle-button {
     position: relative;
     span {
@@ -53,7 +52,7 @@ button.sidebar-toggle {
       &:nth-child(3) {
         transform: translate(0) rotate(-0.125turn);
       }
-      
+
       body.close & {
         &:nth-child(1) {
           transform: translate(0, -0.5rem) rotate(0);
@@ -113,7 +112,7 @@ body .sidebar-toggle {
     &:nth-child(3) {
       transform: translate(0, 0.5rem) rotate(0);
     }
-    
+
     body.close & {
       &:nth-child(1) {
         transform: translate(0) rotate(0.125turn);

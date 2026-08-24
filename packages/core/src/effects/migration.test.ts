@@ -1,8 +1,8 @@
 import { vi, it, describe, expect, beforeEach } from "vitest"
 
+import { createAtom } from "../base"
 import { localStorage } from "./local-storage"
 import { createMigrationStep, migration } from "./migration"
-import { createAtom } from "../base"
 
 const mockConsole = () => {
   const oldConsole = globalThis.console

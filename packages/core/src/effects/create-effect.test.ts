@@ -1,8 +1,8 @@
 import { sleep } from "@yaasl/utils"
 import { vi, it, describe, expect, beforeEach } from "vitest"
 
-import { createEffect } from "./create-effect"
 import { createAtom } from "../base"
+import { createEffect } from "./create-effect"
 
 const callHistory = createEffect<{
   sort?: "pre" | "post"
@@ -225,7 +225,7 @@ describe("Test createEffect", () => {
       expect(values).toStrictEqual([0, 1])
       expect(testAtom.get()).toBe(2)
       expect(testAtom.didInit).toBe(true)
-    }
+    },
   )
 
   describe("Async effect", () => {
@@ -298,7 +298,7 @@ describe("Test createEffect", () => {
       })
 
       expect(() => testAtom.set("throw")).toThrow(
-        "Tried to set a value during initialization."
+        "Tried to set a value during initialization.",
       )
       await testAtom.didInit
       expect(() => testAtom.set("no throw")).not.toThrow()

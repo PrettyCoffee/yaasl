@@ -20,7 +20,7 @@ export function setupCounter(element: HTMLButtonElement) {
     (element.innerHTML = `count is ${value}`)
 
   element.addEventListener("click", () =>
-    counter.set(({ value }) => ({ value: value + 1 }))
+    counter.set(({ value }) => ({ value: value + 1 })),
   )
 
   counter.subscribe(({ value }) => updateCounterText(value))

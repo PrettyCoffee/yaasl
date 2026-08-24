@@ -3,7 +3,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "declaration": false,
-    "noEmit": false,
+    "noEmit": false
   },
   "include": ["./src/index.ts"]
 }

@@ -6,15 +6,18 @@ import {
   consoleMessage,
 } from "@yaasl/utils"
 
-import { CONFIG } from "./config"
-import { Stateful } from "./stateful"
 import type { EffectAtomCallback } from "../effects/create-effect"
 import { EffectDispatcher } from "../effects/effect-dispatcher"
+import { CONFIG } from "./config"
+import { Stateful } from "./stateful"
 
 export interface AtomConfig<Value> {
   /** Value that will be used initially. */
   defaultValue: Value
-  /** Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}". */
+  /**
+   * Name of the atom. Must be unique among all atoms. Defaults to
+   * "atom-{number}".
+   */
   name?: string
   /** Effects that will be applied on the atom. */
   effects?: EffectAtomCallback<any, any>[]
@@ -71,10 +74,11 @@ export class Atom<Value = unknown> extends Stateful<Value> {
       .then(updateValue)
   }
 
-  /** Set the value of the atom.
+  /**
+   * Set the value of the atom.
    *
-   * @param next New value or function to create the
-   * new value based off the previous value.
+   * @param next New value or function to create the new value based off the
+   *   previous value.
    */
   public set(next: Updater<Value>) {
     if (this.didInit !== true) {
@@ -83,8 +87,8 @@ export class Atom<Value = unknown> extends Stateful<Value> {
           "Tried to set a value during initialization. " +
             "You are probably using an async effect. " +
             "Use `await atom.didInit` to wait for the initialization process to be finished.",
-          { scope: this.name }
-        )
+          { scope: this.name },
+        ),
       )
     }
     const oldState = this.get()
@@ -97,12 +101,14 @@ export class Atom<Value = unknown> extends Stateful<Value> {
   }
 }
 
-/** Creates an atom store.
+/**
+ * Creates an atom store.
  *
  * @param config.defaultValue Value that will be used initially.
- * @param config.name Name of the atom. Must be unique among all atoms. Defaults to "atom-{number}".
+ * @param config.name Name of the atom. Must be unique among all atoms. Defaults
+ *   to "atom-{number}".
  * @param config.effects Effects that will be applied on the atom.
  *
  * @returns An atom instance.
- **/
+ */
 export const createAtom = <Value>(config: AtomConfig<Value>) => new Atom(config)

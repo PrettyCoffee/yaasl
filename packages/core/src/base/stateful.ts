@@ -8,19 +8,21 @@ export class Stateful<Value = unknown> implements Subscribable<Value> {
 
   constructor(protected value: Value) {}
 
-  /** Read the value of state.
+  /**
+   * Read the value of state.
    *
    * @returns The current value.
-   **/
+   */
   public get() {
     return this.value
   }
 
-  /** Subscribe to value changes.
+  /**
+   * Subscribe to value changes.
    *
-   *  @param callback Function to use the new value.
+   * @param callback Function to use the new value.
    *
-   *  @returns A callback to unsubscribe the passed callback.
+   * @returns A callback to unsubscribe the passed callback.
    */
   public subscribe(callback: SubscriberCallback<Value>) {
     this.listeners.add(callback)

@@ -10,7 +10,7 @@ const getKey = () => CONFIG.name ?? "yaasl"
 let isInitPhase = true
 export const connectAtom = (
   connection: ConnectionResponse,
-  atom: Atom<any>
+  atom: Atom<any>,
 ) => {
   cache.setAtomValue(atom, atom.get())
 
@@ -27,14 +27,14 @@ export interface ReduxDevtoolsOptions {
   disable?: boolean
 }
 
-/** Middleware to make use of the
- *  [redux devtools](https://github.com/reduxjs/redux-devtools)
- *  browser extension.
+/**
+ * Middleware to make use of the [redux
+ * devtools](https://github.com/reduxjs/redux-devtools) browser extension.
  *
  * @param options.disable Disables the middleware. Useful for production.
  *
  * @returns The effect to be used on atoms.
- **/
+ */
 export const reduxDevtools = createEffect<ReduxDevtoolsOptions | undefined>(
   ({ atom, options = {} }) => {
     if (options.disable) return {}
@@ -61,7 +61,7 @@ export const reduxDevtools = createEffect<ReduxDevtoolsOptions | undefined>(
         connection.send({ type: `SET/${atom.name}` }, cache.getStore())
       },
     }
-  }
+  },
 )
 
 /* For internal testing only */

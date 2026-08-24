@@ -5,7 +5,7 @@ const compareDeps = (a: unknown[], b: unknown[]) =>
 
 export const memoizeFunction = <TArgs extends unknown[], TResult>(
   resultFn: (...args: TArgs) => TResult,
-  compareResult?: (before: TResult, after: TResult) => boolean
+  compareResult?: (before: TResult, after: TResult) => boolean,
 ) => {
   let lastDeps = [resultFn, compareResult, ...([] as unknown as TArgs)]
   let lastResult = undefined as TResult
@@ -30,7 +30,7 @@ export const memoizeFunction = <TArgs extends unknown[], TResult>(
     {
       resultFn,
       compareResult,
-    }
+    },
   )
 
   return memo

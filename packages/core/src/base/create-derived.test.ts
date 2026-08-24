@@ -1,9 +1,9 @@
 import { sleep } from "@yaasl/utils"
 import { vi, it, describe, expect, beforeEach } from "vitest"
 
+import { createEffect } from "../effects"
 import { createAtom } from "./create-atom"
 import { createDerived } from "./create-derived"
-import { createEffect } from "../effects"
 
 const defaultValue = "default"
 const nextValue = "next"
@@ -78,7 +78,7 @@ describe("Test derive", () => {
 
       const testDerive = createDerived(
         ({ get }) => get(atom1) * 2,
-        ({ value, set }) => set(atom1, value / 2)
+        ({ value, set }) => set(atom1, value / 2),
       )
 
       testDerive.set(4)
@@ -98,7 +98,7 @@ describe("Test derive", () => {
         ({ value, set }) => {
           set(atom1, value.value1)
           set(atom2, value.value2)
-        }
+        },
       )
 
       expect(testDerive.get()).toEqual({ value1: 1, value2: 1 })
@@ -117,7 +117,7 @@ describe("Test derive", () => {
 
       const testDerive = createDerived(
         ({ get }) => get(atom1).value,
-        ({ value, set }) => set(atom1, prev => ({ ...prev, value }))
+        ({ value, set }) => set(atom1, prev => ({ ...prev, value })),
       )
 
       testDerive.set(prev => prev + 1)
@@ -132,8 +132,8 @@ describe("Test derive", () => {
       expect(() =>
         createDerived(
           ({ get }) => get(atom1),
-          ({ value, set }) => set(atom2, value)
-        )
+          ({ value, set }) => set(atom2, value),
+        ),
       ).toThrow()
     })
   })

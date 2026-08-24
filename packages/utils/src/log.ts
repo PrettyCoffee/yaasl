@@ -1,6 +1,6 @@
 export const consoleMessage = (
   text: string,
-  { scope }: { scope?: string } = {}
+  { scope }: { scope?: string } = {},
 ) => (scope ? `[yaasl][${scope}]: ${text}` : `[yaasl]: ${text}`)
 
 const logger = (type: keyof typeof log, text: string, value?: unknown) =>

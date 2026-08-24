@@ -53,7 +53,7 @@ A classic example is a localStorage effect. It subscribes to the atom and reads 
 Such an effect would be used like this:
 
 ```ts
-const counter = withLocalStorage("counter", atom(0));
+const counter = withLocalStorage("counter", atom(0))
 ```
 
 Manageable, right?
@@ -64,8 +64,8 @@ What if I want to add an expiration mechanism to automatically reset the stored 
 We add a new wrapper:
 
 ```ts
-const DAY = 1000 * 60 * 60 * 24;
-const counter = withExpiration(DAY, withLocalStorage("counter", atom(0)));
+const DAY = 1000 * 60 * 60 * 24
+const counter = withExpiration(DAY, withLocalStorage("counter", atom(0)))
 ```
 
 ### **More?**
@@ -73,14 +73,14 @@ const counter = withExpiration(DAY, withLocalStorage("counter", atom(0)));
 Now, let's imagine some more:
 
 ```ts
-const DAY = 1000 * 60 * 60 * 24;
+const DAY = 1000 * 60 * 60 * 24
 const counter = withDebounce(
   100,
   withLogging(
     loggerService,
     withExpiration(DAY, withLocalStorage("counter", atom(0))),
   ),
-);
+)
 ```
 
 I guess you may start to see where I'm coming from. You also can't set the
@@ -96,7 +96,7 @@ I think directly integrating a side effect system into the atoms would solve thi
 This is how it could be better when reimagined from my perspective:
 
 ```ts
-const DAY = 1000 * 60 * 60 * 24;
+const DAY = 1000 * 60 * 60 * 24
 const counter = atom({
   defaultValue: 0,
   effects: [
@@ -105,7 +105,7 @@ const counter = atom({
     expires(DAY),
     localStorage("counter"),
   ],
-});
+})
 ```
 
 Or at least, that's how I ended up implementing it.
@@ -136,13 +136,13 @@ const teamAtom = atom([
   { id: 25, name: "Pikachu", level: 32 },
   { id: 94, name: "Gengar", level: 48 },
   { id: 54, name: "Psyduck", level: 16 },
-]);
-const activePokemon = atom(1);
-const activeLevel = atom((get) => {
-  const team = get(teamAtom);
-  const active = get(activePokemon);
-  return team[active].level;
-});
+])
+const activePokemon = atom(1)
+const activeLevel = atom(get => {
+  const team = get(teamAtom)
+  const active = get(activePokemon)
+  return team[active].level
+})
 ```
 
 ### **redux reselect**
@@ -150,13 +150,13 @@ const activeLevel = atom((get) => {
 With reselect, we create selectors, reading
 
 ```ts
-const getTeam = (state) => state.team;
-const getActivePokemon = (state) => state.activePokemon;
+const getTeam = state => state.team
+const getActivePokemon = state => state.activePokemon
 
 const getActiveLevel = createSelector(
   [getTeam, getActivePokemon],
   (team, active) => team[active].level,
-);
+)
 ```
 
 ### **reselect in atom land**
@@ -168,13 +168,13 @@ const teamAtom = atom([
   { id: 25, name: "Pikachu", level: 32 },
   { id: 94, name: "Gengar", level: 48 },
   { id: 54, name: "Psyduck", level: 48 },
-]);
-const activePokemon = atom(1);
+])
+const activePokemon = atom(1)
 
 const activeLevel = createSelector(
   [teamAtom, activePokemon],
   (team, active) => team[active].level,
-);
+)
 ```
 
 This may not look like much of a benefit, but I personally found that it

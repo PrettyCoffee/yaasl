@@ -7,7 +7,7 @@ export class Thenable<T = undefined> implements PromiseLike<T> {
 
   then<Result = T, Reject = never>(
     onfulfilled?: Executor<T, Result>,
-    onrejected?: Executor<any, Reject>
+    onrejected?: Executor<any, Reject>,
   ): PromiseLike<Result | Reject> {
     try {
       const result = !onfulfilled ? this.value : onfulfilled(this.value as T)
@@ -34,7 +34,7 @@ export class Thenable<T = undefined> implements PromiseLike<T> {
       item =>
         void item.then(value => {
           result.push(value)
-        })
+        }),
     )
 
     return new Thenable(result)

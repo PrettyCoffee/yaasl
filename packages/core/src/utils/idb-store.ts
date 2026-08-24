@@ -33,25 +33,25 @@ export class IdbStore<T = unknown> {
     return this.getStore("readonly").then(store =>
       !store
         ? []
-        : promisifyRequest(store.getAllKeys()).then(keys => keys.map(String))
+        : promisifyRequest(store.getAllKeys()).then(keys => keys.map(String)),
     )
   }
 
   public async get(key: string): Promise<T | undefined> {
     return this.getStore("readonly").then(store =>
-      !store ? undefined : promisifyRequest<T>(store.get(key) as IDBRequest<T>)
+      !store ? undefined : promisifyRequest<T>(store.get(key) as IDBRequest<T>),
     )
   }
 
   public set(key: string, value: T) {
     return this.getStore("readwrite").then(async store =>
-      !store ? undefined : promisifyRequest(store.put(value, key))
+      !store ? undefined : promisifyRequest(store.put(value, key)),
     )
   }
 
   public delete(key: string) {
     return this.getStore("readwrite").then(store =>
-      !store ? undefined : promisifyRequest(store.delete(key))
+      !store ? undefined : promisifyRequest(store.delete(key)),
     )
   }
 }

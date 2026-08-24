@@ -6,7 +6,7 @@ const allDidInit = (atoms: Stateful[]) => {
   const inits = atoms
     .map(atom => atom.didInit)
     .filter(
-      (didInit): didInit is PromiseLike<void> => typeof didInit !== "boolean"
+      (didInit): didInit is PromiseLike<void> => typeof didInit !== "boolean",
     )
   return inits.length === 0 ? true : Promise.all(inits).then(toVoid)
 }
@@ -17,7 +17,7 @@ export class CombinerSelector<
 > extends Stateful<CombinedValue> {
   constructor(
     atoms: ParentAtoms,
-    combiner: (...states: InferValues<ParentAtoms>) => CombinedValue
+    combiner: (...states: InferValues<ParentAtoms>) => CombinedValue,
   ) {
     const atomArray = toArray(atoms)
 
@@ -32,18 +32,21 @@ export class CombinerSelector<
   }
 }
 
-/** Creates a value, selected from one or more atoms by using a combiner function.
+/**
+ * Creates a value, selected from one or more atoms by using a combiner
+ * function.
  *
- *  @param atoms One or more atoms you need to combine to receive the new value.
- *  @param combiner Combiner function to use the atom values and create a new value.
+ * @param atoms One or more atoms you need to combine to receive the new value.
+ * @param combiner Combiner function to use the atom values and create a new
+ *   value.
  *
- *  @returns A CombinerSelector instance.
- **/
+ * @returns A CombinerSelector instance.
+ */
 export const createSelector = <
   ParentAtoms extends Stateful<any> | [Stateful<any>, ...Stateful<any>[]],
   CombinedValue,
 >(
   atoms: ParentAtoms,
-  combiner: (...states: InferValues<ParentAtoms>) => CombinedValue
+  combiner: (...states: InferValues<ParentAtoms>) => CombinedValue,
 ): CombinerSelector<ParentAtoms, CombinedValue> =>
   new CombinerSelector(atoms, combiner)

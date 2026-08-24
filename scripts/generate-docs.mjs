@@ -63,14 +63,14 @@ const createToc = text => {
         ? result + `  - ${link} [ ${rest} ]\n`
         : result + `  - ${link}\n`
     },
-    ""
+    "",
   )
 }
 
 const formatFiles = () => {
   execSync(
     "prettier **.md --arrow-parens=avoid --no-semi --single-quote=false --tab-width=2 --write",
-    { stdio: "inherit" }
+    { stdio: "inherit" },
   )
 }
 
