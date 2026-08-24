@@ -43,6 +43,9 @@ export default defineConfig([
       ],
     },
   },
-
-  prettyCozy.prettier,
+  {
+    rules: {
+      "import-x/order": "off",
+    },
+  },
 ])

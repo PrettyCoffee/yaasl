@@ -20,8 +20,8 @@
     "test": "vitest run",
     "test:coverage": "pnpm run test --coverage",
     "test:watch": "vitest watch",
-    "lint": "eslint",
-    "lint:fix": "pnpm run lint --fix",
+    "lint": "eslint && oxfmt --check",
+    "lint:fix": "eslint --fix && oxfmt --write",
     "validate": "pnpm run validate --workspaces",
     "docs": "pnpm run --filter='./docs' start",
     "docs:generate": "node scripts/generate-docs.mjs",
@@ -34,6 +34,7 @@
     "@commitlint/cli": "20.5.3",
     "@commitlint/config-conventional": "20.5.3",
     "@pretty-cozy/eslint-config": "0.9.0",
+    "@pretty-cozy/oxlint-config": "0.1.0",
     "@pretty-cozy/release-tools": "0.9.0",
     "@vitest/coverage-v8": "4.1.10",
     "enquirer": "2.4.1",
@@ -42,6 +43,7 @@
     "husky": "9.1.7",
     "npm-check-updates": "21.0.3",
     "npm-run-all2": "8.0.4",
+    "oxfmt": "0.64.0",
     "typescript": "6.0.3",
     "vitest": "4.1.10"
   }

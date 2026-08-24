@@ -1,7 +1,9 @@
 ignoreDepScripts: true
 blockExoticSubdeps: true
-minimumReleaseAge: 1440 # >=1 day
 preferFrozenLockfile: true
+minimumReleaseAge: 1440 # >=1 day
+minimumReleaseAgeExclude:
+  - "@pretty-cozy/oxlint-config@0.1.0"
 
 trustPolicy: no-downgrade
 trustPolicyExclude:
@@ -11,6 +13,3 @@ packages:
   - packages/*
   - demo/*
   - docs
-minimumReleaseAgeExclude:
-  # Renovate security update: vite@8.0.16
-  - vite@8.0.16
