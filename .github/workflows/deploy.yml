@@ -24,18 +24,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - name: Install node & pnpm
+        uses: pnpm/setup@v2
         with:
-          version: 10
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-          cache: "pnpm"
+          version: 11
+          runtime: node@24
+          cache: true
 
       - name: Install dependencies
         run: pnpm i --frozen-lockfile

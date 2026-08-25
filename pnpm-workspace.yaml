@@ -1,9 +1,11 @@
-ignoreDepScripts: true
 blockExoticSubdeps: true
 preferFrozenLockfile: true
 minimumReleaseAge: 1440 # >=1 day
 minimumReleaseAgeExclude:
   - "@pretty-cozy/oxlint-config@0.1.0"
+
+allowBuilds:
+  docsify: false
 
 trustPolicy: no-downgrade
 trustPolicyExclude:
