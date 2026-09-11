@@ -3,6 +3,8 @@ preferFrozenLockfile: true
 minimumReleaseAge: 1440 # >=1 day
 minimumReleaseAgeExclude:
   - "@pretty-cozy/oxlint-config@0.1.0"
+  # Renovate security update: vitest@4.1.11
+  - vitest@4.1.11
 
 allowBuilds:
   docsify: false
