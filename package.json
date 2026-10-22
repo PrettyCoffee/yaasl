@@ -34,18 +34,18 @@
   "devDependencies": {
     "@commitlint/cli": "20.5.3",
     "@commitlint/config-conventional": "20.5.3",
-    "@pretty-cozy/oxlint-config": "0.1.0",
-    "@pretty-cozy/release-tools": "0.9.0",
-    "@vitest/coverage-v8": "4.1.10",
+    "@pretty-cozy/oxlint-config": "0.2.2",
+    "@pretty-cozy/release-tools": "0.9.1",
+    "@vitest/coverage-v8": "4.1.12",
     "enquirer": "2.4.1",
-    "happy-dom": "20.10.6",
+    "happy-dom": "20.14.6",
     "husky": "9.1.7",
     "npm-check-updates": "21.0.3",
     "npm-run-all2": "8.0.4",
-    "oxfmt": "0.64.0",
-    "oxlint": "1.79.0",
-    "oxlint-tsgolint": "7.0.2001",
+    "oxfmt": "0.74.0",
+    "oxlint": "1.89.0",
+    "oxlint-tsgolint": "7.0.2004",
     "typescript": "6.0.3",
-    "vitest": "4.1.11"
+    "vitest": "4.1.12"
   }
 }
