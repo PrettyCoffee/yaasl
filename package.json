@@ -38,7 +38,7 @@
     "@pretty-cozy/release-tools": "0.9.0",
     "@vitest/coverage-v8": "4.1.10",
     "enquirer": "2.4.1",
-    "happy-dom": "20.10.6",
+    "happy-dom": "21.0.4",
     "husky": "9.1.7",
     "npm-check-updates": "21.0.3",
     "npm-run-all2": "8.0.4",
